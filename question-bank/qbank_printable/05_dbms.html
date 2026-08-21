@@ -1,0 +1,173 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 6 - Database Management Systems and SQL</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 6 - Database Management Systems and SQL</h1>
+<blockquote>*Weightage: 5 to 8 marks in DSSSB, 5 to 10 expected. A compact, highly memorisable syllabus - among the most reliable marks available.*</blockquote>
+<h2>6.1 DBMS Concepts, Keys and the ER Model</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Schema/instance and key definitions are near-certain | Priority HIGH</strong></blockquote>
+<h3>6.1.1 Topic checklist</h3>
+<ul><li>DBMS vs file system, advantages, data independence</li><li>Three-schema architecture, schema vs instance, metadata</li><li>Database models, relational model terminology, degree and cardinality</li><li>All key types and integrity constraints</li><li>ER model symbols, cardinality, descriptive attributes, generalisation</li></ul>
+<h3>6.1.2 Questions</h3>
+<p><strong>Q. [PYQ] What is the overall design of a database called?</strong></p>
+<ul><li>(a) <strong>Database Schema  &lt;-- CORRECT</strong></li><li>(b) Database Instance</li><li>(c) Database Table</li><li>(d) Database Model</li></ul>
+<blockquote><strong>Why:</strong> <strong>Schema</strong> = structure (defined once, rarely changes). <strong>Instance</strong> = the actual data at a moment (changes constantly). The analogy to hold: <strong>schema is to instance as a class is to an object</strong>, or as a variable&#x27;s type is to its value.</blockquote>
+<p><strong>Q. [PYQ] What makes a database relational?</strong></p>
+<ul><li>(a) <strong>Tables  &lt;-- CORRECT</strong></li><li>(b) Field</li><li>(c) Records</li><li>(d) Tuple</li></ul>
+<blockquote><strong>Why:</strong> The defining feature of the relational model (E. F. Codd, 1970) is organising all data into <strong>tables (relations)</strong>. Fields, records and tuples are merely the *parts* of a table - and &quot;record&quot; and &quot;tuple&quot; mean the same thing, so neither could be the distinguishing answer.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In relational terminology, degree and cardinality refer to:</strong></p>
+<ul><li>(a) rows and columns respectively</li><li>(b) <strong>columns and rows respectively  &lt;-- CORRECT</strong></li><li>(c) keys and attributes</li><li>(d) tables and views</li></ul>
+<blockquote><strong>Why:</strong> <strong>Degree = number of COLUMNS (attributes). Cardinality = number of ROWS (tuples).</strong> Memory hook: &quot;<strong>D</strong>egree for <strong>D</strong>escriptions - columns describe; <strong>C</strong>ardinality for <strong>C</strong>ount of records.&quot;</blockquote>
+<p><strong>Q. [EXPECTED] Which key can accept NULL values?</strong></p>
+<ul><li>(a) Primary key</li><li>(b) Candidate key</li><li>(c) <strong>Foreign key  &lt;-- CORRECT</strong></li><li>(d) Super key</li></ul>
+<blockquote><strong>Why:</strong> A <strong>primary key can never be NULL</strong> (entity integrity). A <strong>foreign key may be NULL</strong>, meaning &quot;no related row yet&quot;. A <strong>candidate key</strong> is a minimal super key, one of which is chosen as primary.</blockquote>
+<p><strong>Q. [EXPECTED] A minimal super key is called:</strong></p>
+<ul><li>(a) Primary key</li><li>(b) <strong>Candidate key  &lt;-- CORRECT</strong></li><li>(c) Foreign key</li><li>(d) Composite key</li></ul>
+<blockquote><strong>Why:</strong> A <strong>super key</strong> is any uniquely identifying attribute set, possibly with redundant attributes. Remove the redundancy and you have a <strong>candidate key</strong>. The designer promotes one candidate key to <strong>primary</strong>; the rest become <strong>alternate</strong> keys.</blockquote>
+<p><strong>Q. [EXPECTED] Referential integrity is enforced by which constraint?</strong></p>
+<ul><li>(a) Primary key</li><li>(b) <strong>Foreign key  &lt;-- CORRECT</strong></li><li>(c) NOT NULL</li><li>(d) CHECK</li></ul>
+<blockquote><strong>Why:</strong> A foreign key value must either match an existing primary key in the referenced table or be NULL. Related actions: <strong>ON DELETE CASCADE / SET NULL / RESTRICT</strong>.</blockquote>
+<p><strong>Q. [PYQ] Descriptive attributes are used to:</strong></p>
+<ul><li>(a) <strong>record the information about relationships  &lt;-- CORRECT</strong></li><li>(b) record the information about attributes</li><li>(c) record the information about participating entities</li><li>(d) record the information about data</li></ul>
+<blockquote><strong>Why:</strong> A <strong>descriptive attribute belongs to a RELATIONSHIP</strong>, not to either entity. In &quot;Student ENROLS IN Course&quot;, the *grade* and *date of enrolment* describe the enrolment itself, not the student or the course.</blockquote>
+<p><strong>Q. [EXPECTED] In an ER diagram, a weak entity is represented by:</strong></p>
+<ul><li>(a) A single rectangle</li><li>(b) <strong>A double rectangle  &lt;-- CORRECT</strong></li><li>(c) A diamond</li><li>(d) A double ellipse</li></ul>
+<blockquote><strong>Why:</strong> <strong>Double rectangle</strong> = weak entity (no key of its own, only a partial key; identified through an owner entity via a <strong>double diamond</strong> identifying relationship). Single rectangle = entity, ellipse = attribute, <strong>double ellipse = multivalued attribute</strong>, dashed ellipse = derived attribute, diamond = relationship.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Generalisation in the ER model is:</strong></p>
+<ul><li>(a) a top-down process splitting an entity into sub-entities</li><li>(b) <strong>a bottom-up process combining similar entities into a higher-level entity  &lt;-- CORRECT</strong></li><li>(c) the same as aggregation</li><li>(d) used only for weak entities</li></ul>
+<blockquote><strong>Why:</strong> <strong>Generalisation is BOTTOM-UP</strong> (Car and Truck become Vehicle). <strong>Specialisation is TOP-DOWN</strong> (Employee becomes Engineer, Manager, Clerk). <strong>Aggregation</strong> treats a whole relationship as one higher-level entity.</blockquote>
+<p><strong>Q. [EXPECTED] A many-to-many relationship, when converted to tables, requires:</strong></p>
+<ul><li>(a) two tables only</li><li>(b) <strong>a separate junction/bridge table  &lt;-- CORRECT</strong></li><li>(c) a single merged table</li><li>(d) no change</li></ul>
+<blockquote><strong>Why:</strong> The junction table holds the primary keys of both participants as a composite key, plus any descriptive attributes of the relationship.</blockquote>
+<p><strong>Q. [EXPECTED] Logical data independence means:</strong></p>
+<ul><li>(a) storage structure can change without affecting the logical schema</li><li>(b) <strong>the logical schema can change without affecting application programs  &lt;-- CORRECT</strong></li><li>(c) data can be stored in any format</li><li>(d) indexes can be added freely</li></ul>
+<blockquote><strong>Why:</strong> <strong>Physical</strong> independence: change *how* data is stored without touching the logical schema (easier to achieve). <strong>Logical</strong> independence: change the logical schema without rewriting applications - achieved largely through <strong>views</strong>.</blockquote>
+<h2>6.2 Functional Dependencies and Normalisation</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Normal-form definitions and Armstrong&#x27;s axioms recur | Priority HIGH</strong></blockquote>
+<h3>6.2.1 Questions</h3>
+<p><strong>Q. [PYQ] [TRAP] Which of the following DBMS scenarios will NOT really follow Armstrong&#x27;s Axiom?</strong></p>
+<ul><li>(a) Reflexivity rule</li><li>(b) <strong>Pseudo transitivity rule  &lt;-- CORRECT</strong></li><li>(c) Transitivity rule</li><li>(d) Armstrong&#x27;s axioms</li></ul>
+<blockquote><strong>Why:</strong> Armstrong&#x27;s axioms <strong>proper</strong> are exactly three: <strong>Reflexivity, Augmentation, Transitivity</strong>. Union, decomposition, <strong>pseudo-transitivity</strong> and composition are *derived* rules - they follow from the axioms but are not themselves axioms. Memorise the three-word list.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Consider R(PQRSTU) with F = {P to RT, Q to S, R to PS, QS to TU}. Find the closure of PQ.</strong></p>
+<ul><li>(a) PQRST</li><li>(b) PQRTU</li><li>(c) PQRSU</li><li>(d) <strong>PQRSTU  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Start with {P, Q}. <code>P to RT</code> adds R and T. <code>Q to S</code> adds S. Now we hold Q and S, so <code>QS to TU</code> adds <strong>U</strong>. Result is all six attributes = <strong>PQRSTU</strong>, which means PQ is a superkey. <strong>Method: loop through the FD list repeatedly until one full pass adds nothing new.</strong></blockquote>
+<p><strong>Q. [EXPECTED] A relation is in 1NF if:</strong></p>
+<ul><li>(a) it has no transitive dependency</li><li>(b) it has no partial dependency</li><li>(c) <strong>every attribute holds a single atomic value  &lt;-- CORRECT</strong></li><li>(d) every determinant is a super key</li></ul>
+<blockquote><strong>Why:</strong> <strong>1NF = atomic values</strong> (no repeating groups or multi-valued cells). <strong>2NF</strong> removes <strong>partial</strong> dependencies; <strong>3NF</strong> removes <strong>transitive</strong> dependencies; <strong>BCNF</strong> requires every determinant to be a <strong>super key</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Removing partial dependency achieves which normal form?</strong></p>
+<ul><li>(a) 1NF</li><li>(b) <strong>2NF  &lt;-- CORRECT</strong></li><li>(c) 3NF</li><li>(d) BCNF</li></ul>
+<blockquote><strong>Why:</strong> A partial dependency exists when a non-key attribute depends on only <strong>part of a composite</strong> primary key - so 2NF is only an issue when the key is composite. Hook: &quot;<strong>One is Atomic, Two is Partial, Three is Transitive, BC is Super.</strong>&quot;</blockquote>
+<p><strong>Q. [EXPECTED] A relation in 3NF where every determinant is a super key is in:</strong></p>
+<ul><li>(a) 2NF</li><li>(b) <strong>BCNF  &lt;-- CORRECT</strong></li><li>(c) 4NF</li><li>(d) 5NF</li></ul>
+<blockquote><strong>Why:</strong> BCNF is <strong>stricter than 3NF</strong> and handles anomalies arising from overlapping candidate keys. Important caveat: <strong>BCNF decomposition may fail to preserve dependencies</strong>, whereas a lossless *and* dependency-preserving 3NF decomposition always exists.</blockquote>
+<p><strong>Q. [EXPECTED] The purpose of normalisation is primarily to:</strong></p>
+<ul><li>(a) speed up queries</li><li>(b) <strong>reduce redundancy and eliminate update, insert and delete anomalies  &lt;-- CORRECT</strong></li><li>(c) reduce the number of tables</li><li>(d) improve security</li></ul>
+<blockquote><strong>Why:</strong> Normalisation usually <strong>increases</strong> the number of tables and can slow reads by requiring joins. That is why data warehouses deliberately <strong>denormalise</strong> (star schema) for query speed.</blockquote>
+<h2>6.3 SQL</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Command classification and NULL logic are recurring | Priority HIGH</strong></blockquote>
+<h3>6.3.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following is used to define the structure of a relation as well as delete relations and relate schemas?</strong></p>
+<ul><li>(a) Integrity constraint</li><li>(b) View</li><li>(c) DML (Data Manipulation Language)</li><li>(d) <strong>DDL (Data Definition Language)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Every verb in the question - define the structure, delete relations, relate schemas - is <strong>structural</strong>, which is DDL&#x27;s domain (CREATE, ALTER, DROP, TRUNCATE). DML only touches the rows inside an existing structure.</blockquote>
+<p><strong>Q. [PYQ] Which SQL statement is used to update data in a table?</strong></p>
+<ul><li>(a) CHANGE</li><li>(b) MODIFY</li><li>(c) <strong>UPDATE  &lt;-- CORRECT</strong></li><li>(d) SET</li></ul>
+<blockquote><strong>Why:</strong> <code>CHANGE</code> and <code>MODIFY</code> are clauses used <strong>inside ALTER TABLE</strong> to rename or retype a column; <code>SET</code> is a clause <strong>inside UPDATE</strong>. Only <strong>UPDATE</strong> is a standalone data-modification statement.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is a DDL command that cannot normally be rolled back?</strong></p>
+<ul><li>(a) DELETE</li><li>(b) <strong>TRUNCATE  &lt;-- CORRECT</strong></li><li>(c) UPDATE</li><li>(d) INSERT</li></ul>
+<blockquote><strong>Why:</strong> <strong>TRUNCATE</strong> is DDL, removes all rows, takes no WHERE clause, is very fast and is normally not rollback-able. <strong>DELETE</strong> is DML, accepts WHERE, logs each row and <strong>can</strong> be rolled back. <strong>DROP</strong> removes the table structure entirely.</blockquote>
+<p><strong>Q. [PYQ] Select the correct SQL statement to insert a new row into Customer specifying only CustomerID, Name and Product (other columns allow NULL).</strong></p>
+<ul><li>(a) INSERT Customer SET CustomerID=101, Name=&#x27;Alice&#x27;, Product=&#x27;Pen&#x27;;</li><li>(b) INSERT INTO Customer VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</li><li>(c) INSERT INTO Customer (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</li><li>(d) <strong>INSERT INTO Customer (CustomerID, Name, Product) VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>To insert into a subset of columns you must name the columns AND use VALUES.</strong> The bare <code>VALUES</code> form supplies values for *all* columns in order and would fail here. The <code>SET</code> form is MySQL-specific, and the third option omits <code>VALUES</code> entirely.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following SQL expressions evaluates to TRUE, according to SQL-99?</strong></p>
+<ul><li>(a) NULL &lt;= NULL returns UNKNOWN</li><li>(b) NULL &gt;= NULL returns UNKNOWN</li><li>(c) NULL IS NULL returns FALSE</li><li>(d) <strong>NULL IS NULL returns TRUE  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Read the question precisely - it asks which <strong>expression evaluates to TRUE</strong>. The first two statements are *factually accurate* but the expressions themselves evaluate to UNKNOWN, not TRUE. <strong>Golden rule: never test NULL with = or &lt;&gt;; use IS NULL / IS NOT NULL.</strong></blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What does COUNT(*) do differently from COUNT(column)?</strong></p>
+<ul><li>(a) They are identical</li><li>(b) <strong>COUNT(*) counts all rows including NULLs; COUNT(column) ignores NULLs  &lt;-- CORRECT</strong></li><li>(c) COUNT(*) is slower always</li><li>(d) COUNT(column) counts distinct values</li></ul>
+<blockquote><strong>Why:</strong> All aggregate functions except <code>COUNT(*)</code> <strong>ignore NULLs</strong>. This is why <code>AVG(col)</code> is not the same as <code>SUM(col)/COUNT(*)</code> when NULLs are present.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which clause filters groups after aggregation?</strong></p>
+<ul><li>(a) WHERE</li><li>(b) <strong>HAVING  &lt;-- CORRECT</strong></li><li>(c) GROUP BY</li><li>(d) ORDER BY</li></ul>
+<blockquote><strong>Why:</strong> <strong>WHERE filters individual rows BEFORE grouping</strong> and cannot contain aggregate functions. <strong>HAVING filters groups AFTER aggregation</strong> and can. Execution order: FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY.</blockquote>
+<p><strong>Q. [EXPECTED] Which join returns all rows from the left table plus matching rows from the right?</strong></p>
+<ul><li>(a) INNER JOIN</li><li>(b) <strong>LEFT OUTER JOIN  &lt;-- CORRECT</strong></li><li>(c) RIGHT OUTER JOIN</li><li>(d) CROSS JOIN</li></ul>
+<blockquote><strong>Why:</strong> Unmatched right-side columns come back as NULL. <strong>INNER JOIN</strong> returns only matches; <strong>FULL OUTER</strong> returns everything from both; <strong>CROSS JOIN</strong> is the Cartesian product.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] <em>_</em><em>_</em> is NOT allowed in a SQL:1999 view definition.</strong></p>
+<ul><li>(a) Use of subqueries</li><li>(b) Use of nested queries</li><li>(c) Use of aggregate formulas</li><li>(d) <strong>Use of ORDER BY clause  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A view is defined to be a <strong>relation</strong>, and a relation is an <strong>unordered set of tuples</strong> - so ordering has no meaning in the definition. Apply ORDER BY when you SELECT *from* the view. Subqueries and aggregates are legal (they merely make the view read-only).</blockquote>
+<p><strong>Q. [EXPECTED] A view is best described as:</strong></p>
+<ul><li>(a) a physical copy of a table</li><li>(b) <strong>a virtual table produced by a stored query  &lt;-- CORRECT</strong></li><li>(c) an index</li><li>(d) a backup</li></ul>
+<blockquote><strong>Why:</strong> A standard view stores <strong>no data</strong> - rows are generated when queried. A <strong>materialised view</strong> does store results physically and must be refreshed, trading freshness for speed.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT a benefit of using views?</strong></p>
+<ul><li>(a) Security by hiding columns</li><li>(b) Simplifying complex joins</li><li>(c) Logical data independence</li><li>(d) <strong>Faster write performance on the base tables  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Views do nothing for write speed and can complicate updates. Their genuine benefits are security, simplification and logical independence.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] How many clustered indexes can a table have?</strong></p>
+<ul><li>(a) Unlimited</li><li>(b) <strong>One  &lt;-- CORRECT</strong></li><li>(c) Two</li><li>(d) None</li></ul>
+<blockquote><strong>Why:</strong> A <strong>clustered index determines the physical row order</strong>, so there can be only <strong>one</strong> per table (usually on the primary key). <strong>Non-clustered</strong> indexes are separate structures and many are permitted.</blockquote>
+<h2>6.4 Transactions and Concurrency Control</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | ACID and serialisability appear regularly | Priority HIGH</strong></blockquote>
+<h3>6.4.1 Questions</h3>
+<p><strong>Q. [EXPECTED] Which ACID property guarantees that a transaction is all-or-nothing?</strong></p>
+<ul><li>(a) Consistency</li><li>(b) <strong>Atomicity  &lt;-- CORRECT</strong></li><li>(c) Isolation</li><li>(d) Durability</li></ul>
+<blockquote><strong>Why:</strong> <strong>Atomicity</strong> = all operations complete or none do (partial work is rolled back). <strong>Consistency</strong> = valid state to valid state. <strong>Isolation</strong> = concurrent transactions do not interfere. <strong>Durability</strong> = committed changes survive a crash.</blockquote>
+<p><strong>Q. [EXPECTED] Which ACID property is ensured by write-ahead logging?</strong></p>
+<ul><li>(a) Atomicity</li><li>(b) Consistency</li><li>(c) Isolation</li><li>(d) <strong>Durability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The log record is forced to stable storage <strong>before</strong> the data change, so committed work can always be reconstructed after a crash. WAL supports both durability and atomicity (via UNDO).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Reading a value written by an uncommitted transaction is called:</strong></p>
+<ul><li>(a) Lost update</li><li>(b) <strong>Dirty read  &lt;-- CORRECT</strong></li><li>(c) Unrepeatable read</li><li>(d) Phantom read</li></ul>
+<blockquote><strong>Why:</strong> <strong>Dirty read</strong> - if the writer later rolls back, the reader has used data that never officially existed. <strong>Unrepeatable read</strong>: same row read twice gives different values. <strong>Phantom read</strong>: a range query returns extra rows the second time. <strong>Lost update</strong>: one transaction&#x27;s write overwrites another&#x27;s.</blockquote>
+<p><strong>Q. [EXPECTED] Two operations conflict if they belong to different transactions, access the same data item, and:</strong></p>
+<ul><li>(a) both are reads</li><li>(b) <strong>at least one is a write  &lt;-- CORRECT</strong></li><li>(c) both are writes</li><li>(d) they occur simultaneously</li></ul>
+<blockquote><strong>Why:</strong> <strong>Read-read never conflicts.</strong> Only read-write, write-read and write-write pairs do. This definition is the foundation of conflict serialisability.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Which of the following is a conflict serializable schedule? S1: R1(A); R1(B); R2(A); R2(B); W2(B); W1(A) and S2: R1(A); R2(A); R2(B); W2(B); R1(B); W1(A)</strong></p>
+<ul><li>(a) S1 is conflict serializable but S2 is not.</li><li>(b) <strong>S1 is not conflict serializable but S2 is conflict serializable.  &lt;-- CORRECT</strong></li><li>(c) Both are not conflict serializable.</li><li>(d) Both are conflict serializable.</li></ul>
+<blockquote><strong>Why:</strong> Build the <strong>precedence graph</strong>. In <strong>S1</strong>: on item A, R2(A) precedes W1(A) giving edge T2 to T1; on item B, R1(B) precedes W2(B) giving edge T1 to T2 - both directions exist, so there is a <strong>cycle</strong> and S1 fails. In <strong>S2</strong>: R2(A) before W1(A) gives T2 to T1, and W2(B) before R1(B) also gives T2 to T1 - all edges point one way, <strong>no cycle</strong>, so S2 is conflict serialisable (equivalent to running T2 then T1). <strong>A schedule is conflict serialisable if and only if its precedence graph is acyclic.</strong></blockquote>
+<p><strong>Q. [EXPECTED] In two-phase locking, once a transaction releases its first lock it:</strong></p>
+<ul><li>(a) may acquire more locks</li><li>(b) <strong>may not acquire any new locks  &lt;-- CORRECT</strong></li><li>(c) must commit immediately</li><li>(d) must abort</li></ul>
+<blockquote><strong>Why:</strong> 2PL has a <strong>growing phase</strong> (acquire only) and a <strong>shrinking phase</strong> (release only). This guarantees serialisability but can still deadlock. <strong>Conservative (static) 2PL</strong> acquires all locks upfront and is <strong>deadlock free</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which lock type allows several transactions to read the same item concurrently?</strong></p>
+<ul><li>(a) Exclusive lock</li><li>(b) <strong>Shared lock  &lt;-- CORRECT</strong></li><li>(c) Update lock</li><li>(d) Binary lock</li></ul>
+<blockquote><strong>Why:</strong> Multiple <strong>shared (S)</strong> locks can coexist for reading. An <strong>exclusive (X)</strong> lock permits no other lock of any kind - required for writing.</blockquote>
+<p><strong>Q. [EXPECTED] Which concurrency control method never causes deadlock?</strong></p>
+<ul><li>(a) Two-phase locking</li><li>(b) Strict 2PL</li><li>(c) <strong>Timestamp ordering  &lt;-- CORRECT</strong></li><li>(d) Rigorous 2PL</li></ul>
+<blockquote><strong>Why:</strong> <strong>Timestamp ordering</strong> resolves conflicts by comparing timestamps and aborting offenders rather than making them wait, so no waiting cycle can form. Conservative 2PL is also deadlock free (it avoids hold-and-wait).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the difference between OLTP and OLAP?</strong></p>
+<ul><li>(a) OLTP is for analysis, OLAP for transactions</li><li>(b) <strong>OLTP handles many short read/write transactions; OLAP handles few complex read-only analytical queries  &lt;-- CORRECT</strong></li><li>(c) Both are identical</li><li>(d) OLAP is highly normalised</li></ul>
+<blockquote><strong>Why:</strong> <strong>OLTP</strong> = day-to-day operations, highly normalised, current detailed data (booking a ticket). <strong>OLAP</strong> = decision support, <strong>denormalised</strong> star/snowflake schema, historical summarised data (&quot;compare quarterly sales by region over five years&quot;).</blockquote>
+<p><strong>Q. [EXPECTED] A data warehouse is characterised as subject-oriented, integrated, time-variant and:</strong></p>
+<ul><li>(a) volatile</li><li>(b) <strong>non-volatile  &lt;-- CORRECT</strong></li><li>(c) normalised</li><li>(d) transactional</li></ul>
+<blockquote><strong>Why:</strong> Bill Inmon&#x27;s four adjectives: <strong>subject-oriented, integrated, time-variant, non-volatile</strong>. Non-volatile means data is loaded and read but not updated in place.</blockquote>
+<p><strong>Q. [EXPECTED] The 5 Vs of Big Data are Volume, Velocity, Variety, Veracity and:</strong></p>
+<ul><li>(a) Validity</li><li>(b) Visibility</li><li>(c) <strong>Value  &lt;-- CORRECT</strong></li><li>(d) Version</li></ul>
+<blockquote><strong>Why:</strong> <strong>Value</strong> - data is worthless unless insight can be extracted from it. Related: <strong>ETL</strong> (Extract, Transform, Load) moves data into the warehouse; <strong>fact tables</strong> hold measures and <strong>dimension tables</strong> hold context.</blockquote></body></html>

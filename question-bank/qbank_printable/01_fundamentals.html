@@ -1,0 +1,326 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 2 - Fundamentals, Number Systems, Digital Logic and Architecture</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 2 - Fundamentals, Number Systems, Digital Logic and Architecture</h1>
+<blockquote>*Weightage: 11 to 19 marks combined. Mechanical, learnable, and the fastest marks in the paper.*</blockquote>
+<h2>2.1 Computer Fundamentals and Organisation</h2>
+<blockquote><strong>WEIGHTAGE: 4-7 marks in DSSSB (observed) | 4-9 expected across KVS / NVS / EMRS | Priority HIGH</strong></blockquote>
+<h3>2.1.1 Topic checklist</h3>
+<ul><li>Block diagram, ALU / CU / registers, characteristics of computers</li><li>Generations of computers and of programming languages</li><li>Hardware vs software, system vs application software, firmware, open source</li><li>Language translators: compiler, interpreter, assembler, linker, loader</li><li>Input devices, output devices, both-way devices, printer classification</li><li>Memory hierarchy, RAM types, ROM types, cache, secondary storage</li><li>Units of memory and conversions</li></ul>
+<h3>2.1.2 Questions</h3>
+<p><strong>Q. [PYQ] Which type of computer program acts as a bridge between a computer user and the computer hardware?</strong></p>
+<ul><li>(a) Random Access Memory</li><li>(b) User thread</li><li>(c) <strong>Operating system  &lt;-- CORRECT</strong></li><li>(d) Kernel</li></ul>
+<blockquote><strong>Why:</strong> The OS is the complete interface layer between user and hardware. The <strong>kernel</strong> is only its innermost core - if a question asks for the &quot;core&quot; or &quot;always-resident part&quot;, choose kernel; for the user-to-hardware bridge, choose operating system.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is a translator that translates source code into object target code?</strong></p>
+<ul><li>(a) Language processor</li><li>(b) Interpreter</li><li>(c) <strong>Compiler  &lt;-- CORRECT</strong></li><li>(d) Assembler</li></ul>
+<blockquote><strong>Why:</strong> A compiler translates the entire program at once into object code. An interpreter executes line-by-line and produces no stored object file. An assembler translates *assembly*, not high-level source. &quot;Language processor&quot; is the parent category, too general to be the answer.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following converts assembly language into machine code?</strong></p>
+<ul><li>(a) Compiler</li><li>(b) Interpreter</li><li>(c) <strong>Assembler  &lt;-- CORRECT</strong></li><li>(d) Loader</li></ul>
+<blockquote><strong>Why:</strong> Assembler is specifically the assembly-to-machine-code translator. Remember the chain: <strong>Preprocessor to Compiler to Assembler to Linker to Loader</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which one joins several object files and library routines into a single executable?</strong></p>
+<ul><li>(a) Loader</li><li>(b) <strong>Linker  &lt;-- CORRECT</strong></li><li>(c) Assembler</li><li>(d) Debugger</li></ul>
+<blockquote><strong>Why:</strong> <strong>Linker</strong> combines object modules and resolves external references. <strong>Loader</strong> then brings the finished executable from disk into memory for execution. Candidates routinely swap these two - linker builds, loader launches.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is an example of the fifth-generation language?</strong></p>
+<ul><li>(a) Java</li><li>(b) Cobol</li><li>(c) <strong>Prolog  &lt;-- CORRECT</strong></li><li>(d) Python</li></ul>
+<blockquote><strong>Why:</strong> Prolog is a logic/constraint programming language used in AI, which defines 5GL. Java, Cobol and Python are all third-generation. Remember: <strong>1GL machine, 2GL assembly, 3GL high-level procedural, 4GL non-procedural like SQL, 5GL logic/AI like Prolog and LISP.</strong></blockquote>
+<p><strong>Q. [PYQ] &#x27;FORTRAN&#x27; stands for <em>_</em>_.</strong></p>
+<ul><li>(a) Format Translation</li><li>(b) Format Transfer</li><li>(c) <strong>Formula Translation  &lt;-- CORRECT</strong></li><li>(d) Formula Transfer</li></ul>
+<blockquote><strong>Why:</strong> FORmula TRANslation - the first successful high-level language, built for scientific computing. Related: COBOL = Common Business Oriented Language, BASIC = Beginner&#x27;s All-purpose Symbolic Instruction Code.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ are a set of computer programs with necessary documentation.</strong></p>
+<ul><li>(a) Relative programs</li><li>(b) <strong>Software packages  &lt;-- CORRECT</strong></li><li>(c) File packages</li><li>(d) Application programs</li></ul>
+<blockquote><strong>Why:</strong> The phrase &quot;<strong>with necessary documentation</strong>&quot; is the signature of a *package*. A bare program has no documentation attached; a package (like MS Office) ships with it.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT true about software?</strong></p>
+<ul><li>(a) <strong>System software is written in a high-level language.  &lt;-- CORRECT</strong></li><li>(b) Application software is written in a high-level language.</li><li>(c) System software plays a vital role for the effective functioning of a system.</li><li>(d) System software is written in a low-level language.</li></ul>
+<blockquote><strong>Why:</strong> System software must talk directly to hardware, so it is normally written in a <strong>low-level</strong> language (assembly or C). Note that the option list deliberately contains both &quot;high-level&quot; and &quot;low-level&quot; versions of the same claim - spot that pattern and you know which one is being tested.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is an example of open-source application software?</strong></p>
+<ul><li>(a) <strong>GIMP  &lt;-- CORRECT</strong></li><li>(b) CorelDRAW</li><li>(c) Microsoft Excel</li><li>(d) Adobe Illustrator</li></ul>
+<blockquote><strong>Why:</strong> GIMP (GNU Image Manipulation Program) is the free open-source image editor. Other open-source names worth knowing: <strong>Linux, LibreOffice, MySQL, Apache, Firefox, Blender, VLC, Audacity</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Software that is free to use but whose source code is NOT released is called:</strong></p>
+<ul><li>(a) Open source</li><li>(b) <strong>Freeware  &lt;-- CORRECT</strong></li><li>(c) Shareware</li><li>(d) Proprietary</li></ul>
+<blockquote><strong>Why:</strong> <strong>Freeware</strong> = free, closed source (Adobe Reader). <strong>Open source</strong> = source code public. <strong>Shareware</strong> = free trial then paid (WinRAR). Free-of-cost and open-source are not the same thing.</blockquote>
+<p><strong>Q. [EXPECTED] Software permanently embedded into a hardware chip is called:</strong></p>
+<ul><li>(a) System software</li><li>(b) Application software</li><li>(c) <strong>Firmware  &lt;-- CORRECT</strong></li><li>(d) Utility software</li></ul>
+<blockquote><strong>Why:</strong> Firmware sits between hardware and software - BIOS, a router&#x27;s operating code, a washing-machine controller. It is stored in ROM or flash.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is frequently used to ensure that data is correctly entered into a computer?</strong></p>
+<ul><li>(a) <strong>Keyboards  &lt;-- CORRECT</strong></li><li>(b) Speakers</li><li>(c) Input controls</li><li>(d) Digitisers</li></ul>
+<blockquote><strong>Why:</strong> The keyboard is the standard device for entering and visually verifying data. Speakers are output only; a digitiser converts hand-drawn images.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is an example of an output device?</strong></p>
+<ul><li>(a) Mouse</li><li>(b) Light pen</li><li>(c) Keyboard</li><li>(d) <strong>Visual Display Unit  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A <strong>light pen is an INPUT device</strong> despite operating on the screen - information flows *into* the computer. Apply the one rule: which way is information flowing?</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is used to read the magnetic-ink numbers printed on a bank cheque?</strong></p>
+<ul><li>(a) OCR</li><li>(b) OMR</li><li>(c) <strong>MICR  &lt;-- CORRECT</strong></li><li>(d) Barcode reader</li></ul>
+<blockquote><strong>Why:</strong> <strong>MICR</strong> = Magnetic Ink Character Recognition, used exclusively for cheque processing. <strong>OMR</strong> reads pencil bubbles on answer sheets; <strong>OCR</strong> converts printed text images into editable text.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is a page printer?</strong></p>
+<ul><li>(a) Dot matrix printer</li><li>(b) Daisy wheel printer</li><li>(c) <strong>Laser printer  &lt;-- CORRECT</strong></li><li>(d) Drum printer</li></ul>
+<blockquote><strong>Why:</strong> Laser printers compose and print an entire <strong>page</strong> at once - the fastest class. Dot-matrix and daisy-wheel are character printers; drum and chain printers are line printers. Resolution is measured in <strong>DPI</strong>.</blockquote>
+<p><strong>Q. [PYQ] Memory that does not change its contents due to external causes is referred to as:</strong></p>
+<ul><li>(a) dynamic memory</li><li>(b) fixed memory</li><li>(c) <strong>static memory  &lt;-- CORRECT</strong></li><li>(d) temporary memory</li></ul>
+<blockquote><strong>Why:</strong> SRAM (&quot;static&quot;) retains its value as long as power is applied and needs <strong>no refreshing</strong>. DRAM stores charge in capacitors that leak, so it must be refreshed thousands of times per second.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which statement about SRAM and DRAM is correct?</strong></p>
+<ul><li>(a) DRAM is faster and used as cache</li><li>(b) <strong>SRAM is faster and used as cache; DRAM is denser and used as main memory  &lt;-- CORRECT</strong></li><li>(c) Both need periodic refreshing</li><li>(d) SRAM is cheaper per bit than DRAM</li></ul>
+<blockquote><strong>Why:</strong> SRAM uses a 6-transistor flip-flop per bit: fast, expensive, low density, no refresh - ideal for <strong>cache</strong>. DRAM uses one transistor plus a capacitor: slow, cheap, high density, needs refresh - ideal for <strong>main memory</strong>.</blockquote>
+<p><strong>Q. [PYQ] Select an appropriate ROM type where data can be erased or destroyed using ultraviolet light.</strong></p>
+<ul><li>(a) EEPROM</li><li>(b) Flash ROM</li><li>(c) <strong>EPROM  &lt;-- CORRECT</strong></li><li>(d) PROM</li></ul>
+<blockquote><strong>Why:</strong> EPROM has a quartz window for <strong>UV</strong> erasure. EEPROM and Flash erase <strong>electrically</strong>; PROM can be written once and never erased; masked ROM is fixed at manufacture.</blockquote>
+<p><strong>Q. [PYQ] Which storage media supports only sequential access?</strong></p>
+<ul><li>(a) Hard disk</li><li>(b) CD</li><li>(c) <strong>Magnetic tape  &lt;-- CORRECT</strong></li><li>(d) DVD</li></ul>
+<blockquote><strong>Why:</strong> Magnetic tape must be wound through from the start, exactly like an audio cassette. Hard disks, CDs, DVDs and SSDs are all <strong>direct (random) access</strong>. Tape survives because it is the cheapest medium per GB for archival backup.</blockquote>
+<p><strong>Q. [EXPECTED] Arrange in order of increasing access time (fastest first).</strong></p>
+<ul><li>(a) Cache, Register, RAM, Hard disk</li><li>(b) <strong>Register, Cache, RAM, Hard disk  &lt;-- CORRECT</strong></li><li>(c) RAM, Register, Cache, Hard disk</li><li>(d) Register, RAM, Cache, Hard disk</li></ul>
+<blockquote><strong>Why:</strong> The hierarchy from fastest/smallest/costliest to slowest/largest/cheapest: <strong>Register, Cache (L1-L2-L3), Main memory (RAM), Secondary storage (SSD/HDD), Tertiary (tape/optical)</strong>.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Which of the following statements is NOT true?</strong></p>
+<ul><li>(a) 5 kilobytes is equal to 10,240 half bytes</li><li>(b) 3 kilobytes is equal to 24,576 bits</li><li>(c) <strong>4 kilobytes is equal to 4069 bytes  &lt;-- CORRECT</strong></li><li>(d) 2 kilobytes is equal to 4096 nibbles</li></ul>
+<blockquote><strong>Why:</strong> 4 KB = 4 x 1024 = <strong>4096</strong> bytes, not 4069 - a digit-swap trap. Verify the others: 5 KB = 5120 bytes = 10,240 nibbles (a nibble is a half byte); 3 KB = 3072 bytes x 8 = 24,576 bits; 2 KB = 2048 bytes x 2 = 4096 nibbles. <strong>Method: convert everything to bytes first, then look for the number that is slightly off.</strong></blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many bits are there in 2 MB?</strong></p>
+<ul><li>(a) 2,097,152</li><li>(b) 8,388,608</li><li>(c) <strong>16,777,216  &lt;-- CORRECT</strong></li><li>(d) 1,048,576</li></ul>
+<blockquote><strong>Why:</strong> 2 MB = 2 x 1024 x 1024 = 2,097,152 bytes. Multiply by 8: <strong>16,777,216 bits</strong>. Note the distractors are the byte count and the 1 MB byte count - always finish the conversion the question asks for.</blockquote>
+<p><strong>Q. [EXPECTED] 1 nibble equals:</strong></p>
+<ul><li>(a) 2 bits</li><li>(b) <strong>4 bits  &lt;-- CORRECT</strong></li><li>(c) 8 bits</li><li>(d) 16 bits</li></ul>
+<blockquote><strong>Why:</strong> Nibble = 4 bits = half a byte. One nibble represents exactly one hexadecimal digit, which is why hex is grouped in fours.</blockquote>
+<p><strong>Q. [PYQ] Which of the following computer programs provides instructions for computer operations?</strong></p>
+<ul><li>(a) <strong>System software  &lt;-- CORRECT</strong></li><li>(b) System utility</li><li>(c) Magnetic card</li><li>(d) System application</li></ul>
+<blockquote><strong>Why:</strong> System software controls and coordinates the machine itself. A *utility* is a narrower helper program (antivirus, defragmenter) that falls under system software.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT a characteristic of a computer?</strong></p>
+<ul><li>(a) Speed</li><li>(b) Accuracy</li><li>(c) Diligence</li><li>(d) <strong>Intelligence  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A computer has <strong>no intelligence of its own</strong> - it only follows instructions. Errors come from bad data or bad programs, summarised as <strong>GIGO: Garbage In, Garbage Out</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] The first generation of computers used which technology?</strong></p>
+<ul><li>(a) Transistors</li><li>(b) Integrated circuits</li><li>(c) <strong>Vacuum tubes  &lt;-- CORRECT</strong></li><li>(d) Microprocessors</li></ul>
+<blockquote><strong>Why:</strong> <strong>1st = vacuum tubes, 2nd = transistors, 3rd = integrated circuits (IC), 4th = microprocessors (VLSI), 5th = AI / ULSI.</strong> ENIAC and UNIVAC are first-generation machines.</blockquote>
+<p><strong>Q. [EXPECTED] A hybrid computer is best described as one that:</strong></p>
+<ul><li>(a) Uses two processors</li><li>(b) <strong>Combines analog and digital operation  &lt;-- CORRECT</strong></li><li>(c) Runs two operating systems</li><li>(d) Has both RAM and ROM</li></ul>
+<blockquote><strong>Why:</strong> A hybrid computer handles continuous analog inputs and converts them for digital processing. The standard example is an <strong>ICU patient monitor</strong>, which measures analog vital signs and displays them digitally.</blockquote>
+<h2>2.2 Number Systems and Codes</h2>
+<blockquote><strong>WEIGHTAGE: part of the 4-7 mark Digital Logic block | Almost always 1-3 direct questions | Priority HIGH</strong></blockquote>
+<h3>2.2.1 Topic checklist</h3>
+<ul><li>Binary, octal, decimal, hexadecimal and all conversions</li><li>BCD, Gray code, ASCII, EBCDIC, Unicode</li><li>1&#x27;s and 2&#x27;s complement, r&#x27;s and (r-1)&#x27;s complement, signed representations</li><li>Binary arithmetic, shift-as-multiply/divide</li></ul>
+<h3>2.2.2 Questions</h3>
+<p><strong>Q. [PYQ] [NUMERICAL] The decimal equivalent of the binary number 111111 is:</strong></p>
+<ul><li>(a) 46</li><li>(b) <strong>63  &lt;-- CORRECT</strong></li><li>(c) 52</li><li>(d) 36</li></ul>
+<blockquote><strong>Why:</strong> Positional weights 32+16+8+4+2+1 = 63. <strong>Shortcut: n consecutive 1s always equal 2^n - 1.</strong> Here 2^6 - 1 = 63.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] Convert (1101011) binary to octal.</strong></p>
+<ul><li>(a) 151</li><li>(b) <strong>153  &lt;-- CORRECT</strong></li><li>(c) 155</li><li>(d) 143</li></ul>
+<blockquote><strong>Why:</strong> Group in <strong>threes from the right</strong>: 1 101 011, pad the left to 001 101 011, giving 1, 5, 3 = <strong>153</strong>. Groups of three because 8 = 2^3.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] Convert (2AF) hexadecimal to decimal.</strong></p>
+<ul><li>(a) 683</li><li>(b) <strong>687  &lt;-- CORRECT</strong></li><li>(c) 675</li><li>(d) 691</li></ul>
+<blockquote><strong>Why:</strong> 2 x 256 + 10 x 16 + 15 x 1 = 512 + 160 + 15 = <strong>687</strong>. Remember A=10, B=11, C=12, D=13, E=14, F=15.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] Convert decimal 45 to binary.</strong></p>
+<ul><li>(a) 101110</li><li>(b) <strong>101101  &lt;-- CORRECT</strong></li><li>(c) 110101</li><li>(d) 101011</li></ul>
+<blockquote><strong>Why:</strong> Divide repeatedly by 2 and read remainders bottom-up: 45 to 101101. Check: 32+8+4+1 = 45.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Represent (743) in octal in Gray code.</strong></p>
+<ul><li>(a) <strong>100010010  &lt;-- CORRECT</strong></li><li>(b) 101011101</li><li>(c) 110100000</li><li>(d) 100010000</li></ul>
+<blockquote><strong>Why:</strong> Step 1: octal to binary, 3 bits each - 7=111, 4=100, 3=011, giving 111100011. Step 2: Gray - copy the first bit, then XOR each adjacent pair: 1, 1^1=0, 1^1=0, 1^1=0, 1^0=1, 0^0=0, 0^0=0, 0^1=1, 1^1=0 = <strong>100010010</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] The Gray code equivalent of binary 1011 is:</strong></p>
+<ul><li>(a) 1101</li><li>(b) <strong>1110  &lt;-- CORRECT</strong></li><li>(c) 1010</li><li>(d) 1001</li></ul>
+<blockquote><strong>Why:</strong> G1 = B1 = 1; G2 = 1^0 = 1; G3 = 0^1 = 1; G4 = 1^1 = 0. Result <strong>1110</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Why is Gray code used in rotary position encoders?</strong></p>
+<ul><li>(a) It is faster to compute</li><li>(b) <strong>Only one bit changes between consecutive values, avoiding transient errors  &lt;-- CORRECT</strong></li><li>(c) It uses fewer bits than binary</li><li>(d) It supports negative numbers</li></ul>
+<blockquote><strong>Why:</strong> In binary, 0111 to 1000 flips four bits at once; if the sensor reads mid-transition it can output a wildly wrong value. Gray code changes exactly <strong>one bit</strong> per step, so the worst-case misread is off by one. This is also why <strong>K-map rows and columns are labelled in Gray order</strong>.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] How many INVALID input combinations occur at the input of a BCD adder?</strong></p>
+<ul><li>(a) 58</li><li>(b) 56</li><li>(c) <strong>156  &lt;-- CORRECT</strong></li><li>(d) 256</li></ul>
+<blockquote><strong>Why:</strong> A BCD adder takes two 4-bit digits = 8 input lines = <strong>2^8 = 256</strong> total combinations. Valid BCD digits are 0000-1001, so valid pairs = 10 x 10 = <strong>100</strong>. Invalid = 256 - 100 = <strong>156</strong>. Memorise the triple: 256 total, 100 valid, 156 invalid.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is an invalid BCD code?</strong></p>
+<ul><li>(a) 1001</li><li>(b) 0111</li><li>(c) <strong>1100  &lt;-- CORRECT</strong></li><li>(d) 0101</li></ul>
+<blockquote><strong>Why:</strong> BCD encodes single decimal digits 0-9, so only 0000-1001 are legal. <strong>1100 = 12</strong>, which exceeds 9. The six invalid patterns are 1010 through 1111.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] What is the 2&#x27;s complement of the binary number 1100?</strong></p>
+<ul><li>(a) <strong>0100  &lt;-- CORRECT</strong></li><li>(b) 1111</li><li>(c) 11</li><li>(d) 1001</li></ul>
+<blockquote><strong>Why:</strong> Invert to 0011, then add 1 to get <strong>0100</strong>. Fast trick: copy bits from the right up to and including the first 1, then flip everything to the left - 1100 gives keep &quot;100&quot;, flip &quot;1&quot; to 0, giving 0100.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] The 1&#x27;s complement of 10110 is:</strong></p>
+<ul><li>(a) 10111</li><li>(b) <strong>01001  &lt;-- CORRECT</strong></li><li>(c) 01010</li><li>(d) 10101</li></ul>
+<blockquote><strong>Why:</strong> 1&#x27;s complement simply inverts every bit: 10110 to <strong>01001</strong>. Adding 1 to this would give the 2&#x27;s complement.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] [TRAP] A register contains a 3&#x27;s complement number 10100. If it is divided by 2, find the value of the register.</strong></p>
+<ul><li>(a) 01100</li><li>(b) 00110</li><li>(c) <strong>01010  &lt;-- CORRECT</strong></li><li>(d) 11010</li></ul>
+<blockquote><strong>Why:</strong> The complement wording is a distraction. In a register, <strong>dividing by 2 = shifting all bits one place RIGHT</strong>. 10100 shifted right gives <strong>01010</strong>. Corollary: left shift multiplies by 2, and shifting by k multiplies or divides by 2^k.</blockquote>
+<p><strong>Q. [EXPECTED] In an 8-bit signed 2&#x27;s complement representation, the range of values is:</strong></p>
+<ul><li>(a) -127 to +127</li><li>(b) <strong>-128 to +127  &lt;-- CORRECT</strong></li><li>(c) -128 to +128</li><li>(d) 0 to 255</li></ul>
+<blockquote><strong>Why:</strong> 2&#x27;s complement is asymmetric: one extra negative value exists because there is only one zero. General formula for n bits: <strong>-2^(n-1) to +2^(n-1) - 1</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Which character code supports every script in the world including Devanagari?</strong></p>
+<ul><li>(a) ASCII</li><li>(b) EBCDIC</li><li>(c) BCD</li><li>(d) <strong>Unicode  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Unicode (UTF-8 / UTF-16) covers all writing systems. ASCII is 7-bit English-only (128 characters); EBCDIC is an 8-bit IBM mainframe code. <strong>UTF-8 is backward compatible with ASCII.</strong></blockquote>
+<p><strong>Q. [EXPECTED] The ASCII value of &#x27;a&#x27; is:</strong></p>
+<ul><li>(a) 65</li><li>(b) <strong>97  &lt;-- CORRECT</strong></li><li>(c) 48</li><li>(d) 90</li></ul>
+<blockquote><strong>Why:</strong> &#x27;A&#x27; = 65, &#x27;a&#x27; = 97 (exactly 32 more), &#x27;0&#x27; = 48. From these three anchors you can derive any letter or digit value.</blockquote>
+<h2>2.3 Boolean Algebra and Logic Gates</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Very high certainty - gates or K-map appear in almost every paper | Priority HIGH</strong></blockquote>
+<h3>2.3.1 Topic checklist</h3>
+<ul><li>All seven gates and truth tables; universal gates</li><li>Boolean laws, De Morgan&#x27;s theorems, distributive law</li><li>SOP / POS, minterms / maxterms, canonical vs standard form</li><li>K-map rules, prime implicants, don&#x27;t-care conditions</li><li>XOR properties and parity</li></ul>
+<h3>2.3.2 Questions</h3>
+<p><strong>Q. [PYQ] What does the XNOR gate output when A=1 and B=0?</strong></p>
+<ul><li>(a) B</li><li>(b) <strong>0  &lt;-- CORRECT</strong></li><li>(c) A</li><li>(d) 1</li></ul>
+<blockquote><strong>Why:</strong> XNOR outputs 1 only when inputs are <strong>identical</strong>. Here they differ, so output is 0. Hook: <strong>XOR = &quot;X marks the difference&quot;; XNOR = &quot;No difference&quot;.</strong></blockquote>
+<p><strong>Q. [PYQ] Which of the following statements is false about universal logic gates?</strong></p>
+<ul><li>(a) All basic logic gates can be implemented through universal logic gates.</li><li>(b) NOR gate is known as universal logic gate.</li><li>(c) NAND gate is known as universal logic gate.</li><li>(d) <strong>All basic logic gates cannot be implemented using universal logic gates.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> This contradicts the definition. <strong>NAND and NOR are the two universal gates</strong> - either one alone can build NOT, AND, OR, XOR and XNOR, and therefore any digital circuit.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many NAND gates are required to implement a 2-input AND gate?</strong></p>
+<ul><li>(a) 1</li><li>(b) <strong>2  &lt;-- CORRECT</strong></li><li>(c) 3</li><li>(d) 4</li></ul>
+<blockquote><strong>Why:</strong> A NAND gives the inverted AND, so you need a second NAND wired as an inverter: <code>A AND B = (A NAND B) NAND (A NAND B)</code>. Hence <strong>2</strong>. For comparison, OR from NAND needs 3.</blockquote>
+<p><strong>Q. [EXPECTED] The output of a 3-input XOR gate is 1 when:</strong></p>
+<ul><li>(a) All inputs are 1</li><li>(b) All inputs are 0</li><li>(c) <strong>An odd number of inputs are 1  &lt;-- CORRECT</strong></li><li>(d) An even number of inputs are 1</li></ul>
+<blockquote><strong>Why:</strong> XOR is the <strong>parity</strong> function: output 1 for an odd count of 1s. This is why XOR chains are used for parity generation and error detection.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] A three-variable function (A XOR B XOR C)&#x27; = ?</strong></p>
+<ul><li>(a) (A XNOR B XNOR C)&#x27;</li><li>(b) A XOR B XNOR C&#x27;</li><li>(c) A XNOR B XOR C</li><li>(d) <strong>A XOR B XNOR C  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Complementing an XOR chain equals complementing <strong>any one</strong> operand, and XOR against a complemented operand is exactly XNOR. Useful identities: A XOR 0 = A, A XOR 1 = A&#x27;, A XOR A = 0, A XOR A&#x27; = 1.</blockquote>
+<p><strong>Q. [PYQ] Find the value of F = xy + x&#x27;z using distributive law.</strong></p>
+<ul><li>(a) (x + z)(y + z)</li><li>(b) (x + y&#x27;)(x + z)</li><li>(c) (x&#x27; + y)(y + z)</li><li>(d) <strong>(x&#x27; + y)(x + z)(y + z)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Apply A + BC = (A+B)(A+C) twice: xy + x&#x27;z = (xy + x&#x27;)(xy + z) = (x + x&#x27;)(y + x&#x27;)(x + z)(y + z). Since (x + x&#x27;) = 1 by the complement law, that factor vanishes, leaving <strong>(x&#x27; + y)(x + z)(y + z)</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] According to De Morgan&#x27;s theorem, (A + B)&#x27; equals:</strong></p>
+<ul><li>(a) A&#x27; + B&#x27;</li><li>(b) <strong>A&#x27; . B&#x27;  &lt;-- CORRECT</strong></li><li>(c) A . B</li><li>(d) (A . B)&#x27;</li></ul>
+<blockquote><strong>Why:</strong> &quot;<strong>Break the bar, change the sign</strong>&quot;: the OR becomes AND and each variable is individually complemented. The companion theorem is (A.B)&#x27; = A&#x27; + B&#x27;.</blockquote>
+<p><strong>Q. [EXPECTED] The Boolean expression A + AB simplifies to:</strong></p>
+<ul><li>(a) AB</li><li>(b) <strong>A  &lt;-- CORRECT</strong></li><li>(c) B</li><li>(d) A + B</li></ul>
+<blockquote><strong>Why:</strong> The <strong>absorption law</strong>: A + AB = A(1 + B) = A(1) = A. Its dual is A(A + B) = A.</blockquote>
+<p><strong>Q. [EXPECTED] A + A&#x27;B simplifies to:</strong></p>
+<ul><li>(a) A</li><li>(b) B</li><li>(c) <strong>A + B  &lt;-- CORRECT</strong></li><li>(d) AB</li></ul>
+<blockquote><strong>Why:</strong> The <strong>redundancy law</strong>. Verify with a truth table, or expand: A + A&#x27;B = (A + A&#x27;)(A + B) = 1(A + B) = A + B.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which statement is false about simplification of Boolean functions using the Karnaugh Map technique?</strong></p>
+<ul><li>(a) K-map is used to simplify POS form.</li><li>(b) <strong>In Karnaugh Map, the rows and columns are represented in binary code sequence.  &lt;-- CORRECT</strong></li><li>(c) You group adjacent squares in powers of two, covering as many minterms or maxterms as you can.</li><li>(d) K-map is used to simplify SOP form.</li></ul>
+<blockquote><strong>Why:</strong> K-map rows and columns use <strong>GRAY code</strong> (00, 01, 11, 10), never plain binary order. That is precisely what makes physically adjacent cells differ in exactly one variable, which is the whole basis of the method. This is one of the most repeated &quot;false statement&quot; questions in the subject.</blockquote>
+<p><strong>Q. [EXPECTED] In a K-map, a group of 4 adjacent 1s eliminates how many variables?</strong></p>
+<ul><li>(a) 1</li><li>(b) <strong>2  &lt;-- CORRECT</strong></li><li>(c) 3</li><li>(d) 4</li></ul>
+<blockquote><strong>Why:</strong> A group of 2^k cells eliminates <strong>k</strong> variables. Group of 2 removes 1, group of 4 removes 2, group of 8 removes 3. Bigger groups always give simpler expressions, so make each group as large as possible.</blockquote>
+<p><strong>Q. [EXPECTED] To simplify a function into POS form using a K-map, you group:</strong></p>
+<ul><li>(a) the 1s</li><li>(b) <strong>the 0s  &lt;-- CORRECT</strong></li><li>(c) the don&#x27;t-cares</li><li>(d) alternate cells</li></ul>
+<blockquote><strong>Why:</strong> Group the <strong>0s</strong> for POS (product of sums) and the <strong>1s</strong> for SOP (sum of products). Don&#x27;t-care cells (X) may be included in either if doing so enlarges a group.</blockquote>
+<p><strong>Q. [EXPECTED] A minterm of a 3-variable function contains:</strong></p>
+<ul><li>(a) Any number of literals</li><li>(b) <strong>All three variables, each exactly once  &lt;-- CORRECT</strong></li><li>(c) Only the complemented variables</li><li>(d) At most two variables</li></ul>
+<blockquote><strong>Why:</strong> A minterm is a full AND term containing every variable once, either plain or complemented. For n variables there are 2^n minterms. A <strong>canonical</strong> expression is made only of full minterms or maxterms.</blockquote>
+<p><strong>Q. [EXPECTED] Which method is preferred over the K-map when the number of variables exceeds six?</strong></p>
+<ul><li>(a) Boolean algebra</li><li>(b) Truth table</li><li>(c) <strong>Quine-McCluskey method  &lt;-- CORRECT</strong></li><li>(d) De Morgan&#x27;s theorem</li></ul>
+<blockquote><strong>Why:</strong> The Quine-McCluskey tabular method scales beyond the visual limit of K-maps and, crucially, <strong>can be programmed</strong>, whereas K-map simplification relies on human pattern recognition.</blockquote>
+<h2>2.4 Combinational and Sequential Circuits</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Counters and adders are the recurring favourites | Priority MEDIUM-HIGH</strong></blockquote>
+<h3>2.4.1 Questions</h3>
+<p><strong>Q. [EXPECTED] In a half adder, the SUM output is produced by which gate?</strong></p>
+<ul><li>(a) AND</li><li>(b) OR</li><li>(c) <strong>XOR  &lt;-- CORRECT</strong></li><li>(d) NAND</li></ul>
+<blockquote><strong>Why:</strong> Sum = A XOR B, Carry = A AND B. A <strong>full adder</strong> adds three bits: Sum = A XOR B XOR Cin, and it can be built from two half adders plus one OR gate.</blockquote>
+<p><strong>Q. [EXPECTED] A BCD adder adds which value to correct a result that exceeds 9?</strong></p>
+<ul><li>(a) 0100</li><li>(b) <strong>0110  &lt;-- CORRECT</strong></li><li>(c) 1010</li><li>(d) 1001</li></ul>
+<blockquote><strong>Why:</strong> It adds <strong>6 (0110)</strong> to skip the six invalid codes 1010-1111 and return to valid BCD.</blockquote>
+<p><strong>Q. [EXPECTED] A multiplexer with 8 data inputs requires how many select lines?</strong></p>
+<ul><li>(a) 2</li><li>(b) <strong>3  &lt;-- CORRECT</strong></li><li>(c) 4</li><li>(d) 8</li></ul>
+<blockquote><strong>Why:</strong> A 2^n-to-1 MUX needs <strong>n</strong> select lines, and 2^3 = 8, so 3 lines. A MUX is &quot;many inputs, one output&quot; - a data selector - and a single 2^n-to-1 MUX can implement any Boolean function of n variables.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following converts an n-bit code into 2^n output lines, activating exactly one?</strong></p>
+<ul><li>(a) Encoder</li><li>(b) <strong>Decoder  &lt;-- CORRECT</strong></li><li>(c) Multiplexer</li><li>(d) Comparator</li></ul>
+<blockquote><strong>Why:</strong> <strong>Decoder</strong>: few inputs, many outputs, one active - used for memory address selection and seven-segment displays. <strong>Encoder</strong> is the reverse: 2^n inputs to n outputs. Students swap these constantly; remember a decoder *expands*.</blockquote>
+<p><strong>Q. [EXPECTED] Which flip-flop has a forbidden input combination?</strong></p>
+<ul><li>(a) JK flip-flop</li><li>(b) D flip-flop</li><li>(c) <strong>SR flip-flop  &lt;-- CORRECT</strong></li><li>(d) T flip-flop</li></ul>
+<blockquote><strong>Why:</strong> In an SR flip-flop, <strong>S = R = 1</strong> is invalid (it tries to set and reset simultaneously). The <strong>JK</strong> flip-flop resolves this by making J = K = 1 <strong>toggle</strong> the output.</blockquote>
+<p><strong>Q. [EXPECTED] Which flip-flop simply passes its input to the output at each clock edge?</strong></p>
+<ul><li>(a) SR</li><li>(b) JK</li><li>(c) <strong>D  &lt;-- CORRECT</strong></li><li>(d) T</li></ul>
+<blockquote><strong>Why:</strong> The <strong>D (data/delay)</strong> flip-flop sets Q = D at the active clock edge. It is the simplest and the most used in registers and shift registers.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] A Mod-6 counter and a Mod-8 counter in cascade give a <em>_</em>_ counter.</strong></p>
+<ul><li>(a) Mod-14</li><li>(b) Mod-68</li><li>(c) Mod-2</li><li>(d) <strong>Mod-48  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Cascading counters <strong>multiplies</strong> their moduli: 6 x 8 = <strong>48</strong>. The second counter advances once per complete cycle of the first. Never add them.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many flip-flops are needed to build a MOD-10 (decade) counter?</strong></p>
+<ul><li>(a) 3</li><li>(b) <strong>4  &lt;-- CORRECT</strong></li><li>(c) 5</li><li>(d) 10</li></ul>
+<blockquote><strong>Why:</strong> You need n flip-flops such that 2^n is at least 10. 2^3 = 8 (too few), 2^4 = 16 (sufficient), so <strong>4</strong> flip-flops. Six of the sixteen states are unused.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] For what minimum value of propagation delay in each flip-flop will a 10-bit ripple counter skip a count when clocked at 10 MHz?</strong></p>
+<ul><li>(a) <strong>10 ns  &lt;-- CORRECT</strong></li><li>(b) 25 ns</li><li>(c) 100 ns</li><li>(d) 50 ns</li></ul>
+<blockquote><strong>Why:</strong> Clock period T = 1/(10 x 10^6) = <strong>100 ns</strong>. In a <strong>ripple</strong> counter delays accumulate, so total = 10t. Setting 10t = 100 ns gives t = <strong>10 ns</strong>. General formula: <strong>t = clock period / number of flip-flops.</strong></blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which is the key advantage of a synchronous counter over an asynchronous (ripple) counter?</strong></p>
+<ul><li>(a) It needs fewer flip-flops</li><li>(b) <strong>All flip-flops are clocked together, so delays do not accumulate  &lt;-- CORRECT</strong></li><li>(c) It can count higher</li><li>(d) It needs no clock</li></ul>
+<blockquote><strong>Why:</strong> In a synchronous counter every flip-flop shares one clock, so total delay equals <strong>one</strong> propagation delay rather than n of them. This is exactly why the ripple counter in the previous question miscounts at high frequency.</blockquote>
+<p><strong>Q. [EXPECTED] Output depends only on present inputs in which type of circuit?</strong></p>
+<ul><li>(a) Sequential</li><li>(b) <strong>Combinational  &lt;-- CORRECT</strong></li><li>(c) Both</li><li>(d) Neither</li></ul>
+<blockquote><strong>Why:</strong> <strong>Combinational</strong> circuits (adders, MUX, decoders) have no memory. <strong>Sequential</strong> circuits (flip-flops, registers, counters) depend on present inputs *and* stored state.</blockquote>
+<h2>2.5 Computer Architecture</h2>
+<blockquote><strong>WEIGHTAGE: 3-5 marks in DSSSB | 3-6 expected | Priority MEDIUM</strong></blockquote>
+<h3>2.5.1 Topic checklist</h3>
+<ul><li>Von Neumann vs Harvard, ISA, micro-architecture</li><li>Boot process, BIOS, POST, CMOS, bootstrap loader</li><li>Registers (PC, IR, MAR, MDR, accumulator, flags)</li><li>Buses, instruction cycle, pipelining and hazards</li><li>RISC vs CISC, addressing modes</li><li>Cache mapping, TAG-bit calculation, write policies, replacement</li><li>I/O: programmed, interrupt-driven, DMA</li></ul>
+<h3>2.5.2 Questions</h3>
+<p><strong>Q. [PYQ] Which architecture is the most energy efficient?</strong></p>
+<ul><li>(a) CISC</li><li>(b) IANA</li><li>(c) ISA</li><li>(d) <strong>RISC  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> RISC uses simple fixed-length instructions and a <strong>hardwired</strong> control unit, so far fewer transistors switch per instruction. That is why every phone and tablet uses an ARM (RISC) processor. Note the distractor <strong>IANA</strong> is a networking body, not an architecture.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a type of computer architecture?</strong></p>
+<ul><li>(a) Micro Architecture</li><li>(b) Harvard Architecture</li><li>(c) <strong>Software Architecture  &lt;-- CORRECT</strong></li><li>(d) Instruction Set Architecture</li></ul>
+<blockquote><strong>Why:</strong> &quot;Software architecture&quot; belongs to <strong>Software Engineering</strong> - it describes module organisation, not hardware design.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] The main advantage of Harvard architecture over von Neumann is:</strong></p>
+<ul><li>(a) It uses less memory</li><li>(b) <strong>Instructions and data can be fetched simultaneously through separate buses  &lt;-- CORRECT</strong></li><li>(c) It supports more instructions</li><li>(d) It requires no control unit</li></ul>
+<blockquote><strong>Why:</strong> Von Neumann shares one memory and bus for both code and data, creating the &quot;<strong>von Neumann bottleneck</strong>&quot;. Harvard separates them so both fetches can happen at once. Modern CPUs use <strong>modified Harvard</strong>: separate L1 instruction and data caches over one unified main memory.</blockquote>
+<p><strong>Q. [PYQ] Which of the following statements is true?</strong></p>
+<ul><li>(a) POST is performed by BIOS immediately after the system is shutdown.</li><li>(b) The bootstrap program is stored in RAM.</li><li>(c) <strong>CMOS chip is powered by the battery located on the mother board.  &lt;-- CORRECT</strong></li><li>(d) BIOS was developed by Charles Babbage.</li></ul>
+<blockquote><strong>Why:</strong> POST runs at <strong>start-up</strong>, not shutdown. The bootstrap loader must be in <strong>ROM</strong> because RAM is empty at power-on. Babbage died in 1871, long before BIOS. The CMOS chip holding BIOS settings and the clock is kept alive by the motherboard&#x27;s <strong>CR2032 button cell</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Which register holds the address of the next instruction to be executed?</strong></p>
+<ul><li>(a) Instruction Register</li><li>(b) Accumulator</li><li>(c) <strong>Program Counter  &lt;-- CORRECT</strong></li><li>(d) Memory Data Register</li></ul>
+<blockquote><strong>Why:</strong> The <strong>PC</strong> (also called Instruction Pointer) holds the *address*; the <strong>IR</strong> holds the *instruction itself* once fetched. MAR holds the address being accessed in memory, MDR the data.</blockquote>
+<p><strong>Q. [PYQ] What is the size of the computer accumulator register?</strong></p>
+<ul><li>(a) 8 bytes</li><li>(b) 16 bytes</li><li>(c) 8 KB</li><li>(d) <strong>4 bytes  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The accumulator matches the machine <strong>word size</strong>; on a standard 32-bit machine that is 32 bits = <strong>4 bytes</strong>.</blockquote>
+<p><strong>Q. [PYQ] A computer bus line is made up of which of the following components?</strong></p>
+<ul><li>(a) Registers</li><li>(b) <strong>Set of parallel lines  &lt;-- CORRECT</strong></li><li>(c) Accumulators</li><li>(d) RAM and ROM</li></ul>
+<blockquote><strong>Why:</strong> A bus is physically nothing more than a bundle of <strong>parallel conductors</strong>. Three kinds: address bus (one-way), data bus (bidirectional), control bus.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] If a CPU has 20 address lines, how much memory can it directly address?</strong></p>
+<ul><li>(a) 512 KB</li><li>(b) <strong>1 MB  &lt;-- CORRECT</strong></li><li>(c) 2 MB</li><li>(d) 4 MB</li></ul>
+<blockquote><strong>Why:</strong> 2^20 = 1,048,576 locations = <strong>1 MB</strong>. Learn the ladder: 16 lines = 64 KB, 20 = 1 MB, 24 = 16 MB, 32 = 4 GB, 36 = 64 GB.</blockquote>
+<p><strong>Q. [PYQ] Which cycle is primarily managed by the Control Unit?</strong></p>
+<ul><li>(a) I/O cycle</li><li>(b) Memory refresh cycle</li><li>(c) <strong>Instruction cycle (Fetch-Decode-Execute cycle)  &lt;-- CORRECT</strong></li><li>(d) Arithmetic cycle</li></ul>
+<blockquote><strong>Why:</strong> The <strong>CU</strong> fetches, decodes and sequences; the <strong>ALU</strong> only computes. If a question asks who *performs the operation*, the answer is ALU; who *directs* it, the CU.</blockquote>
+<p><strong>Q. [PYQ] Select the INCORRECT option among the phases of the CPU Instruction Cycle.</strong></p>
+<ul><li>(a) Execute</li><li>(b) <strong>Encode  &lt;-- CORRECT</strong></li><li>(c) Store</li><li>(d) Fetch</li></ul>
+<blockquote><strong>Why:</strong> The phases are <strong>Fetch, Decode, Execute, Store</strong>. An instruction is *decoded*, never encoded, by the CPU.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is an addressing mode used in an instruction of the form ADD R1, [R2]?</strong></p>
+<ul><li>(a) <strong>Register Indirect  &lt;-- CORRECT</strong></li><li>(b) Register</li><li>(c) Indexed Register</li><li>(d) Assembly Register</li></ul>
+<blockquote><strong>Why:</strong> The <strong>square brackets</strong> are decisive: <code>R2</code> alone would be register mode (value in R2), while <code>[R2]</code> means &quot;the value at the memory address held in R2&quot; - the register acts as a pointer. &quot;Assembly Register&quot; is not a real addressing mode.</blockquote>
+<p><strong>Q. [EXPECTED] In which addressing mode is the operand value contained within the instruction itself?</strong></p>
+<ul><li>(a) Direct</li><li>(b) Register</li><li>(c) <strong>Immediate  &lt;-- CORRECT</strong></li><li>(d) Indirect</li></ul>
+<blockquote><strong>Why:</strong> <strong>Immediate</strong> mode, e.g. <code>MOV R1, #25</code>. Fastest, since no memory access is needed, but the value is fixed at assembly time.</blockquote>
+<p><strong>Q. [EXPECTED] Which addressing mode is used for relocatable code and branch instructions?</strong></p>
+<ul><li>(a) Immediate</li><li>(b) <strong>PC-relative  &lt;-- CORRECT</strong></li><li>(c) Register</li><li>(d) Implied</li></ul>
+<blockquote><strong>Why:</strong> PC-relative computes the effective address as <strong>PC + offset</strong>, so the code works regardless of where it is loaded in memory.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is a key design goal of an Instruction Set Architecture?</strong></p>
+<ul><li>(a) Minimizing the transistor count</li><li>(b) Ensuring only complex instructions are supported</li><li>(c) Maximizing the instruction decode time</li><li>(d) <strong>Balancing simplicity and performance for ease of programming and efficiency  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> You want to <strong>minimise</strong> decode time, not maximise it, and transistor count is a chip-fabrication concern rather than an ISA goal. Good ISA design aims for completeness, orthogonality, regularity and efficiency.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] A four-way set-associative cache of 32 KB uses a block size of 1 K words. Word length is 8 bits and the physical address space is 32 GB. The number of TAG bits is:</strong></p>
+<ul><li>(a) <strong>22  &lt;-- CORRECT</strong></li><li>(b) 24</li><li>(c) 25</li><li>(d) 23</li></ul>
+<blockquote><strong>Why:</strong> Address space 32 GB = 2^35 bytes, and words are 1 byte, so <strong>35 address bits</strong>. Block = 1 K words = 2^10, so <strong>10 offset bits</strong>. Cache = 32 KB = 2^15 bytes, lines = 2^15/2^10 = 32; four-way means 32/4 = 8 sets = 2^3, so <strong>3 set bits</strong>. TAG = 35 - 3 - 10 = <strong>22</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which cache mapping technique suffers most from conflict misses?</strong></p>
+<ul><li>(a) Fully associative</li><li>(b) <strong>Direct mapping  &lt;-- CORRECT</strong></li><li>(c) Two-way set associative</li><li>(d) Four-way set associative</li></ul>
+<blockquote><strong>Why:</strong> In <strong>direct mapping</strong> each memory block has exactly one permitted cache line, so two frequently used blocks competing for that line evict each other repeatedly. Fully associative has no conflict misses at all (a block may go anywhere) but needs expensive parallel tag comparison.</blockquote>
+<p><strong>Q. [EXPECTED] In the write-back cache policy:</strong></p>
+<ul><li>(a) Memory is updated on every write</li><li>(b) <strong>Memory is updated only when the block is evicted, tracked by a dirty bit  &lt;-- CORRECT</strong></li><li>(c) Writes bypass the cache</li><li>(d) Writes are not allowed</li></ul>
+<blockquote><strong>Why:</strong> <strong>Write-back</strong> is faster but leaves memory temporarily stale. <strong>Write-through</strong> updates both cache and memory immediately - simpler and always consistent, but slower.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] If the cache hit ratio is 0.9, cache access time is 10 ns and memory access time is 100 ns, the average access time is:</strong></p>
+<ul><li>(a) 10 ns</li><li>(b) <strong>19 ns  &lt;-- CORRECT</strong></li><li>(c) 55 ns</li><li>(d) 100 ns</li></ul>
+<blockquote><strong>Why:</strong> Average = H x Tc + (1 - H) x Tm = 0.9(10) + 0.1(100) = 9 + 10 = <strong>19 ns</strong>. This formula appears in some form in most architecture papers.</blockquote>
+<p><strong>Q. [EXPECTED] Which I/O technique transfers a whole block between device and memory with minimal CPU involvement?</strong></p>
+<ul><li>(a) Programmed I/O</li><li>(b) Interrupt-driven I/O</li><li>(c) <strong>DMA  &lt;-- CORRECT</strong></li><li>(d) Polling</li></ul>
+<blockquote><strong>Why:</strong> <strong>DMA</strong> (Direct Memory Access) uses a separate controller and interrupts the CPU only once, at completion. Programmed I/O wastes the CPU in a polling loop; interrupt-driven I/O still involves the CPU per byte.</blockquote>
+<p><strong>Q. [EXPECTED] In pipelining, a branch instruction causes which type of hazard?</strong></p>
+<ul><li>(a) Structural</li><li>(b) Data</li><li>(c) <strong>Control  &lt;-- CORRECT</strong></li><li>(d) Resource</li></ul>
+<blockquote><strong>Why:</strong> A <strong>control (branch) hazard</strong> occurs because instructions already fetched may be from the wrong path. Mitigated by <strong>branch prediction</strong>. Data hazards come from unavailable results (fixed by forwarding); structural hazards from two instructions needing the same unit.</blockquote>
+<p><strong>Q. [PYQ] Which logical operation does the ALU perform that results in a 1 output only when both inputs are different?</strong></p>
+<ul><li>(a) AND</li><li>(b) <strong>XOR  &lt;-- CORRECT</strong></li><li>(c) OR</li><li>(d) NOR</li></ul>
+<blockquote><strong>Why:</strong> XOR is the difference detector. AND needs both 1; OR needs at least one 1; NOR needs both 0.</blockquote></body></html>

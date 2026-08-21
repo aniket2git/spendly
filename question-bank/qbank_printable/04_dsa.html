@@ -1,0 +1,195 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 5 - Data Structures and Algorithms</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 5 - Data Structures and Algorithms</h1>
+<blockquote>*Weightage: 6 to 9 marks in DSSSB, 6 to 12 expected. Almost pure recall once the complexity tables are memorised.*</blockquote>
+<h2>5.1 Complexity Analysis</h2>
+<blockquote><strong>WEIGHTAGE: 2-3 marks | Complexity of a named algorithm is asked in every paper | Priority CRITICAL</strong></blockquote>
+<h3>5.1.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following asymptotic notation gives asymptotically tight upper bound as well as asymptotically tight lower bound?</strong></p>
+<ul><li>(a) Omega</li><li>(b) Big Oh</li><li>(c) <strong>Theta  &lt;-- CORRECT</strong></li><li>(d) Small Omega</li></ul>
+<blockquote><strong>Why:</strong> The words &quot;<strong>as well as</strong>&quot; demand both bounds simultaneously - that is <strong>Theta</strong>. Big Oh gives only the upper bound, Omega only the lower, and small omega is not even tight.</blockquote>
+<p><strong>Q. [PYQ] Which of the following cases DOES NOT exist when one computes the time complexity of an algorithm?</strong></p>
+<ul><li>(a) Average case</li><li>(b) Worst case</li><li>(c) <strong>Test Case  &lt;-- CORRECT</strong></li><li>(d) Best Case</li></ul>
+<blockquote><strong>Why:</strong> Only <strong>best, average and worst</strong> exist. &quot;Test case&quot; belongs to software testing.</blockquote>
+<p><strong>Q. [PYQ] Arrange the following in the order of growth: O(n), O(n^2), O(2^n), O(log n), O(n log n), O(n^2 log n)</strong></p>
+<ul><li>(a) O(n), O(n^2), O(log n), O(2^n), O(n log n), O(n^2 log n)</li><li>(b) O(n), O(2^n), O(2^n), O(log n), O(n^2 log n), O(n log n)</li><li>(c) <strong>O(log n), O(n), O(n log n), O(n^2), O(n^2 log n), O(2^n)  &lt;-- CORRECT</strong></li><li>(d) O(n^2), O(n), O(2^n), O(log n), O(n log n), O(n^2 log n)</li></ul>
+<blockquote><strong>Why:</strong> Substitute n = 1024 (so log n = 10) and compare: 10 &lt; 1024 &lt; 10,240 &lt; 1,048,576 &lt; 10,485,760 &lt; 2^1024. <strong>Rule: polynomials always beat exponentials, and a log factor is weaker than one extra power of n.</strong></blockquote>
+<p><strong>Q. [EXPECTED] Which of the following grows fastest for large n?</strong></p>
+<ul><li>(a) n^3</li><li>(b) n^2 log n</li><li>(c) <strong>2^n  &lt;-- CORRECT</strong></li><li>(d) n log n</li></ul>
+<blockquote><strong>Why:</strong> Exponential growth eventually dominates every polynomial, no matter how large the exponent. Full chain: <strong>O(1) &lt; O(log n) &lt; O(sqrt n) &lt; O(n) &lt; O(n log n) &lt; O(n^2) &lt; O(n^3) &lt; O(2^n) &lt; O(n!) &lt; O(n^n)</strong>.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which statement is correct about the divide and conquer approach of binary search?</strong></p>
+<ul><li>(a) The recurrence relation of binary search is T(n) = 2T(n/2) + O(1).</li><li>(b) <strong>The worst-case time complexity of binary search is O(log n).  &lt;-- CORRECT</strong></li><li>(c) The best-case time complexity of binary search is O(log n).</li><li>(d) The average-case time complexity of binary search is O(n).</li></ul>
+<blockquote><strong>Why:</strong> Binary search discards half and searches <strong>only one</strong> half, so the recurrence is <strong>T(n) = T(n/2) + O(1)</strong> - the coefficient is 1, not 2. Its <strong>best case is O(1)</strong> (target is the middle element immediately), average and worst are O(log n).</blockquote>
+<p><strong>Q. [EXPECTED] The recurrence T(n) = 2T(n/2) + O(n) solves to:</strong></p>
+<ul><li>(a) O(n)</li><li>(b) O(log n)</li><li>(c) <strong>O(n log n)  &lt;-- CORRECT</strong></li><li>(d) O(n^2)</li></ul>
+<blockquote><strong>Why:</strong> This is the <strong>merge sort</strong> recurrence. Learn the standard set: T(n)=T(n/2)+O(1) gives O(log n) (binary search); T(n)=2T(n/2)+O(1) gives O(n); T(n)=T(n-1)+O(n) gives O(n^2); T(n)=2T(n-1)+O(1) gives O(2^n) (Tower of Hanoi).</blockquote>
+<p><strong>Q. [EXPECTED] A precondition for applying binary search is that the array must be:</strong></p>
+<ul><li>(a) of even length</li><li>(b) <strong>sorted  &lt;-- CORRECT</strong></li><li>(c) of numeric type</li><li>(d) stored in a linked list</li></ul>
+<blockquote><strong>Why:</strong> Binary search relies on discarding half based on an ordering comparison, so the data <strong>must already be sorted</strong>. This is also why binary search is impractical on linked lists - no random access to the middle.</blockquote>
+<h2>5.2 Linear Data Structures</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Linked-list properties are a repeat favourite | Priority CRITICAL</strong></blockquote>
+<h3>5.2.1 Questions</h3>
+<p><strong>Q. [PYQ] What are the data structures categorised as a linear list?</strong></p>
+<ul><li>(a) Binary tree</li><li>(b) Graphs</li><li>(c) Circular queue</li><li>(d) <strong>Array  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A <strong>linear list</strong> means a strict sequence where each element has one predecessor and one successor. Trees and graphs are non-linear; a circular queue links its last element back to the first, breaking the plain sequence.</blockquote>
+<p><strong>Q. [PYQ] In a singly linked list, each node of the list consists of <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) <strong>data value and address of next node  &lt;-- CORRECT</strong></li><li>(b) NULL and address of the next node</li><li>(c) NULL and address of the previous node</li><li>(d) data value and address of previous node</li></ul>
+<blockquote><strong>Why:</strong> Only the <strong>last</strong> node holds NULL. An address of the *previous* node indicates a <strong>doubly</strong> linked list.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is a disadvantage of singly linked list?</strong></p>
+<ul><li>(a) <strong>Accessing an element requires traversal from the head, making it slower than arrays.  &lt;-- CORRECT</strong></li><li>(b) Deletion at the beginning is performed in O(1) time.</li><li>(c) Insertion at the beginning is performed in O(1) time.</li><li>(d) Linked lists have a variable size.</li></ul>
+<blockquote><strong>Why:</strong> Three options are genuine <strong>advantages</strong> disguised as answers. The real weakness is <strong>no random access</strong>: reaching the i-th element costs O(n), whereas an array does it in O(1).</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Calculate the time complexity of deleting an element from the beginning of a dynamic array.</strong></p>
+<ul><li>(a) O(log)</li><li>(b) O(1)</li><li>(c) O(log n)</li><li>(d) <strong>O(n)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> After removing a[0], all remaining n-1 elements must <strong>shift left</strong> to preserve contiguity. Only deletion at the <strong>end</strong> is O(1).</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] What is the time complexity of inserting at the beginning of a singly linked list?</strong></p>
+<ul><li>(a) O(n)</li><li>(b) <strong>O(1)  &lt;-- CORRECT</strong></li><li>(c) O(log n)</li><li>(d) O(n^2)</li></ul>
+<blockquote><strong>Why:</strong> Just create the node and repoint the head - no shifting. This is exactly where linked lists beat arrays.</blockquote>
+<p><strong>Q. [EXPECTED] A stack follows which order?</strong></p>
+<ul><li>(a) FIFO</li><li>(b) <strong>LIFO  &lt;-- CORRECT</strong></li><li>(c) Priority order</li><li>(d) Random</li></ul>
+<blockquote><strong>Why:</strong> <strong>LIFO</strong> - Last In First Out, like a pile of plates. push, pop and peek are all <strong>O(1)</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is NOT an application of a stack?</strong></p>
+<ul><li>(a) Recursion / function call management</li><li>(b) Infix to postfix conversion</li><li>(c) Balanced parentheses checking</li><li>(d) <strong>CPU scheduling ready queue  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The ready queue is FIFO, so it uses a <strong>queue</strong>. Stack applications: function call stack, recursion, expression conversion and evaluation, parenthesis matching, undo/redo, browser back button, <strong>DFS</strong>, backtracking, string reversal.</blockquote>
+<p><strong>Q. [EXPECTED] Which traversal technique uses a queue?</strong></p>
+<ul><li>(a) DFS</li><li>(b) <strong>BFS  &lt;-- CORRECT</strong></li><li>(c) Inorder traversal</li><li>(d) Postorder traversal</li></ul>
+<blockquote><strong>Why:</strong> <strong>BFS uses a QUEUE</strong> and explores level by level; <strong>DFS uses a STACK</strong> (or recursion) and dives deep first. Both are O(V + E).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What problem does a circular queue solve?</strong></p>
+<ul><li>(a) Overflow</li><li>(b) <strong>Wastage of space at the front after repeated deletions  &lt;-- CORRECT</strong></li><li>(c) Underflow</li><li>(d) Slow enqueue</li></ul>
+<blockquote><strong>Why:</strong> In a simple linear queue, once front advances, the vacated cells at the start cannot be reused and the queue appears full while space remains. A <strong>circular queue</strong> wraps rear around to index 0.</blockquote>
+<p><strong>Q. [EXPECTED] In a priority queue, the element dequeued first is:</strong></p>
+<ul><li>(a) the one inserted first</li><li>(b) the one inserted last</li><li>(c) <strong>the one with the highest priority  &lt;-- CORRECT</strong></li><li>(d) a random element</li></ul>
+<blockquote><strong>Why:</strong> Arrival order is irrelevant. Priority queues are normally implemented with a <strong>heap</strong>, giving O(log n) insert and O(log n) extract.</blockquote>
+<p><strong>Q. [EXPECTED] Which notation requires no parentheses and no precedence rules for evaluation?</strong></p>
+<ul><li>(a) Infix</li><li>(b) <strong>Postfix  &lt;-- CORRECT</strong></li><li>(c) Both infix and prefix</li><li>(d) None</li></ul>
+<blockquote><strong>Why:</strong> <strong>Postfix (Reverse Polish)</strong> can be evaluated in one left-to-right pass with a single stack, which is why compilers convert infix expressions to postfix.</blockquote>
+<h2>5.3 Trees and Graphs</h2>
+<blockquote><strong>WEIGHTAGE: 2-3 marks | Traversal order and BST properties recur | Priority HIGH</strong></blockquote>
+<h3>5.3.1 Questions</h3>
+<p><strong>Q. [EXPECTED] [TRAP] Which traversal of a Binary Search Tree yields elements in sorted ascending order?</strong></p>
+<ul><li>(a) Preorder</li><li>(b) <strong>Inorder  &lt;-- CORRECT</strong></li><li>(c) Postorder</li><li>(d) Level order</li></ul>
+<blockquote><strong>Why:</strong> <strong>Inorder (Left, Root, Right)</strong> on a BST always produces sorted output - a very frequently asked property. Memory hook: the word tells you where the ROOT goes - <strong>Pre</strong>order root first, <strong>In</strong>order root in between, <strong>Post</strong>order root last. Left always precedes right.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] For the tree with root A, left child B, right child C, and B having children D and E, the preorder traversal is:</strong></p>
+<ul><li>(a) D B E A C</li><li>(b) <strong>A B D E C  &lt;-- CORRECT</strong></li><li>(c) D E B C A</li><li>(d) A B C D E</li></ul>
+<blockquote><strong>Why:</strong> Preorder = Root, Left subtree, Right subtree: A, then B&#x27;s subtree (B, D, E), then C = <strong>A B D E C</strong>. (Inorder would be D B E A C; postorder D E B C A; level order A B C D E.)</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] The maximum number of nodes in a binary tree of height 3 (root at level 0) is:</strong></p>
+<ul><li>(a) 8</li><li>(b) <strong>15  &lt;-- CORRECT</strong></li><li>(c) 16</li><li>(d) 7</li></ul>
+<blockquote><strong>Why:</strong> Maximum nodes = <strong>2^(h+1) - 1</strong> = 2^4 - 1 = <strong>15</strong>. Maximum nodes at a single level l is 2^l. A tree with n nodes always has exactly <strong>n - 1 edges</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] The worst-case time complexity of searching in a Binary Search Tree is:</strong></p>
+<ul><li>(a) O(log n) always</li><li>(b) <strong>O(n) when the tree is skewed  &lt;-- CORRECT</strong></li><li>(c) O(1)</li><li>(d) O(n log n)</li></ul>
+<blockquote><strong>Why:</strong> Inserting keys in <strong>sorted order</strong> degenerates a BST into a linked list, making search O(n). <strong>Self-balancing trees</strong> fix this: AVL and Red-Black guarantee O(log n).</blockquote>
+<p><strong>Q. [EXPECTED] In an AVL tree, the balance factor of every node must be:</strong></p>
+<ul><li>(a) 0 only</li><li>(b) <strong>-1, 0 or +1  &lt;-- CORRECT</strong></li><li>(c) between -2 and +2</li><li>(d) equal for all nodes</li></ul>
+<blockquote><strong>Why:</strong> Balance factor = height(left) - height(right). Violations are repaired by <strong>rotations</strong> (LL, RR, LR, RL). AVL is more strictly balanced than Red-Black, so lookups are faster but insertions cost more rotations.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which tree structure is standard for database indexing?</strong></p>
+<ul><li>(a) AVL tree</li><li>(b) Binary search tree</li><li>(c) <strong>B+ tree  &lt;-- CORRECT</strong></li><li>(d) Heap</li></ul>
+<blockquote><strong>Why:</strong> <strong>B+ trees</strong> keep all data in linked leaf nodes, which makes <strong>range queries</strong> efficient, and their high branching factor minimises <strong>disk reads</strong> - the dominant cost in databases. B-trees and B+ trees are designed around disk block size.</blockquote>
+<p><strong>Q. [EXPECTED] In a max heap, the largest element is located:</strong></p>
+<ul><li>(a) at the last leaf</li><li>(b) <strong>at the root  &lt;-- CORRECT</strong></li><li>(c) at the middle</li><li>(d) anywhere</li></ul>
+<blockquote><strong>Why:</strong> Max heap: every parent is at least as large as its children, so the maximum sits at the root and can be read in <strong>O(1)</strong>. Insert and delete-root are O(log n); building a heap from n elements is <strong>O(n)</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] For a node at index i in a 0-based array heap, the left child is at:</strong></p>
+<ul><li>(a) 2i</li><li>(b) <strong>2i + 1  &lt;-- CORRECT</strong></li><li>(c) 2i + 2</li><li>(d) i/2</li></ul>
+<blockquote><strong>Why:</strong> Left = 2i+1, right = 2i+2, parent = (i-1)/2. (In 1-based indexing it is 2i and 2i+1 with parent i/2.)</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] What are the articulation points in the given graph (vertices 1-10, with 9 and 10 hanging off 3, and 6 hanging off 5)?</strong></p>
+<ul><li>(a) 1, 2 and 3</li><li>(b) 2, 3 and 4</li><li>(c) 3, 4 and 5</li><li>(d) <strong>2, 3 and 5  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Remove each vertex and check whether the graph splits. Removing <strong>3</strong> isolates 9 and 10; removing <strong>2</strong> separates the left cluster from the right; removing <strong>5</strong> isolates 6. Vertices 1 and 4 leave the graph connected. <strong>A leaf can never be an articulation point</strong>, and any vertex that is the sole gateway to a region always is.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] In a path-graph having n vertices where n &gt; 2, <em>_</em>_ is the number of vertices with degree 2.</strong></p>
+<ul><li>(a) 3</li><li>(b) <strong>n - 2  &lt;-- CORRECT</strong></li><li>(c) 2</li><li>(d) 0</li></ul>
+<blockquote><strong>Why:</strong> A path is a straight line v1-v2-...-vn. The <strong>two end vertices have degree 1</strong>; every one of the remaining <strong>n - 2</strong> middle vertices has degree 2. Check with n=5: degrees are 1,2,2,2,1, so three vertices of degree 2 = 5-2.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many edges does a complete graph with 6 vertices have?</strong></p>
+<ul><li>(a) 30</li><li>(b) <strong>15  &lt;-- CORRECT</strong></li><li>(c) 12</li><li>(d) 36</li></ul>
+<blockquote><strong>Why:</strong> <strong>n(n-1)/2</strong> = 6 x 5 / 2 = <strong>15</strong> for an undirected complete graph. The same formula gives the number of links in a full mesh network topology.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which algorithm finds the shortest path in a graph with NEGATIVE edge weights?</strong></p>
+<ul><li>(a) Dijkstra</li><li>(b) Prim</li><li>(c) <strong>Bellman-Ford  &lt;-- CORRECT</strong></li><li>(d) Kruskal</li></ul>
+<blockquote><strong>Why:</strong> <strong>Dijkstra fails with negative weights</strong> because its greedy choice becomes invalid. <strong>Bellman-Ford</strong> handles them and additionally detects negative cycles, at O(VE). Prim and Kruskal build minimum spanning trees, not shortest paths.</blockquote>
+<p><strong>Q. [EXPECTED] A minimum spanning tree of a graph with V vertices has exactly:</strong></p>
+<ul><li>(a) V edges</li><li>(b) <strong>V - 1 edges  &lt;-- CORRECT</strong></li><li>(c) V + 1 edges</li><li>(d) E - V edges</li></ul>
+<blockquote><strong>Why:</strong> Any spanning tree on V vertices is a tree, so it has <strong>V - 1</strong> edges and no cycles. Prim and Kruskal are the two standard greedy algorithms.</blockquote>
+<p><strong>Q. [EXPECTED] Which representation is preferable for a sparse graph?</strong></p>
+<ul><li>(a) Adjacency matrix</li><li>(b) <strong>Adjacency list  &lt;-- CORRECT</strong></li><li>(c) Incidence matrix</li><li>(d) Edge weight matrix</li></ul>
+<blockquote><strong>Why:</strong> Adjacency <strong>list</strong> costs O(V + E) space and lists a vertex&#x27;s neighbours quickly. Adjacency <strong>matrix</strong> costs O(V^2) regardless of edge count but answers &quot;is there an edge u-v?&quot; in O(1) - better for dense graphs.</blockquote>
+<h2>5.4 Searching, Sorting and Design Techniques</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Sorting complexity is the most repeated fact in this topic | Priority CRITICAL</strong></blockquote>
+<h3>5.4.1 Questions</h3>
+<p><strong>Q. [PYQ] What is the best case and worst-case complexity of selection sort?</strong></p>
+<ul><li>(a) O(n log n)</li><li>(b) O(n)</li><li>(c) <strong>O(n^2)  &lt;-- CORRECT</strong></li><li>(d) O(log n)</li></ul>
+<blockquote><strong>Why:</strong> Selection sort always scans the whole unsorted portion to find the minimum, so the comparison count n(n-1)/2 is <strong>independent of the input order</strong>. Contrast with bubble and insertion sort, which do have an O(n) best case on already-sorted data.</blockquote>
+<p><strong>Q. [PYQ] What is the average case time complexity of merge sort?</strong></p>
+<ul><li>(a) <strong>O(n log n)  &lt;-- CORRECT</strong></li><li>(b) O(n)</li><li>(c) O(1)</li><li>(d) O(n^2 log n)</li></ul>
+<blockquote><strong>Why:</strong> Merge sort always splits exactly in half, so <strong>best = average = worst = O(n log n)</strong>. Its one weakness is needing <strong>O(n) extra space</strong>, so it is not in-place.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which sorting algorithm has the worst case O(n^2) but is usually fastest in practice for arrays?</strong></p>
+<ul><li>(a) Merge sort</li><li>(b) Heap sort</li><li>(c) <strong>Quick sort  &lt;-- CORRECT</strong></li><li>(d) Bubble sort</li></ul>
+<blockquote><strong>Why:</strong> <strong>Quick sort</strong> degrades to O(n^2) when the pivot is always the smallest or largest element (e.g. sorted input with a first-element pivot), but its low constant factors and cache friendliness make it the practical winner. Cure the worst case with a random or median-of-three pivot.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which sorting technique is best for sorting a linked list with n elements?</strong></p>
+<ul><li>(a) Insertion sort</li><li>(b) Bubble sort</li><li>(c) <strong>Merge sort  &lt;-- CORRECT</strong></li><li>(d) Selection sort</li></ul>
+<blockquote><strong>Why:</strong> Quick sort needs <strong>random access</strong> to reach the pivot, which a linked list cannot provide. Merge sort only ever traverses sequentially and relinks pointers - and on a linked list it needs <strong>no extra array</strong>, so its auxiliary space drops to O(1). It is also stable.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following sorting algorithms is NOT stable?</strong></p>
+<ul><li>(a) Insertion sort</li><li>(b) Merge sort</li><li>(c) Bubble sort</li><li>(d) <strong>Quick sort  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Stable</strong> (equal elements keep relative order): bubble, insertion, merge, counting, radix. <strong>Unstable</strong>: selection, quick, heap.</blockquote>
+<p><strong>Q. [EXPECTED] Which comparison-based sorting algorithm has O(n log n) worst case AND O(1) auxiliary space?</strong></p>
+<ul><li>(a) Merge sort</li><li>(b) Quick sort</li><li>(c) <strong>Heap sort  &lt;-- CORRECT</strong></li><li>(d) Insertion sort</li></ul>
+<blockquote><strong>Why:</strong> <strong>Heap sort</strong> is the only common algorithm achieving both. Merge sort needs O(n) space; quick sort&#x27;s worst case is O(n^2).</blockquote>
+<p><strong>Q. [EXPECTED] The theoretical lower bound for any comparison-based sorting algorithm is:</strong></p>
+<ul><li>(a) O(n)</li><li>(b) <strong>O(n log n)  &lt;-- CORRECT</strong></li><li>(c) O(log n)</li><li>(d) O(n^2)</li></ul>
+<blockquote><strong>Why:</strong> No comparison sort can beat O(n log n) in the worst case. <strong>Counting, radix and bucket sort</strong> appear to beat it only because they do not compare elements - they use the key values directly.</blockquote>
+<p><strong>Q. [PYQ] Which of the following algorithm design techniques is used in the merge sort algorithm?</strong></p>
+<ul><li>(a) Greedy algorithm</li><li>(b) Backtracking</li><li>(c) <strong>Divide and conquer  &lt;-- CORRECT</strong></li><li>(d) Divide and conquer, backtracking and greedy algorithm</li></ul>
+<blockquote><strong>Why:</strong> Merge sort divides into halves, conquers recursively, then combines - the textbook three steps.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT the application of Divide and Conquer?</strong></p>
+<ul><li>(a) Binary Search</li><li>(b) <strong>All Pairs Shortest Path Problem  &lt;-- CORRECT</strong></li><li>(c) Quick Sort</li><li>(d) Strassen&#x27;s Matrix Multiplication</li></ul>
+<blockquote><strong>Why:</strong> All-pairs shortest path is solved by <strong>Floyd-Warshall</strong>, which is <strong>dynamic programming</strong> - its subproblems <strong>overlap</strong> and are stored and reused. Divide and conquer requires <strong>independent</strong> subproblems. That overlap is the exact dividing line between the two techniques.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which technique solves problems with overlapping subproblems by storing results?</strong></p>
+<ul><li>(a) Divide and conquer</li><li>(b) Greedy</li><li>(c) <strong>Dynamic programming  &lt;-- CORRECT</strong></li><li>(d) Backtracking</li></ul>
+<blockquote><strong>Why:</strong> DP uses <strong>memoisation or tabulation</strong> to compute each subproblem once. Classic DP: Floyd-Warshall, Bellman-Ford, <strong>0/1 knapsack</strong>, longest common subsequence, matrix chain multiplication.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] The fractional knapsack problem is solved optimally by which technique?</strong></p>
+<ul><li>(a) Dynamic programming</li><li>(b) <strong>Greedy  &lt;-- CORRECT</strong></li><li>(c) Backtracking</li><li>(d) Branch and bound</li></ul>
+<blockquote><strong>Why:</strong> <strong>Fractional</strong> knapsack yields to a greedy choice (highest value-to-weight ratio first). The <strong>0/1</strong> knapsack does <strong>not</strong> - it needs dynamic programming. This pair is a favourite discriminator.</blockquote>
+<p><strong>Q. [EXPECTED] Which technique abandons a partial solution as soon as it cannot lead to a valid answer?</strong></p>
+<ul><li>(a) Greedy</li><li>(b) Dynamic programming</li><li>(c) <strong>Backtracking  &lt;-- CORRECT</strong></li><li>(d) Divide and conquer</li></ul>
+<blockquote><strong>Why:</strong> <strong>Backtracking</strong> prunes the search tree. Classic problems: N-Queens, Sudoku, <strong>sum of subsets</strong>, graph colouring, Hamiltonian cycle, maze solving.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] What are the solutions for the sum of subset problem w[1:5] = {2,7,8,9,15}, sum required 17?</strong></p>
+<ul><li>(a) 11100; 10101; 00110</li><li>(b) <strong>11100; 10001; 00110  &lt;-- CORRECT</strong></li><li>(c) 11000; 10001; 00110</li><li>(d) 11100; 10101; 00111</li></ul>
+<blockquote><strong>Why:</strong> Map each bit onto the weights and add. <strong>11100</strong> = 2+7+8 = 17; <strong>10001</strong> = 2+15 = 17; <strong>00110</strong> = 8+9 = 17. Check a rejected option: 10101 = 2+8+15 = 25, not 17. <strong>Do not run the backtracking tree - just add up the selected weights.</strong></blockquote>
+<p><strong>Q. [EXPECTED] Which of the following uses a greedy strategy?</strong></p>
+<ul><li>(a) Floyd-Warshall</li><li>(b) 0/1 Knapsack</li><li>(c) <strong>Huffman coding  &lt;-- CORRECT</strong></li><li>(d) Longest common subsequence</li></ul>
+<blockquote><strong>Why:</strong> Greedy algorithms: <strong>Dijkstra, Prim, Kruskal, Huffman coding, fractional knapsack, activity selection, job sequencing</strong>. Greedy makes one locally best choice and never reconsiders - fast, but only optimal for problems with the greedy-choice property.</blockquote>
+<p><strong>Q. [EXPECTED] The average-case time complexity of searching in a hash table is:</strong></p>
+<ul><li>(a) O(n)</li><li>(b) O(log n)</li><li>(c) <strong>O(1)  &lt;-- CORRECT</strong></li><li>(d) O(n log n)</li></ul>
+<blockquote><strong>Why:</strong> Hashing computes the index directly. The <strong>worst case is O(n)</strong> if every key collides into one slot. Collision resolution: <strong>separate chaining</strong> (linked list per slot) or <strong>open addressing</strong> (linear probing, quadratic probing, double hashing).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which collision resolution technique suffers from primary clustering?</strong></p>
+<ul><li>(a) Separate chaining</li><li>(b) <strong>Linear probing  &lt;-- CORRECT</strong></li><li>(c) Double hashing</li><li>(d) Quadratic probing</li></ul>
+<blockquote><strong>Why:</strong> <strong>Linear probing</strong> checks index+1, index+2, ... so occupied slots coalesce into long runs, lengthening every subsequent probe. <strong>Quadratic probing</strong> reduces primary clustering; <strong>double hashing</strong> distributes best.</blockquote></body></html>

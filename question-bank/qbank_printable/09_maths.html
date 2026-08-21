@@ -1,0 +1,217 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 10 - Mathematics, Statistics and the DSSSB-Specific Topics</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 10 - Mathematics, Statistics and the DSSSB-Specific Topics</h1>
+<blockquote>*Weightage: 4 to 8 marks (Maths/Stats) plus 6 to 10 marks (Physics / Accounting / Economics) in DSSSB. Largely absent from KVS and NVS Computer Science papers.*</blockquote>
+<blockquote><strong>NOTE: Read this before you study this Part</strong><br><br>This Part exists because <strong>DSSSB draws its Discipline sections from the wider graduate stream</strong>, so Physics, Accountancy and Business Economics questions appear alongside the computing ones. In the three papers you shared these were worth <strong>6 to 10 marks per paper</strong>.<br><br><strong>If you are sitting only KVS or NVS Computer Science, you may safely de-prioritise Chapter 10.3 onwards.</strong> If you are sitting DSSSB, you cannot - it is too many marks to abandon.<br><br>The strategy is narrow and deliberate: learn the <strong>specific formulas</strong> below, not the subjects. Almost every question in those papers was a one-step formula application. If a question needs more than one unfamiliar step, skip it.</blockquote>
+<h2>10.1 Numerical Methods</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks in DSSSB | Interpolation and difference operators recur | Priority MEDIUM</strong></blockquote>
+<h3>10.1.1 Questions</h3>
+<p><strong>Q. [PYQ] Interpolation is carried out using data from:</strong></p>
+<ul><li>(a) regression analysis</li><li>(b) curve fitting and regression analysis</li><li>(c) linear interpolation</li><li>(d) <strong>curve fitting and linear analysis  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The distinguishing fact: <strong>interpolation passes exactly through every known data point</strong>, whereas <strong>regression</strong> finds a best-fit line that need not pass through any of them. So any option mentioning regression is wrong.</blockquote>
+<p><strong>Q. [PYQ] Which method creates interpolants that are softer?</strong></p>
+<ul><li>(a) Polynomial and spline interpolation</li><li>(b) <strong>Piecewise constant interpolation  &lt;-- CORRECT</strong></li><li>(c) Polynomial interpolation</li><li>(d) Linear interpolation and spline interpolation</li></ul>
+<blockquote><strong>Why:</strong> Piecewise constant (nearest-neighbour) interpolation produces a plain <strong>step function</strong> with no curvature at all - the crudest and &quot;softest&quot; interpolant. <strong>Spline</strong> interpolation is the smoothest practical choice; high-degree <strong>polynomial</strong> interpolation oscillates badly near the edges (Runge&#x27;s phenomenon).</blockquote>
+<p><strong>Q. [PYQ] The <em>_</em>_ interpolation method is used in probability theory and statistics, and the Gaussian process is one example.</strong></p>
+<ul><li>(a) linear</li><li>(b) polynomial</li><li>(c) spline</li><li>(d) <strong>nonlinear  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The <strong>Gaussian process</strong> (also called kriging) is a nonlinear, probabilistic interpolation technique used heavily in statistics and machine learning. Linear, polynomial and spline interpolation are deterministic curve fits.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] The values of x are 1, 3, 4 and those of f(x) are 1, 27, 64. What is the polynomial using the Lagrange interpolation formula?</strong></p>
+<ul><li>(a) <strong>8x^2 - 19x + 12  &lt;-- CORRECT</strong></li><li>(b) 8x^2 + 9x + 12</li><li>(c) 8x^2 - 9x + 12</li><li>(d) 8x^2 + 9x + 12</li></ul>
+<blockquote><strong>Why:</strong> <strong>Do not expand the Lagrange formula under exam pressure - verify the options instead.</strong> The correct polynomial must reproduce every data point. Test 8x^2 - 19x + 12: at x=1, 8-19+12 = <strong>1</strong>; at x=3, 72-57+12 = <strong>27</strong>; at x=4, 128-76+12 = <strong>64</strong>. All match. Test a distractor 8x^2+9x+12 at x=1: 8+9+12 = 29, not 1 - fails immediately. <strong>Substitute the smallest x into each option; usually three fail at once.</strong></blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] What is the value of Delta^n of e^(ax+b)?</strong></p>
+<ul><li>(a) (e^(ah) - 1)^n e^(ax-b)</li><li>(b) <strong>(e^(ah) - 1)^n e^(ax+b)  &lt;-- CORRECT</strong></li><li>(c) (e^(ah) + 1)^n e^(ax-b)</li><li>(d) (e^(ah) + 1)^n e^(ax+b)</li></ul>
+<blockquote><strong>Why:</strong> Compute one difference and spot the pattern: Delta e^(ax+b) = e^(a(x+h)+b) - e^(ax+b) = e^(ax+b)(e^(ah) - 1). So each application multiplies by the factor <strong>(e^(ah) - 1)</strong>, and n applications give <strong>(e^(ah) - 1)^n e^(ax+b)</strong>. Check two things in the options: the sign inside the bracket must be <strong>minus</strong>, and the exponent must remain <strong>ax + b</strong> (differencing never alters b).</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] If mu is an averaging operator and delta is the central difference operator, what is mu^2?</strong></p>
+<ul><li>(a) <strong>mu^2 = (1/4)(delta^2 + 4)  &lt;-- CORRECT</strong></li><li>(b) mu^2 = (1/2)(delta^2 + 4)</li><li>(c) mu^2 = (1/4)(delta^2 + 6)</li><li>(d) mu^2 = (1/4)(delta^2 + 8)</li></ul>
+<blockquote><strong>Why:</strong> From mu = (E^(1/2) + E^(-1/2))/2, squaring gives mu^2 = (E + 2 + E^(-1))/4. Since delta = E^(1/2) - E^(-1/2), delta^2 = E - 2 + E^(-1), so <strong>E + E^(-1) = delta^2 + 2</strong>. Substituting: mu^2 = (delta^2 + 2 + 2)/4 = <strong>(delta^2 + 4)/4</strong>. Remember the pair of numbers: <strong>one quarter, plus four.</strong></blockquote>
+<p><strong>Q. [EXPECTED] The relation between the forward difference operator and the shift operator is:</strong></p>
+<ul><li>(a) Delta = E + 1</li><li>(b) <strong>Delta = E - 1  &lt;-- CORRECT</strong></li><li>(c) Delta = 1 - E</li><li>(d) Delta = E</li></ul>
+<blockquote><strong>Why:</strong> Since Delta f(x) = f(x+h) - f(x) and E f(x) = f(x+h), we get <strong>Delta = E - 1</strong>, equivalently <strong>E = 1 + Delta</strong>. Also: nabla = 1 - E^(-1), and delta = E^(1/2) - E^(-1/2).</blockquote>
+<h2>10.2 Probability and Statistics</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks in DSSSB | Priority MEDIUM</strong></blockquote>
+<h3>10.2.1 Questions</h3>
+<p><strong>Q. [PYQ] Who invented the probability definition?</strong></p>
+<ul><li>(a) <strong>Simon Laplace  &lt;-- CORRECT</strong></li><li>(b) Euclid</li><li>(c) None of the given answer</li><li>(d) Einstein</li></ul>
+<blockquote><strong>Why:</strong> <strong>Pierre-Simon Laplace</strong> gave the classical definition (favourable outcomes over total equally likely outcomes) in 1812. Euclid is geometry.</blockquote>
+<p><strong>Q. [PYQ] Which probability calculus of views obeys particular rules?</strong></p>
+<ul><li>(a) Standard deviation</li><li>(b) Variance</li><li>(c) <strong>Bayesian probability  &lt;-- CORRECT</strong></li><li>(d) Frequency probability</li></ul>
+<blockquote><strong>Why:</strong> The phrase &quot;calculus of <strong>views</strong>&quot; is the clue: <strong>Bayesian</strong> probability treats probability as a <strong>degree of belief</strong> that is updated as evidence arrives, according to fixed rules. Standard deviation and variance are measures of *spread*, not interpretations of probability.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] If two dice are thrown, find the probability that the sum is neither 5 nor 9.</strong></p>
+<ul><li>(a) 3/9</li><li>(b) 5/9</li><li>(c) 1/9</li><li>(d) <strong>7/9  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Total outcomes = 36. Sum 5 occurs 4 ways (1+4, 2+3, 3+2, 4+1); sum 9 occurs 4 ways (3+6, 4+5, 5+4, 6+3). So P(5 or 9) = 8/36 = 2/9, and P(neither) = 1 - 2/9 = <strong>7/9</strong>. <strong>Whenever a question says &quot;neither/nor&quot; or &quot;not&quot;, count the unwanted cases and subtract from 1.</strong></blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] A six-faced die is thrown. The probability that the number on top is even is:</strong></p>
+<ul><li>(a) 1/4</li><li>(b) 1/6</li><li>(c) <strong>1/2  &lt;-- CORRECT</strong></li><li>(d) 1/9</li></ul>
+<blockquote><strong>Why:</strong> Even outcomes {2, 4, 6} out of 6 gives 3/6 = <strong>1/2</strong>. The distractor 1/6 is the probability of one *specific* number.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Eighty-eight residents are classified as male/female and as tea drinkers/non-drinkers. For testing association between sex and tea drinking, the test statistic follows:</strong></p>
+<ul><li>(a) t distribution with 1 degree of freedom</li><li>(b) Chi Square distribution with 2 degrees of freedom</li><li>(c) Normal distribution</li><li>(d) <strong>Chi square distribution with 1 degree of freedom  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Testing <strong>association between two categorical variables</strong> means a <strong>chi-square test of independence</strong>, which eliminates the t and normal options. Degrees of freedom = <strong>(r-1)(c-1)</strong> = (2-1)(2-1) = <strong>1</strong>. Note the sample size 88 is a red herring - it never enters the df calculation.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] The algebraic sum of deviations is zero when measured from the <em>_</em>_.</strong></p>
+<ul><li>(a) second quartile</li><li>(b) geometric mean</li><li>(c) <strong>arithmetic mean  &lt;-- CORRECT</strong></li><li>(d) harmonic mean</li></ul>
+<blockquote><strong>Why:</strong> Proof in one line: SUM(x - mean) = SUM x - n(mean), and since mean = (SUM x)/n we have n(mean) = SUM x, so the difference is <strong>0</strong>. Verify with 2, 4, 6: mean is 4 and deviations -2, 0, +2 sum to zero. Related property: the sum of *squared* deviations is <strong>minimum</strong> about the arithmetic mean.</blockquote>
+<p><strong>Q. [PYQ] Identify the generic probability density function that corresponds with discrete random variables.</strong></p>
+<ul><li>(a) Cumulative distribution</li><li>(b) Gaussian distribution</li><li>(c) <strong>Poisson distribution  &lt;-- CORRECT</strong></li><li>(d) Rayleigh distribution</li></ul>
+<blockquote><strong>Why:</strong> <strong>Poisson</strong> is the discrete one - it counts whole numbers of rare events (0, 1, 2, ...) and has the special property <strong>mean = variance = lambda</strong>. Gaussian and Rayleigh are <strong>continuous</strong>; &quot;cumulative distribution&quot; is a general concept applying to both.</blockquote>
+<p><strong>Q. [EXPECTED] For a binomial distribution, the mean is:</strong></p>
+<ul><li>(a) np(1-p)</li><li>(b) <strong>np  &lt;-- CORRECT</strong></li><li>(c) p/n</li><li>(d) n/p</li></ul>
+<blockquote><strong>Why:</strong> Mean = <strong>np</strong>, variance = <strong>npq</strong> where q = 1-p. Binomial counts successes in n independent trials.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In a perfectly symmetric normal distribution:</strong></p>
+<ul><li>(a) mean &gt; median &gt; mode</li><li>(b) mean &lt; median &lt; mode</li><li>(c) <strong>mean = median = mode  &lt;-- CORRECT</strong></li><li>(d) mode is undefined</li></ul>
+<blockquote><strong>Why:</strong> This equality is the signature of the normal (Gaussian) bell curve. In a <strong>positively skewed</strong> distribution mean &gt; median &gt; mode; in a <strong>negatively skewed</strong> one the order reverses.</blockquote>
+<p><strong>Q. [EXPECTED] Which measure of central tendency is least affected by extreme values?</strong></p>
+<ul><li>(a) Arithmetic mean</li><li>(b) <strong>Median  &lt;-- CORRECT</strong></li><li>(c) Geometric mean</li><li>(d) Range</li></ul>
+<blockquote><strong>Why:</strong> The <strong>median</strong> depends only on position, not magnitude, so a single outlier cannot drag it. The mean is highly sensitive. Also remember <strong>AM &gt;= GM &gt;= HM</strong> always.</blockquote>
+<h2>10.3 Calculus, Matrices and Differential Equations</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks in DSSSB | Priority MEDIUM (skip for KVS/NVS)</strong></blockquote>
+<h3>10.3.1 Questions</h3>
+<p><strong>Q. [PYQ] [NUMERICAL] The series SUM 1/(n^2) raised to the power 1/5 is:</strong></p>
+<ul><li>(a) None of the given options</li><li>(b) divergent</li><li>(c) oscillatory convergent</li><li>(d) <strong>convergent  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>KEY NOTE.</strong> Simplify first: 1/(n^2)^(1/5) = 1/n^(2/5), a <strong>p-series with p = 0.4</strong>. The standard rule is that SUM 1/n^p <strong>converges if p &gt; 1 and diverges if p &lt;= 1</strong>, which makes this <strong>divergent</strong> - yet the official key marked it convergent. Learn the rule properly: SUM 1/n diverges (harmonic), SUM 1/n^2 converges, SUM 1/sqrt(n) diverges.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] If u = tan inverse (y/x), then x du/dx + y du/dy = ?</strong></p>
+<ul><li>(a) Sin 2u</li><li>(b) <strong>0  &lt;-- CORRECT</strong></li><li>(c) None of the given options</li><li>(d) Cos 2u</li></ul>
+<blockquote><strong>Why:</strong> Use <strong>Euler&#x27;s theorem</strong>: if f is homogeneous of degree n then x fx + y fy = n f. Here u(tx, ty) = arctan(ty/tx) = arctan(y/x) = t^0 u, so u is homogeneous of <strong>degree 0</strong> and the answer is 0 x u = <strong>0</strong>. Key insight: <strong>any function of the pure ratio y/x is homogeneous of degree zero</strong>, so this expression is always 0.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Find a unit vector normal to the surface x^3 + y^3 + 3xyz = 3 at the point (1, 2, -1).</strong></p>
+<ul><li>(a) (1/sqrt2)(i - 3j - 2k)</li><li>(b) (1/sqrt14)(i - 3j + 2k)</li><li>(c) <strong>(1/sqrt14)(-i + 3j + 2k)  &lt;-- CORRECT</strong></li><li>(d) (i + 3j + 2k)</li></ul>
+<blockquote><strong>Why:</strong> The <strong>gradient is normal to the surface</strong>. Partials: dF/dx = 3x^2+3yz = 3-6 = <strong>-3</strong>; dF/dy = 3y^2+3xz = 12-3 = <strong>9</strong>; dF/dz = 3xy = <strong>6</strong>. So grad F = -3i+9j+6k = 3(-i+3j+2k). Magnitude of the bracket = sqrt(1+9+4) = <strong>sqrt14</strong>. Unit normal = <strong>(-i+3j+2k)/sqrt14</strong>. Always factor out the common term *before* computing the magnitude.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] The volume of the tetrahedron bounded by x = 0, y = 0, z = 0 and x/a + y/b + z/c = 1 is:</strong></p>
+<ul><li>(a) abc/4</li><li>(b) abc/2</li><li>(c) abc/10</li><li>(d) <strong>abc/6  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A standard result worth memorising. The plane cuts the axes at (a,0,0), (0,b,0), (0,0,c), forming a tetrahedron with three mutually perpendicular edges. Volume = (1/3)(base area)(height) = (1/3)(ab/2)(c) = <strong>abc/6</strong>. Hook: the corner tetrahedron is exactly <strong>one sixth</strong> of the cuboid with sides a, b, c.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] The characteristic equation of A = [[1,4],[3,5]] is:</strong></p>
+<ul><li>(a) lambda^2 + 6lambda - 7 = 0</li><li>(b) lambda^2 - 6lambda + 7 = 0</li><li>(c) <strong>lambda^2 - 6lambda - 7 = 0  &lt;-- CORRECT</strong></li><li>(d) lambda^2 + 6lambda + 7 = 0</li></ul>
+<blockquote><strong>Why:</strong> For any 2x2 matrix use <strong>lambda^2 - (trace)lambda + (determinant) = 0</strong>. Trace = 1+5 = <strong>6</strong>; determinant = (1)(5)-(4)(3) = <strong>-7</strong>. So lambda^2 - 6lambda - 7 = 0. Watch both signs: the trace term is always *minus* trace, and here the determinant is itself negative.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] If A = [[1,0,0],[0,-1,0],[1,0,1]] then A^6 is:</strong></p>
+<ul><li>(a) [[6,0,0],[0,6,0],[6,0,6]]</li><li>(b) [[1,0,0],[0,-1,0],[6,0,1]]</li><li>(c) [[1,0,0],[0,-1,0],[1,0,1]]</li><li>(d) <strong>[[1,0,0],[0,1,0],[6,0,1]]  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Compute A^2, spot the pattern, then jump.</strong> A^2 gives [[1,0,0],[0,1,0],[2,0,1]] - the (2,2) entry becomes (-1)^n and the (3,1) entry becomes n. For n = 6 (even), (-1)^6 = <strong>+1</strong> and the (3,1) entry = <strong>6</strong>. Use <strong>parity</strong>: an even power always turns a -1 diagonal entry into +1.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Which differential equation corresponds to y = a e^(2x) + b e^(-x)?</strong></p>
+<ul><li>(a) y&#x27;&#x27; - 2y&#x27; + y = 0</li><li>(b) y&#x27;&#x27; + 2y&#x27; + y = 0</li><li>(c) y&#x27;&#x27; + y&#x27; - 2y = 0</li><li>(d) <strong>y&#x27;&#x27; - y&#x27; - 2y = 0  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Read the exponents off the solution</strong> - they are the roots of the auxiliary equation. Roots 2 and -1 give (m-2)(m+1) = m^2 - m - 2 = 0, and replacing m^2 with y&#x27;&#x27;, m with y&#x27; and the constant with y gives <strong>y&#x27;&#x27; - y&#x27; - 2y = 0</strong>. Verify with y = e^(2x): 4e - 2e - 2e = 0. Correct.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] The general solution of dy/dx = e^(x+y) is:</strong></p>
+<ul><li>(a) e^(-x) - e^(-y) = c</li><li>(b) e^(-x) + e^y = c</li><li>(c) <strong>e^x + e^(-y) = c  &lt;-- CORRECT</strong></li><li>(d) e^(-x) + e^y = c</li></ul>
+<blockquote><strong>Why:</strong> Separate: e^(x+y) = e^x . e^y, so e^(-y) dy = e^x dx. Integrating gives -e^(-y) = e^x + k, and rearranging gives <strong>e^x + e^(-y) = c</strong>. The sign flip comes from integrating e^(-y), which yields *minus* e^(-y).</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] [TRAP] The particular solution of y&#x27;&#x27; - 6y&#x27; + 9y = 2e^(3t) is:</strong></p>
+<ul><li>(a) e^(3t)/2</li><li>(b) <strong>t^2 e^(3t)  &lt;-- CORRECT</strong></li><li>(c) e^(3t)</li><li>(d) e^(3t)/9</li></ul>
+<blockquote><strong>Why:</strong> The auxiliary equation m^2-6m+9 = (m-3)^2 = 0 has <strong>m = 3 as a DOUBLE root</strong>, and the forcing term is e^(3t) - the resonance case. <strong>Rule: if r is not a root, PI is proportional to e^(rt); if r is a simple root, multiply by t; if r is a double root, multiply by t^2.</strong> Hence <strong>t^2 e^(3t)</strong>. The same idea appeared again as (D^4 - 18D^2 + 81)y, which factors to (D-3)^2(D+3)^2 and gives x^2 e^(3x).</blockquote>
+<h2>10.4 Physics Topics That Appeared</h2>
+<blockquote><strong>WEIGHTAGE: 3-5 marks in DSSSB only | Priority LOW for KVS/NVS</strong></blockquote>
+<h3>10.4.1 Questions</h3>
+<p><strong>Q. [PYQ] [NUMERICAL] An LED emits green light of wavelength 5511.11 Angstrom. Find Eg.</strong></p>
+<ul><li>(a) 1.25 eV</li><li>(b) <strong>2.25 eV  &lt;-- CORRECT</strong></li><li>(c) 3.606 eV</li><li>(d) 36.06 eV</li></ul>
+<blockquote><strong>Why:</strong> Memorise the shortcut: <strong>E (in eV) = 12400 / lambda (in Angstrom)</strong> = 12400/5511.11 = <strong>2.25 eV</strong>. The distractor 3.606 is the answer in units of 10^-19 <strong>joules</strong> mistaken for eV - always finish the conversion.</blockquote>
+<p><strong>Q. [PYQ] What is the lifetime of an atom&#x27;s ground state in stimulated absorption?</strong></p>
+<ul><li>(a) 2 minutes</li><li>(b) 11 hours</li><li>(c) 5 seconds</li><li>(d) <strong>Infinity  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The <strong>ground state is the lowest energy level</strong> - there is nowhere lower for the atom to fall to, so without external excitation it remains there indefinitely. Contrast an ordinary excited state (about 10^-8 s) and a <strong>metastable</strong> state (about 10^-3 s), whose long life is what makes population inversion possible.</blockquote>
+<p><strong>Q. [PYQ] Which transition generates laser output in the CO2 molecule?</strong></p>
+<ul><li>(a) <strong>Vibrational states  &lt;-- CORRECT</strong></li><li>(b) Pulsed output</li><li>(c) Molecular states</li><li>(d) Energy states</li></ul>
+<blockquote><strong>Why:</strong> CO2 is a <strong>molecule</strong>, so it has vibrational and rotational levels in addition to electronic ones; lasing occurs between <strong>vibrational</strong> states, emitting at 10.6 micrometres. &quot;Pulsed output&quot; describes a mode of operation, not a transition.</blockquote>
+<p><strong>Q. [PYQ] Which phenomenon causes a phase shift in the retardation plates?</strong></p>
+<ul><li>(a) Phasor plates</li><li>(b) Retardation plates</li><li>(c) Polaroid filters</li><li>(d) <strong>Double refraction  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The causal chain: the plate is made of a <strong>birefringent (doubly refracting)</strong> crystal, so the two polarisation components see different refractive indices, travel at different speeds and emerge with a <strong>phase difference</strong>. Note &quot;retardation plates&quot; is offered as an option - but that is the *device*, not the *phenomenon*.</blockquote>
+<p><strong>Q. [PYQ] Does polarisation vary with direction?</strong></p>
+<ul><li>(a) Polarising axis</li><li>(b) <strong>Transverse wave  &lt;-- CORRECT</strong></li><li>(c) Propagating axis</li><li>(d) Pass axis</li></ul>
+<blockquote><strong>Why:</strong> Polarisation exists <strong>only because light is a transverse wave</strong> - the oscillation is perpendicular to the direction of travel, so there is a choice of direction. <strong>Longitudinal waves such as sound cannot be polarised</strong>, which is the classic proof that light is transverse.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] A body of mass 4.9 kg hangs from a spring and oscillates with period 0.6 s. How much will the spring shorten when the body is removed?</strong></p>
+<ul><li>(a) 0.809 metre</li><li>(b) 1.089 metre</li><li>(c) 1.009 metre</li><li>(d) <strong>0.089 metre  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> From T = 2pi sqrt(m/k) we get m/k = T^2/(4pi^2), and the static extension x = (m/k)g = <strong>gT^2/(4pi^2)</strong> = 9.8 x 0.36 / 39.478 = <strong>0.089 m</strong>. Note the <strong>mass cancels out entirely</strong> - it is a red herring, because a heavier mass stretches more but also oscillates more slowly.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Two identical cells of emf 1.5 V and internal resistance 0.5 ohm are in series. If the permitted current is 1 A, the effective terminal potential difference is:</strong></p>
+<ul><li>(a) 1 V</li><li>(b) 0.75 V</li><li>(c) <strong>2 V  &lt;-- CORRECT</strong></li><li>(d) 0.5 V</li></ul>
+<blockquote><strong>Why:</strong> In <strong>series</strong>, emf adds and internal resistance adds: EMF = 3 V, r = 1 ohm. Then <strong>V = EMF - Ir</strong> = 3 - (1)(1) = <strong>2 V</strong>. (In parallel, emf stays the same and r becomes r/n.)</blockquote>
+<p><strong>Q. [PYQ] The magnetic moment of a bar magnet is <em>_</em> the magnetic moment of an equivalent solenoid if the solenoid&#x27;s magnetic field is <em>_</em>__ that of the bar magnet.</strong></p>
+<ul><li>(a) <strong>equal to ; same as  &lt;-- CORRECT</strong></li><li>(b) more than ; same as</li><li>(c) less than ; same as</li><li>(d) equal to ; different from</li></ul>
+<blockquote><strong>Why:</strong> Definitional: an &quot;<strong>equivalent</strong> solenoid&quot; is one reproducing the magnet&#x27;s behaviour. Since a dipole&#x27;s external field is determined entirely by its magnetic moment, <strong>same field implies equal magnetic moment</strong>.</blockquote>
+<h2>10.5 Accountancy and Business Economics</h2>
+<blockquote><strong>WEIGHTAGE: 3-5 marks in DSSSB only | Priority LOW for KVS/NVS</strong></blockquote>
+<h3>10.5.1 Questions</h3>
+<p><strong>Q. [PYQ] According to the double entry system, every transaction will have <em>_</em>_ entries.</strong></p>
+<ul><li>(a) Right and Left</li><li>(b) Up and Down</li><li>(c) <strong>Debt and Credit  &lt;-- CORRECT</strong></li><li>(d) Up and Left</li></ul>
+<blockquote><strong>Why:</strong> Every transaction has a <strong>debit</strong> side and a <strong>credit</strong> side of equal value (the paper spelled it &quot;Debt&quot;). Total debits always equal total credits, which is what a <strong>trial balance</strong> checks.</blockquote>
+<p><strong>Q. [PYQ] Which of the following accounts is/are prepared for net profit?</strong></p>
+<ul><li>(a) <strong>Profit and loss account  &lt;-- CORRECT</strong></li><li>(b) Trading account, profit and loss account and balance sheet</li><li>(c) Trading account</li><li>(d) Balance sheet</li></ul>
+<blockquote><strong>Why:</strong> <strong>Trading account gives GROSS profit; Profit and Loss account gives NET profit; Balance sheet shows position, not profit.</strong> Keep the pair straight: Trading = Gross, P&amp;L = Net.</blockquote>
+<p><strong>Q. [PYQ] What is a long-term asset in accounting?</strong></p>
+<ul><li>(a) Intangible assets</li><li>(b) Current liabilities</li><li>(c) Fixed liabilities</li><li>(d) <strong>Fixed assets  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Fixed assets</strong> are held for use in the business for more than one year and not for resale - land, building, machinery, vehicles. <strong>Current assets</strong> convert to cash within a year.</blockquote>
+<p><strong>Q. [PYQ] Any account or goods used by the owner of the business for his personal use is called:</strong></p>
+<ul><li>(a) sales</li><li>(b) <strong>drawings  &lt;-- CORRECT</strong></li><li>(c) general expenses</li><li>(d) expenses</li></ul>
+<blockquote><strong>Why:</strong> <strong>Drawings</strong> reduce the owner&#x27;s capital. Remember the accounting equation: <strong>Assets = Liabilities + Capital</strong>.</blockquote>
+<p><strong>Q. [PYQ] The part of the firm&#x27;s capital required for conducting day-to-day expenses is called:</strong></p>
+<ul><li>(a) <strong>working capital  &lt;-- CORRECT</strong></li><li>(b) asset</li><li>(c) expenses</li><li>(d) fixed capital</li></ul>
+<blockquote><strong>Why:</strong> &quot;<strong>Day to day</strong>&quot; is the trigger. <strong>Working Capital = Current Assets - Current Liabilities</strong>; long-term needs are met by <strong>fixed</strong> capital.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] [TRAP] ABC Ltd&#x27;s purchases were Rs. 1,90,000. Gross profit was 20% ON SALES and closing stock was Rs. 30,000 more than opening stock. Find the gross profit.</strong></p>
+<ul><li>(a) Rs. 35,000</li><li>(b) Rs. 52,000</li><li>(c) Rs. 25,000</li><li>(d) <strong>Rs. 40,000  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Step 1: COGS = Opening + Purchases - Closing = 1,90,000 - 30,000 = <strong>1,60,000</strong> (the opening stock cancels out, so its value was never needed). Step 2: gross profit is 20% <strong>of sales</strong>, so COGS = 80% of sales, giving sales = 1,60,000/0.8 = <strong>2,00,000</strong>. Step 3: GP = 20% of 2,00,000 = <strong>Rs. 40,000</strong>. <strong>The trap: &quot;20% on sales&quot; is NOT &quot;20% on cost&quot;</strong> - on cost it would have been Rs. 32,000. Always check the base.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Rent of Rs. 2,50,000 was received for the year ending 31 March 2024, of which Rs. 50,000 relates to next year. The amount credited to P&amp;L is <em>__ and the advance is shown as </em>__.</strong></p>
+<ul><li>(a) Rs. 1,50,000; Liability</li><li>(b) Rs. 2,00,000; Asset</li><li>(c) Rs. 3,00,000; Asset</li><li>(d) <strong>Rs. 2,00,000; Liability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Two principles. <strong>Accrual concept</strong>: only income *earned this year* goes to the P&amp;L, so 2,50,000 - 50,000 = <strong>2,00,000</strong>. <strong>Income received in advance</strong>: the business still owes the service, and an obligation is a <strong>LIABILITY</strong>. The trap is marking it an asset because cash came in - the *cash* is an asset, but the unearned portion creates a matching liability.</blockquote>
+<p><strong>Q. [PYQ] A public company must have at least <em>_</em>_ members.</strong></p>
+<ul><li>(a) 14</li><li>(b) <strong>7  &lt;-- CORRECT</strong></li><li>(c) 2</li><li>(d) 3</li></ul>
+<blockquote><strong>Why:</strong> Learn the pair: <strong>private company minimum 2, public company minimum 7.</strong> A <strong>company</strong> also has <strong>limited liability</strong> because it is a separate legal person, unlike a partnership or sole proprietorship.</blockquote>
+<p><strong>Q. [PYQ] The most common type of business organisation is:</strong></p>
+<ul><li>(a) partnership</li><li>(b) <strong>sole proprietorship  &lt;-- CORRECT</strong></li><li>(c) NGO</li><li>(d) corporation</li></ul>
+<blockquote><strong>Why:</strong> Easiest and cheapest to start with no registration formalities, so it covers the vast majority of small shops and traders - despite carrying <strong>unlimited liability</strong>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a tertiary business activity?</strong></p>
+<ul><li>(a) Transportation</li><li>(b) Warehousing</li><li>(c) Insurance</li><li>(d) <strong>Manufacturing  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Manufacturing is SECONDARY</strong> (it physically makes goods). Transportation, warehousing and insurance are <strong>auxiliaries to trade</strong>, which defines tertiary/service activity. <strong>Primary</strong> = extraction from nature.</blockquote>
+<p><strong>Q. [PYQ] Which of the following statement is correct for a business organisation?</strong></p>
+<ul><li>(a) Responsibility leads to decentralisation</li><li>(b) Authority leads to decentralisation</li><li>(c) <strong>Delegation leads to decentralisation  &lt;-- CORRECT</strong></li><li>(d) Centralisation leads to autonomy</li></ul>
+<blockquote><strong>Why:</strong> Systematic <strong>delegation</strong> of authority throughout the organisation <strong>is</strong> decentralisation. Note the last option states the exact opposite of the truth - it is *decentralisation* that gives autonomy. Also: authority can be delegated, but <strong>accountability cannot</strong>.</blockquote>
+<p><strong>Q. [PYQ] An organisation structure establishes relationships between:</strong></p>
+<ul><li>(a) <strong>people, work and resources  &lt;-- CORRECT</strong></li><li>(b) organisations and environment</li><li>(c) suppliers and customers</li><li>(d) organisations and society</li></ul>
+<blockquote><strong>Why:</strong> Structure defines who does what work with which resources, and who reports to whom.</blockquote>
+<p><strong>Q. [PYQ] Elasticity of demand explains the <em>_</em>_ of the correlation between price and quantity.</strong></p>
+<ul><li>(a) level, degree and angle</li><li>(b) angle</li><li>(c) level</li><li>(d) <strong>degree  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Elasticity measures <strong>magnitude of responsiveness</strong>, so &quot;degree&quot; is the right word. Ed = (% change in quantity) / (% change in price).</blockquote>
+<p><strong>Q. [PYQ] Marginal revenue is calculated by:</strong></p>
+<ul><li>(a) dividing the change in total output quantity by the change in total revenue</li><li>(b) dividing the change in total cost by the change in total output quantity</li><li>(c) <strong>dividing the change in total revenue by the change in total output quantity  &lt;-- CORRECT</strong></li><li>(d) dividing the change in total revenue by the change in total profit</li></ul>
+<blockquote><strong>Why:</strong> <strong>MR = change in Total Revenue / change in Output.</strong> Revenue on top, quantity below. The total-*cost* version defines <strong>marginal cost</strong> instead.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following inflations describes how demand for goods and services can drive up their prices?</strong></p>
+<ul><li>(a) Cost-push inflation</li><li>(b) Built-in Inflation</li><li>(c) <strong>Demand-pull inflation  &lt;-- CORRECT</strong></li><li>(d) Demand-push inflation</li></ul>
+<blockquote><strong>Why:</strong> <strong>Demand PULLS prices up; costs PUSH them up.</strong> &quot;Demand-push&quot; does not exist as a term - mixing the two words is the most common error.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ is also referred to as the Sales-Force-Composite method or the Collective Opinion Method.</strong></p>
+<ul><li>(a) Consumer interview method</li><li>(b) Substitute approach</li><li>(c) Evolutionary approach</li><li>(d) <strong>Opinion survey  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Both alternative names refer to collecting and combining the <strong>opinions</strong> of the firm&#x27;s own sales staff in their territories.</blockquote>
+<p><strong>Q. [PYQ] According to business economics, the growth of an existing product is used to estimate the demand for a new product using:</strong></p>
+<ul><li>(a) growth curve approach</li><li>(b) vicarious approach</li><li>(c) <strong>substitute approach  &lt;-- CORRECT</strong></li><li>(d) opinion polling approach</li></ul>
+<blockquote><strong>Why:</strong> The new product is assumed to <strong>substitute</strong> for the existing one, so the existing product&#x27;s growth indicates its potential. For a brand-new product with no history, firms use the <strong>evolutionary, substitute and vicarious</strong> approaches together.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a type of business?</strong></p>
+<ul><li>(a) Experience driven</li><li>(b) <strong>Expense driven  &lt;-- CORRECT</strong></li><li>(c) Efficiency driven</li><li>(d) Expert driven</li></ul>
+<blockquote><strong>Why:</strong> The genuine categories are <strong>experience-driven, efficiency-driven and expert-driven</strong> - based on whether a firm competes through accumulated experience, operational efficiency or specialist expertise. No business is defined by its *expenses*.</blockquote>
+<p><strong>Q. [PYQ] What does the term &#x27;bootstrapping&#x27; refer to in the context of starting a business?</strong></p>
+<ul><li>(a) Raising funds through venture capitalists</li><li>(b) <strong>Self-funding the business using personal resources  &lt;-- CORRECT</strong></li><li>(c) Obtaining bank loans for initial capital</li><li>(d) Crowdfunding through online platforms</li></ul>
+<blockquote><strong>Why:</strong> The image is &quot;pulling yourself up by your own bootstraps&quot;. All three distractors involve <strong>external</strong> money, which is exactly what bootstrapping avoids.</blockquote>
+<p><strong>Q. [PYQ] Which of the following comes under applied mathematics?</strong></p>
+<ul><li>(a) Information processing</li><li>(b) <strong>Operations research  &lt;-- CORRECT</strong></li><li>(c) Management accounting</li><li>(d) Organisation</li></ul>
+<blockquote><strong>Why:</strong> <strong>Operations Research</strong> applies mathematical optimisation, queuing theory, simulation and game theory to real decision problems - universally classified as applied mathematics.</blockquote></body></html>

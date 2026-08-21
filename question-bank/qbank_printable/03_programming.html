@@ -1,0 +1,254 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 4 - Programming: C, C++, OOP and Java</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 4 - Programming: C, C++, OOP and Java</h1>
+<blockquote>*Weightage: 9 to 15 marks in DSSSB, 8 to 16 expected. Output-tracing questions dominate. This is the one topic you cannot cram - practise daily.*</blockquote>
+<h2>4.1 C Language - Basics, Operators and Control Flow</h2>
+<blockquote><strong>WEIGHTAGE: 4-7 marks | &quot;What is the output&quot; questions are guaranteed | Priority CRITICAL</strong></blockquote>
+<h3>4.1.1 Topic checklist</h3>
+<ul><li>Data types and sizes, format specifiers, header files</li><li>Operators and full precedence table, associativity</li><li>if/else, switch rules, all three loops, break/continue/goto</li><li>Functions, call by value vs reference, actual vs formal parameters</li><li>Storage classes and their default values</li><li>Arrays, strings, pointers, structures, unions, file handling</li></ul>
+<h3>4.1.2 Questions</h3>
+<p><strong>Q. [PYQ] scanf() is a predefined function in which of the following header files?</strong></p>
+<ul><li>(a) ctype.h</li><li>(b) <strong>stdio.h  &lt;-- CORRECT</strong></li><li>(c) unistd.h</li><li>(d) string.h</li></ul>
+<blockquote><strong>Why:</strong> Both <code>printf</code> and <code>scanf</code> are declared in <strong>stdio.h</strong>. Other essentials: <strong>stdlib.h</strong> (malloc, free, exit, atoi), <strong>string.h</strong> (strlen, strcpy, strcmp), <strong>math.h</strong> (sqrt, pow), <strong>stdarg.h</strong> (va_list for variable arguments).</blockquote>
+<p><strong>Q. [PYQ] Which arithmetic operator has the highest precedence in C?</strong></p>
+<ul><li>(a) -</li><li>(b) =</li><li>(c) +</li><li>(d) <strong>%  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The group <strong><code>* / %</code></strong> sits above <code>+ -</code>. All three of <code>*</code>, <code>/</code>, <code>%</code> share the same level, so if <code>*</code> were offered it would be equally valid. <code>=</code> has almost the lowest precedence of all operators.</blockquote>
+<p><strong>Q. [EXPECTED] Which operators in C are right-to-left associative?</strong></p>
+<ul><li>(a) Arithmetic operators</li><li>(b) Relational operators</li><li>(c) <strong>Unary, ternary and assignment operators  &lt;-- CORRECT</strong></li><li>(d) Bitwise operators</li></ul>
+<blockquote><strong>Why:</strong> Only three groups associate right-to-left: <strong>unary</strong> (<code>!</code>, <code>~</code>, <code>++</code>, <code>--</code>, <code>sizeof</code>, type casts), the <strong>ternary</strong> <code>?:</code>, and <strong>assignment</strong> (<code>=</code>, <code>+=</code>). Everything else is left-to-right - which is exactly what makes <code>a &gt; b &gt; c</code> evaluate as <code>((a&gt;b)&gt;c)</code>.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Output of: <code>int a = 5, b = 3, c = 0; if (a &gt; b &gt; c) printf(&quot;True&quot;); else printf(&quot;False&quot;);</code></strong></p>
+<ul><li>(a) compile time error</li><li>(b) undefined behavior</li><li>(c) <strong>TRUE  &lt;-- CORRECT</strong></li><li>(d) FALSE</li></ul>
+<blockquote><strong>Why:</strong> Relational operators are <strong>left-to-right</strong>, so this is <code>((a&gt;b)&gt;c)</code>. Step 1: <code>5 &gt; 3</code> gives <strong>1</strong>. Step 2: <code>1 &gt; 0</code> gives <strong>1</strong>, which is true. Prints <strong>True</strong>. Never read chained comparisons as mathematics.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Output of: <code>int x = -1, y = 0, z = 1; int result = (x &gt; 0) ? x : (y == 0) ? z : y;</code></strong></p>
+<ul><li>(a) compile time error</li><li>(b) -1</li><li>(c) <strong>1  &lt;-- CORRECT</strong></li><li>(d) 0</li></ul>
+<blockquote><strong>Why:</strong> <code>?:</code> is <strong>right-associative</strong>, so it reads <code>(x&gt;0) ? x : ((y==0) ? z : y)</code>. <code>x &gt; 0</code> is false, so evaluate the inner ternary: <code>y == 0</code> is true, giving <strong>z = 1</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Output of: <code>int a = 10, b = 20; int max = (a &gt; b) ? a : b; printf(&quot;%d&quot;, max);</code></strong></p>
+<ul><li>(a) 30</li><li>(b) compile time error</li><li>(c) 10</li><li>(d) <strong>20  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>10 &gt; 20</code> is false, so <code>b</code> is selected. The ternary is shorthand for a complete if-else expression.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Output of: <code>int i = 5; do { printf(&quot;%d &quot;, i); i--; } while (i &gt; 5);</code></strong></p>
+<ul><li>(a) No output printed</li><li>(b) Infinite loop</li><li>(c) 5 4 3 2 1</li><li>(d) <strong>5  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A <strong>do-while executes its body at least once</strong> before testing. It prints 5, decrements to 4, then tests <code>4 &gt; 5</code> which is false and exits. This is the single most-asked loop trap.</blockquote>
+<p><strong>Q. [PYQ] Which of the following causes an infinite loop?</strong></p>
+<ul><li>(a) for (int i = 10; i &gt; 5; i--) { }</li><li>(b) do { } while (0);</li><li>(c) <strong>while (1) { }  &lt;-- CORRECT</strong></li><li>(d) for (int i = 0; i &lt; 10; i++) { }</li></ul>
+<blockquote><strong>Why:</strong> <code>while(1)</code> never terminates. The others run 5 times, exactly once, and 10 times respectively. Other infinite forms: <code>for(;;){}</code> and <code>do{}while(1);</code>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is true about the for loop in C?</strong></p>
+<ul><li>(a) A for loop cannot be nested inside another for loop.</li><li>(b) <strong>The condition in a for loop is optional, and it can result in an infinite loop if omitted.  &lt;-- CORRECT</strong></li><li>(c) A for loop must always have all three components.</li><li>(d) The increment/decrement part of the for loop is mandatory.</li></ul>
+<blockquote><strong>Why:</strong> <strong>All three parts of a for loop are optional</strong> - <code>for(;;)</code> is perfectly legal. Nesting is also allowed, so the first option is false too.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] How many times will the innermost loop execute? <code>for(i=0;i&lt;3;i++) for(j=0;j&lt;2;j++) printf(...)</code></strong></p>
+<ul><li>(a) <strong>6 times  &lt;-- CORRECT</strong></li><li>(b) 3 times</li><li>(c) 5 times</li><li>(d) 2 times</li></ul>
+<blockquote><strong>Why:</strong> Multiply the iteration counts: 3 x 2 = <strong>6</strong>. Printed output would be <code>0 0 1 1 2 2</code>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following will terminate the loop immediately in C?</strong></p>
+<ul><li>(a) <strong>When a break statement is encountered  &lt;-- CORRECT</strong></li><li>(b) When the loop variable reaches a certain value</li><li>(c) When a continue statement is encountered</li><li>(d) When the loop condition is not given</li></ul>
+<blockquote><strong>Why:</strong> <code>break</code> exits the innermost loop or switch at once. <code>continue</code> only skips the remainder of the current iteration and jumps to the next test.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is true about nested switch statements in C?</strong></p>
+<ul><li>(a) Both inner and outer switch statements must have a default case.</li><li>(b) A switch statement cannot contain another switch.</li><li>(c) Inner switch cases should not contain break statement</li><li>(d) <strong>A switch statement can contain another switch statement inside any of its cases.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Nesting is allowed and each switch is independent - an inner <code>break</code> exits only the inner switch. <code>default</code> is always optional.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which data type is NOT allowed in a switch expression?</strong></p>
+<ul><li>(a) int</li><li>(b) char</li><li>(c) short</li><li>(d) <strong>float  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A switch expression must be an <strong>integral</strong> type (int, char, short, long, enum). <strong>Floating-point values and strings are illegal</strong> because case labels must be exact constant integers.</blockquote>
+<p><strong>Q. [EXPECTED] What happens if <code>break</code> is omitted from a case in a switch?</strong></p>
+<ul><li>(a) Compilation error</li><li>(b) The switch exits</li><li>(c) <strong>Execution falls through into the next case  &lt;-- CORRECT</strong></li><li>(d) The default case runs</li></ul>
+<blockquote><strong>Why:</strong> <strong>Fall-through</strong> is deliberate C behaviour, sometimes used intentionally to let several cases share code.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Output of: <code>int a = 4; int b = 3; result = a ^ b; printf(&quot;%d&quot;, result);</code></strong></p>
+<ul><li>(a) 0</li><li>(b) 3</li><li>(c) 4</li><li>(d) <strong>7  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>^</code> is <strong>bitwise XOR</strong>, not exponentiation. 4 = 100, 3 = 011; XOR gives 111 = <strong>7</strong>. (For powers you need <code>pow()</code> from math.h.)</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] What is the value of <code>x</code> after <code>int x = 5; x = x &lt;&lt; 2;</code>?</strong></p>
+<ul><li>(a) 10</li><li>(b) <strong>20  &lt;-- CORRECT</strong></li><li>(c) 25</li><li>(d) 7</li></ul>
+<blockquote><strong>Why:</strong> Left shift by n multiplies by 2^n: 5 x 4 = <strong>20</strong>. Right shift divides. Compilers use shifts because they are far cheaper than multiplication.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Given <code>int a, b, c; a = b = c = 15; c = c + 10;</code> what is the value of c?</strong></p>
+<ul><li>(a) Undefined</li><li>(b) 10</li><li>(c) <strong>25  &lt;-- CORRECT</strong></li><li>(d) 15</li></ul>
+<blockquote><strong>Why:</strong> Assignment is <strong>right-to-left</strong>, so c, b and a all become 15; then <code>c = 15 + 10 = 25</code>.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Output of nested blocks: outer <code>int x=10, y=20;</code> inner block declares <code>int y = 40;</code> then does <code>x++; y++;</code> and after the inner block ends we print x and y.</strong></p>
+<ul><li>(a) x = 11, y = 41</li><li>(b) x = 10, y = 41</li><li>(c) x = 10, y = 20</li><li>(d) <strong>x = 11, y = 20  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The inner <code>y</code> is a <strong>new variable that shadows</strong> the outer one and dies when the block ends, so the outer y is untouched at 20. <code>x</code> has no inner declaration, so <code>x++</code> modifies the outer x, giving 11.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Output of: <code>int a[5]; for(i=0;i&lt;5;i++) a[i] = i*i - 2*i + 1;</code> then printing the array.</strong></p>
+<ul><li>(a) 1 0 2 4 9</li><li>(b) <strong>1 0 1 4 9  &lt;-- CORRECT</strong></li><li>(c) 1 1 2 4 9</li><li>(d) 1 2 3 4 9</li></ul>
+<blockquote><strong>Why:</strong> Recognise the identity: <code>i*i - 2i + 1 = (i-1)^2</code>. For i = 0..4 that gives 1, 0, 1, 4, <strong>9</strong>. Spotting the algebraic form is faster and less error-prone than substituting each value.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Output of: <code>char buffer[50]; int n = sprintf(buffer, &quot;Hello, World!&quot;); printf(&quot;%d %s&quot;, n, buffer);</code></strong></p>
+<ul><li>(a) Prints &#x27;13 Hello&#x27;</li><li>(b) Prints &#x27;12 Hello&#x27;</li><li>(c) Prints &#x27;12 Hello, World!&#x27;</li><li>(d) <strong>Prints &#x27;13 Hello, World!&#x27;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>sprintf</code> writes formatted text <strong>into the buffer</strong> (it prints nothing itself) and <strong>returns the character count excluding the terminating &#x27;\0&#x27;</strong>. &quot;Hello, World!&quot; has 13 characters including the comma and space.</blockquote>
+<p><strong>Q. [PYQ] Which of the following techniques can be used to modify the actual variable passed to a function?</strong></p>
+<ul><li>(a) Use a local variable instead of passing any parameters.</li><li>(b) Pass a copy of the actual parameter to function.</li><li>(c) Standard C has no options for modifying actual variables passed to a function.</li><li>(d) <strong>Pass the address of the actual parameters to function.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> C is call-by-value by default, so a copy cannot affect the original. Passing the <strong>address</strong> (a pointer) lets the function write through to the caller&#x27;s variable.</blockquote>
+<p><strong>Q. [PYQ] Which of the following options is correct about the functions in C language?</strong></p>
+<ul><li>(a) Actual parameters are declared in the function definition.</li><li>(b) Actual parameters are always variables.</li><li>(c) Actual parameters are used to define the function signature.</li><li>(d) <strong>Actual parameters are the values that are passed to a function when it is called.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Actual parameters</strong> are the values supplied at the call site (and may be literals or expressions, e.g. <code>add(3, x+2)</code>). <strong>Formal parameters</strong> are the variables declared in the definition that receive them.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is INCORRECT about the storage classes in C?</strong></p>
+<ul><li>(a) The scope of a variable in automatic storage class is local to the block in which it is defined.</li><li>(b) <strong>In Register storage class, the default initial value of the variable is zero.  &lt;-- CORRECT</strong></li><li>(c) In static storage class, the default initial value of the variable is zero.</li><li>(d) In Register storage class, the storage of a variable is CPU register.</li></ul>
+<blockquote><strong>Why:</strong> <code>register</code> variables, like <code>auto</code>, start with <strong>garbage</strong>. Only <strong>static</strong> and <strong>extern</strong> are guaranteed to be zero-initialised. Also note you cannot take the address of a register variable with <code>&amp;</code>.</blockquote>
+<p><strong>Q. [EXPECTED] A static local variable inside a function:</strong></p>
+<ul><li>(a) is destroyed when the function returns</li><li>(b) <strong>retains its value between function calls  &lt;-- CORRECT</strong></li><li>(c) is visible to other files</li><li>(d) is stored on the stack</li></ul>
+<blockquote><strong>Why:</strong> <code>static</code> gives the variable <strong>program lifetime</strong> but keeps its <strong>block scope</strong>. It lives in the data segment, initialised to 0, and is why returning a pointer to a static array is safe.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] [NUMERICAL] A function returns a pointer to a <code>static int arr[5] = {1,2,3,4,5};</code> and main loops five times printing <code>*ptr</code> without ever incrementing ptr. Output?</strong></p>
+<ul><li>(a) 1 1 3 4 1</li><li>(b) 2 3 4 5 0</li><li>(c) 1 2 3 4 5</li><li>(d) <strong>1 1 1 1 1  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>ptr</code> is <strong>never advanced</strong>, so <code>*ptr</code> dereferences the first element every time; the loop variable only counts. To print all five you would need <code>*(ptr+i)</code> or <code>ptr++</code>. Note <code>static</code> is what makes returning the array&#x27;s address legal.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a correct way of declaring and initializing array in C?</strong></p>
+<ul><li>(a) char arr[6] = {2};</li><li>(b) char arr[ ] = &quot;consultancy&quot;;</li><li>(c) <strong>char arr[6]; arr = &quot;consultancy&quot;;  &lt;-- CORRECT</strong></li><li>(d) char arr[6] = { };</li></ul>
+<blockquote><strong>Why:</strong> An <strong>array name is not a modifiable lvalue</strong>, so it cannot be assigned after declaration - you must use <code>strcpy</code>. Independently, &quot;consultancy&quot; needs 12 bytes and <code>arr</code> has only 6.</blockquote>
+<p><strong>Q. [PYQ] What do the first and second dimensions represent in a two-dimensional character array?</strong></p>
+<ul><li>(a) The first stores the length of each name, the second the number of names.</li><li>(b) <strong>The first represents the number of names, and the second the maximum length of each name.  &lt;-- CORRECT</strong></li><li>(c) The first is the maximum length, the second the number of names.</li><li>(d) The first holds the total characters, the second the number of names.</li></ul>
+<blockquote><strong>Why:</strong> <code>char names[5][20]</code> = <strong>5 names, each up to 20 characters</strong>. Think &quot;how many, then how long&quot;.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many bytes does the string &quot;HELLO&quot; occupy in C?</strong></p>
+<ul><li>(a) 5</li><li>(b) <strong>6  &lt;-- CORRECT</strong></li><li>(c) 7</li><li>(d) 10</li></ul>
+<blockquote><strong>Why:</strong> A C string is terminated by the null character <code>&#x27;\0&#x27;</code>, so 5 characters need <strong>6 bytes</strong>. <code>strlen(&quot;HELLO&quot;)</code> returns 5, but <code>sizeof(&quot;HELLO&quot;)</code> returns 6 - a favourite distinction.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which is the correct way to compare two strings in C?</strong></p>
+<ul><li>(a) if (s1 == s2)</li><li>(b) <strong>if (strcmp(s1, s2) == 0)  &lt;-- CORRECT</strong></li><li>(c) if (s1.equals(s2))</li><li>(d) if (s1 = s2)</li></ul>
+<blockquote><strong>Why:</strong> <code>==</code> on char arrays compares <strong>addresses</strong>, not contents. <code>strcmp</code> returns <strong>0 when equal</strong>, negative if s1 &lt; s2 and positive if s1 &gt; s2. (<code>.equals()</code> is Java, not C.)</blockquote>
+<p><strong>Q. [EXPECTED] <code>p+1</code> on a pointer <code>int *p</code> advances the address by:</strong></p>
+<ul><li>(a) 1 byte</li><li>(b) 2 bytes</li><li>(c) <strong>sizeof(int) bytes  &lt;-- CORRECT</strong></li><li>(d) 8 bytes</li></ul>
+<blockquote><strong>Why:</strong> Pointer arithmetic is scaled by the <strong>pointed-to type&#x27;s size</strong>, which is why <code>a[i]</code> is exactly equivalent to <code>*(a + i)</code>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which function allocates memory and initialises it to zero?</strong></p>
+<ul><li>(a) malloc()</li><li>(b) <strong>calloc()  &lt;-- CORRECT</strong></li><li>(c) realloc()</li><li>(d) free()</li></ul>
+<blockquote><strong>Why:</strong> <strong>calloc(count, size)</strong> zeroes the memory; <strong>malloc(n)</strong> leaves it with garbage. <code>realloc</code> resizes; <code>free</code> releases. Forgetting <code>free</code> causes a <strong>memory leak</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the difference between a structure and a union?</strong></p>
+<ul><li>(a) They are identical</li><li>(b) <strong>In a structure each member has its own memory; in a union all members share the same memory  &lt;-- CORRECT</strong></li><li>(c) A union can hold more members</li><li>(d) Structures cannot be nested</li></ul>
+<blockquote><strong>Why:</strong> Structure size = sum of members (plus padding); <strong>union size = size of the largest member</strong>, and only one member is valid at a time. Unions save memory when only one field is needed.</blockquote>
+<p><strong>Q. [EXPECTED] Which file mode erases the existing contents of a file?</strong></p>
+<ul><li>(a) &quot;r&quot;</li><li>(b) <strong>&quot;w&quot;  &lt;-- CORRECT</strong></li><li>(c) &quot;a&quot;</li><li>(d) &quot;r+&quot;</li></ul>
+<blockquote><strong>Why:</strong> <code>&quot;w&quot;</code> truncates or creates. <code>&quot;a&quot;</code> appends without destroying. <code>&quot;r&quot;</code> requires the file to exist and cannot write.</blockquote>
+<h2>4.2 C++ and Object Oriented Programming</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | OOP pillar definitions are near-certain | Priority CRITICAL</strong></blockquote>
+<h3>4.2.1 Questions</h3>
+<p><strong>Q. [PYQ] What is the objective of encapsulation in object-oriented programming?</strong></p>
+<ul><li>(a) To create multiple instances of a class</li><li>(b) To enable one class to inherit from another class</li><li>(c) To allow objects to take multiple forms</li><li>(d) <strong>To combine data and methods that operate on that data within a single unit  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The distractors each define a *different* concept - instantiation, inheritance and polymorphism. Learn one crisp phrase per pillar so you can tell them apart instantly.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which OOP concept hides complexity and shows only essential features?</strong></p>
+<ul><li>(a) Encapsulation</li><li>(b) <strong>Abstraction  &lt;-- CORRECT</strong></li><li>(c) Inheritance</li><li>(d) Polymorphism</li></ul>
+<blockquote><strong>Why:</strong> <strong>Abstraction hides COMPLEXITY</strong> (design level - &quot;what it does&quot;); <strong>encapsulation hides DATA</strong> (implementation level - &quot;how it is stored&quot;). A car&#x27;s steering wheel is abstraction; the sealed engine block is encapsulation.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] What feature of OOP allows an instance of a class to take on many forms?</strong></p>
+<ul><li>(a) Operator overriding</li><li>(b) Multiple inheritance</li><li>(c) Nested class</li><li>(d) <strong>Operator overloading  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The concept is <strong>polymorphism</strong>; since that word was not offered, the mechanism implementing it is <strong>operator overloading</strong>. Note that &quot;operator overriding&quot; is not a real term - operators are *overloaded*, methods are *overridden*.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Function overloading is resolved at:</strong></p>
+<ul><li>(a) run time</li><li>(b) <strong>compile time  &lt;-- CORRECT</strong></li><li>(c) link time</li><li>(d) load time</li></ul>
+<blockquote><strong>Why:</strong> <strong>Overloading</strong> = same name, different parameter lists = <strong>compile-time (static / early) binding</strong>. <strong>Overriding</strong> = same signature in a subclass = <strong>run-time (dynamic / late) binding</strong>, achieved through virtual functions.</blockquote>
+<p><strong>Q. [EXPECTED] A class that cannot be instantiated is called:</strong></p>
+<ul><li>(a) Final class</li><li>(b) Static class</li><li>(c) <strong>Abstract class  &lt;-- CORRECT</strong></li><li>(d) Nested class</li></ul>
+<blockquote><strong>Why:</strong> In C++ a class containing a <strong>pure virtual function</strong> (<code>virtual void f() = 0;</code>) becomes abstract. It exists only to be inherited from and may still contain concrete methods.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT supported for classes in Java but is supported in C++?</strong></p>
+<ul><li>(a) Single inheritance</li><li>(b) Encapsulation</li><li>(c) <strong>Multiple inheritance  &lt;-- CORRECT</strong></li><li>(d) Polymorphism</li></ul>
+<blockquote><strong>Why:</strong> Java forbids multiple inheritance of <strong>classes</strong> to avoid the <strong>Diamond Problem</strong> ambiguity, providing <strong>interfaces</strong> instead. C++ allows it directly. Java also has no operator overloading.</blockquote>
+<p><strong>Q. [EXPECTED] A constructor differs from an ordinary method in that it:</strong></p>
+<ul><li>(a) can be called explicitly any number of times</li><li>(b) <strong>has the same name as the class and no return type  &lt;-- CORRECT</strong></li><li>(c) must return void</li><li>(d) cannot be overloaded</li></ul>
+<blockquote><strong>Why:</strong> Constructors run automatically at object creation, share the class name, and have <strong>no return type at all</strong> (not even void). They <strong>can</strong> be overloaded. Destructors, by contrast, cannot be overloaded.</blockquote>
+<p><strong>Q. [PYQ] What does the code snippet <code>myObject.doActivity();</code> represent?</strong></p>
+<ul><li>(a) <strong>Calling a method named doActivity on the object myObject  &lt;-- CORRECT</strong></li><li>(b) Sending a message to the doActivity class</li><li>(c) Creating an object myObject</li><li>(d) Sending a message to the child class of myObject</li></ul>
+<blockquote><strong>Why:</strong> <code>doActivity</code> is a <strong>method</strong>, not a class, and object creation requires <code>new</code>. This is the standard OOP notion of <strong>message passing</strong> to an object.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which relationship describes &quot;a Car HAS-A Engine&quot;?</strong></p>
+<ul><li>(a) Inheritance</li><li>(b) <strong>Composition / Aggregation  &lt;-- CORRECT</strong></li><li>(c) Polymorphism</li><li>(d) Abstraction</li></ul>
+<blockquote><strong>Why:</strong> <strong>HAS-A = composition/aggregation</strong>; <strong>IS-A = inheritance</strong>. Composition is a strong part-of relation (destroy the house and the rooms go too); aggregation is weaker (a department has professors who exist independently).</blockquote>
+<p><strong>Q. [PYQ] In C++ language, the instruction <code>ignore(x,y);</code> <em>_</em>___.</strong></p>
+<ul><li>(a) skips the last x characters and stops if character y is encountered</li><li>(b) skips the first y characters and stops if character x is encountered</li><li>(c) <strong>skips the first x characters and stops if character y is encountered  &lt;-- CORRECT</strong></li><li>(d) skips the last y characters and stops if character x is encountered</li></ul>
+<blockquote><strong>Why:</strong> <code>cin.ignore(count, delimiter)</code> discards characters until it has removed <strong>count</strong> of them or has consumed the <strong>delimiter</strong>, whichever comes first. Its everyday use is <code>cin.ignore(1000, &#x27;\n&#x27;)</code> to clear a leftover newline before <code>getline()</code>.</blockquote>
+<p><strong>Q. [EXPECTED] Which C++ feature allows a non-member function to access private members of a class?</strong></p>
+<ul><li>(a) Inline function</li><li>(b) Virtual function</li><li>(c) <strong>Friend function  &lt;-- CORRECT</strong></li><li>(d) Static function</li></ul>
+<blockquote><strong>Why:</strong> A <code>friend</code> declaration grants specific external functions or classes access to private and protected members. It deliberately breaks encapsulation, so it should be used sparingly.</blockquote>
+<h2>4.3 Java</h2>
+<blockquote><strong>WEIGHTAGE: 3-5 marks | Exception handling and access modifiers recur | Priority CRITICAL</strong></blockquote>
+<h3>4.3.1 Questions</h3>
+<p><strong>Q. [EXPECTED] [TRAP] Java achieves platform independence through:</strong></p>
+<ul><li>(a) Machine code</li><li>(b) <strong>Bytecode executed by the JVM  &lt;-- CORRECT</strong></li><li>(c) Assembly language</li><li>(d) Direct hardware compilation</li></ul>
+<blockquote><strong>Why:</strong> <code>javac</code> produces <strong>bytecode</strong> (a .class file), and any platform&#x27;s <strong>JVM</strong> runs that same bytecode - &quot;Write Once, Run Anywhere&quot;. <strong>JDK</strong> = development kit (includes compiler), <strong>JRE</strong> = runtime only, <strong>JVM</strong> = the executing engine.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>___ does NOT have any child ClassLoaders.</strong></p>
+<ul><li>(a) BootStrap ClassLoader</li><li>(b) Extension ClassLoader</li><li>(c) Primordial ClassLoader</li><li>(d) <strong>System ClassLoader  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The delegation hierarchy is <strong>Bootstrap to Extension to System</strong>, so the <strong>System (Application) ClassLoader</strong> sits at the bottom with nothing beneath it. Note the trap: &quot;Primordial&quot; is just another name for Bootstrap, which *does* have a child.</blockquote>
+<p><strong>Q. [PYQ] What does the super keyword in Java do?</strong></p>
+<ul><li>(a) Refers to high performing objects</li><li>(b) Refers to the current object</li><li>(c) Used to define static variables</li><li>(d) <strong>Refers to the parent class  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>super</code> accesses the <strong>parent</strong> class (<code>super.method()</code>, <code>super()</code> for the parent constructor); <code>this</code> refers to the <strong>current object</strong>. Do not swap them.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is FALSE?</strong></p>
+<ul><li>(a) <strong>Final methods can be overridden.  &lt;-- CORRECT</strong></li><li>(b) &quot;static public void main(String...abcd){}&quot; is a valid statement.</li><li>(c) Abstract classes cannot be instantiated.</li><li>(d) Interface allows default method definitions.</li></ul>
+<blockquote><strong>Why:</strong> A <strong>final method is by definition one that cannot be overridden</strong>. The others are all true: modifier order is free and varargs <code>String...</code> is legal for main; abstract classes cannot be instantiated; and since <strong>Java 8</strong> interfaces may contain <code>default</code> methods with bodies.</blockquote>
+<p><strong>Q. [EXPECTED] Applying <code>final</code> to a class means:</strong></p>
+<ul><li>(a) its methods cannot be called</li><li>(b) <strong>it cannot be inherited from  &lt;-- CORRECT</strong></li><li>(c) its variables become static</li><li>(d) it cannot be instantiated</li></ul>
+<blockquote><strong>Why:</strong> <strong>final class</strong> = no subclass (e.g. <code>String</code>). <strong>final method</strong> = cannot be overridden. <strong>final variable</strong> = a constant. A class that cannot be *instantiated* is <code>abstract</code>, not final.</blockquote>
+<p><strong>Q. [PYQ] Which access modifier can be used to access members in a deriving class?</strong></p>
+<ul><li>(a) Void</li><li>(b) <strong>Protected  &lt;-- CORRECT</strong></li><li>(c) Private</li><li>(d) Public</li></ul>
+<blockquote><strong>Why:</strong> <code>protected</code> is designed precisely for inheritance - visible in the same package <strong>and</strong> in subclasses in other packages. <code>private</code> blocks subclasses entirely, and <code>void</code> is a return type, not an access modifier.</blockquote>
+<p><strong>Q. [PYQ] Identify the descending order of strict access protection.</strong></p>
+<ul><li>(a) Public, protected, private, package</li><li>(b) <strong>Private, protected, package, public  &lt;-- CORRECT</strong></li><li>(c) Public, private, protected, package</li><li>(d) Private, package, protected, public</li></ul>
+<blockquote><strong>Why:</strong> Look for the option beginning with <strong>Private</strong> and ending with <strong>public</strong>. Strictly, Java&#x27;s order is private &gt; default(package) &gt; protected &gt; public, because <code>protected</code> additionally admits subclasses in other packages - but this paper&#x27;s key placed protected before package, so use the start/end test.</blockquote>
+<p><strong>Q. [PYQ] A Parent class has a <code>protected void protectedMethod()</code>; <code>Child extends Parent</code> and calls it from a public method; main creates a Child and calls that method. What happens?</strong></p>
+<ul><li>(a) <strong>The code will compile and print the message.  &lt;-- CORRECT</strong></li><li>(b) Compilation Error: protectedMethod is not visible in the Child class.</li><li>(c) Compilation Error: childMethod is not visible due to access restrictions.</li><li>(d) Runtime Error: Cannot access protectedMethod from the Child class.</li></ul>
+<blockquote><strong>Why:</strong> A protected member is <strong>fully accessible inside a subclass</strong>, and <code>childMethod</code> is public so <code>main</code> may call it. Nothing here violates any access rule.</blockquote>
+<p><strong>Q. [PYQ] Select the true statement about try-catch blocks.</strong></p>
+<ul><li>(a) A try block must have at least 1 catch to have a finally block.</li><li>(b) A try block must have only 1 finally block for each catch block.</li><li>(c) <strong>A try block can have many catches but only 1 finally block.  &lt;-- CORRECT</strong></li><li>(d) A try block can have many catches and many finally blocks.</li></ul>
+<blockquote><strong>Why:</strong> Many <code>catch</code> blocks, exactly <strong>one</strong> <code>finally</code>. A try may also have <code>finally</code> with <strong>no</strong> catch at all. Catch blocks must be ordered most-specific first, or the code will not compile.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] When does a finally block NOT execute?</strong></p>
+<ul><li>(a) When an exception is thrown</li><li>(b) When the try block returns a value</li><li>(c) When no exception occurs</li><li>(d) <strong>Practically never - only if the JVM exits via System.exit() or crashes  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>finally</code> runs even when the try block executes <code>return</code> or throws. That reliability is why it is used for closing files and connections.</blockquote>
+<p><strong>Q. [PYQ] An <code>ExceptionTest</code> calls <code>calculate(10, 0)</code>. The inner catch catches ArithmeticException and throws <code>new Exception(&quot;Division by zero not allowed&quot;)</code>; both levels have finally blocks. Output?</strong></p>
+<ul><li>(a) Inner finally block executed. General exception caught: / by zero In finally block.</li><li>(b) <strong>Inner finally executed / General exception caught: Division by zero not allowed / In finally block.  &lt;-- CORRECT</strong></li><li>(c) Inner finally executed. Result: 0 In finally block.</li><li>(d) Inner finally executed. ArithmeticException caught: / by zero In finally block.</li></ul>
+<blockquote><strong>Why:</strong> Two rules combine. (1) The <strong>inner finally runs before control leaves</strong> the method, even though an exception is propagating. (2) The re-thrown object&#x27;s type is now plain <strong>Exception</strong>, so the <code>catch (ArithmeticException)</code> block does <strong>not</strong> match and the general <code>catch (Exception)</code> does - carrying the <strong>new</strong> message, not &quot;/ by zero&quot;.</blockquote>
+<p><strong>Q. [PYQ] A <code>CustomException extends Exception</code>; <code>validateAge(15)</code> throws it because 15 &lt; 18; main catches it and has a finally block. Output?</strong></p>
+<ul><li>(a) Caught Exception: null / Execution finished.</li><li>(b) Compilation error because custom exceptions cannot extend Exception.</li><li>(c) Age is valid. / Execution finished.</li><li>(d) <strong>Caught Exception: Age must be 18 or above. / Execution finished.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The exception <strong>is</strong> thrown, so &quot;Age is valid.&quot; never prints. <code>super(message)</code> passes the text up to Throwable, so <code>getMessage()</code> returns it rather than null. <code>finally</code> always runs.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is a checked exception?</strong></p>
+<ul><li>(a) NullPointerException</li><li>(b) ArrayIndexOutOfBoundsException</li><li>(c) <strong>IOException  &lt;-- CORRECT</strong></li><li>(d) ArithmeticException</li></ul>
+<blockquote><strong>Why:</strong> <strong>Checked</strong> exceptions are detected at compile time and must be caught or declared: IOException, SQLException, ClassNotFoundException. The other three are <strong>unchecked</strong> (subclasses of RuntimeException).</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Output of: <code>int Integer = 24; char String = &#x27;I&#x27;; System.out.print(Integer); System.out.print(String);</code></strong></p>
+<ul><li>(a) I</li><li>(b) Compiler Error</li><li>(c) Throws Exception</li><li>(d) <strong>24I  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>Integer</code> and <code>String</code> are <strong>class names, not reserved keywords</strong>, so they are legal identifiers. <code>print()</code> adds no newline, so the outputs run together as <strong>24I</strong>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is FALSE about packages?</strong></p>
+<ul><li>(a) <strong>Packages cannot provide controlled access.  &lt;-- CORRECT</strong></li><li>(b) Packages are used to prevent naming conflicts.</li><li>(c) Packages are considered data encapsulation.</li><li>(d) Packages prevent naming conflicts and are considered data encapsulation.</li></ul>
+<blockquote><strong>Why:</strong> Packages <strong>do</strong> provide controlled access, because <code>default</code> (package-private) and <code>protected</code> members are visible only within the package.</blockquote>
+<p><strong>Q. [PYQ] What is the name of the .NET collection class that enables an element to be accessed using a unique key?</strong></p>
+<ul><li>(a) Linked list</li><li>(b) <strong>Hashtable  &lt;-- CORRECT</strong></li><li>(c) Double linked list</li><li>(d) Array list</li></ul>
+<blockquote><strong>Why:</strong> A <strong>Hashtable</strong> stores key-value pairs and retrieves values directly from the key by hashing, giving average <strong>O(1)</strong> access. Lists and arrays are accessed by position or traversal.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which Java collection allows duplicate elements and maintains insertion order?</strong></p>
+<ul><li>(a) HashSet</li><li>(b) TreeSet</li><li>(c) <strong>ArrayList  &lt;-- CORRECT</strong></li><li>(d) HashMap</li></ul>
+<blockquote><strong>Why:</strong> <strong>List</strong> implementations (ArrayList, LinkedList, Vector) are ordered and allow duplicates. <strong>Set</strong> forbids duplicates. <strong>Map</strong> stores key-value pairs and is not a Collection subinterface.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is thread-safe (synchronised)?</strong></p>
+<ul><li>(a) ArrayList</li><li>(b) HashMap</li><li>(c) <strong>Vector  &lt;-- CORRECT</strong></li><li>(d) LinkedList</li></ul>
+<blockquote><strong>Why:</strong> <strong>Vector</strong> and <strong>Hashtable</strong> are the legacy synchronised classes. <code>ArrayList</code> and <code>HashMap</code> are not synchronised and are therefore faster. Also: <strong>HashMap allows one null key</strong>, whereas <strong>Hashtable allows none</strong>.</blockquote>
+<h2>4.4 .NET Framework</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks in DSSSB | Appeared in all three papers supplied | Priority MEDIUM</strong></blockquote>
+<h3>4.4.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following is the execution engine for .NET applications and servers, acting as the interface between .NET applications and the operating system?</strong></p>
+<ul><li>(a) Framework Class Library (FCL)</li><li>(b) Common Type System (CTS)</li><li>(c) Common Language Specifications (CLS)</li><li>(d) <strong>Common Language Runtime (CLR)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The <strong>CLR</strong> executes managed code and provides garbage collection, memory management, security, exception handling and thread management. FCL is a class library; CTS defines types; CLS defines cross-language rules. None of those *execute* anything.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ is a code that consists of CPU and platform-independent set of instructions, which can be easily converted to the native code.</strong></p>
+<ul><li>(a) DLL</li><li>(b) FCL</li><li>(c) JIT</li><li>(d) <strong>MSIL  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>MSIL</strong> (Microsoft Intermediate Language, also CIL/IL) is the intermediate output of a .NET compiler; the <strong>JIT</strong> compiler is what *converts* it to native code at run time. A <strong>DLL</strong> is a compiled file; <strong>FCL</strong> is a library.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a feature of ADO.net?</strong></p>
+<ul><li>(a) Maintainability</li><li>(b) Interoperability</li><li>(c) <strong>Reachability  &lt;-- CORRECT</strong></li><li>(d) Scalability</li></ul>
+<blockquote><strong>Why:</strong> ADO.NET&#x27;s stated features are <strong>interoperability, maintainability, programmability, performance and scalability</strong>. &quot;Reachability&quot; belongs to graph theory and garbage collection.</blockquote>
+<p><strong>Q. [PYQ] How to write the dot net server control?</strong></p>
+<ul><li>(a) &lt;asp:controlType ID=&quot;ControlID&quot; runin=&quot;server&quot; ...&gt;</li><li>(b) &lt;asp:controlType ID=&quot;ControlID&quot; runas=&quot;server&quot; ...&gt;</li><li>(c) &lt;asp:controlType ID=&quot;ControlID&quot; run=&quot;server&quot; ...&gt;</li><li>(d) <strong>&lt;asp:controlType ID=&quot;ControlID&quot; runat=&quot;server&quot; ...&gt;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Every ASP.NET server control requires <strong><code>runat=&quot;server&quot;</code></strong> - that attribute is what makes the framework process the tag on the server. Memorise the exact spelling: r-u-n-a-t. The distractors are <code>runin</code>, <code>runas</code> and <code>run</code>.</blockquote>
+<p><strong>Q. [EXPECTED] Which ADO.NET object provides fast, forward-only, read-only access to query results?</strong></p>
+<ul><li>(a) DataSet</li><li>(b) DataAdapter</li><li>(c) <strong>DataReader  &lt;-- CORRECT</strong></li><li>(d) Connection</li></ul>
+<blockquote><strong>Why:</strong> <strong>DataReader</strong> streams rows while connected - fastest for read-only traversal. <strong>DataSet</strong> is a disconnected in-memory copy that can be modified and reconciled later via a <strong>DataAdapter</strong>.</blockquote></body></html>

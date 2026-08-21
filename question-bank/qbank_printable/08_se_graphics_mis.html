@@ -1,0 +1,226 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 9 - Software Engineering, Graphics, MIS and Emerging Technology</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 9 - Software Engineering, Graphics, MIS and Emerging Technology</h1>
+<blockquote>*Weightage: 8 to 18 marks combined. Chapter 9.4 on emerging technology is the one place where I am preparing you for a paper that may not look like the last one.*</blockquote>
+<h2>9.1 Software Engineering</h2>
+<blockquote><strong>WEIGHTAGE: 3-5 marks in DSSSB, 3-6 expected | SDLC models and coupling/cohesion are near-certain | Priority MEDIUM-HIGH</strong></blockquote>
+<h3>9.1.1 Questions</h3>
+<p><strong>Q. [PYQ] <em>_</em>_ activities are at the very core of project completion work tasks, whereas <em>_</em>_ activities are not mandatory.</strong></p>
+<ul><li>(a) Requirements, arbitrary</li><li>(b) Framework, umbrella</li><li>(c) <strong>Functional, non-functional  &lt;-- CORRECT</strong></li><li>(d) Non-functional, functional</li></ul>
+<blockquote><strong>Why:</strong> <strong>Functional</strong> requirements define what the software must DO - without them the project is incomplete. <strong>Non-functional</strong> requirements are quality attributes (performance, security, usability). Do not confuse with the other pair: <strong>framework</strong> activities are the main phases, <strong>umbrella</strong> activities run across the whole project (risk management, quality assurance, configuration management).</blockquote>
+<p><strong>Q. [PYQ] The <em>_</em>_ design is a high-abstraction version of a system, followed by <em>_</em>_ design that breaks the concept into less-abstracted sub-systems, and later the <em>_</em>_ design showcases the implementation at module level.</strong></p>
+<ul><li>(a) detailed, system, architectural</li><li>(b) detailed, architectural, system</li><li>(c) architectural, detailed, system</li><li>(d) <strong>system, architectural, detailed  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Always most abstract to most concrete: <strong>System, Architectural, Detailed.</strong> You picture the whole *system*, draw its *architecture*, then fill in the *details*.</blockquote>
+<p><strong>Q. [PYQ] In building software, <em>_</em>_ should preferably be lower and <em>_</em>_ is preferred to be on the higher side.</strong></p>
+<ul><li>(a) inheritance from parent class, dependency with peer classes</li><li>(b) aggregation with peer components, composition among classes</li><li>(c) none of the given answer</li><li>(d) <strong>coupling among components, cohesion in bonding components  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>LOW coupling, HIGH cohesion</strong> - the single most important design maxim. Low coupling means a change in one module does not ripple outward; high cohesion means each module has one clear responsibility.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Cohesion refers to:</strong></p>
+<ul><li>(a) interdependence between modules</li><li>(b) <strong>how strongly the elements within a single module belong together  &lt;-- CORRECT</strong></li><li>(c) the number of modules</li><li>(d) the depth of inheritance</li></ul>
+<blockquote><strong>Why:</strong> <strong>Coupling is BETWEEN modules; cohesion is WITHIN one module.</strong> Best cohesion is <strong>functional</strong>; worst is <strong>coincidental</strong>. Best coupling is <strong>data/message</strong>; worst is <strong>content</strong>.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Within software engineering, which prescriptive model is INCOMPATIBLE with circumstances in which the requirements alter throughout development?</strong></p>
+<ul><li>(a) <strong>Linear models  &lt;-- CORRECT</strong></li><li>(b) Evolutionary models</li><li>(c) Agile models</li><li>(d) Incremental models</li></ul>
+<blockquote><strong>Why:</strong> &quot;Linear model&quot; = <strong>Waterfall</strong>. Each phase is frozen once complete, so a change discovered during coding cannot flow back into design. Evolutionary, agile and incremental models are all built to absorb change.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT true about the Waterfall model?</strong></p>
+<ul><li>(a) Long duration</li><li>(b) <strong>High cost  &lt;-- CORRECT</strong></li><li>(c) High-risk involvement</li><li>(d) Low cost</li></ul>
+<blockquote><strong>Why:</strong> Waterfall is described as a <strong>low-cost</strong> model - no prototyping, no repeated risk analysis, minimal customer interaction. Its genuine drawbacks are long duration, high risk and total rigidity. Note the option list contains both &quot;high cost&quot; and &quot;low cost&quot;, signalling which is tested.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a phase of the RAD model?</strong></p>
+<ul><li>(a) <strong>Development modelling  &lt;-- CORRECT</strong></li><li>(b) Business modelling</li><li>(c) Process modelling</li><li>(d) Data modelling</li></ul>
+<blockquote><strong>Why:</strong> RAD phases: <strong>Business modelling, Data modelling, Process modelling, Application Generation, Testing and Turnover.</strong> &quot;Development modelling&quot; is invented.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which SDLC model explicitly includes risk analysis in every iteration?</strong></p>
+<ul><li>(a) Waterfall</li><li>(b) RAD</li><li>(c) <strong>Spiral  &lt;-- CORRECT</strong></li><li>(d) V-Model</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Spiral model</strong> (Barry Boehm) has four quadrants per loop: planning, <strong>risk analysis</strong>, engineering and evaluation. It suits large, expensive, high-risk projects. The <strong>V-Model</strong> pairs each development phase with a matching test phase.</blockquote>
+<p><strong>Q. [EXPECTED] Which model is most appropriate when the customer cannot clearly state the requirements?</strong></p>
+<ul><li>(a) Waterfall</li><li>(b) V-Model</li><li>(c) <strong>Prototype model  &lt;-- CORRECT</strong></li><li>(d) Big Bang</li></ul>
+<blockquote><strong>Why:</strong> A quick working mock-up is built, shown to the user, and refined from their reaction - the fastest way to surface requirements the user could not articulate in the abstract.</blockquote>
+<p><strong>Q. [EXPECTED] In Agile, a short fixed-length iteration producing a shippable increment is called a:</strong></p>
+<ul><li>(a) phase</li><li>(b) milestone</li><li>(c) <strong>sprint  &lt;-- CORRECT</strong></li><li>(d) baseline</li></ul>
+<blockquote><strong>Why:</strong> A sprint is typically 2-4 weeks. Scrum roles: <strong>Product Owner</strong> (owns the backlog), <strong>Scrum Master</strong> (facilitator), <strong>Development Team</strong>. Agile values working software over documentation and welcomes changing requirements.</blockquote>
+<p><strong>Q. [PYQ] CMM stands for:</strong></p>
+<ul><li>(a) Cognitive Modularity Model</li><li>(b) Capability Modularity Model</li><li>(c) Cognitive Measurable Model</li><li>(d) <strong>Capability Maturity Model  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Both words matter: <strong>Capability</strong> (what the organisation can do) and <strong>Maturity</strong> (how disciplined its process is). Levels: <strong>Initial, Repeatable, Defined, Managed, Optimising</strong> - &quot;<strong>I R</strong>eally <strong>D</strong>o <strong>M</strong>y <strong>O</strong>wn work.&quot;</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] At which CMM level is the process quantitatively measured and statistically controlled?</strong></p>
+<ul><li>(a) Level 2</li><li>(b) Level 3</li><li>(c) <strong>Level 4  &lt;-- CORRECT</strong></li><li>(d) Level 5</li></ul>
+<blockquote><strong>Why:</strong> <strong>Level 4 = Managed (quantitatively managed)</strong> - measurement and statistical control. <strong>Level 5 = Optimising</strong> adds continuous improvement and defect prevention.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which type of testing requires knowledge of the internal code structure?</strong></p>
+<ul><li>(a) Black box testing</li><li>(b) <strong>White box testing  &lt;-- CORRECT</strong></li><li>(c) Acceptance testing</li><li>(d) Beta testing</li></ul>
+<blockquote><strong>Why:</strong> <strong>White box</strong> (structural/glass box) examines internal logic - statement, branch and path coverage, cyclomatic complexity. <strong>Black box</strong> (functional) tests only inputs and outputs using equivalence partitioning and boundary value analysis.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Beta testing is performed:</strong></p>
+<ul><li>(a) by developers at the development site</li><li>(b) <strong>by real users at the customer&#x27;s site  &lt;-- CORRECT</strong></li><li>(c) only by the QA team</li><li>(d) before unit testing</li></ul>
+<blockquote><strong>Why:</strong> <strong>Alpha testing</strong> = at the developer&#x27;s site by internal staff. <strong>Beta testing</strong> = at the customer&#x27;s site by real users. Both are forms of <strong>acceptance testing</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Re-running previously passed tests after a code change is called:</strong></p>
+<ul><li>(a) Unit testing</li><li>(b) Smoke testing</li><li>(c) <strong>Regression testing  &lt;-- CORRECT</strong></li><li>(d) Stress testing</li></ul>
+<blockquote><strong>Why:</strong> Regression testing confirms that a change has not broken something that used to work.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] If a control flow graph has 12 edges and 9 nodes, the cyclomatic complexity is:</strong></p>
+<ul><li>(a) 3</li><li>(b) 4</li><li>(c) <strong>5  &lt;-- CORRECT</strong></li><li>(d) 21</li></ul>
+<blockquote><strong>Why:</strong> <strong>V(G) = E - N + 2</strong> = 12 - 9 + 2 = <strong>5</strong>. It equals the number of independent paths (and also decision points + 1), giving the minimum test cases for branch coverage.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Verification answers which question?</strong></p>
+<ul><li>(a) Are we building the right product?</li><li>(b) <strong>Are we building the product right?  &lt;-- CORRECT</strong></li><li>(c) Will the customer accept it?</li><li>(d) Is it fast enough?</li></ul>
+<blockquote><strong>Why:</strong> <strong>Verification</strong> = conformance to specification, usually <strong>without executing</strong> the code (reviews, walkthroughs, inspections). <strong>Validation</strong> = does it meet the user&#x27;s actual need, usually <strong>by executing</strong> it.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is the easiest to be transformed into a computer program?</strong></p>
+<ul><li>(a) <strong>Pseudo-code  &lt;-- CORRECT</strong></li><li>(b) Algorithm</li><li>(c) Flowchart</li><li>(d) None of the above</li></ul>
+<blockquote><strong>Why:</strong> Pseudo-code already uses programming constructs (IF, WHILE, assignment) in a code-like layout, so conversion is nearly line-by-line. A plain-English algorithm is more abstract; a flowchart is graphical.</blockquote>
+<p><strong>Q. [PYQ] Program links with other parts of the program in a flowchart are represented by <em>_</em>___.</strong></p>
+<ul><li>(a) rectangles</li><li>(b) <strong>circles  &lt;-- CORRECT</strong></li><li>(c) trapezoids</li><li>(d) rhombuses</li></ul>
+<blockquote><strong>Why:</strong> The <strong>connector</strong> symbol is a circle, used to join parts of a flowchart across pages. <strong>Rectangle</strong> = processing, <strong>diamond/rhombus</strong> = decision, <strong>parallelogram</strong> = input/output, <strong>oval</strong> = start/stop.</blockquote>
+<p><strong>Q. [EXPECTED] COCOMO is used for:</strong></p>
+<ul><li>(a) testing</li><li>(b) <strong>effort and cost estimation  &lt;-- CORRECT</strong></li><li>(c) configuration management</li><li>(d) requirement gathering</li></ul>
+<blockquote><strong>Why:</strong> <strong>COnstructive COst MOdel</strong> (Boehm) estimates effort in person-months from size in KLOC. Its three modes are <strong>Organic, Semi-detached and Embedded</strong>. The alternative, language-independent technique is <strong>Function Point analysis</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] The longest path through a PERT network, which determines the minimum project duration, is called the:</strong></p>
+<ul><li>(a) slack path</li><li>(b) <strong>critical path  &lt;-- CORRECT</strong></li><li>(c) Gantt path</li><li>(d) baseline</li></ul>
+<blockquote><strong>Why:</strong> Any delay on the <strong>critical path</strong> delays the whole project. A <strong>Gantt chart</strong> shows tasks against a calendar; <strong>PERT</strong> shows dependencies as a network.</blockquote>
+<h2>9.2 Computer Graphics and Multimedia</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks in DSSSB | Algorithms and projections recur | Priority MEDIUM</strong></blockquote>
+<h3>9.2.1 Questions</h3>
+<p><strong>Q. [PYQ] In order to move objects in computer graphics that generate animation effects, which of the following is necessary?</strong></p>
+<ul><li>(a) <strong>Various transformation operations  &lt;-- CORRECT</strong></li><li>(b) Line rasterisation sequencing</li><li>(c) Phong model of lighting</li><li>(d) Eigen value computations</li></ul>
+<blockquote><strong>Why:</strong> Motion is repeated <strong>translation, rotation and scaling</strong> between frames. Rasterisation draws a line onto pixels; the Phong model shades surfaces.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Why are homogeneous coordinates used in 2D transformations?</strong></p>
+<ul><li>(a) To reduce memory</li><li>(b) <strong>So that translation can also be expressed as matrix multiplication  &lt;-- CORRECT</strong></li><li>(c) To support colour</li><li>(d) To speed up rasterisation</li></ul>
+<blockquote><strong>Why:</strong> Scaling and rotation are naturally multiplicative, but translation is additive. Writing a point as (x, y, <strong>1</strong>) makes translation multiplicative too, so several transformations can be <strong>concatenated into a single composite matrix</strong>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is a clipping algorithm?</strong></p>
+<ul><li>(a) Simple DDA</li><li>(b) <strong>Liang Barsky&#x27;s algorithm  &lt;-- CORRECT</strong></li><li>(c) Bresenham&#x27;s algorithm</li><li>(d) Mid-point Algorithm</li></ul>
+<blockquote><strong>Why:</strong> <strong>DDA</strong> and <strong>Bresenham</strong> draw lines; <strong>mid-point</strong> draws circles. <strong>Liang-Barsky</strong> and <strong>Cohen-Sutherland</strong> clip lines; <strong>Sutherland-Hodgman</strong> clips polygons.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Bresenham&#x27;s line algorithm is preferred over DDA because it:</strong></p>
+<ul><li>(a) draws thicker lines</li><li>(b) <strong>uses only integer arithmetic, making it faster and free of round-off error  &lt;-- CORRECT</strong></li><li>(c) supports colour</li><li>(d) works in 3D</li></ul>
+<blockquote><strong>Why:</strong> DDA uses <strong>floating-point</strong> addition and rounding, which is slower and accumulates error. Bresenham uses an integer decision parameter with only addition, subtraction and bit shifts.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] <em>_</em>_ and <em>_</em>_ views cannot be framed together for rendering a computer visual appropriately.</strong></p>
+<ul><li>(a) <strong>Orthogonal projection, horizontal view  &lt;-- CORRECT</strong></li><li>(b) Vertical view, rear projection</li><li>(c) Front-side, rear-side</li><li>(d) Parallel projection, perspective projection</li></ul>
+<blockquote><strong>Why:</strong> Orthographic projection uses projectors <strong>perpendicular</strong> to the view plane, which conflicts with simultaneously presenting a horizontal viewing direction in the same frame. Note that &quot;parallel projection, perspective projection&quot; is also a genuinely incompatible pair in principle - reason from <strong>which two views demand contradictory projector geometry</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] In which projection do distant objects appear smaller?</strong></p>
+<ul><li>(a) Orthographic</li><li>(b) Oblique</li><li>(c) <strong>Perspective  &lt;-- CORRECT</strong></li><li>(d) Isometric</li></ul>
+<blockquote><strong>Why:</strong> <strong>Perspective</strong> projectors converge at a centre of projection, producing vanishing points and realism - like the eye or a camera. <strong>Parallel/orthographic</strong> projection preserves true dimensions and is used for engineering drawings.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of these is NOT a parameter upon which the influence of lighting is based?</strong></p>
+<ul><li>(a) Light Source</li><li>(b) Position of Observer</li><li>(c) <strong>Rendering Algorithm  &lt;-- CORRECT</strong></li><li>(d) Surface</li></ul>
+<blockquote><strong>Why:</strong> The physical inputs to an illumination calculation are the <strong>light source</strong>, the <strong>surface</strong> properties and the <strong>observer&#x27;s position</strong> (needed for specular highlights). The <strong>rendering algorithm</strong> is the *method of computing* the image, not a parameter of the lighting - the recipe is not an ingredient.</blockquote>
+<p><strong>Q. [EXPECTED] Which shading method interpolates the surface normal and computes lighting per pixel?</strong></p>
+<ul><li>(a) Flat shading</li><li>(b) Gouraud shading</li><li>(c) <strong>Phong shading  &lt;-- CORRECT</strong></li><li>(d) Constant shading</li></ul>
+<blockquote><strong>Why:</strong> <strong>Gouraud</strong> interpolates *intensity* computed at the vertices - fast but can miss highlights inside a polygon. <strong>Phong</strong> interpolates the *normal* and lights each pixel - slower but far better highlights.</blockquote>
+<p><strong>Q. [EXPECTED] Which hidden surface removal technique stores a depth value for every pixel?</strong></p>
+<ul><li>(a) Back-face detection</li><li>(b) Painter&#x27;s algorithm</li><li>(c) <strong>Z-buffer algorithm  &lt;-- CORRECT</strong></li><li>(d) Ray tracing</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Z-buffer (depth buffer)</strong> keeps the nearest surface per pixel - simple and universally used in hardware. <strong>Ray tracing</strong> is far more realistic (reflection, refraction, shadows) but computationally expensive.</blockquote>
+<p><strong>Q. [PYQ] The construction of computer-generated simulations that simulate real-world activities using interactive graphics software and hardware is called:</strong></p>
+<ul><li>(a) <strong>virtual reality systems  &lt;-- CORRECT</strong></li><li>(b) hybrid systems</li><li>(c) genetic algorithms</li><li>(d) fuzzy neural networks</li></ul>
+<blockquote><strong>Why:</strong> The other three are <strong>Artificial Intelligence</strong> techniques. VR&#x27;s &quot;three I&#x27;s&quot; are <strong>Immersion, Interaction, Imagination</strong>; <strong>AR</strong> overlays content on the real world rather than replacing it.</blockquote>
+<p><strong>Q. [PYQ] Which tool is used to adjust the brightness and contrast of an image in Adobe Photoshop?</strong></p>
+<ul><li>(a) Healing brush tool</li><li>(b) Paint bucket tool</li><li>(c) <strong>Adjustments panel  &lt;-- CORRECT</strong></li><li>(d) Selection tool</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Adjustments panel</strong> holds brightness/contrast, levels, curves, hue/saturation. The <strong>healing brush</strong> repairs blemishes; the <strong>paint bucket</strong> fills areas.</blockquote>
+<p><strong>Q. [PYQ] Which of the following formats is commonly used for exporting images for the web?</strong></p>
+<ul><li>(a) <strong>PNG  &lt;-- CORRECT</strong></li><li>(b) PSD</li><li>(c) BMP</li><li>(d) TIFF</li></ul>
+<blockquote><strong>Why:</strong> <strong>PNG</strong> = lossless with transparency, ideal for logos and sharp-edged graphics. <strong>PSD</strong> is Photoshop&#x27;s editable working file; <strong>BMP</strong> is uncompressed; <strong>TIFF</strong> is for print/archival - all far too large for the web. For photographs, <strong>JPEG</strong> is preferred.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which image format scales to any size without loss of quality?</strong></p>
+<ul><li>(a) JPEG</li><li>(b) PNG</li><li>(c) GIF</li><li>(d) <strong>SVG  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>SVG</strong> is <strong>vector</strong> - stored as mathematical descriptions of shapes. JPEG, PNG, GIF and BMP are <strong>raster</strong> (a fixed pixel grid) and blur when enlarged.</blockquote>
+<p><strong>Q. [PYQ] What is the main function of the &#x27;cutting&#x27; tool in image editing?</strong></p>
+<ul><li>(a) <strong>To remove parts of the image  &lt;-- CORRECT</strong></li><li>(b) To change the image resolution</li><li>(c) To apply color effects</li><li>(d) To resize the image</li></ul>
+<blockquote><strong>Why:</strong> Cutting/cropping removes content; it does not resample or recolour.</blockquote>
+<h2>9.3 Management Information Systems and Knowledge Management</h2>
+<blockquote><strong>WEIGHTAGE: 3-6 marks in DSSSB | Appeared in all three papers supplied | Priority MEDIUM-HIGH</strong></blockquote>
+<h3>9.3.1 Questions</h3>
+<p><strong>Q. [PYQ] <em>_</em>_ is a set of interrelated components that collect (or retrieve), process, store and distribute information to support decision-making and control in an organisation.</strong></p>
+<ul><li>(a) An information technology</li><li>(b) Mini model of a processed system</li><li>(c) Max model of a processed system</li><li>(d) <strong>An information system  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>IT is the technology; an information SYSTEM is technology + people + processes</strong> working toward an organisational purpose. The distractor &quot;information technology&quot; is deliberately close.</blockquote>
+<p><strong>Q. [PYQ] In a management information system, what is/are the formal social unit that is/are devoted to attaining specified goals?</strong></p>
+<ul><li>(a) Organisation, management and marketing</li><li>(b) <strong>Organisation  &lt;-- CORRECT</strong></li><li>(c) Management</li><li>(d) Marketing</li></ul>
+<blockquote><strong>Why:</strong> An <strong>organisation</strong> is the formal social structure that takes in resources and produces outputs toward stated goals. <strong>Management</strong> is a *function*; <strong>marketing</strong> is an *activity*. Only organisation is the social *unit*.</blockquote>
+<p><strong>Q. [PYQ] DSS is a computer program application used to improve a company&#x27;s <em>_</em>_ capabilities.</strong></p>
+<ul><li>(a) <strong>decision-making capabilities  &lt;-- CORRECT</strong></li><li>(b) marketing capabilities</li><li>(c) delegation capabilities</li><li>(d) resources utilisation capabilities</li></ul>
+<blockquote><strong>Why:</strong> The name states it: <strong>D</strong>ecision <strong>S</strong>upport <strong>S</strong>ystem. It analyses semi-structured problems with models and what-if analysis.</blockquote>
+<p><strong>Q. [PYQ] Which of the following systems comprises word processing, electronic filing, electronic mail, message switching, data storage and data and voice communication?</strong></p>
+<ul><li>(a) Executive Support Systems</li><li>(b) <strong>Office Automation Systems  &lt;-- CORRECT</strong></li><li>(c) Customer Relationship Management</li><li>(d) Decision Support Systems</li></ul>
+<blockquote><strong>Why:</strong> Every item listed is a routine <strong>office</strong> function. An ESS gives executives strategic dashboards; a DSS runs analytical models; CRM manages customers.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which system answers &quot;what happened?&quot; with routine, fixed-format reports?</strong></p>
+<ul><li>(a) TPS</li><li>(b) <strong>MIS  &lt;-- CORRECT</strong></li><li>(c) DSS</li><li>(d) ESS</li></ul>
+<blockquote><strong>Why:</strong> <strong>TPS</strong> records raw transactions. <strong>MIS</strong> summarises them into routine reports - &quot;what happened?&quot;. <strong>DSS</strong> answers &quot;what if?&quot; and &quot;what is best?&quot;. <strong>ESS</strong> answers strategic questions with highly summarised internal and external data.</blockquote>
+<p><strong>Q. [PYQ] The set of processes developed in an organisation to create, gather, store, transfer and apply knowledge best describes:</strong></p>
+<ul><li>(a) <strong>knowledge management  &lt;-- CORRECT</strong></li><li>(b) organisational learnings</li><li>(c) knowledge asset</li><li>(d) organisational memory</li></ul>
+<blockquote><strong>Why:</strong> A <strong>knowledge asset</strong> is the thing being managed; <strong>organisational memory</strong> is the store; <strong>organisational learning</strong> is the outcome. Only <strong>KM</strong> is the set of processes.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT the purpose of knowledge management system?</strong></p>
+<ul><li>(a) Driving strategy</li><li>(b) Integration</li><li>(c) Sharing of knowledge</li><li>(d) <strong>Portability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Portability</strong> is a software quality attribute (running on different platforms), unrelated to KM goals.</blockquote>
+<p><strong>Q. [PYQ] An individual&#x27;s shared experience results in <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) systematic knowledge</li><li>(b) shared knowledge</li><li>(c) <strong>tacit knowledge  &lt;-- CORRECT</strong></li><li>(d) tacit, systematic and shared knowledge</li></ul>
+<blockquote><strong>Why:</strong> <strong>Tacit</strong> knowledge is personal, experience-based and hard to write down - knowing how to ride a bicycle, or an experienced teacher&#x27;s classroom instinct. <strong>Explicit</strong> knowledge is codified in manuals and databases.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In the SECI model, converting tacit knowledge into explicit knowledge is called:</strong></p>
+<ul><li>(a) Socialisation</li><li>(b) <strong>Externalisation  &lt;-- CORRECT</strong></li><li>(c) Combination</li><li>(d) Internalisation</li></ul>
+<blockquote><strong>Why:</strong> Nonaka and Takeuchi&#x27;s four modes: <strong>Socialisation</strong> (tacit to tacit), <strong>Externalisation</strong> (tacit to explicit), <strong>Combination</strong> (explicit to explicit), <strong>Internalisation</strong> (explicit to tacit).</blockquote>
+<p><strong>Q. [PYQ] The lowest cost solution to developing a KM system is:</strong></p>
+<ul><li>(a) <strong>in-house development  &lt;-- CORRECT</strong></li><li>(b) outsourcing</li><li>(c) development by end users</li><li>(d) off-the-shelf solution</li></ul>
+<blockquote><strong>Why:</strong> Building internally uses existing staff and infrastructure, avoiding vendor fees, licences and consultancy charges.</blockquote>
+<p><strong>Q. [PYQ] Which qualitative statistic is difficult to quantify precisely?</strong></p>
+<ul><li>(a) Model</li><li>(b) Infrastructure</li><li>(c) <strong>Value  &lt;-- CORRECT</strong></li><li>(d) Decision making</li></ul>
+<blockquote><strong>Why:</strong> <strong>Value</strong> is inherently subjective and context-dependent, so it resists precise measurement. Infrastructure can be counted; decision-making can be measured through outcomes and cycle times.</blockquote>
+<h2>9.4 Emerging Technology - AI, Cloud, IoT and Cyber Security</h2>
+<blockquote><strong>WEIGHTAGE: 0-2 marks observed in DSSSB | 2-6 and RISING across KVS / NVS / EMRS | Priority MEDIUM-HIGH</strong></blockquote>
+<blockquote><strong>NOTE: Why this chapter exists</strong><br><br>The three DSSSB papers you shared barely touched these topics. But newer papers across all these bodies are adding them, and <strong>EMRS already has an explicit ICT and cyber-security component</strong> in its published syllabus. Recent school curricula (CBSE Class XI-XII Computer Science and Informatics Practices) also now include Python, data handling and cyber safety - and TGT papers tend to follow the school syllabus they are recruiting teachers for.<br><br>This is the one chapter that prepares you for the paper that may <strong>not</strong> look like the last one. Treat it as insurance: a single pass is enough, but do not skip it.</blockquote>
+<h3>9.4.1 Questions</h3>
+<p><strong>Q. [EXPECTED] Machine learning in which the model is trained on labelled input-output pairs is called:</strong></p>
+<ul><li>(a) Unsupervised learning</li><li>(b) <strong>Supervised learning  &lt;-- CORRECT</strong></li><li>(c) Reinforcement learning</li><li>(d) Deep learning</li></ul>
+<blockquote><strong>Why:</strong> <strong>Supervised</strong> = labelled data (classification, regression). <strong>Unsupervised</strong> = unlabelled, finds structure (clustering, association). <strong>Reinforcement</strong> = learning from rewards and penalties through interaction.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is an unsupervised learning technique?</strong></p>
+<ul><li>(a) Linear regression</li><li>(b) Decision tree classification</li><li>(c) <strong>K-means clustering  &lt;-- CORRECT</strong></li><li>(d) Logistic regression</li></ul>
+<blockquote><strong>Why:</strong> <strong>K-means clustering</strong> groups unlabelled data. The other three all need labelled training data.</blockquote>
+<p><strong>Q. [EXPECTED] The Turing Test is used to evaluate:</strong></p>
+<ul><li>(a) processing speed</li><li>(b) <strong>whether a machine&#x27;s behaviour is indistinguishable from a human&#x27;s  &lt;-- CORRECT</strong></li><li>(c) memory capacity</li><li>(d) network latency</li></ul>
+<blockquote><strong>Why:</strong> Proposed by <strong>Alan Turing</strong> (1950), who is regarded as the father of theoretical computer science and AI.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT a characteristic of cloud computing?</strong></p>
+<ul><li>(a) On-demand self-service</li><li>(b) Broad network access</li><li>(c) Resource pooling</li><li>(d) <strong>Permanent local storage on the user&#x27;s device  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The NIST characteristics are on-demand self-service, broad network access, resource pooling, <strong>rapid elasticity</strong> and <strong>measured service</strong>. Cloud deliberately moves storage *off* the local device.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In which cloud service model does the provider supply ready-to-use application software over the internet?</strong></p>
+<ul><li>(a) IaaS</li><li>(b) PaaS</li><li>(c) <strong>SaaS  &lt;-- CORRECT</strong></li><li>(d) DaaS</li></ul>
+<blockquote><strong>Why:</strong> <strong>IaaS</strong> gives raw infrastructure (virtual machines, storage - e.g. AWS EC2). <strong>PaaS</strong> gives a development platform (e.g. Google App Engine). <strong>SaaS</strong> gives finished applications (Gmail, Google Docs, Salesforce). Memorise by what you receive: Infrastructure, Platform, Software.</blockquote>
+<p><strong>Q. [EXPECTED] IoT stands for:</strong></p>
+<ul><li>(a) Internet of Technology</li><li>(b) <strong>Internet of Things  &lt;-- CORRECT</strong></li><li>(c) Integration of Things</li><li>(d) Internet over Telephony</li></ul>
+<blockquote><strong>Why:</strong> <strong>IoT</strong> = everyday physical objects fitted with sensors and network connectivity - smart meters, wearables, connected appliances. Key concerns are <strong>security</strong> and <strong>data privacy</strong>, because such devices are often weakly protected.</blockquote>
+<p><strong>Q. [EXPECTED] A blockchain is best described as:</strong></p>
+<ul><li>(a) a centralised database</li><li>(b) <strong>a distributed, append-only ledger where blocks are linked by cryptographic hashes  &lt;-- CORRECT</strong></li><li>(c) a type of firewall</li><li>(d) a cloud storage service</li></ul>
+<blockquote><strong>Why:</strong> Each block stores the <strong>hash of the previous block</strong>, so altering any past block invalidates every block after it - that is the source of tamper resistance.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following best defines phishing?</strong></p>
+<ul><li>(a) Flooding a server with traffic</li><li>(b) <strong>Fraudulent messages or websites that trick users into revealing credentials  &lt;-- CORRECT</strong></li><li>(c) Encrypting a victim&#x27;s files for ransom</li><li>(d) Intercepting traffic between two parties</li></ul>
+<blockquote><strong>Why:</strong> The distractors define <strong>DoS</strong>, <strong>ransomware</strong> and a <strong>man-in-the-middle</strong> attack respectively. Phishing exploits the *human*, not the software - which is why user awareness is the main defence.</blockquote>
+<p><strong>Q. [EXPECTED] Two-factor authentication improves security because it requires:</strong></p>
+<ul><li>(a) two passwords</li><li>(b) <strong>two different categories of evidence, such as something you know plus something you have  &lt;-- CORRECT</strong></li><li>(c) two user accounts</li><li>(d) encryption twice</li></ul>
+<blockquote><strong>Why:</strong> The three authentication factors are <strong>something you know</strong> (password), <strong>something you have</strong> (phone, token) and <strong>something you are</strong> (biometric). Combining categories is what makes 2FA strong.</blockquote>
+<p><strong>Q. [EXPECTED] Which Indian law gives legal recognition to electronic records and digital signatures?</strong></p>
+<ul><li>(a) RTI Act 2005</li><li>(b) <strong>IT Act 2000  &lt;-- CORRECT</strong></li><li>(c) Companies Act 2013</li><li>(d) RPwD Act 2016</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Information Technology Act, 2000</strong> also defines cybercrimes and penalties. Useful for both the Computer Science and General Awareness sections.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is a strong password practice?</strong></p>
+<ul><li>(a) Using your date of birth</li><li>(b) Reusing one password everywhere</li><li>(c) <strong>Using a long passphrase with mixed character types, unique per site  &lt;-- CORRECT</strong></li><li>(d) Sharing it with a trusted colleague</li></ul>
+<blockquote><strong>Why:</strong> Length matters more than complexity. Related concepts worth knowing for ICT sections: <strong>password managers, OTP, biometric authentication, VPN, firewall, antivirus, regular patching</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the primary purpose of a firewall?</strong></p>
+<ul><li>(a) To remove viruses from files</li><li>(b) <strong>To filter incoming and outgoing network traffic according to security rules  &lt;-- CORRECT</strong></li><li>(c) To encrypt stored data</li><li>(d) To back up data</li></ul>
+<blockquote><strong>Why:</strong> A firewall controls <strong>traffic</strong>; an <strong>antivirus</strong> removes malware; <strong>encryption</strong> protects stored or transmitted data. An <strong>IDS</strong> detects intrusions and an <strong>IPS</strong> blocks them.</blockquote></body></html>

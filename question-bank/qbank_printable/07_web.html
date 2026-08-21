@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 8 - Web Technologies, XML, PHP and E-Commerce</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 8 - Web Technologies, XML, PHP and E-Commerce</h1>
+<blockquote>*Weightage: 4 to 8 marks in DSSSB, 3 to 8 expected. Almost entirely syntax recall - the cheapest marks in the Computer Science half.*</blockquote>
+<h2>8.1 Web Architecture and HTTP</h2>
+<blockquote><strong>WEIGHTAGE: 1-2 marks | Priority HIGH</strong></blockquote>
+<h3>8.1.1 Questions</h3>
+<p><strong>Q. [PYQ] What is the primary function of a web browser?</strong></p>
+<ul><li>(a) To store large amounts of data</li><li>(b) To send and receive emails</li><li>(c) To create websites</li><li>(d) <strong>To display and navigate web pages  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A browser <strong>renders and navigates</strong>. Creating sites needs an editor; email needs a mail client.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>___ are a database applications&#x27; universal front end that connects to the back end via the internet.</strong></p>
+<ul><li>(a) <strong>Web browsers  &lt;-- CORRECT</strong></li><li>(b) Web server</li><li>(c) Software programs</li><li>(d) Web application</li></ul>
+<blockquote><strong>Why:</strong> Whatever the database or platform, the <strong>same browser</strong> can act as the interface - that universality is exactly the point of the question.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] <em>_</em>___ is the standard that defines how web servers and application programs communicate.</strong></p>
+<ul><li>(a) JDBC</li><li>(b) ODBC</li><li>(c) CGI</li><li>(d) <strong>HTTP  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>KEY NOTE.</strong> This paper&#x27;s key said HTTP. Textbook theory: <strong>CGI (Common Gateway Interface)</strong> is the standard defining how a web *server* passes a request to an external *application program*; <strong>HTTP</strong> defines *browser-to-server* communication. Judge by the pairing named in the question.</blockquote>
+<p><strong>Q. [PYQ] Communication between an application program and a database server occurs via:</strong></p>
+<ul><li>(a) <strong>ODBC OR JDBC  &lt;-- CORRECT</strong></li><li>(b) API</li><li>(c) web server</li><li>(d) HTTP</li></ul>
+<blockquote><strong>Why:</strong> <strong>ODBC</strong> is the language-independent driver standard; <strong>JDBC</strong> is its Java equivalent. &quot;API&quot; is too general; a web server serves pages, not SQL.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which HTTP method sends data in the request body rather than the URL?</strong></p>
+<ul><li>(a) GET</li><li>(b) <strong>POST  &lt;-- CORRECT</strong></li><li>(c) HEAD</li><li>(d) OPTIONS</li></ul>
+<blockquote><strong>Why:</strong> <strong>GET</strong> puts parameters in the URL - visible, bookmarkable and length-limited. <strong>POST</strong> puts them in the body - hidden from the URL and unlimited in size, so it is used for forms, passwords and file uploads.</blockquote>
+<p><strong>Q. [EXPECTED] Which HTTP status code range indicates a client error?</strong></p>
+<ul><li>(a) 2xx</li><li>(b) 3xx</li><li>(c) <strong>4xx  &lt;-- CORRECT</strong></li><li>(d) 5xx</li></ul>
+<blockquote><strong>Why:</strong> <strong>1xx</strong> informational, <strong>2xx</strong> success (200 OK), <strong>3xx</strong> redirection (301, 304), <strong>4xx</strong> client error (<strong>400, 401, 403, 404</strong>), <strong>5xx</strong> server error (500, 502, 503).</blockquote>
+<h2>8.2 HTML and CSS</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Exact syntax is tested, so memorise the strings | Priority HIGH</strong></blockquote>
+<h3>8.2.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following parameters is used to create a hyperlink in HTML?</strong></p>
+<ul><li>(a) Link</li><li>(b) url</li><li>(c) Path</li><li>(d) <strong>Href  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>href</code> = <strong>Hypertext REFerence</strong>. The <code>&lt;a&gt;</code> tag does nothing without it. There is no <code>link</code>, <code>url</code> or <code>path</code> attribute on an anchor.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following opens the linked document in the window&#x27;s full body among the target values?</strong></p>
+<ul><li>(a) _self</li><li>(b) <strong>_top  &lt;-- CORRECT</strong></li><li>(c) _blank</li><li>(d) _parent</li></ul>
+<blockquote><strong>Why:</strong> &quot;<strong>Full body of the window</strong>&quot; defines <strong>_top</strong> - it escapes *all* enclosing framesets. <strong>_parent</strong> climbs only <strong>one</strong> level; <strong>_blank</strong> opens a brand-new tab; <strong>_self</strong> (the default) reuses the current frame.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is the syntax to write an external CSS?</strong></p>
+<ul><li>(a) &lt;style rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;</li><li>(b) &lt;style&gt; href=&quot;style.css&quot; &lt;/style&gt;</li><li>(c) <strong>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;  &lt;-- CORRECT</strong></li><li>(d) &lt;a href=&quot;style.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</li></ul>
+<blockquote><strong>Why:</strong> The decisive element is the <strong><code>&lt;link&gt;</code></strong> tag placed inside <code>&lt;head&gt;</code>. Anything using <code>&lt;style&gt;</code> is <strong>internal</strong> CSS; <code>&lt;a&gt;</code> creates a hyperlink. Memorise the full line exactly.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which CSS declaration has the highest priority?</strong></p>
+<ul><li>(a) An element selector</li><li>(b) A class selector</li><li>(c) An ID selector</li><li>(d) <strong>An inline style attribute  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Specificity order: <strong>inline style &gt; ID &gt; class/attribute/pseudo-class &gt; element</strong>, with <code>!important</code> overriding everything. When specificity ties, the <strong>later</strong> rule wins - that is the &quot;cascading&quot; in CSS.</blockquote>
+<p><strong>Q. [PYQ] How to change all images to black and white (100% grey)?</strong></p>
+<ul><li>(a) img { filter: graycolor(100%);}</li><li>(b) <strong>img { filter: grayscale(100%);}  &lt;-- CORRECT</strong></li><li>(c) img { graycolor(100%);}</li><li>(d) img { filter: &quot;grayscale(100%)&quot;;}</li></ul>
+<blockquote><strong>Why:</strong> The property is <strong>filter</strong>, the function is <strong>grayscale</strong> (American spelling, not &quot;graycolor&quot;), and the value is <strong>not quoted</strong>. Other useful filters: blur, brightness, contrast, invert, opacity, sepia.</blockquote>
+<p><strong>Q. [EXPECTED] In the CSS box model, the order from innermost outward is:</strong></p>
+<ul><li>(a) margin, border, padding, content</li><li>(b) <strong>content, padding, border, margin  &lt;-- CORRECT</strong></li><li>(c) content, border, padding, margin</li><li>(d) padding, content, border, margin</li></ul>
+<blockquote><strong>Why:</strong> <strong>Padding is inside the border; margin is outside it.</strong> With the default <code>content-box</code> model, declared width excludes padding and border - which is why <code>box-sizing: border-box</code> is so widely used.</blockquote>
+<p><strong>Q. [EXPECTED] Which HTML tag is an empty (void) element?</strong></p>
+<ul><li>(a) &lt;p&gt;</li><li>(b) &lt;div&gt;</li><li>(c) <strong>&lt;br&gt;  &lt;-- CORRECT</strong></li><li>(d) &lt;span&gt;</li></ul>
+<blockquote><strong>Why:</strong> Void elements have no closing tag: <strong><code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code></strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which input type allows selecting only ONE option from a group?</strong></p>
+<ul><li>(a) checkbox</li><li>(b) <strong>radio  &lt;-- CORRECT</strong></li><li>(c) select multiple</li><li>(d) text</li></ul>
+<blockquote><strong>Why:</strong> <strong>Radio buttons sharing the same <code>name</code></strong> permit exactly one selection; <strong>checkboxes</strong> allow many. A <code>&lt;select&gt;</code> without <code>multiple</code> also allows one, but radio is the canonical answer.</blockquote>
+<h2>8.3 JavaScript, DHTML, AJAX and jQuery</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | DOM methods and AJAX benefits recur | Priority HIGH</strong></blockquote>
+<h3>8.3.1 Questions</h3>
+<p><strong>Q. [PYQ] What is the output of: <code>let x = 10; if (x &gt; 5) console.log(&quot;Greater&quot;); else console.log(&quot;Smaller&quot;);</code></strong></p>
+<ul><li>(a) &quot;Smaller&quot;</li><li>(b) &quot;undefined&quot;</li><li>(c) <strong>&quot;Greater&quot;  &lt;-- CORRECT</strong></li><li>(d) Error</li></ul>
+<blockquote><strong>Why:</strong> 10 &gt; 5 is true.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] What will the output be? <code>document.write(&quot;Hello&quot;)</code> then <code>document.write(&quot;\nIndia&quot;)</code></strong></p>
+<ul><li>(a) Hello</li><li>(b) HelloIndia</li><li>(c) India</li><li>(d) <strong>Hello India  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>HTML collapses all whitespace</strong> - newlines, tabs and multiple spaces - into a <strong>single space</strong>. So <code>\n</code> does not create a line break but does not vanish either. For a real break you must write <code>&lt;br&gt;</code>. Note <code>\n</code> *does* work in a console, an alert box, or a plain text file.</blockquote>
+<p><strong>Q. [PYQ] Which DHTML method is used to change the style of an HTML element using CSS dynamically?</strong></p>
+<ul><li>(a) document.createElement(&quot;style&quot;)</li><li>(b) document.getElementById(&quot;element&quot;).setCSS()</li><li>(c) <strong>element.style.backgroundColor = &quot;red&quot;  &lt;-- CORRECT</strong></li><li>(d) window.addEventListener(&quot;resize&quot;)</li></ul>
+<blockquote><strong>Why:</strong> Every DOM element exposes a <code>style</code> object. Note the naming rule: CSS <code>background-color</code> (hyphenated) becomes JavaScript <strong><code>backgroundColor</code></strong> (camelCase), because hyphens are illegal in identifiers. There is no <code>setCSS()</code> method.</blockquote>
+<p><strong>Q. [PYQ] Which DHTML method is used to control the browser window size?</strong></p>
+<ul><li>(a) <strong>window.resizeTo()  &lt;-- CORRECT</strong></li><li>(b) window.setSize()</li><li>(c) window.changeSize()</li><li>(d) document.resizeWindow()</li></ul>
+<blockquote><strong>Why:</strong> Only <code>resizeTo()</code> and <code>resizeBy()</code> exist; the other three names are invented. Related real methods: <code>window.open()</code>, <code>window.moveTo()</code>, <code>window.scrollTo()</code>.</blockquote>
+<p><strong>Q. [EXPECTED] Which method selects a single element by its id?</strong></p>
+<ul><li>(a) document.getElementsByClassName()</li><li>(b) <strong>document.getElementById()  &lt;-- CORRECT</strong></li><li>(c) document.createElement()</li><li>(d) document.write()</li></ul>
+<blockquote><strong>Why:</strong> Note the singular/plural distinction: <code>getElementById</code> returns <strong>one</strong> element; <code>getElementsByClassName</code> and <code>getElementsByTagName</code> return <strong>collections</strong>. Modern equivalents: <code>querySelector()</code> and <code>querySelectorAll()</code>.</blockquote>
+<p><strong>Q. [EXPECTED] DHTML is best described as:</strong></p>
+<ul><li>(a) a programming language</li><li>(b) a markup language</li><li>(c) <strong>the combination of HTML, CSS, JavaScript and the DOM used to change a page after it loads  &lt;-- CORRECT</strong></li><li>(d) a server-side technology</li></ul>
+<blockquote><strong>Why:</strong> DHTML is <strong>not a language</strong> - it is the technique of combining those four to make a page dynamic without fetching a new page.</blockquote>
+<p><strong>Q. [PYQ] Which advantage of AJAX helps in reducing bandwidth consumption?</strong></p>
+<ul><li>(a) AJAX uses less JavaScript.</li><li>(b) AJAX only loads images on the page.</li><li>(c) AJAX increases data transfer.</li><li>(d) <strong>AJAX sends and retrieves only small amounts of data from the server.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Only the needed fragment is exchanged instead of a full page with all its HTML, CSS and images. AJAX = <strong>Asynchronous JavaScript And XML</strong>, though today the payload is usually <strong>JSON</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the main drawback of AJAX?</strong></p>
+<ul><li>(a) It is slower than page reloads</li><li>(b) <strong>The browser back button and bookmarking break unless specially handled  &lt;-- CORRECT</strong></li><li>(c) It cannot access servers</li><li>(d) It requires Java</li></ul>
+<blockquote><strong>Why:</strong> Because the URL does not change, history and bookmarks break by default. AJAX content may also be invisible to search engines, and it fails entirely if JavaScript is disabled.</blockquote>
+<p><strong>Q. [PYQ] Which of the following methods is used to slide down an element?</strong></p>
+<ul><li>(a) <strong>slideDown()  &lt;-- CORRECT</strong></li><li>(b) moveBelow()</li><li>(c) moveDown()</li><li>(d) slideBelow()</li></ul>
+<blockquote><strong>Why:</strong> jQuery effects come in triplets: <strong>slideDown/slideUp/slideToggle</strong> and <strong>fadeIn/fadeOut/fadeToggle</strong>. There is no <code>moveBelow</code> or <code>slideBelow</code>.</blockquote>
+<p><strong>Q. [PYQ] Which directive is used for binding the model data to the view?</strong></p>
+<ul><li>(a) ng-model-view</li><li>(b) ng-model-app</li><li>(c) <strong>ng-model  &lt;-- CORRECT</strong></li><li>(d) ng-app-model</li></ul>
+<blockquote><strong>Why:</strong> <strong><code>ng-model</code></strong> provides AngularJS <strong>two-way data binding</strong> - type in the input and the model updates, change the model and the input updates. The other three names do not exist.</blockquote>
+<h2>8.4 XML</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Parsers and DTD syntax recur | Priority HIGH</strong></blockquote>
+<h3>8.4.1 Questions</h3>
+<p><strong>Q. [PYQ] <em>_</em>_ reads XML documents and provides access to their content and structure.</strong></p>
+<ul><li>(a) XML schema</li><li>(b) XML pre-processor</li><li>(c) <strong>XML processor  &lt;-- CORRECT</strong></li><li>(d) XML codes</li></ul>
+<blockquote><strong>Why:</strong> An <strong>XML schema</strong> *describes* what a valid document looks like; it reads nothing. The <strong>processor (parser)</strong> does the reading and also checks well-formedness.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT an XML Parser?</strong></p>
+<ul><li>(a) <strong>Shell  &lt;-- CORRECT</strong></li><li>(b) JDOM</li><li>(c) DOM</li><li>(d) SAX</li></ul>
+<blockquote><strong>Why:</strong> A <strong>shell</strong> is an OS command interpreter (bash, csh, ksh). DOM, SAX and JDOM are genuine XML parsers.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which XML parser loads the entire document into memory as a tree?</strong></p>
+<ul><li>(a) SAX</li><li>(b) StAX</li><li>(c) <strong>DOM  &lt;-- CORRECT</strong></li><li>(d) JDOM</li></ul>
+<blockquote><strong>Why:</strong> <strong>DOM</strong> builds a full in-memory tree - allows random access and modification, but is memory-hungry. <strong>SAX</strong> is <strong>event-based</strong>, streaming through the document firing events; it is very memory-efficient but <strong>read-only and forward-only</strong>.</blockquote>
+<p><strong>Q. [PYQ] How to write the external DTD?</strong></p>
+<ul><li>(a) &lt;!DOCTYPE SYSTEM &quot;file-name&quot;&gt;</li><li>(b) &lt;!DOCTYPE element ROOT &quot;file-name&quot;&gt;</li><li>(c) &lt;!DOCTYPE SYSTEM &quot;file-name&quot; root-element&gt;</li><li>(d) <strong>&lt;!DOCTYPE root-element SYSTEM &quot;file-name&quot;&gt;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Order is what is being tested</strong>: <code>&lt;!DOCTYPE</code>, then the <strong>root element name</strong>, then <code>SYSTEM</code>, then the quoted filename. Use <code>PUBLIC</code> instead of <code>SYSTEM</code> for a widely published standard DTD.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is TRUE of XML but not of HTML?</strong></p>
+<ul><li>(a) Tags are predefined</li><li>(b) Closing tags are optional</li><li>(c) <strong>It is case sensitive and every tag must be closed  &lt;-- CORRECT</strong></li><li>(d) Whitespace is collapsed</li></ul>
+<blockquote><strong>Why:</strong> XML is <strong>case sensitive</strong>, requires <strong>every</strong> tag to be closed, requires <strong>quoted</strong> attribute values, <strong>preserves</strong> whitespace, and needs exactly <strong>one root element</strong>. HTML is forgiving on all these counts.</blockquote>
+<p><strong>Q. [EXPECTED] XSD is preferred over DTD because XSD:</strong></p>
+<ul><li>(a) is shorter</li><li>(b) <strong>is written in XML itself and supports data types and namespaces  &lt;-- CORRECT</strong></li><li>(c) is older</li><li>(d) needs no parser</li></ul>
+<blockquote><strong>Why:</strong> DTD uses its own non-XML syntax and has <strong>no data types</strong>. <strong>XSD</strong> (XML Schema Definition) is written in XML, supports integer/date/decimal types, namespaces and far richer constraints.</blockquote>
+<h2>8.5 PHP</h2>
+<blockquote><strong>WEIGHTAGE: 0-2 marks | Array sorting functions are the classic question | Priority MEDIUM</strong></blockquote>
+<h3>8.5.1 Questions</h3>
+<p><strong>Q. [PYQ] Which PHP function is used to sort an array in ascending order without affecting the keys?</strong></p>
+<ul><li>(a) ksort()</li><li>(b) array_sort()</li><li>(c) <strong>asort()  &lt;-- CORRECT</strong></li><li>(d) sort()</li></ul>
+<blockquote><strong>Why:</strong> Decode the naming scheme and you never memorise the table: plain <strong>sort</strong> sorts values and discards keys; prefix <strong>a</strong> (associative) <strong>preserves the key-value pairing</strong>; prefix <strong>k</strong> sorts by <strong>key</strong>; prefix <strong>r</strong> means reverse (descending); prefix <strong>u</strong> means a user-defined comparison. So &quot;ascending, by value, keys preserved&quot; = <strong>asort()</strong>. Note <code>array_sort()</code> does not exist in PHP.</blockquote>
+<p><strong>Q. [EXPECTED] In PHP, which operator concatenates two strings?</strong></p>
+<ul><li>(a) +</li><li>(b) <strong>.  &lt;-- CORRECT</strong></li><li>(c) &amp;</li><li>(d) ++</li></ul>
+<blockquote><strong>Why:</strong> PHP uses the <strong>dot</strong> for concatenation (<code>$a . $b</code>); <code>+</code> is strictly arithmetic. (JavaScript and Java use <code>+</code>, which is a common source of confusion.)</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the difference between include and require in PHP?</strong></p>
+<ul><li>(a) They are identical</li><li>(b) <strong>include gives a warning and continues if the file is missing; require gives a fatal error and stops  &lt;-- CORRECT</strong></li><li>(c) require is faster</li><li>(d) include cannot be used twice</li></ul>
+<blockquote><strong>Why:</strong> Use <strong>require</strong> for files the script genuinely cannot run without. The <code>_once</code> variants prevent accidental double inclusion.</blockquote>
+<p><strong>Q. [EXPECTED] In PHP, variables enclosed in which quotes are interpolated (substituted)?</strong></p>
+<ul><li>(a) Single quotes</li><li>(b) <strong>Double quotes  &lt;-- CORRECT</strong></li><li>(c) Backticks</li><li>(d) Either</li></ul>
+<blockquote><strong>Why:</strong> <code>&quot;Hello $name&quot;</code> substitutes the value; <code>&#x27;Hello $name&#x27;</code> prints the literal text. PHP variables always begin with <strong>$</strong>.</blockquote>
+<h2>8.6 E-Commerce</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks in DSSSB | Business-model classification is the standard question | Priority MEDIUM</strong></blockquote>
+<h3>8.6.1 Questions</h3>
+<p><strong>Q. [PYQ] <em>_</em>_ primarily deals with buying and selling, particularly on a large scale.</strong></p>
+<ul><li>(a) <strong>Commerce  &lt;-- CORRECT</strong></li><li>(b) Finance</li><li>(c) Supply chain</li><li>(d) Distribution</li></ul>
+<blockquote><strong>Why:</strong> Commerce is *defined* by buying and selling at scale. Finance concerns money and capital; supply chain and distribution are logistics functions.</blockquote>
+<p><strong>Q. [PYQ] The <em>_</em>_ E-commerce segment(s) is/are represented by OLX.</strong></p>
+<ul><li>(a) C2C, B2C and B2B</li><li>(b) B2B</li><li>(c) <strong>C2C  &lt;-- CORRECT</strong></li><li>(d) B2C</li></ul>
+<blockquote><strong>Why:</strong> On OLX an <strong>individual sells to another individual</strong> and the platform merely connects them - textbook <strong>Consumer-to-Consumer</strong>. Compare Amazon (mainly <strong>B2C</strong>), IndiaMART (<strong>B2B</strong>) and GeM (<strong>B2G</strong>).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] A freelancer offering services to a company on Upwork is an example of:</strong></p>
+<ul><li>(a) B2C</li><li>(b) C2C</li><li>(c) <strong>C2B  &lt;-- CORRECT</strong></li><li>(d) B2B</li></ul>
+<blockquote><strong>Why:</strong> <strong>C2B (Consumer-to-Business)</strong> - an individual supplies value to a business. Also covers stock-photo contributors and influencer marketing. It is the least-known model and therefore a favourite distractor.</blockquote>
+<p><strong>Q. [PYQ] A fixed sum paid by customers for a service, typically on a monthly, quarterly or annual basis, is called <em>_</em>_ in electronic commerce.</strong></p>
+<ul><li>(a) licensing</li><li>(b) affiliate</li><li>(c) marketing</li><li>(d) <strong>subscription  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> &quot;<strong>Fixed sum</strong>&quot; plus &quot;<strong>monthly/quarterly/annual</strong>&quot; defines a recurring <strong>subscription</strong> (Netflix, Spotify). *Licensing* is a right-to-use fee; *affiliate* is referral commission.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ is the process of visiting different web sites on the internet hosted by various companies, organisations, educational institutions, magazines, individuals, etc.</strong></p>
+<ul><li>(a) Webbing</li><li>(b) Searching</li><li>(c) Chatting</li><li>(d) <strong>Web surfing  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Surfing</strong> = browsing around generally; <strong>searching</strong> implies a specific query. &quot;Webbing&quot; is not a term.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Who is the father of e-commerce in India?</strong></p>
+<ul><li>(a) Bryan Eisenberg</li><li>(b) Michael Aldrich</li><li>(c) <strong>K Vaitheeswaran  &lt;-- CORRECT</strong></li><li>(d) Tim Ferris</li></ul>
+<blockquote><strong>Why:</strong> <strong>K Vaitheeswaran</strong> founded Fabmart/Indiaplaza in 1999, India&#x27;s first e-commerce venture. <strong>Michael Aldrich</strong> invented online shopping <strong>globally</strong> in 1979 - examiners deliberately place both in the same question, so read whether it asks about India or the world.</blockquote>
+<p><strong>Q. [EXPECTED] EDI stands for:</strong></p>
+<ul><li>(a) Electronic Data Integration</li><li>(b) <strong>Electronic Data Interchange  &lt;-- CORRECT</strong></li><li>(c) Electronic Document Indexing</li><li>(d) Encrypted Data Interface</li></ul>
+<blockquote><strong>Why:</strong> <strong>EDI</strong> is the structured computer-to-computer exchange of standard business documents (purchase orders, invoices) between organisations - a pre-internet forerunner of B2B e-commerce.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT a security requirement of an e-commerce transaction?</strong></p>
+<ul><li>(a) Confidentiality</li><li>(b) Integrity</li><li>(c) Non-repudiation</li><li>(d) <strong>Portability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The security goals are confidentiality, integrity, authentication, <strong>non-repudiation</strong> and availability. <strong>Portability</strong> is a software quality attribute. Note <strong>non-repudiation</strong> - the sender cannot later deny sending - is achieved by digital signatures.</blockquote></body></html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 7 - Computer Networks, Security and Mobile Computing</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 7 - Computer Networks, Security and Mobile Computing</h1>
+<blockquote>*Weightage: 9 to 12 marks in DSSSB, 8 to 14 expected. Layer functions, IP addressing and cryptography are the reliable scorers.*</blockquote>
+<h2>7.1 Fundamentals, Topologies and Devices</h2>
+<blockquote><strong>WEIGHTAGE: 2-3 marks | Device-to-layer mapping is a repeat favourite | Priority CRITICAL</strong></blockquote>
+<h3>7.1.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following are the most essential components a computer system uses for communication over internet?</strong></p>
+<ul><li>(a) Applications and mouse</li><li>(b) Monitor and keyboard</li><li>(c) <strong>NIC and TCP/IP  &lt;-- CORRECT</strong></li><li>(d) Camera and microphone</li></ul>
+<blockquote><strong>Why:</strong> You need <strong>hardware</strong> to connect physically (Network Interface Card) and a <strong>protocol suite</strong> so both ends agree on the rules (TCP/IP). Monitors, keyboards and cameras are peripherals for the human, not for networking.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which topology needs the least cable but fails completely if the backbone breaks?</strong></p>
+<ul><li>(a) Star</li><li>(b) Ring</li><li>(c) <strong>Bus  &lt;-- CORRECT</strong></li><li>(d) Mesh</li></ul>
+<blockquote><strong>Why:</strong> <strong>Bus</strong>: cheapest, least cable, but one cable fault kills the whole network and collisions are frequent. <strong>Star</strong>: easy fault isolation, but the central hub/switch is a single point of failure. <strong>Mesh</strong>: most reliable, needs <strong>n(n-1)/2</strong> links.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many cables are needed for a full mesh network with 8 nodes?</strong></p>
+<ul><li>(a) 64</li><li>(b) 56</li><li>(c) <strong>28  &lt;-- CORRECT</strong></li><li>(d) 16</li></ul>
+<blockquote><strong>Why:</strong> n(n-1)/2 = 8 x 7 / 2 = <strong>28</strong> links, and each node needs n-1 = 7 ports. The quadratic growth is why full mesh is rare in practice.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] A hub differs from a switch in that a hub:</strong></p>
+<ul><li>(a) works at the network layer</li><li>(b) <strong>broadcasts incoming data to all ports, creating one collision domain  &lt;-- CORRECT</strong></li><li>(c) filters traffic by IP address</li><li>(d) connects different networks</li></ul>
+<blockquote><strong>Why:</strong> A <strong>hub</strong> is a multiport repeater (Physical layer, layer 1) that blindly floods every port. A <strong>switch</strong> (Data Link, layer 2) learns MAC addresses and forwards a frame only to the correct port, giving each port its own collision domain.</blockquote>
+<p><strong>Q. [EXPECTED] Which device connects two different networks and forwards packets using IP addresses?</strong></p>
+<ul><li>(a) Hub</li><li>(b) Switch</li><li>(c) Bridge</li><li>(d) <strong>Router  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A <strong>router</strong> works at the <strong>Network layer (3)</strong> using a routing table, and it separates broadcast domains. A <strong>gateway</strong> goes further, translating between different protocols across all layers.</blockquote>
+<p><strong>Q. [EXPECTED] At which OSI layer does a switch operate?</strong></p>
+<ul><li>(a) Layer 1</li><li>(b) <strong>Layer 2  &lt;-- CORRECT</strong></li><li>(c) Layer 3</li><li>(d) Layer 4</li></ul>
+<blockquote><strong>Why:</strong> Switch and bridge = <strong>Data Link (2)</strong>, using MAC addresses. Hub and repeater = <strong>Physical (1)</strong>. Router = <strong>Network (3)</strong>. NIC spans 1 and 2.</blockquote>
+<p><strong>Q. [PYQ] The refractive index of the core of an optical fibre is greater than that of cladding because:</strong></p>
+<ul><li>(a) the light gets reflected at the entrance end of the optical fibre</li><li>(b) <strong>the light gets totally internally reflected into the core  &lt;-- CORRECT</strong></li><li>(c) the light gets restricted at the entrance end</li><li>(d) the light gets refracted into cladding</li></ul>
+<blockquote><strong>Why:</strong> <strong>Total internal reflection</strong> requires light to travel from a denser medium (higher refractive index) into a rarer one at greater than the critical angle. If the cladding had the higher index, light would simply refract out and be lost.</blockquote>
+<p><strong>Q. [EXPECTED] Which transmission medium is immune to electromagnetic interference?</strong></p>
+<ul><li>(a) Twisted pair</li><li>(b) Coaxial cable</li><li>(c) <strong>Optical fibre  &lt;-- CORRECT</strong></li><li>(d) Radio waves</li></ul>
+<blockquote><strong>Why:</strong> Fibre carries <strong>light</strong>, not electric current, so EMI cannot affect it. It also offers the highest bandwidth, longest range and best security (very hard to tap) - at higher cost and greater fragility.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is true?</strong></p>
+<ul><li>(a) Circuit setup is not required in both a datagram network and virtual-circuit network.</li><li>(b) Circuit setup is required in both.</li><li>(c) <strong>Circuit setup is required in a virtual-circuit network.  &lt;-- CORRECT</strong></li><li>(d) Circuit setup is required in a datagram network.</li></ul>
+<blockquote><strong>Why:</strong> A <strong>virtual circuit</strong> establishes a logical path (assigning a VC identifier) before data flows. A <strong>datagram</strong> network routes each packet independently with <strong>no setup at all</strong>, which is how IP works.</blockquote>
+<p><strong>Q. [EXPECTED] Half duplex transmission means:</strong></p>
+<ul><li>(a) data flows in one direction only</li><li>(b) <strong>data flows in both directions but only one at a time  &lt;-- CORRECT</strong></li><li>(c) data flows both ways simultaneously</li><li>(d) no data flows</li></ul>
+<blockquote><strong>Why:</strong> <strong>Simplex</strong> = one direction only (TV broadcast). <strong>Half duplex</strong> = both directions alternately (walkie-talkie). <strong>Full duplex</strong> = both simultaneously (telephone).</blockquote>
+<h2>7.2 OSI and TCP/IP Models</h2>
+<blockquote><strong>WEIGHTAGE: 3-4 marks | Data units and layer functions appear every year | Priority CRITICAL</strong></blockquote>
+<h3>7.2.1 Questions</h3>
+<p><strong>Q. [PYQ] The internet layer in the TCP/IP model is associated with <em>_</em>_ data.</strong></p>
+<ul><li>(a) segments</li><li>(b) frames</li><li>(c) bytes</li><li>(d) <strong>packets  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Lock the chain in memory: <strong>Transport = segments, Internet/Network = packets, Data Link = frames, Physical = bits.</strong> Some form of this is asked almost every year.</blockquote>
+<p><strong>Q. [PYQ] Which of the following are networking transport layer protocols?</strong></p>
+<ul><li>(a) FTP and DNS</li><li>(b) Telnet and ICMP</li><li>(c) <strong>TCP, UDP and SCTP  &lt;-- CORRECT</strong></li><li>(d) ARP and RARP</li></ul>
+<blockquote><strong>Why:</strong> FTP, DNS and Telnet are <strong>Application</strong> layer; ICMP, ARP and RARP are <strong>Network</strong> layer. Only TCP, UDP and SCTP are Transport.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT a network layer function?</strong></p>
+<ul><li>(a) <strong>Error control and flow control  &lt;-- CORRECT</strong></li><li>(b) Intra-routing</li><li>(c) Routing</li><li>(d) Congestion control</li></ul>
+<blockquote><strong>Why:</strong> Routing, intra-domain routing and congestion control are all Network-layer duties. <strong>Error and flow control</strong> belong to the <strong>Data Link</strong> layer (hop by hop) and the <strong>Transport</strong> layer (end to end). IP itself is best-effort with only a header checksum.</blockquote>
+<p><strong>Q. [PYQ] What feature of the transport layer prevents data loss?</strong></p>
+<ul><li>(a) Encryption</li><li>(b) Packet switching</li><li>(c) Addressing</li><li>(d) <strong>Flow control  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Flow control</strong> stops a fast sender from overrunning a slow receiver&#x27;s buffer - buffer overflow is exactly how data would be lost. TCP implements it with a <strong>sliding window</strong> and the receiver&#x27;s advertised window size.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which layer is responsible for sending data as a bit stream?</strong></p>
+<ul><li>(a) Presentation layer</li><li>(b) Network layer</li><li>(c) Physical layer</li><li>(d) <strong>Data link layer  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>KEY NOTE.</strong> This paper&#x27;s key said Data Link. Standard theory assigns the <strong>raw bit stream over the medium</strong> to the <strong>PHYSICAL</strong> layer; the Data Link layer deals in <strong>frames</strong>. If the question says &quot;raw bit stream&quot; or &quot;over the transmission medium&quot;, answer <strong>Physical</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Encryption and compression are performed at which OSI layer?</strong></p>
+<ul><li>(a) Application</li><li>(b) <strong>Presentation  &lt;-- CORRECT</strong></li><li>(c) Session</li><li>(d) Transport</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Presentation</strong> layer (6) handles translation (ASCII/EBCDIC), <strong>encryption/decryption</strong> and <strong>compression</strong> - it is also called the syntax layer. The <strong>Session</strong> layer (5) does dialog control, synchronisation and checkpointing.</blockquote>
+<p><strong>Q. [EXPECTED] Port addressing is a function of which layer?</strong></p>
+<ul><li>(a) Network</li><li>(b) Data Link</li><li>(c) <strong>Transport  &lt;-- CORRECT</strong></li><li>(d) Application</li></ul>
+<blockquote><strong>Why:</strong> <strong>Transport</strong> uses <strong>port</strong> numbers to reach a specific process. Network uses <strong>IP</strong> (logical) addresses; Data Link uses <strong>MAC</strong> (physical) addresses.</blockquote>
+<p><strong>Q. [EXPECTED] How many layers does the TCP/IP model have?</strong></p>
+<ul><li>(a) 7</li><li>(b) 5</li><li>(c) <strong>4  &lt;-- CORRECT</strong></li><li>(d) 3</li></ul>
+<blockquote><strong>Why:</strong> TCP/IP has <strong>4</strong>: Application (= OSI 5,6,7), Transport, Internet, Network Access (= OSI 1,2). OSI has 7. Mnemonic for OSI top-down: <strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing.</blockquote>
+<h2>7.3 Data Link Layer, Error and Flow Control</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Sliding window behaviour is the recurring question | Priority HIGH</strong></blockquote>
+<h3>7.3.1 Questions</h3>
+<p><strong>Q. [PYQ] How does the receiver handle out-of-order frames in Selective Repeat?</strong></p>
+<ul><li>(a) Requests retransmission of all frames</li><li>(b) Sends a cumulative acknowledgment</li><li>(c) <strong>Buffers them until all missing frames arrive  &lt;-- CORRECT</strong></li><li>(d) Discards them immediately</li></ul>
+<blockquote><strong>Why:</strong> This is <strong>the</strong> defining difference: <strong>Go-Back-N discards</strong> out-of-order frames and uses cumulative ACKs; <strong>Selective Repeat buffers</strong> them and acknowledges each individually, retransmitting only what was actually lost.</blockquote>
+<p><strong>Q. [EXPECTED] In Go-Back-N with a window size of 4, if frame 2 is lost, which frames are retransmitted?</strong></p>
+<ul><li>(a) Only frame 2</li><li>(b) <strong>Frame 2 and all subsequent frames in the window  &lt;-- CORRECT</strong></li><li>(c) No frames</li><li>(d) All frames from 0</li></ul>
+<blockquote><strong>Why:</strong> The name says it - the sender &quot;goes back N&quot; and resends the lost frame <strong>plus everything after it</strong>, because the receiver discarded them all. This wastes bandwidth but keeps the receiver simple.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which error detection method is most powerful and used in Ethernet?</strong></p>
+<ul><li>(a) Simple parity check</li><li>(b) Checksum</li><li>(c) <strong>CRC  &lt;-- CORRECT</strong></li><li>(d) Hamming code</li></ul>
+<blockquote><strong>Why:</strong> <strong>CRC</strong> (Cyclic Redundancy Check) treats data as a polynomial and detects all burst errors shorter than the CRC length. <strong>Checksum</strong> is weaker and used in TCP/UDP/IP headers. <strong>Hamming code</strong> actually *corrects* single-bit errors (forward error correction), which is a different goal.</blockquote>
+<p><strong>Q. [EXPECTED] A simple even parity check fails to detect:</strong></p>
+<ul><li>(a) single-bit errors</li><li>(b) <strong>errors affecting an even number of bits  &lt;-- CORRECT</strong></li><li>(c) any errors</li><li>(d) burst errors only</li></ul>
+<blockquote><strong>Why:</strong> If two bits flip, parity is restored and the error passes unnoticed. This is why CRC replaced parity for serious links.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which access method is used in wireless LANs rather than wired Ethernet?</strong></p>
+<ul><li>(a) CSMA/CD</li><li>(b) <strong>CSMA/CA  &lt;-- CORRECT</strong></li><li>(c) Token passing</li><li>(d) Polling</li></ul>
+<blockquote><strong>Why:</strong> <strong>CSMA/CD (Collision Detection)</strong> is wired Ethernet. Wireless stations cannot reliably detect collisions while transmitting, so Wi-Fi uses <strong>CSMA/CA (Collision Avoidance)</strong> with RTS/CTS handshaking and random backoff.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] The maximum channel efficiency of pure ALOHA is:</strong></p>
+<ul><li>(a) 36.8%</li><li>(b) <strong>18.4%  &lt;-- CORRECT</strong></li><li>(c) 50%</li><li>(d) 100%</li></ul>
+<blockquote><strong>Why:</strong> Pure ALOHA = <strong>18.4%</strong>; slotted ALOHA doubles it to <strong>36.8%</strong> by forcing transmissions to begin at slot boundaries, which halves the vulnerable period.</blockquote>
+<h2>7.4 Network Layer, IP Addressing and Routing</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | A subnetting numerical is very likely | Priority CRITICAL</strong></blockquote>
+<h3>7.4.1 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following 4-byte IP addresses are used for internet protocol layer?</strong></p>
+<ul><li>(a) Network address and port address</li><li>(b) Network address and MAC address</li><li>(c) <strong>Network address and host address  &lt;-- CORRECT</strong></li><li>(d) Host address and port address</li></ul>
+<blockquote><strong>Why:</strong> An IPv4 address is 32 bits = 4 bytes, split logically into <strong>network</strong> and <strong>host</strong> parts. Port belongs to Transport; MAC to Data Link.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] A network has a subnet mask of 255.255.240.0. What is the maximum number of hosts it can handle?</strong></p>
+<ul><li>(a) 1024</li><li>(b) 3072</li><li>(c) 2048</li><li>(d) <strong>4094  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Write the mask in binary: 240 = 11110000, so network bits = 8+8+4 = <strong>20</strong> (a /20) and host bits = 32-20 = <strong>12</strong>. Usable hosts = <strong>2^12 - 2 = 4094</strong>. Subtract 2 for the network address (all host bits 0) and the broadcast address (all host bits 1). Note the distractor 4096 is the *total* addresses.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many usable host addresses are available in a /26 network?</strong></p>
+<ul><li>(a) 64</li><li>(b) <strong>62  &lt;-- CORRECT</strong></li><li>(c) 32</li><li>(d) 30</li></ul>
+<blockquote><strong>Why:</strong> Host bits = 32 - 26 = 6, so 2^6 - 2 = <strong>62</strong>. Handy ladder: /24 gives 254, /25 gives 126, /26 gives 62, /27 gives 30, /28 gives 14, /30 gives 2.</blockquote>
+<p><strong>Q. [EXPECTED] Which IP address class is reserved for multicasting?</strong></p>
+<ul><li>(a) Class A</li><li>(b) Class B</li><li>(c) Class C</li><li>(d) <strong>Class D  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <strong>Class D (224-239)</strong> is multicast; <strong>Class E (240-255)</strong> is reserved/experimental. Class A is 1-126, B is 128-191, C is 192-223, and <strong>127.x.x.x is loopback</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the size of an IPv6 address?</strong></p>
+<ul><li>(a) 32 bits</li><li>(b) 64 bits</li><li>(c) <strong>128 bits  &lt;-- CORRECT</strong></li><li>(d) 256 bits</li></ul>
+<blockquote><strong>Why:</strong> IPv6 is <strong>128 bits</strong>, written as eight groups of four hex digits. It has a fixed 40-byte header, <strong>no checksum</strong>, no router fragmentation, and <strong>no broadcast</strong> - it uses multicast and anycast instead.</blockquote>
+<p><strong>Q. [PYQ] What is the ARP reply&#x27;s scope in terms of message type?</strong></p>
+<ul><li>(a) Anycast</li><li>(b) <strong>Unicast  &lt;-- CORRECT</strong></li><li>(c) Multicast</li><li>(d) Broadcast</li></ul>
+<blockquote><strong>Why:</strong> <strong>ARP request = BROADCAST</strong> (the sender does not know who owns the IP, so it must ask everyone). <strong>ARP reply = UNICAST</strong> (the responder learned the asker&#x27;s MAC from the request, so it answers directly). Memorise the pair.</blockquote>
+<p><strong>Q. [EXPECTED] ARP resolves:</strong></p>
+<ul><li>(a) IP address to domain name</li><li>(b) <strong>IP address to MAC address  &lt;-- CORRECT</strong></li><li>(c) MAC address to IP address</li><li>(d) domain name to IP address</li></ul>
+<blockquote><strong>Why:</strong> <strong>ARP</strong>: IP to MAC. <strong>RARP</strong>: MAC to IP (obsolete, replaced by DHCP). <strong>DNS</strong>: domain name to IP. <strong>ICMP</strong>: error reporting and diagnostics (ping, traceroute).</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which routing protocol uses Dijkstra&#x27;s algorithm and converges quickly?</strong></p>
+<ul><li>(a) RIP</li><li>(b) <strong>OSPF  &lt;-- CORRECT</strong></li><li>(c) BGP</li><li>(d) EIGRP</li></ul>
+<blockquote><strong>Why:</strong> <strong>OSPF</strong> is a <strong>link-state</strong> protocol: every router builds a full topology map and runs Dijkstra. <strong>RIP</strong> is distance-vector using <strong>hop count with a maximum of 15</strong>, and converges slowly. <strong>BGP</strong> is the Internet&#x27;s <strong>exterior</strong> path-vector protocol used between autonomous systems.</blockquote>
+<p><strong>Q. [EXPECTED] The TTL field in an IP packet prevents:</strong></p>
+<ul><li>(a) congestion</li><li>(b) <strong>packets circulating forever in routing loops  &lt;-- CORRECT</strong></li><li>(c) fragmentation</li><li>(d) duplicate delivery</li></ul>
+<blockquote><strong>Why:</strong> Each router decrements TTL; at zero the packet is discarded and an ICMP time-exceeded message may be returned - which is exactly the mechanism <strong>traceroute</strong> exploits.</blockquote>
+<h2>7.5 Transport Layer - TCP and UDP</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | TCP vs UDP is asked in some form nearly every year | Priority CRITICAL</strong></blockquote>
+<h3>7.5.1 Questions</h3>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is FALSE about TCP?</strong></p>
+<ul><li>(a) It uses a three-way handshake to establish a connection.</li><li>(b) It receives data from application as a single stream.</li><li>(c) It is a connection-oriented protocol.</li><li>(d) <strong>It is a connection-less protocol.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> TCP is definitively <strong>connection-oriented</strong>; <strong>UDP</strong> is the connectionless one. The option list contains both claims, which is your signal for which is being tested.</blockquote>
+<p><strong>Q. [PYQ] What does the TCP service model guarantee about the order of data delivery?</strong></p>
+<ul><li>(a) <strong>Data is delivered in the order it is transmitted.  &lt;-- CORRECT</strong></li><li>(b) Data is not guaranteed to arrive in any specific order.</li><li>(c) Data may arrive out of order and is handled by the application layer.</li><li>(d) Data is delivered as fast as possible.</li></ul>
+<blockquote><strong>Why:</strong> TCP uses <strong>sequence numbers</strong> to reorder segments before delivery. The &quot;handled by the application layer&quot; option describes <strong>UDP</strong>, where the application must sort things out itself.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which protocol would you choose for live video streaming, and why?</strong></p>
+<ul><li>(a) TCP, because it is reliable</li><li>(b) <strong>UDP, because low latency matters more than retransmitting lost frames  &lt;-- CORRECT</strong></li><li>(c) TCP, because it is faster</li><li>(d) SCTP, because it is connectionless</li></ul>
+<blockquote><strong>Why:</strong> Retransmitting a video frame that is already too late to display is useless and adds delay. <strong>UDP</strong> is used for streaming, VoIP, gaming, <strong>DNS</strong>, DHCP, TFTP and SNMP. Its header is a fixed <strong>8 bytes</strong> versus TCP&#x27;s 20-60.</blockquote>
+<p><strong>Q. [PYQ] What happens if a RST (reset) packet is received during the connection management process?</strong></p>
+<ul><li>(a) The receiver sends another SYN packet.</li><li>(b) <strong>The connection is immediately terminated.  &lt;-- CORRECT</strong></li><li>(c) The sender continues retransmissions.</li><li>(d) The connection remains active.</li></ul>
+<blockquote><strong>Why:</strong> <strong>RST aborts immediately</strong> and discards queued data - no acknowledgement expected. Contrast <strong>FIN</strong>, which begins a graceful four-way shutdown. RST is sent when a segment arrives for a port with no listener.</blockquote>
+<p><strong>Q. [EXPECTED] The TCP three-way handshake consists of:</strong></p>
+<ul><li>(a) SYN, ACK, FIN</li><li>(b) <strong>SYN, SYN+ACK, ACK  &lt;-- CORRECT</strong></li><li>(c) SYN, ACK, RST</li><li>(d) FIN, ACK, FIN</li></ul>
+<blockquote><strong>Why:</strong> Connection setup is three steps; <strong>termination takes four</strong> (FIN, ACK, FIN, ACK).</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which statement is true about the slow start phase of TCP congestion control?</strong></p>
+<ul><li>(a) Congestion window increases by 1 MSS every round trip time.</li><li>(b) <strong>Congestion window approximately doubles every round trip time.  &lt;-- CORRECT</strong></li><li>(c) Congestion window increases by 2 MSS on every successful acknowledgement.</li><li>(d) Congestion window approximately doubles on every successful acknowledgement.</li></ul>
+<blockquote><strong>Why:</strong> The window grows by <strong>1 MSS per ACK received</strong>; since a window of N segments produces N ACKs per RTT, the window goes from N to 2N each RTT - i.e. it <strong>doubles per RTT</strong>. &quot;Increases by 1 MSS per RTT&quot; describes the later <strong>congestion avoidance</strong> phase (additive increase).</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] Which port number does HTTPS use?</strong></p>
+<ul><li>(a) 80</li><li>(b) <strong>443  &lt;-- CORRECT</strong></li><li>(c) 22</li><li>(d) 25</li></ul>
+<blockquote><strong>Why:</strong> Learn the core set: <strong>20/21 FTP, 22 SSH, 23 Telnet, 25 SMTP, 53 DNS, 67/68 DHCP, 69 TFTP, 80 HTTP, 110 POP3, 143 IMAP, 161 SNMP, 443 HTTPS, 3306 MySQL.</strong></blockquote>
+<p><strong>Q. [EXPECTED] A socket is uniquely identified by:</strong></p>
+<ul><li>(a) port number alone</li><li>(b) IP address alone</li><li>(c) <strong>IP address + port number (+ protocol)  &lt;-- CORRECT</strong></li><li>(d) MAC address</li></ul>
+<blockquote><strong>Why:</strong> This combination is what lets one machine hold thousands of simultaneous connections.</blockquote>
+<h2>7.6 Application Layer Protocols</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks | Protocol-to-purpose matching is easy marks | Priority HIGH</strong></blockquote>
+<h3>7.6.1 Questions</h3>
+<p><strong>Q. [EXPECTED] [TRAP] Which protocol is used to SEND email, and which to RETRIEVE it?</strong></p>
+<ul><li>(a) POP3 to send, SMTP to retrieve</li><li>(b) <strong>SMTP to send, POP3/IMAP to retrieve  &lt;-- CORRECT</strong></li><li>(c) IMAP to send, SMTP to retrieve</li><li>(d) HTTP for both</li></ul>
+<blockquote><strong>Why:</strong> <strong>SMTP pushes mail out</strong> (port 25). <strong>POP3</strong> (110) downloads and typically deletes from the server; <strong>IMAP</strong> (143) keeps mail on the server and supports folders and multi-device sync.</blockquote>
+<p><strong>Q. [EXPECTED] Which protocol automatically assigns IP address, subnet mask, gateway and DNS to a host?</strong></p>
+<ul><li>(a) DNS</li><li>(b) ARP</li><li>(c) <strong>DHCP  &lt;-- CORRECT</strong></li><li>(d) ICMP</li></ul>
+<blockquote><strong>Why:</strong> <strong>DHCP</strong> uses UDP ports 67 and 68. If it fails, Windows self-assigns an <strong>APIPA</strong> address in 169.254.x.x.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which of the following is an insecure protocol that transmits credentials in plain text?</strong></p>
+<ul><li>(a) SSH</li><li>(b) HTTPS</li><li>(c) <strong>Telnet  &lt;-- CORRECT</strong></li><li>(d) SFTP</li></ul>
+<blockquote><strong>Why:</strong> <strong>Telnet</strong> (port 23) sends everything unencrypted; <strong>SSH</strong> (22) is its encrypted replacement. Similarly FTP is insecure and SFTP/FTPS are the secure alternatives.</blockquote>
+<p><strong>Q. [EXPECTED] HTTP is described as a stateless protocol because:</strong></p>
+<ul><li>(a) it cannot transfer files</li><li>(b) <strong>each request is independent and the server retains no memory of previous requests  &lt;-- CORRECT</strong></li><li>(c) it uses UDP</li><li>(d) it has no error codes</li></ul>
+<blockquote><strong>Why:</strong> Statelessness is why <strong>cookies</strong> and server-side <strong>sessions</strong> exist - they supply the memory HTTP lacks. Status codes: 200 OK, 301 moved, <strong>404 not found</strong>, 500 server error.</blockquote>
+<h2>7.7 Network Security and Cryptography</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Symmetric vs asymmetric is near-certain | Priority CRITICAL</strong></blockquote>
+<h3>7.7.1 Questions</h3>
+<p><strong>Q. [PYQ] The process of verifying a user&#x27;s identity is called:</strong></p>
+<ul><li>(a) integrity</li><li>(b) <strong>authentication  &lt;-- CORRECT</strong></li><li>(c) validation</li><li>(d) confidentiality</li></ul>
+<blockquote><strong>Why:</strong> <strong>Authentication</strong> = &quot;who are you?&quot; (password, OTP, biometric). <strong>Authorisation</strong> = &quot;what may you do?&quot;. <strong>Validation</strong> = checking *data* format. <strong>Integrity</strong> = data has not been altered.</blockquote>
+<p><strong>Q. [PYQ] The information transformed during encryption is <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) encrypted message</li><li>(b) coded message</li><li>(c) cipher text</li><li>(d) <strong>plain text  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The question asks what goes <strong>IN</strong>. <strong>Plain text</strong> is transformed *into* cipher text. &quot;Cipher text&quot; is the tempting wrong answer because it is the *result*.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT a symmetric-key cryptographic algorithm?</strong></p>
+<ul><li>(a) AES</li><li>(b) RC4</li><li>(c) <strong>RSA  &lt;-- CORRECT</strong></li><li>(d) DES</li></ul>
+<blockquote><strong>Why:</strong> <strong>RSA</strong> (Rivest-Shamir-Adleman) is the classic <strong>asymmetric/public-key</strong> algorithm. Asymmetric family: <strong>RSA, Diffie-Hellman, ECC, DSA, ElGamal</strong>. Everything else you commonly meet (AES, DES, 3DES, RC4, RC5, Blowfish, IDEA) is symmetric.</blockquote>
+<p><strong>Q. [PYQ] In public key cryptography, which key is used for decrypting a message encrypted with the public key?</strong></p>
+<ul><li>(a) Another public key</li><li>(b) A symmetric key</li><li>(c) The sender&#x27;s private key</li><li>(d) <strong>The recipient&#x27;s private key  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Public and private keys are mathematically matched pairs - only the <strong>corresponding private key</strong> can undo what its public key locked. The *sender&#x27;s* private key belongs to a different pair entirely.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] To create a digital signature, the sender encrypts the message digest with:</strong></p>
+<ul><li>(a) the recipient&#x27;s public key</li><li>(b) the recipient&#x27;s private key</li><li>(c) <strong>the sender&#x27;s private key  &lt;-- CORRECT</strong></li><li>(d) a session key</li></ul>
+<blockquote><strong>Why:</strong> Two separate use cases: for <strong>confidentiality</strong> encrypt with the <strong>recipient&#x27;s PUBLIC</strong> key; for a <strong>digital signature</strong> encrypt with the <strong>sender&#x27;s PRIVATE</strong> key so anyone can verify it using the sender&#x27;s public key. Signatures give authentication, integrity and non-repudiation - but <strong>not</strong> confidentiality.</blockquote>
+<p><strong>Q. [PYQ] Communication between end systems is encrypted using a key that is commonly referred to as a:</strong></p>
+<ul><li>(a) single key</li><li>(b) <strong>session key  &lt;-- CORRECT</strong></li><li>(c) private key</li><li>(d) public key</li></ul>
+<blockquote><strong>Why:</strong> A <strong>session key</strong> is a temporary symmetric key generated for one session and then discarded. HTTPS does exactly this: asymmetric cryptography to agree a key, then fast symmetric encryption for the data.</blockquote>
+<p><strong>Q. [EXPECTED] Why do real systems combine asymmetric and symmetric cryptography?</strong></p>
+<ul><li>(a) To use more keys</li><li>(b) <strong>Asymmetric solves key distribution; symmetric is far faster for bulk data  &lt;-- CORRECT</strong></li><li>(c) Symmetric is more secure</li><li>(d) Asymmetric cannot encrypt</li></ul>
+<blockquote><strong>Why:</strong> Asymmetric encryption is roughly a thousand times slower. Using it only to exchange the session key gives both secure key distribution and high throughput.</blockquote>
+<p><strong>Q. [PYQ] Which of the following describes the use of digital certificates in authentication?</strong></p>
+<ul><li>(a) They store users&#x27; passwords.</li><li>(b) They compress large files for secure transfer.</li><li>(c) <strong>They verify the identity of entities using Public Key Infrastructure (PKI).  &lt;-- CORRECT</strong></li><li>(d) They encrypt data transmission.</li></ul>
+<blockquote><strong>Why:</strong> A certificate (format <strong>X.509</strong>) binds a <strong>public key to an identity</strong> and is signed by a trusted <strong>Certificate Authority</strong>. It authenticates identity; the traffic itself is encrypted afterwards with session keys.</blockquote>
+<p><strong>Q. [EXPECTED] A hash function is characterised by being:</strong></p>
+<ul><li>(a) reversible</li><li>(b) <strong>one-way and producing a fixed-length digest  &lt;-- CORRECT</strong></li><li>(c) variable in output length</li><li>(d) encryption with a key</li></ul>
+<blockquote><strong>Why:</strong> Hashes are <strong>irreversible</strong>. Used for password storage, integrity checks and digital signatures. <strong>MD5</strong> (128-bit) and <strong>SHA-1</strong> (160-bit) are broken; <strong>SHA-256/512</strong> is current.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which malware self-replicates and spreads across networks without any user action?</strong></p>
+<ul><li>(a) Virus</li><li>(b) <strong>Worm  &lt;-- CORRECT</strong></li><li>(c) Trojan horse</li><li>(d) Adware</li></ul>
+<blockquote><strong>Why:</strong> A <strong>virus</strong> needs a host file and a user action; a <strong>worm</strong> spreads autonomously. A <strong>Trojan</strong> masquerades as useful software; <strong>ransomware</strong> encrypts files for payment; a <strong>rootkit</strong> hides an intruder&#x27;s presence.</blockquote>
+<p><strong>Q. [EXPECTED] SQL injection is best prevented by:</strong></p>
+<ul><li>(a) using a firewall</li><li>(b) <strong>using parameterised queries / prepared statements  &lt;-- CORRECT</strong></li><li>(c) encrypting the database</li><li>(d) renaming tables</li></ul>
+<blockquote><strong>Why:</strong> Parameterised queries separate code from data so user input can never be interpreted as SQL. Related web attack: <strong>XSS</strong>, prevented by output encoding.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a risk management methodology?</strong></p>
+<ul><li>(a) Acceptance of threats</li><li>(b) <strong>Risk generation  &lt;-- CORRECT</strong></li><li>(c) Avoidance of threats</li><li>(d) Transfer of risks</li></ul>
+<blockquote><strong>Why:</strong> The four genuine strategies are <strong>avoid, accept, transfer (e.g. insurance) and mitigate</strong>. Nobody *generates* risk as a strategy.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] A passive attack is characterised by:</strong></p>
+<ul><li>(a) modifying messages</li><li>(b) <strong>eavesdropping without altering data  &lt;-- CORRECT</strong></li><li>(c) denial of service</li><li>(d) masquerading</li></ul>
+<blockquote><strong>Why:</strong> <strong>Passive</strong> = eavesdropping and traffic analysis; hard to detect but easy to prevent with encryption. <strong>Active</strong> = modification, masquerade, replay, DoS; hard to prevent but easier to detect.</blockquote>
+<h2>7.8 Wireless and Mobile Computing</h2>
+<blockquote><strong>WEIGHTAGE: 1-3 marks in DSSSB | GSM registers and handover types recur | Priority MEDIUM</strong></blockquote>
+<h3>7.8.1 Questions</h3>
+<p><strong>Q. [PYQ] BTS stands for <em>_</em>___.</strong></p>
+<ul><li>(a) Base Transfer Station</li><li>(b) <strong>Base Transceiver Station  &lt;-- CORRECT</strong></li><li>(c) Basic Transfer System</li><li>(d) Basic Transceiver Station</li></ul>
+<blockquote><strong>Why:</strong> <strong>Base</strong> (not Basic) <strong>Transceiver</strong> (transmitter + receiver, which is what tower equipment does) <strong>Station</strong>. Watch the deliberate near-miss spellings.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which statement is true about Home Location Register (HLR) and Visitor Location Register (VLR)?</strong></p>
+<ul><li>(a) VLR is not responsible for the MS to inform the MLR about location changes.</li><li>(b) VLR is not responsible for the MS to inform the HLR about location changes.</li><li>(c) <strong>VLR is responsible for the MS to inform the HLR about location changes.  &lt;-- CORRECT</strong></li><li>(d) HLR is responsible for the MS to inform the VLR about location changes.</li></ul>
+<blockquote><strong>Why:</strong> Reporting always flows <strong>VLR to HLR</strong>. As you move you register with a new VLR, which updates your permanent <strong>HLR</strong> so the home network always knows which VLR is serving you. Incoming calls query the HLR first.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>___ is the handover from a satellite network to a terrestrial cellular network.</strong></p>
+<ul><li>(a) Gateway handover</li><li>(b) Inter satellite handover</li><li>(c) <strong>Inter system handover  &lt;-- CORRECT</strong></li><li>(d) Intra satellite handover</li></ul>
+<blockquote><strong>Why:</strong> The key word is <strong>system</strong> - two different systems (satellite and terrestrial) are involved. Gateway, intra-satellite and inter-satellite handovers all occur *within* the satellite system.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In a soft handover, the new connection is established:</strong></p>
+<ul><li>(a) after the old one is released</li><li>(b) <strong>before the old one is released, so there is no interruption  &lt;-- CORRECT</strong></li><li>(c) only if the old one fails</li><li>(d) by the mobile station alone</li></ul>
+<blockquote><strong>Why:</strong> <strong>Soft handover</strong> (CDMA) makes before break - no interruption. <strong>Hard handover</strong> (GSM) breaks before make - a brief gap.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ is the address of the current tunnel endpoint for MN that can be chosen via DHCP.</strong></p>
+<ul><li>(a) <strong>FA  &lt;-- CORRECT</strong></li><li>(b) COA</li><li>(c) HA</li><li>(d) CN</li></ul>
+<blockquote><strong>Why:</strong> The tunnel runs from the <strong>Home Agent</strong> (start) to the current point of attachment. The <strong>Foreign Agent</strong> sits in the visited network and terminates it, so it is the <strong>tunnel endpoint</strong>. <strong>COA</strong> is the address *value*, not the entity; <strong>CN</strong> is the far-end correspondent.</blockquote>
+<p><strong>Q. [PYQ] Which technology is commonly used in Wi-Fi to enhance signal range and reliability?</strong></p>
+<ul><li>(a) <strong>MIMO (Multiple Input Multiple Output)  &lt;-- CORRECT</strong></li><li>(b) WEP (Wired Equivalent Privacy)</li><li>(c) TDMA</li><li>(d) CDMA</li></ul>
+<blockquote><strong>Why:</strong> <strong>MIMO</strong> uses multiple antennas at both ends to exploit multipath reflections instead of suffering from them, improving range, reliability and throughput. <strong>WEP</strong> is (broken) security; TDMA and CDMA are cellular channel-access methods.</blockquote>
+<p><strong>Q. [EXPECTED] Which IEEE standard defines Wireless LAN (Wi-Fi)?</strong></p>
+<ul><li>(a) 802.3</li><li>(b) <strong>802.11  &lt;-- CORRECT</strong></li><li>(c) 802.15</li><li>(d) 802.16</li></ul>
+<blockquote><strong>Why:</strong> <strong>802.3 = Ethernet, 802.11 = Wi-Fi, 802.15 = Bluetooth/WPAN, 802.16 = WiMAX.</strong></blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which Wi-Fi security standard is considered broken and should not be used?</strong></p>
+<ul><li>(a) WPA2</li><li>(b) WPA3</li><li>(c) <strong>WEP  &lt;-- CORRECT</strong></li><li>(d) 802.1X</li></ul>
+<blockquote><strong>Why:</strong> <strong>WEP</strong> (Wired Equivalent Privacy) has fatal cryptographic flaws and can be cracked in minutes. Progression of strength: WEP, WPA, WPA2, WPA3.</blockquote></body></html>

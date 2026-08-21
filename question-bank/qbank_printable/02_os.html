@@ -1,0 +1,257 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 3 - Operating Systems and Linux</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 3 - Operating Systems and Linux</h1>
+<blockquote>*Weightage: 10 to 12 marks in DSSSB, 8 to 14 expected. The single highest-return Computer Science topic in every one of these exams.*</blockquote>
+<h2>3.1 OS Concepts, Processes and Threads</h2>
+<blockquote><strong>WEIGHTAGE: 4-6 marks | Process states and definitions are near-certain | Priority CRITICAL</strong></blockquote>
+<h3>3.1.1 Topic checklist</h3>
+<ul><li>OS definition, services, types (batch, multiprogramming, time-sharing, RTOS, distributed)</li><li>Kernel types, system calls, user vs kernel mode</li><li>Process vs program, PCB, process states and legal transitions</li><li>Threads, user vs kernel threads, multithreading models</li><li>fork, exec, wait, join, zombie and orphan processes</li><li>IPC: pipe, message queue, shared memory, socket, signal</li><li>Synchronisation: critical section, mutex, semaphore, monitor</li><li>Deadlock: four conditions, prevention, avoidance, Banker&#x27;s algorithm</li></ul>
+<h3>3.1.2 Questions</h3>
+<p><strong>Q. [PYQ] Which of the following services is NOT provided by the operating system?</strong></p>
+<ul><li>(a) Resource management</li><li>(b) Inter process for communication</li><li>(c) <strong>Translate source into machine code  &lt;-- CORRECT</strong></li><li>(d) Program execution</li></ul>
+<blockquote><strong>Why:</strong> Translation is the <strong>compiler&#x27;s</strong> job. The OS *runs* the compiler but performs no translation itself. Genuine OS services: process management, memory management, file management, I/O, IPC, protection, error detection, accounting.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT a function of an operating system?</strong></p>
+<ul><li>(a) Memory management</li><li>(b) Process scheduling</li><li>(c) File management</li><li>(d) <strong>Designing the database schema  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Schema design is a human/DBA activity in DBMS. Keep the OS&#x27;s remit clear: it manages the machine&#x27;s <strong>resources</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] The core part of the operating system that is always resident in memory is called:</strong></p>
+<ul><li>(a) Shell</li><li>(b) <strong>Kernel  &lt;-- CORRECT</strong></li><li>(c) Compiler</li><li>(d) BIOS</li></ul>
+<blockquote><strong>Why:</strong> The <strong>kernel</strong> handles scheduling, memory, drivers, system calls and interrupts, and never leaves memory. The <strong>shell</strong> is the outer command interpreter.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which kernel type runs file systems and device drivers in user space?</strong></p>
+<ul><li>(a) Monolithic kernel</li><li>(b) <strong>Microkernel  &lt;-- CORRECT</strong></li><li>(c) Hybrid kernel</li><li>(d) Exokernel</li></ul>
+<blockquote><strong>Why:</strong> A <strong>microkernel</strong> keeps only scheduling, memory and IPC in kernel space; everything else runs as user processes. Result: very reliable and modular, but slower because of message-passing overhead. <strong>Monolithic</strong> (Linux, UNIX) puts everything in kernel space - fast but a single bug can crash the system.</blockquote>
+<p><strong>Q. [EXPECTED] A system call causes a transition from:</strong></p>
+<ul><li>(a) kernel mode to user mode</li><li>(b) <strong>user mode to kernel mode  &lt;-- CORRECT</strong></li><li>(c) user mode to user mode</li><li>(d) kernel mode to kernel mode</li></ul>
+<blockquote><strong>Why:</strong> A system call is the controlled doorway into privileged execution. This <strong>dual-mode</strong> design is what stops a user program from touching hardware directly.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is a process-control system call?</strong></p>
+<ul><li>(a) open()</li><li>(b) read()</li><li>(c) <strong>fork()  &lt;-- CORRECT</strong></li><li>(d) ioctl()</li></ul>
+<blockquote><strong>Why:</strong> The five system-call categories: <strong>process control</strong> (fork, exec, exit, wait), <strong>file management</strong> (open, close, read, write), <strong>device management</strong> (ioctl), <strong>information maintenance</strong> (getpid, time), <strong>communication</strong> (pipe, socket, shmget).</blockquote>
+<p><strong>Q. [PYQ] What is typically returned by the getpid system call in Unix-based operating systems?</strong></p>
+<ul><li>(a) The process ID of the kernel</li><li>(b) <strong>Process ID of the current process  &lt;-- CORRECT</strong></li><li>(c) Process ID of the first process</li><li>(d) Process ID of the parent process</li></ul>
+<blockquote><strong>Why:</strong> <code>getpid()</code> returns the caller&#x27;s own PID; <strong><code>getppid()</code></strong> - note the extra p - returns the <strong>parent&#x27;s</strong> PID. A guaranteed pair question.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the difference between a program and a process?</strong></p>
+<ul><li>(a) They are identical</li><li>(b) <strong>A program is passive code on disk; a process is a program in execution  &lt;-- CORRECT</strong></li><li>(c) A process is stored on disk and a program in memory</li><li>(d) A program can have only one process</li></ul>
+<blockquote><strong>Why:</strong> A program is a <strong>passive</strong> file (a recipe); a process is an <strong>active</strong> entity with a program counter, registers, stack and memory (actually cooking). One program can spawn many processes.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT stored in the Process Control Block?</strong></p>
+<ul><li>(a) Process state</li><li>(b) Program counter</li><li>(c) CPU register values</li><li>(d) <strong>The complete source code of the program  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The PCB holds process <strong>metadata</strong>: PID, state, PC, registers, scheduling info, memory-management info, accounting data, I/O status. Source code is never in the PCB.</blockquote>
+<p><strong>Q. [PYQ] An operating system completely releases the memory allocated to a process after the process transitions from which of the following states?</strong></p>
+<ul><li>(a) Sleeping to ready</li><li>(b) Ready to running</li><li>(c) <strong>Running to terminated  &lt;-- CORRECT</strong></li><li>(d) Running to sleeping</li></ul>
+<blockquote><strong>Why:</strong> Memory is reclaimed only when the process <strong>ends</strong>. A sleeping or ready process will resume later and must find its data intact.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which process state transition is NOT possible?</strong></p>
+<ul><li>(a) Running to Ready</li><li>(b) Waiting to Ready</li><li>(c) Running to Waiting</li><li>(d) <strong>Waiting to Running  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A blocked process whose event completes always returns to the <strong>Ready queue</strong> and must be re-dispatched by the scheduler - it can never jump straight onto the CPU. Also impossible: Ready to Waiting, and anything out of Terminated.</blockquote>
+<p><strong>Q. [PYQ] If a process arrives at time 5, what is the latest possible time for it to start execution if there are no other processes in the system?</strong></p>
+<ul><li>(a) Time 6</li><li>(b) Time 0</li><li>(c) <strong>Time 5  &lt;-- CORRECT</strong></li><li>(d) Time 4</li></ul>
+<blockquote><strong>Why:</strong> With no competition the scheduler dispatches it immediately on arrival, and it cannot begin before it exists. So earliest = latest = <strong>5</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] A thread shares which of the following with other threads of the same process?</strong></p>
+<ul><li>(a) Program counter</li><li>(b) Stack</li><li>(c) Register set</li><li>(d) <strong>Code, data and open files  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Threads share the <strong>address space</strong> (code, data, heap) and open files. Each thread keeps its own <strong>program counter, registers and stack</strong>. Hence a thread is &quot;lightweight&quot;.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] What is the main disadvantage of user-level threads?</strong></p>
+<ul><li>(a) They are slow to create</li><li>(b) <strong>If one thread blocks, the entire process blocks  &lt;-- CORRECT</strong></li><li>(c) They cannot share memory</li><li>(d) They need more memory than kernel threads</li></ul>
+<blockquote><strong>Why:</strong> The kernel is unaware of user-level threads, so a blocking system call in one blocks the whole process, and the threads cannot be spread across multiple cores. Kernel-level threads avoid both problems at the cost of slower management.</blockquote>
+<p><strong>Q. [PYQ] <em>_</em>_ and <em>_</em>_ are used in conjunction for making a complete process subroutine.</strong></p>
+<ul><li>(a) <strong>fork(), join()  &lt;-- CORRECT</strong></li><li>(b) fork(), sleep()</li><li>(c) sleep(), join()</li><li>(d) join(), fork()</li></ul>
+<blockquote><strong>Why:</strong> <code>fork()</code> <strong>splits</strong> execution into parent and child; <code>join()</code>/<code>wait()</code> <strong>merges</strong> by waiting for completion. Order matters - you cannot join before you fork. Failing to wait leaves <strong>zombie</strong> processes.</blockquote>
+<p><strong>Q. [EXPECTED] What does fork() return in the child process?</strong></p>
+<ul><li>(a) The child&#x27;s PID</li><li>(b) The parent&#x27;s PID</li><li>(c) <strong>0  &lt;-- CORRECT</strong></li><li>(d) -1</li></ul>
+<blockquote><strong>Why:</strong> <code>fork()</code> returns <strong>0 to the child</strong>, the <strong>child&#x27;s PID to the parent</strong>, and <strong>-1 on failure</strong>. This asymmetry is how a single piece of code knows which process it is running in.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] How many total processes exist after three successive fork() calls?</strong></p>
+<ul><li>(a) 3</li><li>(b) 4</li><li>(c) 6</li><li>(d) <strong>8  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Each fork doubles the process count, so n forks give <strong>2^n</strong> processes: 2^3 = <strong>8</strong> total, meaning 7 new children.</blockquote>
+<p><strong>Q. [EXPECTED] A process that has terminated but whose parent has not yet collected its exit status is called:</strong></p>
+<ul><li>(a) Orphan process</li><li>(b) <strong>Zombie process  &lt;-- CORRECT</strong></li><li>(c) Daemon process</li><li>(d) Suspended process</li></ul>
+<blockquote><strong>Why:</strong> A <strong>zombie</strong> is dead but still holds a PCB entry awaiting <code>wait()</code>. An <strong>orphan</strong> is a live process whose parent died; it is adopted by init/systemd (PID 1).</blockquote>
+<p><strong>Q. [PYQ] What is an endpoint of an inter-process communication?</strong></p>
+<ul><li>(a) Tunnel</li><li>(b) Port</li><li>(c) <strong>Socket  &lt;-- CORRECT</strong></li><li>(d) Pipe</li></ul>
+<blockquote><strong>Why:</strong> A <strong>socket</strong> is one endpoint of a two-way communication link, identified by <strong>IP address + port + protocol</strong>. A *port* is merely one component of a socket address; a *pipe* is a channel, not an endpoint, and is not network-capable.</blockquote>
+<p><strong>Q. [EXPECTED] Which IPC mechanism is the fastest for transferring large amounts of data?</strong></p>
+<ul><li>(a) Pipe</li><li>(b) Message queue</li><li>(c) <strong>Shared memory  &lt;-- CORRECT</strong></li><li>(d) Signal</li></ul>
+<blockquote><strong>Why:</strong> <strong>Shared memory</strong> maps one region into both processes, so after setup no kernel copying occurs. Pipes and message queues copy through the kernel; signals carry almost no data.</blockquote>
+<p><strong>Q. [EXPECTED] A binary semaphore whose value can only be 0 or 1 is functionally similar to a:</strong></p>
+<ul><li>(a) Monitor</li><li>(b) <strong>Mutex lock  &lt;-- CORRECT</strong></li><li>(c) Counting semaphore</li><li>(d) Condition variable</li></ul>
+<blockquote><strong>Why:</strong> A <strong>mutex</strong> provides mutual exclusion for one resource. A <strong>counting semaphore</strong> permits up to N concurrent holders. Semaphore operations: <code>wait()</code>/P()/down() decrements, <code>signal()</code>/V()/up() increments.</blockquote>
+<p><strong>Q. [EXPECTED] Which of the following is NOT one of the four necessary conditions for deadlock?</strong></p>
+<ul><li>(a) Mutual exclusion</li><li>(b) Hold and wait</li><li>(c) No preemption</li><li>(d) <strong>Starvation  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The four are <strong>mutual exclusion, hold and wait, no preemption, circular wait</strong>. <strong>Starvation</strong> is a different problem - the system still progresses, just not for one unlucky process. Its cure is <strong>aging</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] The Banker&#x27;s algorithm is used for deadlock:</strong></p>
+<ul><li>(a) prevention</li><li>(b) <strong>avoidance  &lt;-- CORRECT</strong></li><li>(c) detection</li><li>(d) recovery</li></ul>
+<blockquote><strong>Why:</strong> <strong>Avoidance</strong> - it permits the four conditions but tests every request to keep the system in a <strong>safe state</strong>. *Prevention* structurally forbids one condition; *detection* lets deadlock happen and finds it with a wait-for graph. Dijkstra devised the Banker&#x27;s algorithm.</blockquote>
+<p><strong>Q. [EXPECTED] Real operating systems such as UNIX and Windows handle deadlock mainly by:</strong></p>
+<ul><li>(a) the Banker&#x27;s algorithm</li><li>(b) resource ordering</li><li>(c) <strong>largely ignoring it and relying on restart  &lt;-- CORRECT</strong></li><li>(d) full detection and rollback</li></ul>
+<blockquote><strong>Why:</strong> Deadlock is rare enough in practice that the overhead of avoidance is not worth it - this is sometimes called the &quot;ostrich algorithm&quot;. Good to know because it counters the textbook assumption.</blockquote>
+<h2>3.2 CPU Scheduling</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks | Definitions and one numerical are typical | Priority CRITICAL</strong></blockquote>
+<h3>3.2.1 Questions</h3>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is FALSE?</strong></p>
+<ul><li>(a) <strong>Burst Time: Time required by a process to start its execution  &lt;-- CORRECT</strong></li><li>(b) Turn Around Time: difference between completion time and arrival time</li><li>(c) Completion Time: time at which a process completes its execution</li><li>(d) Arrival Time: time at which a process arrives in the ready queue</li></ul>
+<blockquote><strong>Why:</strong> <strong>Burst time is the time a process needs ON THE CPU to execute</strong>, not the time to start. Examiners change &quot;to execute&quot; into &quot;to start its execution&quot; - a one-word swap that flips the statement.</blockquote>
+<p><strong>Q. [EXPECTED] Turn Around Time is calculated as:</strong></p>
+<ul><li>(a) Burst Time - Arrival Time</li><li>(b) <strong>Completion Time - Arrival Time  &lt;-- CORRECT</strong></li><li>(c) Completion Time - Burst Time</li><li>(d) Waiting Time + Arrival Time</li></ul>
+<blockquote><strong>Why:</strong> <strong>TAT = CT - AT</strong>, and <strong>WT = TAT - BT</strong>. These two formulas solve every scheduling numerical. Build a table with columns AT, BT, CT, TAT, WT.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] Three processes arrive at time 0 with burst times 5, 3 and 8, scheduled by FCFS in that order. What is the average waiting time?</strong></p>
+<ul><li>(a) 2.67</li><li>(b) <strong>4.33  &lt;-- CORRECT</strong></li><li>(c) 5.33</li><li>(d) 6.00</li></ul>
+<blockquote><strong>Why:</strong> Waiting times are 0, 5 and 8 (each waits for all previous bursts). Average = (0 + 5 + 8)/3 = 13/3 = <strong>4.33</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Which scheduling algorithm gives the minimum average waiting time among non-preemptive algorithms?</strong></p>
+<ul><li>(a) FCFS</li><li>(b) <strong>SJF  &lt;-- CORRECT</strong></li><li>(c) Round Robin</li><li>(d) Priority</li></ul>
+<blockquote><strong>Why:</strong> <strong>Shortest Job First</strong> is provably optimal for average waiting time, but it needs burst times known in advance and can <strong>starve</strong> long jobs. Its preemptive form is <strong>SRTF</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] The convoy effect is a problem associated with:</strong></p>
+<ul><li>(a) SJF</li><li>(b) Round Robin</li><li>(c) <strong>FCFS  &lt;-- CORRECT</strong></li><li>(d) Priority scheduling</li></ul>
+<blockquote><strong>Why:</strong> In <strong>FCFS</strong>, one long CPU-bound process at the head makes all short processes wait behind it, like a convoy stuck behind a slow truck. This is why FCFS has poor average waiting time.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] In Round Robin scheduling, what happens if the time quantum is made very large?</strong></p>
+<ul><li>(a) It becomes SJF</li><li>(b) <strong>It behaves like FCFS  &lt;-- CORRECT</strong></li><li>(c) It causes starvation</li><li>(d) Context switching increases</li></ul>
+<blockquote><strong>Why:</strong> With a quantum longer than every burst, no preemption ever occurs, so RR degenerates to <strong>FCFS</strong>. A very *small* quantum has the opposite problem: excessive context-switch overhead.</blockquote>
+<p><strong>Q. [EXPECTED] Which scheduling algorithm is most suitable for a time-sharing system?</strong></p>
+<ul><li>(a) FCFS</li><li>(b) SJF</li><li>(c) <strong>Round Robin  &lt;-- CORRECT</strong></li><li>(d) Priority without aging</li></ul>
+<blockquote><strong>Why:</strong> Round Robin guarantees each process the CPU within a bounded time, which is exactly what interactive response requires.</blockquote>
+<p><strong>Q. [EXPECTED] Starvation in priority scheduling is solved by:</strong></p>
+<ul><li>(a) Preemption</li><li>(b) <strong>Aging  &lt;-- CORRECT</strong></li><li>(c) Increasing the time quantum</li><li>(d) Using FCFS</li></ul>
+<blockquote><strong>Why:</strong> <strong>Aging</strong> gradually raises the priority of long-waiting processes so they eventually run.</blockquote>
+<p><strong>Q. [EXPECTED] Which scheduler controls the degree of multiprogramming?</strong></p>
+<ul><li>(a) Short-term scheduler</li><li>(b) <strong>Long-term scheduler  &lt;-- CORRECT</strong></li><li>(c) Medium-term scheduler</li><li>(d) Dispatcher</li></ul>
+<blockquote><strong>Why:</strong> The <strong>long-term (job) scheduler</strong> decides which jobs enter the ready queue, thereby fixing how many processes are in memory. The <strong>short-term</strong> scheduler picks who runs next (milliseconds); the <strong>dispatcher</strong> performs the actual context switch.</blockquote>
+<p><strong>Q. [EXPECTED] A context switch is best described as:</strong></p>
+<ul><li>(a) useful computation</li><li>(b) <strong>pure overhead with no useful work done  &lt;-- CORRECT</strong></li><li>(c) a form of scheduling algorithm</li><li>(d) an I/O operation</li></ul>
+<blockquote><strong>Why:</strong> During a context switch the CPU only saves and restores state. Minimising switches is therefore a real performance goal.</blockquote>
+<h2>3.3 Memory Management and Virtual Memory</h2>
+<blockquote><strong>WEIGHTAGE: 3-4 marks | Paging and page replacement recur constantly | Priority CRITICAL</strong></blockquote>
+<h3>3.3.1 Questions</h3>
+<p><strong>Q. [PYQ] [TRAP] How does the Best Fit algorithm impact system performance?</strong></p>
+<ul><li>(a) It improves system performance by reducing memory wastage.</li><li>(b) <strong>It may reduce system performance due to increased search time for free blocks.  &lt;-- CORRECT</strong></li><li>(c) It always improves system performance.</li><li>(d) It improves system performance by reducing external fragmentation.</li></ul>
+<blockquote><strong>Why:</strong> Best Fit must scan the <strong>entire</strong> free list on every request, and the tiny leftover holes it creates actually <strong>worsen</strong> external fragmentation. Note that three of the four options praise it - the word &quot;always&quot; alone disqualifies one of them.</blockquote>
+<p><strong>Q. [EXPECTED] Which allocation algorithm scans from the start and takes the first sufficiently large hole?</strong></p>
+<ul><li>(a) Best Fit</li><li>(b) <strong>First Fit  &lt;-- CORRECT</strong></li><li>(c) Worst Fit</li><li>(d) Next Fit</li></ul>
+<blockquote><strong>Why:</strong> <strong>First Fit</strong> is the fastest to search and performs well in practice. <strong>Worst Fit</strong> takes the largest hole and performs poorly. <strong>Next Fit</strong> resumes scanning from the last position.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Wasted space inside an allocated block is called:</strong></p>
+<ul><li>(a) External fragmentation</li><li>(b) <strong>Internal fragmentation  &lt;-- CORRECT</strong></li><li>(c) Compaction</li><li>(d) Thrashing</li></ul>
+<blockquote><strong>Why:</strong> <strong>Internal</strong> fragmentation is unused space *within* an allocated block (typical of fixed partitions and <strong>paging</strong>). <strong>External</strong> fragmentation is free memory scattered in pieces too small to use (typical of variable partitions and <strong>segmentation</strong>), cured by <strong>compaction</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Paging eliminates which problem?</strong></p>
+<ul><li>(a) Internal fragmentation</li><li>(b) <strong>External fragmentation  &lt;-- CORRECT</strong></li><li>(c) Thrashing</li><li>(d) Page faults</li></ul>
+<blockquote><strong>Why:</strong> Because any page can occupy any free frame, contiguity is no longer required, so external fragmentation disappears. A little internal fragmentation remains in each process&#x27;s last page.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which statement correctly distinguishes paging from segmentation?</strong></p>
+<ul><li>(a) Paging uses variable-size blocks; segmentation uses fixed-size</li><li>(b) <strong>Paging uses fixed-size blocks decided by the OS; segmentation uses variable-size logical divisions visible to the programmer  &lt;-- CORRECT</strong></li><li>(c) Both use fixed-size blocks</li><li>(d) Segmentation causes internal fragmentation</li></ul>
+<blockquote><strong>Why:</strong> <strong>Paging</strong>: fixed size, OS-decided, invisible to the programmer, internal fragmentation. <strong>Segmentation</strong>: variable size, logical (code/data/stack segments), visible to the programmer, external fragmentation.</blockquote>
+<p><strong>Q. [EXPECTED] The hardware cache that speeds up page-table lookups is called:</strong></p>
+<ul><li>(a) Page table base register</li><li>(b) <strong>TLB  &lt;-- CORRECT</strong></li><li>(c) Frame buffer</li><li>(d) Cache line</li></ul>
+<blockquote><strong>Why:</strong> The <strong>Translation Lookaside Buffer</strong> stores recent page-to-frame mappings. Without it every memory reference would need two memory accesses - one for the page table, one for the data.</blockquote>
+<p><strong>Q. [PYQ] What is the main purpose of virtual memory?</strong></p>
+<ul><li>(a) <strong>To extend the physical memory using secondary storage  &lt;-- CORRECT</strong></li><li>(b) To provide cache storage</li><li>(c) To store BIOS settings</li><li>(d) To increase CPU speed</li></ul>
+<blockquote><strong>Why:</strong> Virtual memory keeps only the currently needed pages in RAM and the remainder in <strong>swap space on disk</strong>, so a program larger than physical RAM can run.</blockquote>
+<p><strong>Q. [PYQ] Page fault means:</strong></p>
+<ul><li>(a) <strong>accessing the page that is not currently in the memory  &lt;-- CORRECT</strong></li><li>(b) removing the page whenever it is needed</li><li>(c) fetching the page whenever it is needed</li><li>(d) an error that always occurs in the page</li></ul>
+<blockquote><strong>Why:</strong> A page fault is a <strong>normal, expected event</strong> in demand paging, not a program error. The OS fetches the page from disk, updates the page table and restarts the instruction.</blockquote>
+<p><strong>Q. [EXPECTED] Thrashing occurs when:</strong></p>
+<ul><li>(a) The CPU is idle</li><li>(b) <strong>The system spends more time swapping pages than executing processes  &lt;-- CORRECT</strong></li><li>(c) The page table is full</li><li>(d) A deadlock occurs</li></ul>
+<blockquote><strong>Why:</strong> Caused by too high a degree of multiprogramming, so no process holds enough frames for its <strong>working set</strong>. Cure: reduce multiprogramming or apply the working-set model.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Belady&#x27;s anomaly is observed in which page replacement algorithm?</strong></p>
+<ul><li>(a) LRU</li><li>(b) Optimal</li><li>(c) <strong>FIFO  &lt;-- CORRECT</strong></li><li>(d) LFU</li></ul>
+<blockquote><strong>Why:</strong> <strong>Belady&#x27;s anomaly</strong> - more frames producing *more* page faults - occurs in <strong>FIFO</strong> (and Second-Chance). <strong>LRU and Optimal are &quot;stack algorithms&quot;</strong> and never suffer it. A classic one-mark question.</blockquote>
+<p><strong>Q. [EXPECTED] Which page replacement algorithm gives the lowest possible fault rate but cannot be implemented?</strong></p>
+<ul><li>(a) LRU</li><li>(b) FIFO</li><li>(c) <strong>Optimal (OPT)  &lt;-- CORRECT</strong></li><li>(d) LFU</li></ul>
+<blockquote><strong>Why:</strong> Optimal evicts the page not needed for the longest time in the <strong>future</strong>, which requires knowledge no OS has. It is used only as a benchmark against which real algorithms are measured.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] With 3 frames and the reference string 1, 2, 3, 4, 1, 2, 5 using FIFO, how many page faults occur?</strong></p>
+<ul><li>(a) 6</li><li>(b) <strong>7  &lt;-- CORRECT</strong></li><li>(c) 8</li><li>(d) 9</li></ul>
+<blockquote><strong>Why:</strong> Every one of the seven references faults: 1,2,3 fill the frames; 4 evicts 1; 1 evicts 2; 2 evicts 3; 5 evicts 4. Total <strong>7 faults</strong>. Work these row by row, writing the frame contents after each reference.</blockquote>
+<h2>3.4 File Systems and Disk Scheduling</h2>
+<blockquote><strong>WEIGHTAGE: 2-3 marks | Disk scheduling trigger phrases are near-certain | Priority HIGH</strong></blockquote>
+<h3>3.4.1 Questions</h3>
+<p><strong>Q. [PYQ] In an acyclic graph directory structure, what is a common method used to implement shared directories or files?</strong></p>
+<ul><li>(a) File duplication</li><li>(b) <strong>Symbolic (soft) links  &lt;-- CORRECT</strong></li><li>(c) Hard links</li><li>(d) Directory pointers</li></ul>
+<blockquote><strong>Why:</strong> Hard links to <strong>directories</strong> are forbidden on UNIX because they could create cycles, destroying the acyclic property. A <strong>symbolic link</strong> stores a path, can point to a directory and can cross file systems - so it is the standard sharing mechanism here.</blockquote>
+<p><strong>Q. [EXPECTED] [TRAP] Which statement about hard and soft links is correct?</strong></p>
+<ul><li>(a) Both have their own inode</li><li>(b) <strong>A hard link shares the target&#x27;s inode; a soft link has its own inode containing a path  &lt;-- CORRECT</strong></li><li>(c) A soft link cannot cross file systems</li><li>(d) Deleting the original breaks a hard link</li></ul>
+<blockquote><strong>Why:</strong> <strong>Hard link</strong>: same inode, cannot cross file systems, cannot link directories, and the file survives deletion of the original name. <strong>Soft link</strong>: own inode holding a path, crosses file systems, links directories, becomes a dangling link if the target is deleted.</blockquote>
+<p><strong>Q. [EXPECTED] Which file allocation method suffers from external fragmentation?</strong></p>
+<ul><li>(a) Linked allocation</li><li>(b) Indexed allocation</li><li>(c) <strong>Contiguous allocation  &lt;-- CORRECT</strong></li><li>(d) FAT</li></ul>
+<blockquote><strong>Why:</strong> Contiguous allocation gives excellent sequential and direct access but the file cannot grow easily and free space becomes fragmented. <strong>Linked</strong> allocation avoids fragmentation but makes direct access slow; <strong>indexed</strong> allocation supports direct access via an index block.</blockquote>
+<p><strong>Q. [PYQ] The default file system type in Linux is:</strong></p>
+<ul><li>(a) Ext3</li><li>(b) Ext1</li><li>(c) <strong>Ext4  &lt;-- CORRECT</strong></li><li>(d) Ext2</li></ul>
+<blockquote><strong>Why:</strong> <strong>Ext4</strong> adds journaling, extents, delayed allocation and support for very large files and volumes. Ext2 had no journaling.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following is NOT true about NTFS?</strong></p>
+<ul><li>(a) It utilises disk space efficiently using smaller clusters.</li><li>(b) NTFS attributes include read-only, hidden, system, archive, not content indexed, off-line, temporary and compressed.</li><li>(c) It introduced improved performance and scalability compared with its precursor.</li><li>(d) <strong>It does not support the compression of files and directories to optimise storage space.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> NTFS <strong>does</strong> support built-in file and folder compression, along with journaling, ACL-based file-level security, EFS encryption and disk quotas.</blockquote>
+<p><strong>Q. [EXPECTED] Journaling in a file system primarily provides:</strong></p>
+<ul><li>(a) Faster read speed</li><li>(b) <strong>Crash consistency by logging intended changes before applying them  &lt;-- CORRECT</strong></li><li>(c) File compression</li><li>(d) Encryption</li></ul>
+<blockquote><strong>Why:</strong> The journal is written first, so after a crash it can be replayed and the file system is never left in an inconsistent state.</blockquote>
+<p><strong>Q. [PYQ] In which scheduling algorithm does the disk head move in one direction, satisfying all requests until it reaches the end, and then reverses direction?</strong></p>
+<ul><li>(a) <strong>SCAN  &lt;-- CORRECT</strong></li><li>(b) SSTF</li><li>(c) LOOK</li><li>(d) FCFS</li></ul>
+<blockquote><strong>Why:</strong> &quot;<strong>Until it reaches the end</strong>&quot; is the decisive phrase. Learn the three triggers: <strong>SCAN</strong> goes to the physical end then reverses; <strong>LOOK</strong> reverses at the last *request*; <strong>C-SCAN</strong> jumps back to the start without serving on the return.</blockquote>
+<p><strong>Q. [PYQ] [TRAP] The advantage of SSTF (Shortest Seek Time First) is:</strong></p>
+<ul><li>(a) high variance of response time as SSTF favours only some requests</li><li>(b) overhead to calculate seek time in advance</li><li>(c) <strong>average response time decreases  &lt;-- CORRECT</strong></li><li>(d) throughput decreases</li></ul>
+<blockquote><strong>Why:</strong> Three options are <strong>disadvantages</strong> dressed up as advantages. SSTF actually *increases* throughput, and its real drawbacks are starvation of distant requests and high response-time variance.</blockquote>
+<p><strong>Q. [EXPECTED] Which component of disk access time is usually the largest?</strong></p>
+<ul><li>(a) Rotational latency</li><li>(b) <strong>Seek time  &lt;-- CORRECT</strong></li><li>(c) Transfer time</li><li>(d) Controller overhead</li></ul>
+<blockquote><strong>Why:</strong> Moving the arm mechanically dominates. <strong>Access time = seek time + rotational latency + transfer time</strong>, and rotational latency averages half a revolution.</blockquote>
+<h2>3.5 Linux and UNIX</h2>
+<blockquote><strong>WEIGHTAGE: 2-4 marks in DSSSB | EMRS also tests basic OS and ICT commands | Priority HIGH</strong></blockquote>
+<h3>3.5.1 Questions</h3>
+<p><strong>Q. [PYQ] In which of the following directories are the configuration files found?</strong></p>
+<ul><li>(a) /dev</li><li>(b) /root</li><li>(c) <strong>/etc/  &lt;-- CORRECT</strong></li><li>(d) /bin</li></ul>
+<blockquote><strong>Why:</strong> <strong>/etc</strong> = configuration files and administration commands. <strong>/bin</strong> = essential command binaries. <strong>/dev</strong> = device files. <strong>/root</strong> = the superuser&#x27;s home directory (not the same as <code>/</code>).</blockquote>
+<p><strong>Q. [PYQ] [TRAP] Which of the following statements is NOT true?</strong></p>
+<ul><li>(a) etc: contains additional commands related to system maintenance and administration.</li><li>(b) <strong>usr: It contains temporary files created by Linux or other users.  &lt;-- CORRECT</strong></li><li>(c) bin: It contains executable files for the UNIX commands.</li><li>(d) dev: It contains device drivers that control various peripherals.</li></ul>
+<blockquote><strong>Why:</strong> Temporary files live in <strong>/tmp</strong>, not /usr. <strong>/usr</strong> holds user programs and read-only shareable data (/usr/bin, /usr/lib, /usr/share). <strong>/var</strong> holds variable data such as logs.</blockquote>
+<p><strong>Q. [PYQ] Identify the command that is used to delete files in Linux.</strong></p>
+<ul><li>(a) <strong>rm  &lt;-- CORRECT</strong></li><li>(b) Rmdir</li><li>(c) Delete</li><li>(d) Rdir</li></ul>
+<blockquote><strong>Why:</strong> <code>rm</code> removes files; <code>rm -r</code> removes directories recursively; <code>rm -f</code> forces. <code>rmdir</code> deletes only <strong>empty</strong> directories. &quot;Delete&quot; and &quot;Rdir&quot; are not Linux commands at all.</blockquote>
+<p><strong>Q. [PYQ] Grep command is used to:</strong></p>
+<ul><li>(a) change the case of alphabets</li><li>(b) <strong>search for a specific pattern from a specified file and display those lines containing the pattern  &lt;-- CORRECT</strong></li><li>(c) cut the columns/fields of a specified file</li><li>(d) redirect the output of one command to another command</li></ul>
+<blockquote><strong>Why:</strong> <strong>GREP = Globally search for a Regular Expression and Print.</strong> Knowing the full form makes the definition unforgettable. The distractors describe <code>tr</code>, <code>cut</code> and the pipe respectively.</blockquote>
+<p><strong>Q. [EXPECTED] Which command displays the first 10 lines of a file by default?</strong></p>
+<ul><li>(a) tail</li><li>(b) cat</li><li>(c) <strong>head  &lt;-- CORRECT</strong></li><li>(d) less</li></ul>
+<blockquote><strong>Why:</strong> <code>head</code> shows the beginning, <code>tail</code> the end. <code>tail -f</code> follows a growing log file in real time - the standard way to watch server logs.</blockquote>
+<p><strong>Q. [EXPECTED] Which command is used to change file permissions in Linux?</strong></p>
+<ul><li>(a) chown</li><li>(b) <strong>chmod  &lt;-- CORRECT</strong></li><li>(c) chgrp</li><li>(d) umask</li></ul>
+<blockquote><strong>Why:</strong> <code>chmod</code> changes <strong>mode</strong> (permissions); <code>chown</code> changes <strong>owner</strong>; <code>chgrp</code> changes <strong>group</strong>; <code>umask</code> sets the *default* permissions for newly created files.</blockquote>
+<p><strong>Q. [PYQ] [NUMERICAL] Which of the following is a default permission for the text file in Linux?</strong></p>
+<ul><li>(a) rwx r-- r--</li><li>(b) <strong>rw- r-- r--  &lt;-- CORRECT</strong></li><li>(c) rwx rwx rwx</li><li>(d) rwx --- ---</li></ul>
+<blockquote><strong>Why:</strong> Files start from base <strong>666</strong> and the standard umask <strong>022</strong> removes group and other write permission, giving <strong>644 = rw-r--r--</strong>. A plain data file is never executable by default. Directories start from 777 and become <strong>755</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] [NUMERICAL] What does chmod 750 file.sh set?</strong></p>
+<ul><li>(a) rwx rwx r-x</li><li>(b) <strong>rwx r-x ---  &lt;-- CORRECT</strong></li><li>(c) rw- r-x ---</li><li>(d) rwx r-- r--</li></ul>
+<blockquote><strong>Why:</strong> Read as three octal digits: 7 = rwx (owner), 5 = r-x (group), 0 = --- (others). Weights are <strong>r=4, w=2, x=1</strong>.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a shell in Linux?</strong></p>
+<ul><li>(a) C shell</li><li>(b) Korn shell</li><li>(c) Bourne shell</li><li>(d) <strong>Alpha cell  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> No such shell exists - and note the deliberate misspelling &quot;cell&quot; for &quot;shell&quot;. Real shells: <strong>sh</strong> (Bourne), <strong>bash</strong> (Bourne Again, the Linux default), <strong>csh</strong> (C shell), <strong>tcsh</strong>, <strong>ksh</strong> (Korn), <strong>zsh</strong>.</blockquote>
+<p><strong>Q. [EXPECTED] Which symbol appends output to an existing file without overwriting it?</strong></p>
+<ul><li>(a) &gt;</li><li>(b) <strong>&gt;&gt;  &lt;-- CORRECT</strong></li><li>(c) &lt;</li><li>(d) pipe</li></ul>
+<blockquote><strong>Why:</strong> <code>&gt;</code> overwrites, <code>&gt;&gt;</code> appends, <code>&lt;</code> takes input from a file, and the pipe sends one command&#x27;s output into another&#x27;s input.</blockquote>
+<p><strong>Q. [EXPECTED] Which command shows the currently running processes?</strong></p>
+<ul><li>(a) ls</li><li>(b) <strong>ps  &lt;-- CORRECT</strong></li><li>(c) pwd</li><li>(d) du</li></ul>
+<blockquote><strong>Why:</strong> <code>ps</code> reports processes (<code>ps -ef</code> shows all); <code>top</code>/<code>htop</code> give a live view; <code>kill -9 PID</code> force-terminates.</blockquote>
+<p><strong>Q. [PYQ] Which of the following is NOT a benefit of distributed systems?</strong></p>
+<ul><li>(a) Scalability</li><li>(b) <strong>High communication latency  &lt;-- CORRECT</strong></li><li>(c) Resource sharing</li><li>(d) Fault tolerance</li></ul>
+<blockquote><strong>Why:</strong> Latency is the classic <strong>drawback</strong>, because messages must cross a network instead of staying inside one machine. Genuine benefits: resource sharing, scalability, fault tolerance, parallel speed-up, geographic distribution.</blockquote></body></html>
