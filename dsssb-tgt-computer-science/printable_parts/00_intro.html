@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART 0 - Before You Begin</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART 0 - Before You Begin</h1>
+<blockquote>*Understand the exam first. A student who knows the target scores more than a student who only knows the subject.*</blockquote>
+<h2>0.1 The Exam, The Pattern and The Plan</h2>
+<h3>What the DSSSB TGT Computer Science paper looks like</h3>
+<p>DSSSB means <strong>Delhi Subordinate Services Selection Board</strong>. TGT means <strong>Trained Graduate Teacher</strong>. So this exam picks teachers who will teach Computer Science in Delhi government schools.</p>
+<p>The question paper is a single objective (MCQ) paper. Based on the papers you shared, the structure is like this:</p>
+<table>
+<tr><th>Section</th><th>What it contains</th><th>Rough share</th></tr>
+<tr><td>General Awareness / Reasoning / Hindi / English</td><td>Comprehension passages, current affairs, arithmetic, logic</td><td>About 80 marks</td></tr>
+<tr><td>Subject Discipline (Computer Science)</td><td>Split into Discipline-1 to Discipline-5, roughly 20 questions each</td><td>About 100 questions</td></tr>
+<tr><td>Teaching Methodology / Pedagogy</td><td>Child development, teaching methods, assessment, education policy</td><td>About 20 questions</td></tr>
+</table>
+<blockquote><strong>NOTE: Three things to notice about the pattern</strong><br><br>The Computer Science part is <strong>not</strong> one long section. It is broken into Discipline-1, Discipline-2, Discipline-3, Discipline-4 and Discipline-5. Each block mixes every topic together - one question on Operating Systems, the next on Accounting, the next on Physics. So you can never say &quot;this section is only networks&quot;.<br><br>The paper is <strong>very wide but not very deep</strong>. It touches almost forty different topics, but most questions are one-line factual or single-step reasoning questions. Depth is rarely more than a first-year degree level.<br><br>There is <strong>negative marking</strong> in DSSSB papers (normally 0.25 mark per wrong answer). So a wild guess is not free. An educated guess after eliminating two options is still worth taking.</blockquote>
+<h3>Why the papers contain non-computer questions</h3>
+<p>You will have noticed questions on Physics (lasers, polarisation, optical fibre), Accounting (gross profit, drawings, balance sheet), Business Economics (demand forecasting, elasticity) and Mathematics (differential equations, probability) sitting inside the Discipline sections.</p>
+<p>This happens because DSSSB draws the &quot;Discipline&quot; bank from the broader graduate-level syllabus of the subject stream. You cannot control this. What you <strong>can</strong> do:</p>
+<ul><li>Master the pure Computer Science topics completely. They are the biggest and most predictable chunk.</li><li>Learn only the <strong>most repeated</strong> formulas and definitions from Physics, Accounting and Economics. This book gives you exactly those in Part J and Part M - not a whole textbook.</li><li>Never leave Teaching Methodology for the last day. It is the easiest 20 marks in the paper and most candidates lose it carelessly.</li></ul>
+<h3>The high-yield topic list (from the actual papers you shared)</h3>
+<p>Counting the questions across the three papers, this is where the marks actually are:</p>
+<table>
+<tr><th>Priority</th><th>Topic</th><th>Why</th></tr>
+<tr><td>1</td><td>Operating Systems</td><td>Process states, scheduling, memory management, paging, virtual memory, disk scheduling, Linux commands - appears 8-12 times per paper</td></tr>
+<tr><td>1</td><td>Computer Networks</td><td>OSI/TCP-IP layers, TCP vs UDP, IP addressing, ARP, cryptography - appears 8-12 times</td></tr>
+<tr><td>1</td><td>Data Structures &amp; Algorithms</td><td>Complexity, sorting, linked lists, divide-and-conquer - appears 6-10 times</td></tr>
+<tr><td>1</td><td>C / Java programming output</td><td>&quot;What will be the output&quot; questions - appears 8-15 times</td></tr>
+<tr><td>2</td><td>DBMS &amp; SQL</td><td>SQL commands, keys, normalisation, transactions - appears 5-8 times</td></tr>
+<tr><td>2</td><td>Digital Logic</td><td>Gates, K-map, number systems, counters - appears 4-7 times</td></tr>
+<tr><td>2</td><td>Web Technologies</td><td>HTML, CSS, JavaScript, XML, PHP, AJAX - appears 4-8 times</td></tr>
+<tr><td>2</td><td>Software Engineering</td><td>SDLC models, coupling/cohesion, CMM - appears 3-5 times</td></tr>
+<tr><td>3</td><td>Computer Graphics</td><td>Transformations, clipping, projections - appears 2-4 times</td></tr>
+<tr><td>3</td><td>MIS / Knowledge Management</td><td>MIS, DSS, KM, tacit knowledge - appears 3-6 times</td></tr>
+<tr><td>3</td><td>Teaching Methodology</td><td>Fixed 10-20 questions</td></tr>
+</table>
+<h3>A 90-day study plan you can actually follow</h3>
+<table>
+<tr><th>Days</th><th>What to do</th></tr>
+<tr><td>1-15</td><td>Part A, B (Fundamentals, Number Systems, Logic, Architecture). Solve every in-chapter question.</td></tr>
+<tr><td>16-32</td><td>Part C (Operating Systems) + Linux. This is the highest-return block.</td></tr>
+<tr><td>33-45</td><td>Part D (C, C++, OOP, Java). Practise output-prediction questions daily.</td></tr>
+<tr><td>46-56</td><td>Part E (Data Structures &amp; Algorithms). Learn every complexity by heart.</td></tr>
+<tr><td>57-66</td><td>Part F (DBMS &amp; SQL).</td></tr>
+<tr><td>67-76</td><td>Part G (Networks &amp; Security).</td></tr>
+<tr><td>77-83</td><td>Part H + Part I (Web, Software Engineering, Graphics, MIS).</td></tr>
+<tr><td>84-88</td><td>Part J (Maths/Stats) + Part K (Teaching Methodology).</td></tr>
+<tr><td>89-90</td><td>Part M only (rapid revision). Plus re-solve Part L papers.</td></tr>
+</table>
+<blockquote><strong>TIP: How to read this book</strong><br><br>Every chapter follows the same rhythm: (1) a plain-language explanation using an everyday example, (2) the exact technical definition the examiner wants, (3) a comparison table, (4) the actual previous-year questions with full reasoning, and (5) extra questions of the same type that can appear next time.<br><br>Do not skip the everyday example even if it feels childish. That example is the hook your memory will use inside the exam hall when you are nervous and the technical words have gone blank.</blockquote></body></html>

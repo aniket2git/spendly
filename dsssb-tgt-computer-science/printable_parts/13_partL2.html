@@ -1,0 +1,343 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DSSSB TGT CS - 13_partL2</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><h2>L6 Paper 2 - Discipline 1</h2>
+<p><strong>Q. <em>_</em>___ does NOT have any child ClassLoaders.</strong></p>
+<ul><li>(a) BootStrap ClassLoader</li><li>(b) Extension ClassLoader</li><li>(c) Primordial ClassLoader</li><li>(d) <strong>System ClassLoader  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Hierarchy is Bootstrap to Extension to System, so System is at the bottom. &quot;Primordial&quot; is another name for Bootstrap. See Part D, Chapter D3.2.</blockquote>
+<p><strong>Q. The lowest cost solution to developing a KM system is:</strong></p>
+<ul><li>(a) <strong>in-house development  &lt;-- CORRECT</strong></li><li>(b) outsourcing</li><li>(c) development by end users</li><li>(d) off-the-shelf solution</li></ul>
+<blockquote><strong>Why:</strong> Building internally uses existing staff and infrastructure, avoiding vendor fees and licences. See Part I, Chapter I4.6.</blockquote>
+<p><strong>Q. <em>_</em>_ is a set of interrelated components that collect (or retrieve), process, store and distribute information to support decision-making and control in an organisation.</strong></p>
+<ul><li>(a) An information technology</li><li>(b) Mini model of a processed system</li><li>(c) Max model of a processed system</li><li>(d) <strong>An information system  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> IT is the technology; an information system is technology + people + processes. See Part I, Chapter I4.2.</blockquote>
+<p><strong>Q. Which of the following services is NOT provided by the operating system?</strong></p>
+<ul><li>(a) Resource management</li><li>(b) Inter process for communication</li><li>(c) <strong>Translate source into machine code  &lt;-- CORRECT</strong></li><li>(d) Program execution</li></ul>
+<blockquote><strong>Why:</strong> Translation is the compiler&#x27;s job; the OS merely runs the compiler. See Part C, Chapter C1.2.</blockquote>
+<p><strong>Q. How to write the dot net server control?</strong></p>
+<ul><li>(a) &lt;asp:controlType ID=&quot;ControlID&quot; runin=&quot;server&quot; ...&gt;</li><li>(b) &lt;asp:controlType ID=&quot;ControlID&quot; runas=&quot;server&quot; ...&gt;</li><li>(c) &lt;asp:controlType ID=&quot;ControlID&quot; run=&quot;server&quot; ...&gt;</li><li>(d) <strong>&lt;asp:controlType ID=&quot;ControlID&quot; runat=&quot;server&quot; ...&gt;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Every ASP.NET server control needs <code>runat=&quot;server&quot;</code> - memorise the exact spelling. See Part D, Chapter D4.2.</blockquote>
+<p><strong>Q. Which of the following is NOT a type of computer architecture?</strong></p>
+<ul><li>(a) Micro Architecture</li><li>(b) Harvard Architecture</li><li>(c) <strong>Software Architecture  &lt;-- CORRECT</strong></li><li>(d) Instruction Set Architecture</li></ul>
+<blockquote><strong>Why:</strong> Software architecture belongs to Software Engineering, not hardware design. See Part B, Chapter B1.2.</blockquote>
+<p><strong>Q. A network on the internet has a subnet mask of 255.255.240.0. What is the maximum number of hosts it can handle?</strong></p>
+<ul><li>(a) 1024</li><li>(b) 3072</li><li>(c) 2048</li><li>(d) <strong>4094  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The mask is /20, leaving 12 host bits: 2^12 - 2 = 4094. Note 4096 is the total addresses, not usable hosts. Full working in Part G, Chapter G4.3.</blockquote>
+<p><strong>Q. Which of the following statements is true?</strong></p>
+<ul><li>(a) Circuit setup is not required in both a datagram network and virtual-circuit network.</li><li>(b) Circuit setup is required in both a datagram network and virtual-circuit network.</li><li>(c) <strong>Circuit setup is required in a virtual-circuit network.  &lt;-- CORRECT</strong></li><li>(d) Circuit setup is required in a datagram network.</li></ul>
+<blockquote><strong>Why:</strong> A virtual circuit establishes a logical path first; a datagram network sends each packet independently with no setup. See Part G, Chapter G1.6.</blockquote>
+<p><strong>Q. Which of the following is NOT a risk management methodology?</strong></p>
+<ul><li>(a) Acceptance of threats</li><li>(b) <strong>Risk generation  &lt;-- CORRECT</strong></li><li>(c) Avoidance of threats</li><li>(d) Transfer of risks</li></ul>
+<blockquote><strong>Why:</strong> The four genuine strategies are avoid, accept, transfer and mitigate. Nobody generates risk deliberately. See Part G, Chapter G7.7.</blockquote>
+<p><strong>Q. The decimal equivalent of the binary number 111111 is:</strong></p>
+<ul><li>(a) 46</li><li>(b) <strong>63  &lt;-- CORRECT</strong></li><li>(c) 52</li><li>(d) 36</li></ul>
+<blockquote><strong>Why:</strong> Six ones in a row = 2^6 - 1 = 63. See Part A, Chapter A5.2.</blockquote>
+<p><strong>Q. What are the articulation points in the given graph?</strong></p>
+<ul><li>(a) 1, 2 and 3</li><li>(b) 2, 3 and 4</li><li>(c) 3, 4 and 5</li><li>(d) <strong>2, 3 and 5  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Remove each vertex and check whether the graph splits: removing 3 isolates 9 and 10; removing 2 separates the two clusters; removing 5 isolates 6. Full method in Part E, Chapter E3.6.</blockquote>
+<p><strong>Q. DSS is a computer program application used to improve a company&#x27;s <em>_</em>_ capabilities.</strong></p>
+<ul><li>(a) <strong>decision-making capabilities  &lt;-- CORRECT</strong></li><li>(b) marketing capabilities</li><li>(c) delegation capabilities</li><li>(d) resources utilisation capabilities</li></ul>
+<blockquote><strong>Why:</strong> The name says it: Decision Support System. See Part I, Chapter I4.3.</blockquote>
+<p><strong>Q. <em>_</em>_ is a code that consists of CPU and platform-independent set of instructions, which can be easily converted to the native code.</strong></p>
+<ul><li>(a) DLL</li><li>(b) FCL</li><li>(c) JIT</li><li>(d) <strong>MSIL  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> MSIL is the intermediate language; JIT is the converter, FCL is a library, DLL is a compiled file. See Part D, Chapter D4.2.</blockquote>
+<p><strong>Q. CMM stands for:</strong></p>
+<ul><li>(a) Cognitive Modularity Model</li><li>(b) Capability Modularity Model</li><li>(c) Cognitive Measurable Model</li><li>(d) <strong>Capability Maturity Model  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Capability (what the organisation can do) + Maturity (how disciplined its process is). See Part I, Chapter I2.7.</blockquote>
+<p><strong>Q. Marginal revenue is calculated by <em>_</em>_.</strong></p>
+<ul><li>(a) dividing the change in total output quantity by the change in total revenue</li><li>(b) dividing the change in total cost by the change in total output quantity</li><li>(c) <strong>dividing the change in total revenue by the change in total output quantity  &lt;-- CORRECT</strong></li><li>(d) dividing the change in total revenue by the change in total profit</li></ul>
+<blockquote><strong>Why:</strong> Revenue change on top, quantity change at the bottom. The total-cost version defines marginal cost. See Part J, Chapter J6.7.</blockquote>
+<p><strong>Q. Which of the following statements is FALSE?</strong></p>
+<ul><li>(a) <strong>Burst Time: Time required by a process to start its execution  &lt;-- CORRECT</strong></li><li>(b) Turn Around Time: Time difference between the completion time and arrival time</li><li>(c) Completion Time: Time at which a process completes its execution</li><li>(d) Arrival Time: Time at which a process arrives in the ready queue</li></ul>
+<blockquote><strong>Why:</strong> Burst time is the time required to EXECUTE on the CPU, not to start. See Part C, Chapter C3.1.</blockquote>
+<p><strong>Q. In C++ language, the instruction &#x27;ignore(x,y);&#x27; <em>_</em>___.</strong></p>
+<ul><li>(a) skips the last x characters and stops if character y is encountered</li><li>(b) skips the first y characters and stops if character x is encountered</li><li>(c) <strong>skips the first x characters and stops if character y is encountered  &lt;-- CORRECT</strong></li><li>(d) skips the last y characters and stops if character x is encountered</li></ul>
+<blockquote><strong>Why:</strong> cin.ignore(count, delimiter): x is the count, y is the delimiter. See Part D, Chapter D4.1.</blockquote>
+<p><strong>Q. Page fault means:</strong></p>
+<ul><li>(a) <strong>accessing the page that is not currently in the memory  &lt;-- CORRECT</strong></li><li>(b) removing the page whenever it is needed</li><li>(c) fetching the page whenever it is needed</li><li>(d) an error that always occurs in the page</li></ul>
+<blockquote><strong>Why:</strong> A page fault is a normal, expected event, not a program error. See Part C, Chapter C4.5.</blockquote>
+<p><strong>Q. Any account or goods used by the owner of the business for his personal use is called as:</strong></p>
+<ul><li>(a) sales</li><li>(b) <strong>drawings  &lt;-- CORRECT</strong></li><li>(c) general expenses</li><li>(d) expenses</li></ul>
+<blockquote><strong>Why:</strong> Drawings reduce the owner&#x27;s capital. See Part J, Chapter J6.3.</blockquote>
+<p><strong>Q. Which of the following parameters is used to create a hyperlink in HTML?</strong></p>
+<ul><li>(a) Link</li><li>(b) url</li><li>(c) Path</li><li>(d) <strong>Href  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> href = Hypertext REFerence. The anchor tag does nothing without it. See Part H, Chapter H2.3.</blockquote>
+<h2>L7 Paper 2 - Discipline 2</h2>
+<p><strong>Q. Select the true statement about try-catch blocks.</strong></p>
+<ul><li>(a) A try block must have at least 1 catch to have a finally block.</li><li>(b) A try block must have only 1 finally block for each catch block.</li><li>(c) <strong>A try block can have many catches but only 1 finally block.  &lt;-- CORRECT</strong></li><li>(d) A try block can have many catches and many finally blocks.</li></ul>
+<blockquote><strong>Why:</strong> Many catch blocks are allowed; exactly one finally. A try with only finally and no catch is also legal. See Part D, Chapter D3.6.</blockquote>
+<p><strong>Q. A four-way set-associative cache memory unit with a capacity of 32 KB is built using a block size of 1 K words. The word length is 8 bits. The size of physical address space is 32 GB. The number of bits for the TAG field is:</strong></p>
+<ul><li>(a) <strong>22  &lt;-- CORRECT</strong></li><li>(b) 24</li><li>(c) 25</li><li>(d) 23</li></ul>
+<blockquote><strong>Why:</strong> 35 total address bits - 3 set bits - 10 offset bits = 22. Full five-step working in Part B, Chapter B5.3.</blockquote>
+<p><strong>Q. Which of the following statements is true?</strong></p>
+<ul><li>(a) POST is the process performed by BIOS immediately after the system is shutdown.</li><li>(b) The bootstrap program is stored in RAM.</li><li>(c) <strong>CMOS chip is powered by the battery located on the mother board.  &lt;-- CORRECT</strong></li><li>(d) BIOS was developed by Charles Babbage.</li></ul>
+<blockquote><strong>Why:</strong> POST happens at start-up; the bootstrap is in ROM; Babbage died a century before BIOS existed. See Part B, Chapter B1.3.</blockquote>
+<p><strong>Q. A body of mass 4.9 kg hangs from a spring and oscillates with a period of 0.6 sec. How much will the spring shorten when the body is removed?</strong></p>
+<ul><li>(a) 0.809 metre</li><li>(b) 1.089 metre</li><li>(c) 1.009 metre</li><li>(d) <strong>0.089 metre  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> x = gT^2/(4 pi^2) = 9.8 x 0.36 / 39.478 = 0.089 m. The mass cancels out. See Part J, Chapter J5.4.</blockquote>
+<p><strong>Q. Which of the following statements is NOT true?</strong></p>
+<ul><li>(a) etc: It contains other additional commands that are related to system maintenance and administration.</li><li>(b) <strong>usr: It contains temporary files created by Linux or other users.  &lt;-- CORRECT</strong></li><li>(c) bin: It contains executable files for the UNIX commands.</li><li>(d) dev: It contains device drivers that control various peripherals.</li></ul>
+<blockquote><strong>Why:</strong> Temporary files live in /tmp, not /usr. See Part C, Chapter C6.1.</blockquote>
+<p><strong>Q. Elasticity of demand explains the <em>_</em>_ of the correlation between price and quantity.</strong></p>
+<ul><li>(a) level, degree and angle</li><li>(b) angle</li><li>(c) level</li><li>(d) <strong>degree  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Elasticity measures the magnitude of responsiveness - the &quot;degree&quot;. See Part J, Chapter J6.7.</blockquote>
+<p><strong>Q. &#x27;FORTRAN&#x27; stands for <em>_</em>_.</strong></p>
+<ul><li>(a) Format Translation</li><li>(b) Format Transfer</li><li>(c) <strong>Formula Translation  &lt;-- CORRECT</strong></li><li>(d) Formula Transfer</li></ul>
+<blockquote><strong>Why:</strong> FORmula TRANslation - the first successful high-level scientific language. See Part A, Chapter A2.5.</blockquote>
+<p><strong>Q. In a path-graph having &#x27;n&#x27; vertices, where &#x27;n&#x27; &gt; 2, <em>_</em>_ is the number of vertices with degree 2.</strong></p>
+<ul><li>(a) 3</li><li>(b) <strong>n - 2  &lt;-- CORRECT</strong></li><li>(c) 2</li><li>(d) 0</li></ul>
+<blockquote><strong>Why:</strong> The two end vertices have degree 1; all n-2 middle vertices have degree 2. See Part E, Chapter E3.6.</blockquote>
+<p><strong>Q. Which of the following is NOT a type of business?</strong></p>
+<ul><li>(a) Experience driven</li><li>(b) <strong>Expense driven  &lt;-- CORRECT</strong></li><li>(c) Efficiency driven</li><li>(d) Expert driven</li></ul>
+<blockquote><strong>Why:</strong> The genuine categories are experience-driven, efficiency-driven and expert-driven. See Part J, Chapter J6.8.</blockquote>
+<p><strong>Q. The algebraic sum of deviations is zero when measured from the <em>_</em>_.</strong></p>
+<ul><li>(a) second quartile</li><li>(b) geometric mean</li><li>(c) <strong>arithmetic mean  &lt;-- CORRECT</strong></li><li>(d) harmonic mean</li></ul>
+<blockquote><strong>Why:</strong> SUM(x - mean) = SUM x - n x mean = 0 by the definition of the mean. See Part J, Chapter J3.5.</blockquote>
+<p><strong>Q. Which of the following is NOT the application of Divide and Conquer?</strong></p>
+<ul><li>(a) Binary Search</li><li>(b) <strong>All Pairs Shortest Path Problem  &lt;-- CORRECT</strong></li><li>(c) Quick Sort</li><li>(d) Strassen&#x27;s Matrix Multiplication</li></ul>
+<blockquote><strong>Why:</strong> All-pairs shortest path uses Floyd-Warshall, which is dynamic programming - subproblems overlap. See Part E, Chapter E5.1.</blockquote>
+<p><strong>Q. The volume of the tetrahedron bounded by the surfaces x = 0, y = 0, z = 0 and x/a + y/b + z/c = 1 is:</strong></p>
+<ul><li>(a) abc/4</li><li>(b) abc/2</li><li>(c) abc/10</li><li>(d) <strong>abc/6  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The corner tetrahedron is one sixth of the cuboid with sides a, b, c. See Part J, Chapter J4.4.</blockquote>
+<p><strong>Q. Which of the following opens the linked document in the window&#x27;s full body among the target values?</strong></p>
+<ul><li>(a) _self</li><li>(b) <strong>_top  &lt;-- CORRECT</strong></li><li>(c) _blank</li><li>(d) _parent</li></ul>
+<blockquote><strong>Why:</strong> _top escapes every enclosing frameset; _parent climbs only one level. See Part H, Chapter H2.3.</blockquote>
+<p><strong>Q. Which of the following is a conflict serializable schedule? S1: R1(A); R1(B); R2(A); R2(B); W2(B); W1(A) and S2: R1(A); R2(A); R2(B); W2(B); R1(B); W1(A)</strong></p>
+<ul><li>(a) S1 is conflict serializable but S2 is not.</li><li>(b) <strong>S1 is not conflict serializable but S2 is conflict serializable.  &lt;-- CORRECT</strong></li><li>(c) Both are not conflict serializable.</li><li>(d) Both are conflict serializable.</li></ul>
+<blockquote><strong>Why:</strong> S1&#x27;s precedence graph has edges both T1 to T2 and T2 to T1 - a cycle. S2&#x27;s edges all point T2 to T1 - no cycle. Full working in Part F, Chapter F5.5.</blockquote>
+<p><strong>Q. Which of the following is the syntax to write an external CSS?</strong></p>
+<ul><li>(a) &lt;style rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;</li><li>(b) &lt;style&gt; href=&quot;style.css&quot; &lt;/style&gt;</li><li>(c) <strong>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;  &lt;-- CORRECT</strong></li><li>(d) &lt;a href=&quot;style.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</li></ul>
+<blockquote><strong>Why:</strong> External CSS uses the <code>&lt;link&gt;</code> tag. <code>&lt;style&gt;</code> is for internal CSS; <code>&lt;a&gt;</code> makes a hyperlink. See Part H, Chapter H3.2.</blockquote>
+<p><strong>Q. Which of the following methods is used to slide down an element?</strong></p>
+<ul><li>(a) <strong>slideDown()  &lt;-- CORRECT</strong></li><li>(b) moveBelow()</li><li>(c) moveDown()</li><li>(d) slideBelow()</li></ul>
+<blockquote><strong>Why:</strong> jQuery&#x27;s sliding family is slideDown, slideUp and slideToggle. See Part H, Chapter H4.5.</blockquote>
+<p><strong>Q. Which of the following is a clipping algorithm?</strong></p>
+<ul><li>(a) Simple DDA</li><li>(b) <strong>Liang Barsky&#x27;s algorithm  &lt;-- CORRECT</strong></li><li>(c) Bresenham&#x27;s algorithm</li><li>(d) Mid-point Algorithm</li></ul>
+<blockquote><strong>Why:</strong> DDA and Bresenham draw lines; mid-point draws circles. Only Liang-Barsky clips. See Part I, Chapter I3.3.</blockquote>
+<p><strong>Q. According to the double entry system, every transaction will have <em>_</em>_ entries.</strong></p>
+<ul><li>(a) Right and Left</li><li>(b) Up and Down</li><li>(c) <strong>Debt and Credit  &lt;-- CORRECT</strong></li><li>(d) Up and Left</li></ul>
+<blockquote><strong>Why:</strong> Every transaction has a debit side and a credit side of equal value. See Part J, Chapter J6.1.</blockquote>
+<p><strong>Q. Which of the following is a default permission for the text file in Linux?</strong></p>
+<ul><li>(a) rwx r-- r--</li><li>(b) <strong>rw- r-- r--  &lt;-- CORRECT</strong></li><li>(c) rwx rwx rwx</li><li>(d) rwx --- ---</li></ul>
+<blockquote><strong>Why:</strong> Base 666 minus umask 022 gives 644 = rw-r--r--. A data file is never executable by default. See Part C, Chapter C6.3.</blockquote>
+<p><strong>Q. Which of the following statements is true about Home Location Register (HLR) and Visitor Location Register (VLR)?</strong></p>
+<ul><li>(a) VLR is not responsible for the MS to inform the MLR about location changes.</li><li>(b) VLR is not responsible for the MS to inform the HLR about location changes.</li><li>(c) <strong>VLR is responsible for the MS to inform the HLR about location changes.  &lt;-- CORRECT</strong></li><li>(d) HLR is responsible for the MS to inform the VLR about location changes.</li></ul>
+<blockquote><strong>Why:</strong> Reporting direction is always VLR to HLR, so the home network knows which VLR is serving you. See Part G, Chapter G8.1.</blockquote>
+<h2>L8 Paper 2 - Discipline 3</h2>
+<p><strong>Q. An LED emits green light of wavelength 5511.11 Angstrom. Find the value of Eg.</strong></p>
+<ul><li>(a) 1.25 eV</li><li>(b) <strong>2.25 eV  &lt;-- CORRECT</strong></li><li>(c) 3.606 eV</li><li>(d) 36.06 eV</li></ul>
+<blockquote><strong>Why:</strong> Eg(eV) = 12400 / lambda(Angstrom) = 12400 / 5511.11 = 2.25 eV. See Part J, Chapter J5.3.</blockquote>
+<p><strong>Q. Which of the following is NOT true about the Waterfall model?</strong></p>
+<ul><li>(a) Long duration</li><li>(b) <strong>High cost  &lt;-- CORRECT</strong></li><li>(c) High-risk involvement</li><li>(d) Low cost</li></ul>
+<blockquote><strong>Why:</strong> Waterfall is a low-cost model - no prototyping or repeated risk analysis. Its real drawbacks are duration and risk. See Part I, Chapter I2.2.</blockquote>
+<p><strong>Q. Which of the following is the easiest to be transformed into a computer program?</strong></p>
+<ul><li>(a) <strong>Pseudo-code  &lt;-- CORRECT</strong></li><li>(b) Algorithm</li><li>(c) Flowchart</li><li>(d) None of the above</li></ul>
+<blockquote><strong>Why:</strong> Pseudo-code already uses programming constructs, so conversion is nearly line-by-line. See Part I, Chapter I2.9.</blockquote>
+<p><strong>Q. Arrange the following in the order of growth: O(n), O(n^2), O(2^n), O(log n), O(n log n), O(n^2 log n)</strong></p>
+<ul><li>(a) O(n), O(n^2), O(log n), O(2^n), O(n log n), O(n^2 log n)</li><li>(b) O(n), O(2^n), O(2^n), O(log n), O(n^2 log n), O(n log n)</li><li>(c) <strong>O(log n), O(n), O(n log n), O(n^2), O(n^2 log n), O(2^n)  &lt;-- CORRECT</strong></li><li>(d) O(n^2), O(n), O(2^n), O(log n), O(n log n), O(n^2 log n)</li></ul>
+<blockquote><strong>Why:</strong> Substitute n = 1024 and compare. Polynomials always beat exponentials. See Part E, Chapter E1.4.</blockquote>
+<p><strong>Q. How to change all images to black and white (100% grey)?</strong></p>
+<ul><li>(a) img { filter: graycolor(100%);}</li><li>(b) <strong>img { filter: grayscale(100%);}  &lt;-- CORRECT</strong></li><li>(c) img { graycolor(100%);}</li><li>(d) img { filter: &quot;grayscale(100%)&quot;;}</li></ul>
+<blockquote><strong>Why:</strong> The property is <code>filter</code>, the function is <code>grayscale</code>, and the value is unquoted. See Part H, Chapter H3.5.</blockquote>
+<p><strong>Q. Grep command is used to:</strong></p>
+<ul><li>(a) change the case of alphabets</li><li>(b) <strong>search for a specific pattern from a specified file and display those lines containing the pattern  &lt;-- CORRECT</strong></li><li>(c) cut the columns/fields of a specified file</li><li>(d) redirect the output of one command to another command</li></ul>
+<blockquote><strong>Why:</strong> GREP = Globally search for a Regular Expression and Print. See Part C, Chapter C6.2.</blockquote>
+<p><strong>Q. Which of the following is NOT an XML Parser?</strong></p>
+<ul><li>(a) <strong>Shell  &lt;-- CORRECT</strong></li><li>(b) JDOM</li><li>(c) DOM</li><li>(d) SAX</li></ul>
+<blockquote><strong>Why:</strong> A shell is an OS command interpreter. DOM, SAX and JDOM are genuine XML parsers. See Part H, Chapter H5.2.</blockquote>
+<p><strong>Q. Which of these is NOT a parameter upon which the influence of lightning is based?</strong></p>
+<ul><li>(a) Light Source</li><li>(b) Position of Observer</li><li>(c) <strong>Rendering Algorithm  &lt;-- CORRECT</strong></li><li>(d) Surface</li></ul>
+<blockquote><strong>Why:</strong> The physical inputs are light source, surface and observer position. The rendering algorithm is the method, not a parameter. See Part I, Chapter I3.6.</blockquote>
+<p><strong>Q. Which of the following statements is NOT true?</strong></p>
+<ul><li>(a) 5 kilobytes is equal to 10,240 half bytes</li><li>(b) 3 kilobytes is equal to 24,576 bits</li><li>(c) <strong>4 kilobytes is equal to 4069 bytes  &lt;-- CORRECT</strong></li><li>(d) 2 kilobytes is equal to 4096 nibbles</li></ul>
+<blockquote><strong>Why:</strong> 4 KB = 4 x 1024 = 4096 bytes, not 4069. A classic digit-swap trap. See Part A, Chapter A4.4.</blockquote>
+<p><strong>Q. What is the value of Delta^n e^(ax+b)?</strong></p>
+<ul><li>(a) (e^(ah) - 1)^n e^(ax-b)</li><li>(b) <strong>(e^(ah) - 1)^n e^(ax+b)  &lt;-- CORRECT</strong></li><li>(c) (e^(ah) + 1)^n e^(ax-b)</li><li>(d) (e^(ah) + 1)^n e^(ax+b)</li></ul>
+<blockquote><strong>Why:</strong> One difference multiplies by (e^(ah) - 1); n differences multiply by that factor n times. See Part J, Chapter J2.4.</blockquote>
+<p><strong>Q. A Mod-6 counter and a Mod-8 counter in cascade give a <em>_</em>_ counter.</strong></p>
+<ul><li>(a) Mod-14</li><li>(b) Mod-68</li><li>(c) Mod-2</li><li>(d) <strong>Mod-48  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Cascading multiplies the moduli: 6 x 8 = 48. Do not add. See Part A, Chapter A7.6.</blockquote>
+<p><strong>Q. A three-variable function (A XOR B XOR C)&#x27; = ?</strong></p>
+<ul><li>(a) (A XNOR B XNOR C)&#x27;</li><li>(b) A XOR B XNOR C&#x27;</li><li>(c) A XNOR B XOR C</li><li>(d) <strong>A XOR B XNOR C  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Complementing an XOR chain equals complementing any one operand, and XOR with a complemented operand is XNOR. See Part A, Chapter A6.4.</blockquote>
+<p><strong>Q. How to write the external DTD?</strong></p>
+<ul><li>(a) &lt;!DOCTYPE SYSTEM &quot;file-name&quot;&gt;</li><li>(b) &lt;!DOCTYPE element ROOT &quot;file-name&quot;&gt;</li><li>(c) &lt;!DOCTYPE SYSTEM &quot;file-name&quot; root-element&gt;</li><li>(d) <strong>&lt;!DOCTYPE root-element SYSTEM &quot;file-name&quot;&gt;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Order matters: DOCTYPE, then the root element name, then SYSTEM, then the quoted filename. See Part H, Chapter H5.3.</blockquote>
+<p><strong>Q. Consider the relation R(PQRSTU) with F = {P to RT, Q to S, R to PS, QS to TU}. Find the closure of PQ.</strong></p>
+<ul><li>(a) PQRST</li><li>(b) PQRTU</li><li>(c) PQRSU</li><li>(d) <strong>PQRSTU  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Start with {P,Q}; P gives R,T; Q gives S; then QS gives U. Result is all six attributes. See Part F, Chapter F3.4.</blockquote>
+<p><strong>Q. The values of x are 1, 3, 4 and those of f(x) are 1, 27, 64. What is the polynomial equation using the Lagrange interpolation formula?</strong></p>
+<ul><li>(a) <strong>8x^2 - 19x + 12  &lt;-- CORRECT</strong></li><li>(b) 8x^2 + 9x + 12</li><li>(c) 8x^2 - 9x + 12</li><li>(d) 8x^2 + 9x + 12</li></ul>
+<blockquote><strong>Why:</strong> Verify by substitution: at x=1 it gives 1, at x=3 it gives 27, at x=4 it gives 64. See Part J, Chapter J2.3.</blockquote>
+<p><strong>Q. If two dice are thrown, find the probability that the sum is neither 5 nor 9.</strong></p>
+<ul><li>(a) 3/9</li><li>(b) 5/9</li><li>(c) 1/9</li><li>(d) <strong>7/9  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Sum 5 has 4 ways, sum 9 has 4 ways, so 8/36 = 2/9; the complement is 7/9. See Part J, Chapter J3.3.</blockquote>
+<p><strong>Q. The general solution of dy/dx = e^(x+y) is:</strong></p>
+<ul><li>(a) e^(-x) - e^(-y) = c</li><li>(b) e^(-x) + e^y = c</li><li>(c) <strong>e^x + e^(-y) = c  &lt;-- CORRECT</strong></li><li>(d) e^(-x) + e^y = c</li></ul>
+<blockquote><strong>Why:</strong> Separate to e^(-y)dy = e^x dx, integrate to get -e^(-y) = e^x + k, then rearrange. See Part J, Chapter J4.6.</blockquote>
+<p><strong>Q. What feature of the transport layer prevents data loss?</strong></p>
+<ul><li>(a) Encryption</li><li>(b) Packet switching</li><li>(c) Addressing</li><li>(d) <strong>Flow control  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Flow control stops a fast sender overflowing a slow receiver&#x27;s buffer. See Part G, Chapter G2.4.</blockquote>
+<p><strong>Q. Descriptive attributes are used to:</strong></p>
+<ul><li>(a) <strong>record the information about relationships  &lt;-- CORRECT</strong></li><li>(b) record the information about attributes</li><li>(c) record the information about participating entities</li><li>(d) record the information about data</li></ul>
+<blockquote><strong>Why:</strong> A descriptive attribute belongs to a relationship, not to either entity - e.g. the grade on an &quot;enrols in&quot; relationship. See Part F, Chapter F2.3.</blockquote>
+<p><strong>Q. Which of the following statements is FALSE about TCP?</strong></p>
+<ul><li>(a) It uses a three-way handshake to establish a connection.</li><li>(b) It receives data from application as a single stream.</li><li>(c) It is a connection-oriented protocol.</li><li>(d) <strong>It is a connection-less protocol.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> TCP is definitively connection-oriented; UDP is the connectionless one. See Part G, Chapter G5.1.</blockquote>
+<h2>L9 Paper 2 - Discipline 4</h2>
+<p><strong>Q. Which of the following is FALSE about packages?</strong></p>
+<ul><li>(a) <strong>Packages cannot provide controlled access.  &lt;-- CORRECT</strong></li><li>(b) Packages are used to prevent naming conflicts.</li><li>(c) Packages are considered data encapsulation.</li><li>(d) Packages prevent naming conflicts and are considered data encapsulation.</li></ul>
+<blockquote><strong>Why:</strong> Packages DO provide controlled access through default and protected visibility. See Part D, Chapter D3.8.</blockquote>
+<p><strong>Q. Which of the following statements is true about the slow start phase of TCP congestion control?</strong></p>
+<ul><li>(a) Congestion window increases by 1 Maximum Segment Size every round trip time.</li><li>(b) <strong>Congestion window approximately doubles every round trip time.  &lt;-- CORRECT</strong></li><li>(c) Congestion window increases by 2 MSS on every successful acknowledgement.</li><li>(d) Congestion window approximately doubles on every successful acknowledgement.</li></ul>
+<blockquote><strong>Why:</strong> It grows 1 MSS per ACK, which doubles the window per RTT. &quot;Increases by 1 MSS per RTT&quot; describes congestion avoidance. See Part G, Chapter G5.4.</blockquote>
+<p><strong>Q. Which of the following is NOT the purpose of knowledge management system?</strong></p>
+<ul><li>(a) Driving strategy</li><li>(b) Integration</li><li>(c) Sharing of knowledge</li><li>(d) <strong>Portability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Portability is a software quality attribute, unrelated to KM goals. See Part I, Chapter I4.4.</blockquote>
+<p><strong>Q. Which of the following is NOT true about software?</strong></p>
+<ul><li>(a) <strong>System software is written in a high-level language.  &lt;-- CORRECT</strong></li><li>(b) Application software is written in a high-level language.</li><li>(c) System software plays a vital role for the effective functioning of a system.</li><li>(d) System software is written in a low-level language.</li></ul>
+<blockquote><strong>Why:</strong> System software is normally written in a low-level language for direct hardware access. See Part A, Chapter A2.2.</blockquote>
+<p><strong>Q. Which of the following is NOT a shell in Linux?</strong></p>
+<ul><li>(a) C shell</li><li>(b) Korn shell</li><li>(c) Bourne shell</li><li>(d) <strong>Alpha cell  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> No such shell exists - note the deliberate spelling &quot;cell&quot;. See Part C, Chapter C6.4.</blockquote>
+<p><strong>Q. Which of the following is an example of the fifth-generation language?</strong></p>
+<ul><li>(a) Java</li><li>(b) Cobol</li><li>(c) <strong>Prolog  &lt;-- CORRECT</strong></li><li>(d) Python</li></ul>
+<blockquote><strong>Why:</strong> Prolog is a logic-programming language used in AI. Java, Cobol and Python are 3GL. See Part A, Chapter A2.5.</blockquote>
+<p><strong>Q. Which of the following is NOT a phase of the RAD model?</strong></p>
+<ul><li>(a) <strong>Development modelling  &lt;-- CORRECT</strong></li><li>(b) Business modelling</li><li>(c) Process modelling</li><li>(d) Data modelling</li></ul>
+<blockquote><strong>Why:</strong> RAD phases are Business, Data, Process modelling, then Application Generation and Testing. See Part I, Chapter I2.4.</blockquote>
+<p><strong>Q. If u = tan inverse (y/x), then x du/dx + y du/dy = ?</strong></p>
+<ul><li>(a) Sin 2u</li><li>(b) <strong>0  &lt;-- CORRECT</strong></li><li>(c) None of the given options</li><li>(d) Cos 2u</li></ul>
+<blockquote><strong>Why:</strong> u is a function of the pure ratio y/x, so it is homogeneous of degree 0; Euler&#x27;s theorem gives 0 x u = 0. See Part J, Chapter J4.2.</blockquote>
+<p><strong>Q. Which of the following inflations describes how demand for goods and services can drive up their prices?</strong></p>
+<ul><li>(a) Cost-push inflation</li><li>(b) Built-in Inflation</li><li>(c) <strong>Demand-pull inflation  &lt;-- CORRECT</strong></li><li>(d) Demand-push inflation</li></ul>
+<blockquote><strong>Why:</strong> Demand PULLS prices up; costs PUSH them up. &quot;Demand-push&quot; does not exist. See Part J, Chapter J6.8.</blockquote>
+<p><strong>Q. Program links with other parts of the program in a flowchart are represented by <em>_</em>___.</strong></p>
+<ul><li>(a) rectangles</li><li>(b) <strong>circles  &lt;-- CORRECT</strong></li><li>(c) trapezoids</li><li>(d) rhombuses</li></ul>
+<blockquote><strong>Why:</strong> The connector symbol is a circle. Rectangles are processing; rhombuses are decisions. See Part I, Chapter I2.9.</blockquote>
+<p><strong>Q. <em>_</em>_ is the process of visiting different web sites on the internet hosted by various companies, organisations, educational institutions, magazines, individuals, etc.</strong></p>
+<ul><li>(a) Webbing</li><li>(b) Searching</li><li>(c) Chatting</li><li>(d) <strong>Web surfing  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Surfing means browsing around generally; searching implies a specific query. See Part H, Chapter H7.4.</blockquote>
+<p><strong>Q. The part of the firm&#x27;s capital that is required for conducting day to day expenses is called:</strong></p>
+<ul><li>(a) <strong>working capital  &lt;-- CORRECT</strong></li><li>(b) asset</li><li>(c) expenses</li><li>(d) fixed capital</li></ul>
+<blockquote><strong>Why:</strong> &quot;Day to day&quot; is the trigger; long-term needs are met by fixed capital. See Part J, Chapter J6.3.</blockquote>
+<p><strong>Q. Who is the father of e-commerce in India?</strong></p>
+<ul><li>(a) Bryan Eisenberg</li><li>(b) Michael Aldrich</li><li>(c) <strong>K Vaitheeswaran  &lt;-- CORRECT</strong></li><li>(d) Tim Ferris</li></ul>
+<blockquote><strong>Why:</strong> K Vaitheeswaran founded Fabmart/Indiaplaza in 1999. Michael Aldrich invented online shopping globally in 1979. See Part H, Chapter H7.4.</blockquote>
+<p><strong>Q. The advantage of SSTF (Shortest Seek Time First) is:</strong></p>
+<ul><li>(a) high variance of response time as SSTF favours only some requests</li><li>(b) overhead to calculate seek time in advance</li><li>(c) <strong>average response time decreases  &lt;-- CORRECT</strong></li><li>(d) throughput decreases</li></ul>
+<blockquote><strong>Why:</strong> The other three are disadvantages dressed up as advantages; SSTF actually increases throughput. See Part C, Chapter C5.5.</blockquote>
+<p><strong>Q. Which of the following is an addressing mode used in an instruction of the form ADD R1, [R2]?</strong></p>
+<ul><li>(a) <strong>Register Indirect  &lt;-- CORRECT</strong></li><li>(b) Register</li><li>(c) Indexed Register</li><li>(d) Assembly Register</li></ul>
+<blockquote><strong>Why:</strong> The brackets mean &quot;the value at the address stored in R2&quot; - the register acts as a pointer. See Part B, Chapter B4.1.</blockquote>
+<p><strong>Q. What is the output of the following code? int Integer = 24; char String = &#x27;I&#x27;; System.out.print(Integer); System.out.print(String);</strong></p>
+<ul><li>(a) I</li><li>(b) Compiler Error</li><li>(c) Throws Exception</li><li>(d) <strong>24I  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> &quot;Integer&quot; and &quot;String&quot; are class names, not reserved keywords, so they are legal identifiers. print() adds no newline. See Part D, Chapter D3.7.</blockquote>
+<p><strong>Q. An organisation structure establishes relationships between:</strong></p>
+<ul><li>(a) <strong>people, work and resources  &lt;-- CORRECT</strong></li><li>(b) organisations and environment</li><li>(c) suppliers and customers</li><li>(d) organisations and society</li></ul>
+<blockquote><strong>Why:</strong> Structure defines who does what work with which resources, and who reports to whom. See Part J, Chapter J6.6.</blockquote>
+<p><strong>Q. Which of the following is NOT a symmetric-key cryptographic algorithm?</strong></p>
+<ul><li>(a) AES</li><li>(b) RC4</li><li>(c) <strong>RSA  &lt;-- CORRECT</strong></li><li>(d) DES</li></ul>
+<blockquote><strong>Why:</strong> RSA is the classic asymmetric/public-key algorithm. See Part G, Chapter G7.3.</blockquote>
+<p><strong>Q. <em>_</em>_ is a person who carries on business by himself/herself.</strong></p>
+<ul><li>(a) Cooperative</li><li>(b) <strong>Sole proprietorship  &lt;-- CORRECT</strong></li><li>(c) Partnership</li><li>(d) Trader</li></ul>
+<blockquote><strong>Why:</strong> One owner, unlimited liability, no separate legal entity. See Part J, Chapter J6.5.</blockquote>
+<p><strong>Q. Which of the following is NOT true about NTFS?</strong></p>
+<ul><li>(a) It utilises the disk space efficiently by using a smaller size of clusters.</li><li>(b) NTFS&#x27;s attributes are read-only, hidden, system, archive, not content indexed, off-line, temporary and compressed.</li><li>(c) It introduced improved performance, scalable in comparison with its precursor.</li><li>(d) <strong>It does not support the compression of files and directories to optimise storage space.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> NTFS does support built-in compression. See Part C, Chapter C5.4.</blockquote>
+<h2>L10 Paper 2 - Discipline 5 and Teaching Methodology</h2>
+<h3>Discipline 5</h3>
+<p><strong>Q. The set of processes developed in an organisation to create, gather, store, transfer and apply knowledge best describes:</strong></p>
+<ul><li>(a) <strong>knowledge management  &lt;-- CORRECT</strong></li><li>(b) organisational learnings</li><li>(c) knowledge asset</li><li>(d) organisational memory</li></ul>
+<blockquote><strong>Why:</strong> A knowledge asset is the thing managed; organisational memory is the store; learning is the outcome. See Part I, Chapter I4.4.</blockquote>
+<p><strong>Q. Which of the following is the execution engine for .NET applications and servers as the interface between .NET applications and the operating system?</strong></p>
+<ul><li>(a) Framework Class Library (FCL)</li><li>(b) Common Type System (CTS)</li><li>(c) Common Language Specifications (CLS)</li><li>(d) <strong>Common Language Runtime (CLR)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The CLR executes managed code and handles memory, security and exceptions. See Part D, Chapter D4.2.</blockquote>
+<p><strong>Q. Which of the following is NOT a feature of ADO.net?</strong></p>
+<ul><li>(a) Maintainability</li><li>(b) Interoperability</li><li>(c) <strong>Reachability  &lt;-- CORRECT</strong></li><li>(d) Scalability</li></ul>
+<blockquote><strong>Why:</strong> ADO.NET features are interoperability, maintainability, programmability, performance and scalability. See Part D, Chapter D4.2.</blockquote>
+<p><strong>Q. Find the value of F = xy + x&#x27;z using distributive law.</strong></p>
+<ul><li>(a) (x + z)(y + z)</li><li>(b) (x + y&#x27;)(x + z)</li><li>(c) (x&#x27; + y)(y + z)</li><li>(d) <strong>(x&#x27; + y)(x + z)(y + z)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Apply A + BC = (A+B)(A+C) twice, then eliminate (x + x&#x27;) = 1. See Part A, Chapter A6.4.</blockquote>
+<p><strong>Q. The refractive index of the core of an optical fibre is greater than that of cladding because:</strong></p>
+<ul><li>(a) the light gets reflected at the entrance end of the optical fibre</li><li>(b) <strong>the light gets totally internally reflected into the core  &lt;-- CORRECT</strong></li><li>(c) the light gets restricted at the entrance end of the optical fibre</li><li>(d) the light gets refracted into cladding</li></ul>
+<blockquote><strong>Why:</strong> Higher core index enables total internal reflection, trapping light inside the core. See Part G, Chapter G1.4.</blockquote>
+<p><strong>Q. Which directive is used for binding the model data to the view?</strong></p>
+<ul><li>(a) ng-model-view</li><li>(b) ng-model-app</li><li>(c) <strong>ng-model  &lt;-- CORRECT</strong></li><li>(d) ng-app-model</li></ul>
+<blockquote><strong>Why:</strong> ng-model provides two-way data binding. The other three names are invented. See Part H, Chapter H4.6.</blockquote>
+<p><strong>Q. If mu is an averaging operator and delta^n is the nth central difference operator, then what is the value of mu^2?</strong></p>
+<ul><li>(a) <strong>mu^2 = (1/4)(delta^2 + 4)  &lt;-- CORRECT</strong></li><li>(b) mu^2 = (1/2)(delta^2 + 4)</li><li>(c) mu^2 = (1/4)(delta^2 + 6)</li><li>(d) mu^2 = (1/4)(delta^2 + 8)</li></ul>
+<blockquote><strong>Why:</strong> Square mu = (E^(1/2) + E^(-1/2))/2 and substitute E + E^(-1) = delta^2 + 2. See Part J, Chapter J2.4.</blockquote>
+<p><strong>Q. For what minimum value of propagation delay in each FF will a 10-bit ripple counter skip a count when it is clocked at 10 MHz?</strong></p>
+<ul><li>(a) <strong>10 ns  &lt;-- CORRECT</strong></li><li>(b) 25 ns</li><li>(c) 100 ns</li><li>(d) 50 ns</li></ul>
+<blockquote><strong>Why:</strong> Clock period = 100 ns; ripple delays add, so t = 100/10 = 10 ns. See Part A, Chapter A7.6.</blockquote>
+<p><strong>Q. What are the solutions for the following sum of a subset problem? w[1:5] = {2,7,8,9,15}; Sum required = 17.</strong></p>
+<ul><li>(a) 11100; 10101; 00110</li><li>(b) <strong>11100; 10001; 00110  &lt;-- CORRECT</strong></li><li>(c) 11000; 10001; 00110</li><li>(d) 11100; 10101; 00111</li></ul>
+<blockquote><strong>Why:</strong> 2+7+8 = 17; 2+15 = 17; 8+9 = 17. Just add up the weights each bit string selects. See Part E, Chapter E5.3.</blockquote>
+<p><strong>Q. Which of the following systems comprises word processing, electronic filing, electronic mail, message switching, data storage and data and voice communication?</strong></p>
+<ul><li>(a) Executive Support Systems</li><li>(b) <strong>Office Automation Systems  &lt;-- CORRECT</strong></li><li>(c) Customer Relationship Management</li><li>(d) Decision Support Systems</li></ul>
+<blockquote><strong>Why:</strong> Every listed item is a routine office function. See Part I, Chapter I4.3.</blockquote>
+<h3>Teaching Methodology</h3>
+<p><strong>Q. Who among the following is known as Lokhitwadi?</strong></p>
+<ul><li>(a) Ishwar Chandra Vidyasagar</li><li>(b) <strong>GopalHari Deshmukh  &lt;-- CORRECT</strong></li><li>(c) Rabindranath Tagore</li><li>(d) Ram Mohan Roy</li></ul>
+<blockquote><strong>Why:</strong> Gopal Hari Deshmukh, the Marathi social reformer, wrote under the pen name &quot;Lokhitwadi&quot; (one who desires people&#x27;s welfare).</blockquote>
+<p><strong>Q. For preparing a unit plan, which of the following procedure is followed? I. Formation of proper units and sub-units if not prescribed in the syllabus. II. Determination of methods of assessment.</strong></p>
+<ul><li>(a) <strong>Both I and II  &lt;-- CORRECT</strong></li><li>(b) Neither I nor II</li><li>(c) Only I</li><li>(d) Only II</li></ul>
+<blockquote><strong>Why:</strong> A unit plan must define its boundaries and specify how learning will be assessed. See Part K, Chapter K3.7.</blockquote>
+<p><strong>Q. David Kolb&#x27;s model of learning style is based on which type of learning?</strong></p>
+<ul><li>(a) Inquiry-based learning</li><li>(b) Integrative learning</li><li>(c) Collaborative learning</li><li>(d) <strong>Experiential learning  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Kolb defined learning as knowledge created through the transformation of experience. See Part K, Chapter K3.2.</blockquote>
+<p><strong>Q. Inconsistency in the development of different type of conservation is called <em>_</em>_.</strong></p>
+<ul><li>(a) <strong>Horizontal Decalage  &lt;-- CORRECT</strong></li><li>(b) Meta-cognition</li><li>(c) Selective attention</li><li>(d) Immersion</li></ul>
+<blockquote><strong>Why:</strong> Decalage means gap; horizontal means within the same stage - a gap across tasks. See Part K, Chapter K2.1.</blockquote>
+<p><strong>Q. Heuristic method of teaching science was introduced by <em>_</em>_.</strong></p>
+<ul><li>(a) William James</li><li>(b) <strong>Henry Edward Armstrong  &lt;-- CORRECT</strong></li><li>(c) Lev Vygotsky</li><li>(d) Abraham Maslow</li></ul>
+<blockquote><strong>Why:</strong> Armstrong, an English chemist, argued students should learn science by investigating like scientists. See Part K, Chapter K3.4.</blockquote>
+<p><strong>Q. Which of the following statement is correct regarding vision of new-born babies? I. Neonates can discriminate stationary black and white stripes 1/8 inch wide. II. By three months babies can see stripes as narrow as 1/64 inch.</strong></p>
+<ul><li>(a) <strong>Both I and II  &lt;-- CORRECT</strong></li><li>(b) Neither I nor II</li><li>(c) Only I</li><li>(d) Only II</li></ul>
+<blockquote><strong>Why:</strong> Standard infant acuity findings: 1/8 inch at birth improving to 1/64 inch by three months. See Part K, Chapter K1.4.</blockquote>
+<p><strong>Q. In the context of Parenting, which of the following is correctly matched?</strong></p>
+<ul><li>(a) Clearly communicating parent - Child being less liked</li><li>(b) Power assertive parents - Coercive tactics in peer used by child</li><li>(c) Parents being harsh - Unattractive social behavior of child</li><li>(d) <strong>Give and take relationship of parents - Children show same relationship with peer  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Children model the reciprocal give-and-take style they experience at home. See Part K, Chapter K2.8.</blockquote>
+<p><strong>Q. Broca&#x27;s area and Wernicke&#x27;s area are concerned with language. These are the areas of <em>_</em>_. I. right hemisphere. II. left hemisphere.</strong></p>
+<ul><li>(a) <strong>Only II  &lt;-- CORRECT</strong></li><li>(b) Only I</li><li>(c) Both I and II</li><li>(d) Neither I nor II</li></ul>
+<blockquote><strong>Why:</strong> Language is lateralised to the LEFT hemisphere in about 95% of right-handers. See Part K, Chapter K1.5.</blockquote>
+<p><strong>Q. Which of the following is NOT a Neo-Freudian Theory of Development? I. Sullivan&#x27;s Interpersonal Theory. II. Erikson&#x27;s Psycho-social Development.</strong></p>
+<ul><li>(a) Only II</li><li>(b) Both I and II</li><li>(c) <strong>Neither I nor II  &lt;-- CORRECT</strong></li><li>(d) Only I</li></ul>
+<blockquote><strong>Why:</strong> Both ARE Neo-Freudian, so neither qualifies as &quot;not Neo-Freudian&quot;. A double-negative trap. See Part K, Chapter K2.6.</blockquote>
+<p><strong>Q. Participation in which of the following activities can enable the community to accept a teacher as one of them? I. Problems of unhygienic conditions. II. Problems of agriculture.</strong></p>
+<ul><li>(a) Neither I nor II</li><li>(b) Only I</li><li>(c) <strong>Both I and II  &lt;-- CORRECT</strong></li><li>(d) Only II</li></ul>
+<blockquote><strong>Why:</strong> Acceptance comes from involvement in matters the community cares about daily. See Part K, Chapter K6.1.</blockquote></body></html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART C - Operating Systems and Linux</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART C - Operating Systems and Linux</h1>
+<blockquote>*The single highest-scoring topic in the paper. Expect 8 to 12 questions from this Part alone.*</blockquote>
+<h2>C1 What an Operating System Does</h2>
+<h3>C1.1 The idea in one picture</h3>
+<p>Think of a <strong>school principal</strong>. Students (programs) all want the same things: the hall, the projector, the sports ground, the teacher&#x27;s time. If everyone grabbed things directly there would be chaos. The principal decides who gets what, when, and for how long. He also makes sure a student never damages school property or disturbs another class.</p>
+<p>An operating system is that principal, sitting between your programs and the hardware.</p>
+<ul><li><strong>Operating System</strong> - A program that acts as an <strong>interface (bridge) between the computer user / application programs and the computer hardware</strong>. It manages all resources and provides services so users can run programs conveniently and efficiently.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which type of computer program acts as a bridge between a computer user and the computer hardware?&quot; Options: Random Access Memory, User thread, <strong>Operating system</strong>, Kernel. Answer: <strong>Operating system</strong>.<br><br>Careful with &quot;Kernel&quot;. The kernel is the <strong>core part</strong> of the OS, always resident in memory. The full bridge between user and hardware - including the shell, system programs and the user interface - is the <strong>operating system</strong>. When both appear as options, choose &quot;Operating system&quot; for the user-hardware bridge and &quot;Kernel&quot; only when the question mentions the core/innermost layer.</blockquote>
+<h3>C1.2 The services an OS provides</h3>
+<table>
+<tr><th>Service</th><th>What it means</th></tr>
+<tr><td>Program execution</td><td>Load a program into memory and run it; handle normal and abnormal termination</td></tr>
+<tr><td>I/O operations</td><td>Provide a uniform way to read/write files and devices</td></tr>
+<tr><td>File system manipulation</td><td>Create, delete, read, write, search files and directories; manage permissions</td></tr>
+<tr><td>Communication</td><td>Let processes exchange information (shared memory or message passing) - Inter Process Communication</td></tr>
+<tr><td>Error detection and handling</td><td>Detect CPU errors, memory errors, device failures, program faults</td></tr>
+<tr><td>Resource allocation</td><td>Share CPU time, memory, files and devices among users and processes</td></tr>
+<tr><td>Accounting / Logging</td><td>Record which user used how much of which resource</td></tr>
+<tr><td>Protection and security</td><td>Stop one process from interfering with another; authenticate users</td></tr>
+<tr><td>Process management</td><td>Create, schedule, suspend, resume and terminate processes</td></tr>
+<tr><td>Memory management</td><td>Track which parts of memory are in use and by whom</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - the exception question</strong><br><br>&quot;Which of the following services is NOT provided by the operating system?&quot; Options: Resource management, Inter process communication, <strong>Translate source into machine code</strong>, Program execution. Answer: <strong>Translate source into machine code</strong>.<br><br>Why: translating source code into machine code is the job of a <strong>compiler / assembler</strong>, which is a separate piece of system software. The OS *runs* the compiler, but does not itself do the translation. Everything else listed is a genuine core OS service.</blockquote>
+<h3>C1.3 Types of operating systems</h3>
+<table>
+<tr><th>Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Batch OS</td><td>Jobs with similar needs are grouped into batches and run one after another with no user interaction. No priority; long turnaround</td><td>Early IBM systems, payroll processing</td></tr>
+<tr><td>Multiprogramming</td><td>Several programs are kept in memory; when one waits for I/O, the CPU switches to another. Goal: maximise CPU utilisation</td><td>-</td></tr>
+<tr><td>Multitasking / Time-sharing</td><td>Multiprogramming plus rapid switching so each user feels they have the machine to themselves. Uses a time quantum</td><td>UNIX, Windows, Linux</td></tr>
+<tr><td>Multiprocessing</td><td>Two or more CPUs share work in one computer. Increases throughput and reliability</td><td>Modern multi-core PCs</td></tr>
+<tr><td>Real-Time OS (RTOS)</td><td>Guarantees a response within a strict deadline. HARD real-time: missing the deadline is a total failure (pacemaker, airbag). SOFT real-time: a miss degrades quality (video streaming)</td><td>VxWorks, RTLinux, QNX</td></tr>
+<tr><td>Distributed OS</td><td>Many independent computers appear to the user as one system, connected by a network</td><td>Amoeba, LOCUS</td></tr>
+<tr><td>Network OS</td><td>Provides file and printer sharing across a network; each machine keeps its own OS identity</td><td>Novell NetWare, Windows Server</td></tr>
+<tr><td>Embedded OS</td><td>Small OS inside a dedicated device</td><td>Washing machine, smart TV, router</td></tr>
+<tr><td>Mobile OS</td><td>-</td><td>Android, iOS</td></tr>
+</table>
+<ul><li><strong>Multiprogramming vs Multitasking</strong> - Multiprogramming keeps the CPU busy by switching when a process <strong>blocks</strong>. Multitasking switches on a <strong>time quantum</strong> as well, giving interactive response.</li><li><strong>Multiprocessing vs Multithreading</strong> - Multiprocessing = multiple <strong>CPUs</strong>. Multithreading = multiple <strong>threads inside one process</strong> on possibly one CPU.</li><li><strong>Symmetric multiprocessing (SMP)</strong> - All processors are peers and share one copy of the OS.</li><li><strong>Asymmetric multiprocessing</strong> - One master processor controls slave processors.</li></ul>
+<h3>C1.4 Kernel and OS structure</h3>
+<ul><li><strong>Kernel</strong> - The core of the OS. It is always resident in main memory and has complete control of the hardware. It handles process scheduling, memory management, device drivers, system calls and interrupts.</li><li><strong>Shell</strong> - The outer layer that takes user commands and passes them to the kernel. The command interpreter.</li><li><strong>System call</strong> - The controlled doorway a user program uses to ask the kernel for a service. It switches the CPU from <strong>user mode</strong> to <strong>kernel mode</strong>.</li><li><strong>User mode vs Kernel mode</strong> - In user mode a program cannot execute privileged instructions or touch hardware directly. In kernel mode everything is allowed. This dual-mode design is what protects the system.</li></ul>
+<table>
+<tr><th>Kernel type</th><th>Idea</th><th>Trade-off</th></tr>
+<tr><td>Monolithic kernel</td><td>The whole OS - scheduling, memory, file system, drivers - runs as one large program in kernel space</td><td>Very fast (no message passing) but huge and hard to maintain; one bug can crash everything. Example: Linux, UNIX</td></tr>
+<tr><td>Microkernel</td><td>Only the bare minimum (scheduling, memory, IPC) is in kernel space; file systems and drivers run as user processes</td><td>Very reliable and modular but slower due to message passing. Example: MINIX, QNX, Mach</td></tr>
+<tr><td>Hybrid kernel</td><td>A microkernel design with some services pulled back into kernel space for speed</td><td>Windows NT family, macOS (XNU)</td></tr>
+<tr><td>Exokernel</td><td>Gives applications direct, protected access to hardware resources</td><td>Research systems</td></tr>
+</table>
+<h4>Categories of system calls (learn the five groups)</h4>
+<table>
+<tr><th>Category</th><th>Examples</th></tr>
+<tr><td>Process control</td><td>fork(), exec(), exit(), wait(), abort()</td></tr>
+<tr><td>File management</td><td>open(), close(), read(), write(), create(), delete()</td></tr>
+<tr><td>Device management</td><td>ioctl(), read(), write(), request device, release device</td></tr>
+<tr><td>Information maintenance</td><td>getpid(), alarm(), sleep(), time(), get/set system data</td></tr>
+<tr><td>Communication</td><td>pipe(), socket(), send(), receive(), shmget(), mmap()</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;What is typically returned by the getpid system call in Unix-based operating systems?&quot; Answer: <strong>Process ID of the current process</strong>.<br><br>Related: <code>getppid()</code> returns the <strong>parent</strong> process ID. Remember the extra &quot;p&quot; = parent. This is a favourite pair.</blockquote>
+<h2>C2 Processes and Threads</h2>
+<h3>C2.1 Program vs process</h3>
+<ul><li><strong>Program</strong> - A <strong>passive</strong> entity: a file sitting on the disk containing instructions. Like a recipe printed in a book.</li><li><strong>Process</strong> - A program <strong>in execution</strong> - an active entity with a program counter, registers, stack and its own memory. Like actually cooking that recipe right now.</li></ul>
+<p>One program can produce many processes (open three Chrome windows and you have several processes from one program).</p>
+<h4>Process Control Block (PCB)</h4>
+<p>The OS keeps one PCB per process - its &quot;identity card&quot;. It contains:</p>
+<ul><li>Process ID (PID) and parent PID</li><li>Process <strong>state</strong></li><li>Program counter and CPU register values</li><li>CPU scheduling information (priority, queue pointers)</li><li>Memory management information (base/limit registers, page tables)</li><li>Accounting information (CPU used, time limits)</li><li>I/O status (list of open files and allocated devices)</li></ul>
+<h4>The memory layout of a process</h4>
+<p>*Four segments of a running process*</p>
+<pre>   +---------------------+  high address
+   |       STACK         |  local variables, function call frames
+   |          |          |  grows DOWNWARD
+   |          v          |
+   |                     |
+   |          ^          |
+   |          |          |  grows UPWARD
+   |        HEAP         |  dynamic memory: malloc / new
+   +---------------------+
+   |    DATA segment     |  global and static variables
+   +---------------------+
+   |    TEXT / CODE      |  the compiled instructions (read-only)
+   +---------------------+  low address</pre>
+<h3>C2.2 Process states - the diagram you must be able to draw</h3>
+<p>*The five-state process model*</p>
+<pre>                        admitted            dispatch
+   [NEW] ------------------&gt; [READY] -----------------&gt; [RUNNING]
+                               ^   ^                      |    |
+              interrupt /      |   |                      |    | exit
+              time quantum     |   +----------------------+    |
+              expired          |                               v
+                               |                          [TERMINATED]
+                               |    I/O or event completes
+                          [WAITING / BLOCKED] &lt;---- I/O or event wait</pre>
+<table>
+<tr><th>State</th><th>Meaning</th></tr>
+<tr><td>New</td><td>The process is being created; not yet admitted to the ready queue</td></tr>
+<tr><td>Ready</td><td>Loaded in memory and waiting only for the CPU</td></tr>
+<tr><td>Running</td><td>Instructions are actually being executed on the CPU</td></tr>
+<tr><td>Waiting / Blocked / Sleeping</td><td>Waiting for some event - I/O completion, a signal, a resource. It CANNOT use the CPU even if it is free</td></tr>
+<tr><td>Terminated / Exit</td><td>Execution finished; the process is being removed and its resources reclaimed</td></tr>
+<tr><td>Suspended ready / Suspended blocked</td><td>Swapped out to disk to free memory (in systems with swapping)</td></tr>
+</table>
+<h4>The legal transitions (and the illegal ones)</h4>
+<ul><li>New to Ready (admitted)</li><li>Ready to Running (dispatched by the scheduler)</li><li>Running to Ready (time quantum expired - preemption)</li><li>Running to Waiting (asks for I/O)</li><li>Waiting to Ready (I/O finished) - note it goes to <strong>Ready</strong>, never straight to Running</li><li>Running to Terminated (finished or killed)</li></ul>
+<p><strong>Illegal:</strong> Ready to Waiting, Waiting to Running, Terminated to anything.</p>
+<blockquote><strong>NOTE: PYQ worked out - when is memory released?</strong><br><br>&quot;An operating system completely releases the memory allocated to a process after the process transitions from which of the following states?&quot; Options: Sleeping to ready, Ready to running, <strong>Running to terminated</strong>, Running to sleeping. Answer: <strong>Running to terminated</strong>.<br><br>Why: memory is only fully reclaimed when the process <strong>ends</strong>. In every other transition the process is still alive and still needs its memory - a sleeping or ready process will resume later and must find its data intact.</blockquote>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;If a process arrives at time 5, what is the latest possible time for it to start execution if there are no other processes in the system?&quot; Answer: <strong>Time 5</strong>.<br><br>Logic: with nothing else competing for the CPU, the scheduler can dispatch it the instant it arrives. It cannot start <strong>before</strong> arriving (so Time 0 and Time 4 are impossible), and there is no reason to delay it to Time 6. So the earliest and latest possible start are both time 5.</blockquote>
+<h3>C2.3 Threads</h3>
+<p>A <strong>thread</strong> is the smallest unit of execution - a single sequence of instructions inside a process. A process with several threads is doing several things at once while sharing one memory space.</p>
+<p>Analogy: a process is a <strong>kitchen</strong>. Threads are the <strong>cooks</strong> in that kitchen. They share the same fridge, the same gas stove and the same ingredients (memory), but each is working on a different dish (its own stack and program counter).</p>
+<table>
+<tr><th>Point</th><th>Process</th><th>Thread</th></tr>
+<tr><td>Also called</td><td>Heavyweight</td><td>Lightweight</td></tr>
+<tr><td>Memory</td><td>Own separate address space</td><td>Shares the address space of its process</td></tr>
+<tr><td>Creation cost</td><td>High</td><td>Low</td></tr>
+<tr><td>Context switch cost</td><td>High</td><td>Low</td></tr>
+<tr><td>Communication</td><td>Needs IPC (pipes, sockets, shared memory)</td><td>Simply shares variables - very easy</td></tr>
+<tr><td>Isolation</td><td>One crashing process does not kill others</td><td>One crashing thread can bring down the whole process</td></tr>
+<tr><td>What is private</td><td>Everything</td><td>Only program counter, registers, stack</td></tr>
+<tr><td>What is shared</td><td>Nothing by default</td><td>Code, data, heap, open files, signals</td></tr>
+</table>
+<table>
+<tr><th>Thread type</th><th>Managed by</th><th>Pros and cons</th></tr>
+<tr><td>User-level thread</td><td>A thread library in user space; the kernel does not know they exist</td><td>Very fast to create and switch, but if ONE thread blocks, the whole process blocks. Cannot use multiple CPUs</td></tr>
+<tr><td>Kernel-level thread</td><td>The operating system kernel</td><td>Slower to manage, but a blocking thread does not block the others, and true parallelism on multiple cores is possible</td></tr>
+</table>
+<ul><li><strong>Many-to-One model</strong> - Many user threads mapped to one kernel thread.</li><li><strong>One-to-One model</strong> - Each user thread has its own kernel thread (Linux, Windows).</li><li><strong>Many-to-Many model</strong> - Many user threads multiplexed onto a smaller number of kernel threads.</li><li><strong>Thread pool</strong> - A set of pre-created threads waiting for work - avoids creation overhead.</li></ul>
+<h3>C2.4 Process creation: fork(), exec(), wait(), join()</h3>
+<ul><li><strong>fork()</strong> - Creates a <strong>new child process</strong> that is an exact copy of the parent. It returns <strong>0 to the child</strong> and the <strong>child&#x27;s PID to the parent</strong> (and -1 on failure). This is how one process becomes two.</li><li><strong>exec() family</strong> - <strong>Replaces</strong> the current process image with a new program. Used right after fork() so the child runs something different.</li><li><strong>wait()</strong> - Makes the parent <strong>pause until a child finishes</strong>. Prevents zombie processes.</li><li><strong>join()</strong> - In thread programming (pthread_join, Java Thread.join), makes the calling thread wait until the target thread completes.</li><li><strong>exit()</strong> - Terminates the calling process and returns a status.</li><li><strong>Zombie process</strong> - A child that has finished but whose parent has not yet called wait() to collect its exit status. Its PCB lingers.</li><li><strong>Orphan process</strong> - A process whose parent has died. It is adopted by init / systemd (PID 1).</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;<em>_</em>_ and <em>_</em>_ are used in conjunction for making a complete process subroutine.&quot; Answer: <strong>fork(), join()</strong>.<br><br>The reasoning: fork() <strong>splits</strong> execution into two paths, and join() <strong>merges</strong> them back by waiting for completion. Creating without waiting leaves zombies; waiting without creating is meaningless. The distractors all involve sleep(), which merely pauses for a fixed time and has nothing to do with process creation. Also note the order matters - you must fork before you can join, so &quot;join(), fork()&quot; is wrong.</blockquote>
+<p>*How fork() is actually used*</p>
+<pre>pid_t pid = fork();
+
+if (pid &lt; 0) {
+    /* fork failed */
+} else if (pid == 0) {
+    /* THIS IS THE CHILD - pid is 0 here */
+    execlp(&quot;/bin/ls&quot;, &quot;ls&quot;, NULL);
+} else {
+    /* THIS IS THE PARENT - pid holds the child&#x27;s PID */
+    wait(NULL);          /* wait for the child to finish */
+}</pre>
+<blockquote><strong>TIP: Counting processes after multiple forks</strong><br><br>n consecutive fork() calls create <strong>2^n</strong> total processes (including the original). So 3 forks give 8 processes, meaning 7 <strong>new children</strong>. This is a common numerical.</blockquote>
+<h3>C2.5 Inter Process Communication (IPC)</h3>
+<p>Two processes have separate memory, so they need a special channel to talk.</p>
+<table>
+<tr><th>Mechanism</th><th>Description</th></tr>
+<tr><td>Pipe</td><td>A one-way (half-duplex) channel between related processes (parent-child). Unnamed</td></tr>
+<tr><td>Named pipe / FIFO</td><td>A pipe with a name in the file system, so unrelated processes can use it</td></tr>
+<tr><td>Message queue</td><td>A linked list of messages held by the kernel; processes send and receive by queue ID</td></tr>
+<tr><td>Shared memory</td><td>A region of memory mapped into both processes. FASTEST method because no kernel copying is needed after setup</td></tr>
+<tr><td>Semaphore</td><td>Used for synchronisation and signalling, not bulk data</td></tr>
+<tr><td>Socket</td><td>A communication ENDPOINT. Works between processes on the SAME machine or across a network</td></tr>
+<tr><td>Signal</td><td>A short asynchronous notification, e.g. SIGKILL, SIGINT, SIGSEGV</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;What is an endpoint of an inter-process communication?&quot; Options: Tunnel, Port, <strong>Socket</strong>, Pipe. Answer: <strong>Socket</strong>.<br><br>Definition to memorise: a <strong>socket is one endpoint of a two-way communication link between two programs running on a network</strong>. A socket is identified by the combination of <strong>IP address + port number + protocol</strong>.<br><br>Why not &quot;Port&quot;? A port is just a 16-bit number identifying a service - it is one *component* of a socket address, not the endpoint itself. Why not &quot;Pipe&quot;? A pipe is a channel, not an endpoint, and it is not network-capable.</blockquote>
+<h3>C2.6 Synchronisation and the critical section problem</h3>
+<p>When two processes touch the same shared data at the same time, the final answer depends on the exact timing. This bug is called a <strong>race condition</strong>.</p>
+<ul><li><strong>Critical section</strong> - The part of a program that accesses shared resources and must not be executed by more than one process at a time.</li><li><strong>Mutual exclusion</strong> - Only one process inside the critical section at a time.</li><li><strong>Progress</strong> - If no process is in the critical section, a waiting process must be allowed in.</li><li><strong>Bounded waiting</strong> - There is a limit on how long a process must wait for its turn - no starvation.</li></ul>
+<table>
+<tr><th>Tool</th><th>Description</th></tr>
+<tr><td>Mutex lock</td><td>A binary lock. acquire() before the critical section, release() after. Only the owner can unlock</td></tr>
+<tr><td>Binary semaphore</td><td>Value is 0 or 1. Similar to a mutex</td></tr>
+<tr><td>Counting semaphore</td><td>Value can be any non-negative integer; allows up to N processes in. Operations are wait()/P()/down() which decrements, and signal()/V()/up() which increments</td></tr>
+<tr><td>Monitor</td><td>A high-level construct where only one procedure may be active at a time; uses condition variables</td></tr>
+<tr><td>Peterson&#x27;s solution</td><td>A pure software solution for two processes using flag[] and turn variables</td></tr>
+<tr><td>Test-and-Set / Compare-and-Swap</td><td>Hardware atomic instructions used to build locks</td></tr>
+</table>
+<ul><li><strong>Busy waiting / Spinlock</strong> - A process loops continuously checking the lock. Wastes CPU but avoids context-switch cost for very short waits.</li><li><strong>Classic problems</strong> - Producer-Consumer (bounded buffer), Reader-Writer, Dining Philosophers, Sleeping Barber.</li></ul>
+<h3>C2.7 Deadlock</h3>
+<p><strong>Deadlock</strong> is when a set of processes are each holding a resource and each waiting for a resource held by another - so none of them can ever proceed.</p>
+<p>Everyday picture: four cars reach a narrow crossroads at the same time, each blocking the one to its right. Nobody can move.</p>
+<h4>The four necessary conditions (all four must hold at once)</h4>
+<p>1. <strong>Mutual exclusion</strong> - at least one resource is non-shareable.</p>
+<p>2. <strong>Hold and wait</strong> - a process holds a resource while requesting another.</p>
+<p>3. <strong>No preemption</strong> - a resource cannot be forcibly taken away; it must be released voluntarily.</p>
+<p>4. <strong>Circular wait</strong> - a closed chain of processes each waiting for the next.</p>
+<h4>The four ways to deal with deadlock</h4>
+<table>
+<tr><th>Strategy</th><th>Idea</th></tr>
+<tr><td>Prevention</td><td>Design the system so that at least ONE of the four conditions can never hold (e.g. request all resources at once; impose a global ordering on resources)</td></tr>
+<tr><td>Avoidance</td><td>Allow the conditions but check every request before granting it, keeping the system in a SAFE state. The classic algorithm is the BANKER&#x27;S ALGORITHM</td></tr>
+<tr><td>Detection and recovery</td><td>Let deadlock happen, detect it with a wait-for graph, then recover by killing a process or rolling back (preempting resources)</td></tr>
+<tr><td>Ignore it</td><td>Assume deadlock is rare and just reboot. This is what UNIX and Windows actually do (the &quot;ostrich algorithm&quot;)</td></tr>
+</table>
+<ul><li><strong>Safe state</strong> - A state in which there exists at least one sequence in which all processes can finish.</li><li><strong>Banker&#x27;s algorithm</strong> - Deadlock <strong>avoidance</strong> algorithm by Dijkstra. Uses Available, Max, Allocation and Need matrices to test whether granting a request keeps the system safe.</li><li><strong>Starvation</strong> - A process waits indefinitely because others keep getting preference. Different from deadlock - here the system is progressing, just not for this process.</li><li><strong>Aging</strong> - A cure for starvation - gradually increase the priority of a long-waiting process.</li></ul>
+<h2>C3 CPU Scheduling</h2>
+<h3>C3.1 The timing terms - learn these exactly</h3>
+<p>These four definitions are asked directly, and one paper used them as a trick question.</p>
+<table>
+<tr><th>Term</th><th>Exact definition</th></tr>
+<tr><td>Arrival Time (AT)</td><td>The time at which a process ARRIVES in the ready queue</td></tr>
+<tr><td>Burst Time (BT)</td><td>The total time a process REQUIRES ON THE CPU to complete its execution. It is NOT the time to start execution</td></tr>
+<tr><td>Completion Time (CT)</td><td>The time at which the process finishes execution</td></tr>
+<tr><td>Turn Around Time (TAT)</td><td>CT - AT. The total time from arrival to completion (waiting + executing)</td></tr>
+<tr><td>Waiting Time (WT)</td><td>TAT - BT. Time spent sitting in the ready queue doing nothing</td></tr>
+<tr><td>Response Time (RT)</td><td>Time from arrival until the process gets the CPU for the FIRST time</td></tr>
+<tr><td>Throughput</td><td>Number of processes completed per unit time</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - the FALSE statement</strong><br><br>&quot;Which of the following statements is FALSE?&quot;<br>(a) <strong>Burst Time: Time required by a process to START its execution</strong> - FALSE. Burst time is the time required <strong>to execute on the CPU</strong>, not to start.<br>(b) Turn Around Time: difference between completion time and arrival time - TRUE.<br>(c) Completion Time: time at which a process completes its execution - TRUE.<br>(d) Arrival Time: time at which a process arrives in the ready queue - TRUE.<br><br>Answer: option (a). Examiners love changing &quot;to execute&quot; into &quot;to start its execution&quot;.</blockquote>
+<blockquote><strong>TIP: The two formulas that solve every scheduling numerical</strong><br><br><strong>TAT = CT - AT</strong> and <strong>WT = TAT - BT</strong>. Build a table with columns AT, BT, CT, TAT, WT and fill it row by row. Then average the last two columns.</blockquote>
+<h3>C3.2 The scheduling algorithms</h3>
+<ul><li><strong>Preemptive scheduling</strong> - The OS can forcibly take the CPU away from a running process.</li><li><strong>Non-preemptive scheduling</strong> - Once a process gets the CPU it keeps it until it finishes or blocks voluntarily.</li></ul>
+<table>
+<tr><th>Algorithm</th><th>How it picks</th><th>Preemptive?</th><th>Notes</th></tr>
+<tr><td>FCFS (First Come First Served)</td><td>Whoever arrived first</td><td>No</td><td>Simplest. Implemented with a FIFO queue. Suffers the CONVOY EFFECT: one long process makes everyone wait. Poor average waiting time</td></tr>
+<tr><td>SJF (Shortest Job First)</td><td>Smallest burst time</td><td>No</td><td>Gives the MINIMUM average waiting time of all non-preemptive algorithms, but needs to know burst times in advance and can starve long jobs</td></tr>
+<tr><td>SRTF (Shortest Remaining Time First)</td><td>Smallest remaining burst</td><td>Yes</td><td>The preemptive version of SJF. Optimal average waiting time overall</td></tr>
+<tr><td>Priority scheduling</td><td>Highest priority number/level</td><td>Either</td><td>Risk of STARVATION of low-priority processes; cured by AGING</td></tr>
+<tr><td>Round Robin (RR)</td><td>Each process gets one fixed TIME QUANTUM in circular order</td><td>Yes</td><td>Best for time-sharing and fairness. Small quantum = more context-switch overhead; very large quantum = behaves like FCFS</td></tr>
+<tr><td>Multilevel Queue</td><td>Several queues with different priorities; a process stays in its queue</td><td>Yes</td><td>Separates interactive and batch jobs</td></tr>
+<tr><td>Multilevel Feedback Queue</td><td>Like above, but processes can MOVE between queues based on behaviour</td><td>Yes</td><td>Most flexible and general; used in real systems</td></tr>
+<tr><td>HRRN (Highest Response Ratio Next)</td><td>Ratio = (waiting time + burst) / burst</td><td>No</td><td>Balances SJF&#x27;s efficiency with fairness</td></tr>
+</table>
+<p>*Worked example - FCFS*</p>
+<pre>Process   AT   BT
+  P1       0    5
+  P2       1    3
+  P3       2    8
+
+Gantt chart:  | P1 | P2 | P3          |
+              0    5    8            16
+
+P1: CT=5 , TAT=5-0=5 , WT=5-5=0
+P2: CT=8 , TAT=8-1=7 , WT=7-3=4
+P3: CT=16, TAT=16-2=14, WT=14-8=6
+
+Average TAT = (5+7+14)/3 = 8.67
+Average WT  = (0+4+6)/3  = 3.33</pre>
+<h3>C3.3 The three schedulers and the dispatcher</h3>
+<ul><li><strong>Long-term scheduler (Job scheduler)</strong> - Decides which jobs are admitted from disk into the ready queue. Controls the <strong>degree of multiprogramming</strong>. Runs rarely.</li><li><strong>Short-term scheduler (CPU scheduler)</strong> - Decides which ready process gets the CPU next. Runs very frequently (milliseconds).</li><li><strong>Medium-term scheduler</strong> - Swaps processes out of memory to disk and back in, to reduce the degree of multiprogramming temporarily.</li><li><strong>Dispatcher</strong> - The module that actually gives control of the CPU to the chosen process - it performs the context switch, switches to user mode and jumps to the right instruction. The time it takes is <strong>dispatch latency</strong>.</li><li><strong>Context switch</strong> - Saving the state of the current process in its PCB and loading the state of the next. It is <strong>pure overhead</strong> - no useful work happens during a context switch.</li></ul>
+<h2>C4 Memory Management</h2>
+<h3>C4.1 Why memory must be managed</h3>
+<p>Many programs sit in RAM at once. The OS must decide where each one goes, stop them from reading each other&#x27;s data, and reclaim space when they finish.</p>
+<ul><li><strong>Logical / Virtual address</strong> - The address generated by the CPU as the program sees it.</li><li><strong>Physical address</strong> - The actual address on the RAM chip.</li><li><strong>MMU (Memory Management Unit)</strong> - The hardware that translates logical addresses to physical addresses at run time.</li><li><strong>Base (relocation) register</strong> - Holds the smallest legal physical address; added to every logical address.</li><li><strong>Limit register</strong> - Holds the size of the range; used to check the address is legal. Together they give <strong>memory protection</strong>.</li></ul>
+<h3>C4.2 Contiguous allocation and the fitting algorithms</h3>
+<p>In contiguous allocation each process gets one single unbroken block of memory. The OS keeps a list of free blocks (&quot;holes&quot;) and must choose one.</p>
+<table>
+<tr><th>Algorithm</th><th>Rule</th><th>Behaviour</th></tr>
+<tr><td>First Fit</td><td>Scan from the start; take the FIRST hole big enough</td><td>Fastest search. Good general performance</td></tr>
+<tr><td>Best Fit</td><td>Search the WHOLE list; take the SMALLEST hole that fits</td><td>Wastes the least space in that one allocation, but must scan every hole (slow), and the tiny leftovers it creates are useless - so external fragmentation gets worse over time</td></tr>
+<tr><td>Worst Fit</td><td>Take the LARGEST hole</td><td>Leaves large usable leftovers in theory, but performs worst in practice and also needs a full scan</td></tr>
+<tr><td>Next Fit</td><td>Like First Fit but resumes scanning from where it stopped last time</td><td>Spreads allocations out</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - the Best Fit trap</strong><br><br>&quot;How does the Best Fit algorithm impact system performance?&quot; Answer: <strong>It may reduce system performance due to increased search time for free blocks.</strong><br><br>Read the options carefully - three of them praise Best Fit:<br>&quot;It improves system performance by reducing memory wastage&quot; - tempting, and partly true for a single allocation, but the question asks about <strong>system performance</strong>, not space.<br>&quot;It always improves system performance&quot; - the word &quot;always&quot; makes it wrong.<br>&quot;It improves system performance by reducing external fragmentation&quot; - actually FALSE; Best Fit <strong>increases</strong> external fragmentation because it leaves many unusably small holes.<br><br>So the correct answer is the one about <strong>search time</strong>: Best Fit must examine the entire free list on every single request.</blockquote>
+<h4>Fragmentation</h4>
+<ul><li><strong>Internal fragmentation</strong> - Wasted space <strong>inside</strong> an allocated block, because the block given is slightly bigger than what was asked. Typical of fixed-size partitions and paging.</li><li><strong>External fragmentation</strong> - Total free memory is enough, but it is scattered in small pieces so no single piece is large enough. Typical of variable-size partitions and segmentation.</li><li><strong>Compaction</strong> - Shuffling allocated blocks together to merge all free space into one big hole. Cures external fragmentation but is expensive and needs dynamic relocation.</li><li><strong>Coalescing</strong> - Merging adjacent free holes into one larger hole.</li></ul>
+<h3>C4.3 Paging</h3>
+<p>Paging removes external fragmentation completely by dropping the requirement that a process be contiguous in physical memory.</p>
+<ul><li>The <strong>logical address space</strong> is divided into fixed-size <strong>pages</strong>.</li><li><strong>Physical memory</strong> is divided into blocks of the same size called <strong>frames</strong>.</li><li>Any page can go into any free frame. A <strong>page table</strong> records which frame holds which page.</li></ul>
+<p>*Address translation in paging*</p>
+<pre>Logical address = | page number (p) | offset (d) |
+                            |
+                            v
+                     +-------------+
+                     | PAGE TABLE  |  -&gt;  frame number (f)
+                     +-------------+
+                            |
+                            v
+Physical address = | frame number (f) | offset (d) |     (offset is unchanged)</pre>
+<ul><li><strong>Page size</strong> - Always a power of two, typically 4 KB.</li><li><strong>Page table</strong> - One per process; maps page number to frame number. Stored in main memory, pointed to by the Page Table Base Register.</li><li><strong>TLB (Translation Lookaside Buffer)</strong> - A small, very fast associative cache of recent page-table entries. A <strong>TLB hit</strong> avoids a memory access for the page table. Without it, every memory reference would need two memory accesses.</li><li><strong>Valid-invalid bit</strong> - Marks whether a page is currently in memory.</li><li><strong>Paging removes</strong> - External fragmentation. It still has a little <strong>internal</strong> fragmentation in the last page of each process.</li></ul>
+<h3>C4.4 Segmentation</h3>
+<p>Segmentation divides a program the way a <strong>programmer</strong> thinks of it: a code segment, a data segment, a stack segment, one segment per function or array. Segments have <strong>variable length</strong>.</p>
+<table>
+<tr><th>Point</th><th>Paging</th><th>Segmentation</th></tr>
+<tr><td>Block size</td><td>Fixed</td><td>Variable</td></tr>
+<tr><td>Divided by</td><td>The operating system</td><td>The programmer / compiler (logical division)</td></tr>
+<tr><td>Fragmentation</td><td>Internal</td><td>External</td></tr>
+<tr><td>Address</td><td>One number split into page + offset</td><td>Two parts: segment number and offset</td></tr>
+<tr><td>Visible to programmer</td><td>No</td><td>Yes</td></tr>
+<tr><td>Table</td><td>Page table (frame number)</td><td>Segment table (base + limit)</td></tr>
+</table>
+<p><strong>Segmented paging</strong> combines both: segments are divided into pages. This gives the logical view of segmentation without external fragmentation.</p>
+<h3>C4.5 Virtual memory and demand paging</h3>
+<ul><li><strong>Virtual memory</strong> - A technique that lets a program larger than physical RAM run, by keeping only the parts currently needed in RAM and the rest on <strong>secondary storage</strong> (the disk). Its main purpose is <strong>to extend the physical memory using secondary storage</strong>.</li><li><strong>Demand paging</strong> - Pages are brought into memory only when they are actually referenced - never in advance.</li><li><strong>Swap space</strong> - The area of disk reserved for holding pages that are not in RAM. Called a <strong>page file</strong> in Windows and a <strong>swap partition</strong> in Linux.</li><li><strong>Page fault</strong> - The event that occurs when a program <strong>accesses a page that is not currently present in main memory</strong>. The MMU raises a trap; the OS finds the page on disk, loads it into a free frame, updates the page table and restarts the instruction.</li><li><strong>Thrashing</strong> - The system spends more time swapping pages in and out than doing useful work. Caused by too high a degree of multiprogramming. Cured by reducing multiprogramming or by the <strong>working-set model</strong>.</li><li><strong>Working set</strong> - The set of pages a process is actively using in a recent time window.</li></ul>
+<blockquote><strong>NOTE: Two direct PYQs</strong><br><br>&quot;What is the main purpose of virtual memory?&quot; Answer: <strong>To extend the physical memory using secondary storage.</strong> Not to increase CPU speed, not to provide cache, not to store BIOS settings.<br><br>&quot;Page fault means:&quot; Answer: <strong>accessing the page that is not currently in the memory.</strong> Note the distractors: &quot;removing the page whenever it is needed&quot; and &quot;fetching the page whenever it is needed&quot; describe *actions*, not the fault itself; &quot;an error that always occurs in the page&quot; is nonsense - a page fault is a normal, expected event, not a program error.</blockquote>
+<h3>C4.6 Page replacement algorithms</h3>
+<p>When a page fault occurs and there is no free frame, the OS must choose a <strong>victim</strong> page to evict.</p>
+<table>
+<tr><th>Algorithm</th><th>Rule</th><th>Notes</th></tr>
+<tr><td>FIFO</td><td>Evict the page that has been in memory longest</td><td>Simple. Suffers BELADY&#x27;S ANOMALY - giving it MORE frames can cause MORE page faults</td></tr>
+<tr><td>Optimal (OPT / MIN)</td><td>Evict the page that will not be used for the longest time in the future</td><td>Lowest possible fault rate, but impossible to implement. Used only as a benchmark</td></tr>
+<tr><td>LRU (Least Recently Used)</td><td>Evict the page unused for the longest time</td><td>Good approximation of Optimal; needs counters or a stack. Does NOT suffer Belady&#x27;s anomaly</td></tr>
+<tr><td>LFU (Least Frequently Used)</td><td>Evict the page with the smallest reference count</td><td>Can keep a page that was heavily used long ago</td></tr>
+<tr><td>MFU</td><td>Evict the most frequently used</td><td>Rarely useful</td></tr>
+<tr><td>Second Chance / Clock</td><td>FIFO plus a reference bit; a page with the bit set gets one more chance</td><td>Cheap and effective; widely used in practice</td></tr>
+</table>
+<ul><li><strong>Belady&#x27;s anomaly</strong> - The counter-intuitive result that increasing the number of frames can increase the number of page faults. It happens in <strong>FIFO</strong> (and in Second-Chance), but NOT in LRU or Optimal, which are &quot;stack algorithms&quot;.</li></ul>
+<h2>C5 File Systems and Disk Management</h2>
+<h3>C5.1 Files and attributes</h3>
+<ul><li><strong>File</strong> - A named collection of related information stored on secondary storage. It is the logical unit the user sees.</li><li><strong>File attributes</strong> - Name, identifier (inode number), type, location, size, protection bits, timestamps (created/modified/accessed), owner.</li><li><strong>Metadata</strong> - Data about the data - the attributes, not the content.</li></ul>
+<h4>File access methods</h4>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td>Sequential access</td><td>Read/write in order from start to end. Simplest. Magnetic tape supports only this</td></tr>
+<tr><td>Direct / Random access</td><td>Jump straight to any record number. Disks support this</td></tr>
+<tr><td>Indexed sequential access</td><td>An index block holds pointers, allowing quick lookup then sequential reading</td></tr>
+</table>
+<h3>C5.2 Directory structures</h3>
+<table>
+<tr><th>Single-level</th><th>One directory for all files, all users</th><th>Name collisions; no grouping</th></tr>
+<tr><td>Two-level</td><td>One separate directory per user</td><td>Users cannot share conveniently; no sub-grouping</td></tr>
+<tr><td>Tree-structured</td><td>Directories can contain subdirectories - the familiar folder tree</td><td>A file has exactly ONE path; sharing is awkward</td></tr>
+<tr><td>Acyclic graph</td><td>Allows LINKS so the same file/directory can appear in several places, but no cycles are allowed</td><td>Needs care when deleting (reference counting)</td></tr>
+<tr><td>General graph</td><td>Cycles allowed</td><td>Needs garbage collection to reclaim space; traversal can loop forever</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;In an acyclic graph directory structure, what is a common method used to implement shared directories or files?&quot; Options: File duplication, <strong>Symbolic (soft) links</strong>, Hard links, Directory pointers. Answer: <strong>Symbolic (soft) links</strong>.<br><br>Why not hard links? A <strong>hard link</strong> is a second directory entry pointing to the very same inode. Hard links to *directories* are forbidden on UNIX precisely because they could create cycles - which would break the &quot;acyclic&quot; property. A <strong>symbolic link</strong> is a small file containing a path name; it can safely point to a directory and is the standard way to share directories in an acyclic-graph structure.<br><br>Learn the pair:<br><strong>Hard link</strong> - same inode number, cannot cross file systems, cannot link directories, file survives if the original name is deleted.<br><strong>Soft/symbolic link</strong> - own inode, stores a path, can cross file systems, can link directories, becomes a &quot;dangling link&quot; if the target is deleted.</blockquote>
+<h3>C5.3 File allocation methods</h3>
+<table>
+<tr><th>Method</th><th>How blocks are assigned</th><th>Pros</th><th>Cons</th></tr>
+<tr><td>Contiguous</td><td>All blocks of a file lie next to each other</td><td>Excellent sequential AND direct access</td><td>External fragmentation; the file cannot grow easily</td></tr>
+<tr><td>Linked</td><td>Each block stores a pointer to the next</td><td>No external fragmentation; file can grow</td><td>Direct access is slow (must follow the chain); a lost pointer destroys the rest; pointer wastes space</td></tr>
+<tr><td>Indexed</td><td>One index block holds all the block addresses of the file</td><td>Supports direct access; no external fragmentation</td><td>The index block itself is overhead; a large file may need multi-level indexing</td></tr>
+<tr><td>FAT (File Allocation Table)</td><td>A table in a reserved area holds the whole chain of links</td><td>Simple, direct access via the table</td><td>The table must be cached or every access needs two reads</td></tr>
+<tr><td>Inode (UNIX)</td><td>A structure with direct pointers plus single, double and triple indirect pointers</td><td>Small files are very efficient, huge files still possible</td><td>Multiple reads for very large files</td></tr>
+</table>
+<ul><li><strong>Free space management</strong> - Bit vector / bitmap (one bit per block - simple and fast to find contiguous runs), linked list of free blocks, grouping, counting.</li></ul>
+<h3>C5.4 Popular file systems</h3>
+<table>
+<tr><th>File system</th><th>Used by</th><th>Key points</th></tr>
+<tr><td>FAT16 / FAT32</td><td>Old Windows, USB drives</td><td>FAT32 max file size 4 GB. Very compatible</td></tr>
+<tr><td>NTFS</td><td>Modern Windows</td><td>Journaling, file-level security/ACLs, encryption (EFS), disk quotas, SUPPORTS COMPRESSION of files and folders, small cluster sizes for efficiency, very large volumes</td></tr>
+<tr><td>exFAT</td><td>Flash drives</td><td>No 4 GB limit, cross-platform</td></tr>
+<tr><td>ext2</td><td>Old Linux</td><td>No journaling</td></tr>
+<tr><td>ext3</td><td>Linux</td><td>Adds journaling</td></tr>
+<tr><td>ext4</td><td>DEFAULT Linux file system</td><td>Journaling, extents, larger files and volumes, delayed allocation</td></tr>
+<tr><td>XFS / Btrfs / ZFS</td><td>Linux / Unix</td><td>High-performance and advanced features (snapshots, checksums)</td></tr>
+<tr><td>HFS+ / APFS</td><td>macOS</td><td>-</td></tr>
+</table>
+<blockquote><strong>NOTE: Two direct PYQs on file systems</strong><br><br>&quot;The default file system type in Linux is:&quot; Answer: <strong>Ext4</strong> (not Ext2, Ext3 or Ext1).<br><br>&quot;Which of the following is NOT true about NTFS?&quot; Answer: <strong>&quot;It does not support the compression of files and directories to optimise storage space.&quot;</strong> This is false - NTFS <strong>does</strong> support built-in compression. The other three statements (efficient use of disk space via smaller clusters; attributes such as read-only, hidden, system, archive, not-content-indexed, off-line, temporary and compressed; improved performance and scalability over its precursor FAT) are all TRUE of NTFS.</blockquote>
+<ul><li><strong>Journaling</strong> - The file system first writes an intention record to a log (journal), then performs the change. After a crash the journal is replayed, so the file system is never left inconsistent.</li></ul>
+<h3>C5.5 Disk scheduling algorithms</h3>
+<p>The disk arm is slow to move, so the order in which requests are served matters a lot. The goal is to minimise total <strong>seek time</strong>.</p>
+<table>
+<tr><th>Algorithm</th><th>How the head moves</th></tr>
+<tr><td>FCFS</td><td>Serves requests in the order they arrive. Fair but the head may jump wildly back and forth</td></tr>
+<tr><td>SSTF (Shortest Seek Time First)</td><td>Always serves the request CLOSEST to the current head position. Reduces average response time, but can STARVE far-away requests and needs the seek time computed in advance</td></tr>
+<tr><td>SCAN (Elevator)</td><td>The head sweeps in ONE direction serving every request until it reaches the END of the disk, then REVERSES and sweeps back. Like a lift going to the top floor before coming down</td></tr>
+<tr><td>C-SCAN (Circular SCAN)</td><td>Sweeps one way to the end, then JUMPS back to the beginning without serving anything on the return, and sweeps again. More uniform waiting time</td></tr>
+<tr><td>LOOK</td><td>Like SCAN but reverses at the LAST REQUEST, not at the physical end of the disk</td></tr>
+<tr><td>C-LOOK</td><td>Like C-SCAN but jumps back from the last request instead of the disk end</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - identify the algorithm</strong><br><br>&quot;In which scheduling algorithm does the disk head move in one direction, satisfying all requests until it reaches the END, and then reverses direction?&quot; Answer: <strong>SCAN</strong>.<br><br>The phrase &quot;<strong>until it reaches the end</strong>&quot; is decisive. If the question had said &quot;until the last request&quot;, the answer would be <strong>LOOK</strong>. If it said &quot;then jumps back to the start without serving&quot;, the answer would be <strong>C-SCAN</strong>. Memorise these three trigger phrases.</blockquote>
+<blockquote><strong>NOTE: PYQ worked out - advantage of SSTF</strong><br><br>&quot;The advantage of SSTF (Shortest Seek Time First) is:&quot; Answer: <strong>average response time decreases</strong>.<br><br>The other options are all <strong>disadvantages</strong>, cleverly listed as if they were advantages: &quot;high variance of response time as SSTF favours only some requests&quot; is a drawback; &quot;overhead to calculate seek time in advance&quot; is a drawback; &quot;throughput decreases&quot; is wrong because SSTF actually <strong>increases</strong> throughput.</blockquote>
+<h2>C6 Linux and UNIX Essentials</h2>
+<h3>C6.1 The Linux directory tree</h3>
+<p>Linux has one single tree starting at <strong>/</strong> (root). Learn what lives where - this is asked directly.</p>
+<table>
+<tr><th>Directory</th><th>What it holds</th></tr>
+<tr><td>/</td><td>The root of everything</td></tr>
+<tr><td>/bin</td><td>Essential user command BINARIES (executable files for UNIX commands) - ls, cp, mv, cat</td></tr>
+<tr><td>/sbin</td><td>System binaries for the administrator - fdisk, shutdown, ifconfig</td></tr>
+<tr><td>/etc</td><td>CONFIGURATION FILES and additional commands related to system maintenance and administration - passwd, hosts, fstab</td></tr>
+<tr><td>/dev</td><td>DEVICE FILES / device drivers that control peripherals connected to the system</td></tr>
+<tr><td>/home</td><td>Users&#x27; personal home directories - /home/ravi</td></tr>
+<tr><td>/root</td><td>The home directory of the root (superuser) account. NOT the same as /</td></tr>
+<tr><td>/usr</td><td>User programs and read-only shareable data: /usr/bin, /usr/lib, /usr/share. It is NOT for temporary files</td></tr>
+<tr><td>/var</td><td>VARIABLE data that keeps changing - logs (/var/log), mail spools, print queues</td></tr>
+<tr><td>/tmp</td><td>TEMPORARY files, usually cleared on reboot</td></tr>
+<tr><td>/lib</td><td>Shared libraries needed by /bin and /sbin</td></tr>
+<tr><td>/boot</td><td>Kernel image and boot loader files</td></tr>
+<tr><td>/mnt , /media</td><td>Mount points for temporary and removable file systems</td></tr>
+<tr><td>/proc</td><td>A virtual file system exposing kernel and process information as files</td></tr>
+<tr><td>/opt</td><td>Optional third-party software</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - two questions on directories</strong><br><br>&quot;In which of the following directories are the configuration files found?&quot; Options: /dev, /root, <strong>/etc/</strong>, /bin. Answer: <strong>/etc/</strong>.<br><br>&quot;Which of the following statements is NOT true?&quot; The false statement was <strong>&quot;usr: It contains temporary files created by Linux or other users.&quot;</strong> That describes <strong>/tmp</strong>, not /usr. The true statements were: etc contains additional commands related to system maintenance and administration; bin contains executable files for UNIX commands; dev contains device drivers that control peripherals.</blockquote>
+<h3>C6.2 The commands you must know</h3>
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td>ls</td><td>List directory contents. <code>ls -l</code> long format, <code>ls -a</code> show hidden files</td></tr>
+<tr><td>cd</td><td>Change directory</td></tr>
+<tr><td>pwd</td><td>Print working directory</td></tr>
+<tr><td>mkdir</td><td>Make a directory</td></tr>
+<tr><td>rmdir</td><td>Remove an EMPTY directory only</td></tr>
+<tr><td>rm</td><td>REMOVE / DELETE files. <code>rm -r</code> deletes a directory and everything inside it recursively; <code>rm -f</code> forces</td></tr>
+<tr><td>cp</td><td>Copy files or directories</td></tr>
+<tr><td>mv</td><td>Move or rename</td></tr>
+<tr><td>cat</td><td>Display, create or concatenate files</td></tr>
+<tr><td>more / less</td><td>View a file one screen at a time</td></tr>
+<tr><td>head / tail</td><td>Show the first / last few lines. <code>tail -f</code> follows a growing log</td></tr>
+<tr><td>touch</td><td>Create an empty file or update its timestamp</td></tr>
+<tr><td>grep</td><td>SEARCH FOR A SPECIFIC PATTERN in a file and display the lines containing that pattern. <code>grep -i</code> ignores case, <code>grep -v</code> inverts, <code>grep -r</code> recurses</td></tr>
+<tr><td>find</td><td>Search for files by name, size, time, permission</td></tr>
+<tr><td>wc</td><td>Word, line and character count</td></tr>
+<tr><td>sort / uniq</td><td>Sort lines; remove duplicates</td></tr>
+<tr><td>cut</td><td>Cut out selected COLUMNS or fields of a file</td></tr>
+<tr><td>tr</td><td>Translate or change the case of characters</td></tr>
+<tr><td>sed</td><td>Stream editor - find and replace</td></tr>
+<tr><td>awk</td><td>Pattern scanning and field processing</td></tr>
+<tr><td>chmod</td><td>Change file permissions</td></tr>
+<tr><td>chown / chgrp</td><td>Change owner / group</td></tr>
+<tr><td>ps</td><td>Report current processes. <code>ps -ef</code> shows all</td></tr>
+<tr><td>top / htop</td><td>Live view of processes and resource use</td></tr>
+<tr><td>kill / killall</td><td>Send a signal to a process. <code>kill -9</code> forces termination</td></tr>
+<tr><td>df / du</td><td>Disk free space / disk usage of files</td></tr>
+<tr><td>tar</td><td>Archive files. <code>tar -cvf</code> create, <code>tar -xvf</code> extract</td></tr>
+<tr><td>gzip / gunzip</td><td>Compress / decompress</td></tr>
+<tr><td>man</td><td>Manual page for a command</td></tr>
+<tr><td>who / whoami</td><td>Logged-in users / your own username</td></tr>
+<tr><td>echo</td><td>Print text</td></tr>
+<tr><td>pipe symbol</td><td>Send the output of one command as input to the next</td></tr>
+<tr><td>redirection</td><td><code>&gt;</code> overwrite to file, <code>&gt;&gt;</code> append to file, <code>&lt;</code> take input from file</td></tr>
+</table>
+<blockquote><strong>NOTE: Three direct PYQs on commands</strong><br><br>&quot;Identify the command that is used to delete files in Linux.&quot; Answer: <strong>rm</strong>. (&quot;Delete&quot; and &quot;Erase&quot; are not Linux commands at all; &quot;Rmdir&quot; removes only empty directories.)<br><br>&quot;Which command is used to remove a directory in Linux?&quot; The answer key gave <strong>Rm</strong> - because <code>rm -r</code> is the general command that removes directories along with their contents. (<code>rmdir</code> works only on empty directories, and it was not offered as an option.)<br><br>&quot;Grep command is used to:&quot; Answer: <strong>search for a specific pattern from a specified file and display those lines containing the pattern.</strong> The distractors describe <code>tr</code> (change case), <code>cut</code> (cut columns/fields) and the pipe (redirect output of one command to another).</blockquote>
+<blockquote><strong>TIP: GREP full form</strong><br><br>GREP = <strong>G</strong>lobally search for a <strong>R</strong>egular <strong>E</strong>xpression and <strong>P</strong>rint. Knowing the full form makes the definition unforgettable.</blockquote>
+<h3>C6.3 File permissions</h3>
+<p>Every Linux file has permissions for three classes of people, in this fixed order:</p>
+<p><strong>u = user (owner), g = group, o = others.</strong></p>
+<p>Each class has three permissions:</p>
+<p><strong>r = read (4), w = write (2), x = execute (1).</strong></p>
+<p>*Reading a permission string*</p>
+<pre>   -  rw-  r--  r--
+   |   |    |    |
+   |   |    |    +--- others  : r-- = read only          = 4
+   |   |    +-------- group   : r-- = read only          = 4
+   |   +------------- user    : rw- = read and write     = 6
+   +----------------- file type ( - = regular file, d = directory,
+                                  l = symbolic link )
+
+   So this file is 644.</pre>
+<table>
+<tr><th>Octal</th><th>Permission</th><th>Meaning</th></tr>
+<tr><td>7</td><td>rwx</td><td>read + write + execute</td></tr>
+<tr><td>6</td><td>rw-</td><td>read + write</td></tr>
+<tr><td>5</td><td>r-x</td><td>read + execute</td></tr>
+<tr><td>4</td><td>r--</td><td>read only</td></tr>
+<tr><td>0</td><td>---</td><td>nothing</td></tr>
+</table>
+<ul><li><strong>umask</strong> - The mask that decides default permissions. Default base is 666 for files and 777 for directories; the umask is subtracted. With the usual umask of 022, a new <strong>file</strong> becomes 666 - 022 = <strong>644</strong> (rw- r-- r--) and a new <strong>directory</strong> becomes 777 - 022 = 755 (rwx r-x r-x).</li><li><strong>Why files never get x by default</strong> - For security - a newly created data file should not be executable.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is a default permission for the text file in Linux?&quot; Answer: <strong>rw- r-- r--</strong> (that is 644).<br><br>Reasoning: files start from base 666 and the standard umask 022 removes write permission from group and others, giving rw-r--r--. The option &quot;rwx r-- r--&quot; is wrong because a plain text file is never executable by default, and &quot;rwx rwx rwx&quot; (777) would be a severe security hole.<br><br>Useful chmod forms: <code>chmod 644 file.txt</code> (numeric) or <code>chmod u=rw,go=r file.txt</code> (symbolic) or <code>chmod +x script.sh</code> (add execute for everyone).</blockquote>
+<h3>C6.4 Shells</h3>
+<p>A <strong>shell</strong> is the command interpreter - the program that reads what you type and asks the kernel to do it.</p>
+<table>
+<tr><th>Shell</th><th>Notes</th></tr>
+<tr><td>sh - Bourne shell</td><td>The original UNIX shell by Stephen Bourne</td></tr>
+<tr><td>bash - Bourne Again SHell</td><td>The default on most Linux distributions</td></tr>
+<tr><td>csh - C shell</td><td>Syntax resembling C, by Bill Joy</td></tr>
+<tr><td>tcsh</td><td>Enhanced C shell</td></tr>
+<tr><td>ksh - Korn shell</td><td>By David Korn; combines Bourne and C shell features</td></tr>
+<tr><td>zsh - Z shell</td><td>Feature-rich; default on modern macOS</td></tr>
+<tr><td>fish</td><td>Friendly interactive shell</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is NOT a shell in Linux?&quot; Options: C shell, Korn shell, Bourne shell, <strong>Alpha cell</strong>. Answer: <strong>Alpha cell</strong>. There is no such shell - the name is invented, and note the deliberate spelling &quot;cell&quot; instead of &quot;shell&quot;.</blockquote>
+<h3>C6.5 Distributed systems (asked as a benefit/drawback question)</h3>
+<p>A <strong>distributed system</strong> is a collection of independent computers that appears to its users as a single coherent system.</p>
+<table>
+<tr><th>Benefits</th><th>Drawbacks</th></tr>
+<tr><td>Resource sharing (files, printers, computation)</td><td>Complexity of design and debugging</td></tr>
+<tr><td>Scalability - add more machines to grow</td><td>HIGH COMMUNICATION LATENCY over the network</td></tr>
+<tr><td>Fault tolerance / reliability - one node failing does not stop the system</td><td>Security is harder (data travels over the network)</td></tr>
+<tr><td>Speed-up through parallelism</td><td>Partial failure is difficult to detect and handle</td></tr>
+<tr><td>Geographic distribution</td><td>Lack of a single global clock</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is NOT a benefit of distributed systems?&quot; Options: Scalability, <strong>High communication latency</strong>, Resource sharing, Fault tolerance. Answer: <strong>High communication latency</strong> - that is a well-known *disadvantage*, because messages must travel over a network instead of within one machine.</blockquote></body></html>

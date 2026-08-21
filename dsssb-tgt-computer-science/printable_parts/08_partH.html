@@ -1,0 +1,489 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART H - Web Technologies, XML, PHP and E-Commerce</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART H - Web Technologies, XML, PHP and E-Commerce</h1>
+<blockquote>*HTML, CSS, JavaScript, AJAX, XML and e-commerce models. Four to eight marks, and almost entirely syntax recall.*</blockquote>
+<h2>H1 How the Web Works</h2>
+<h3>H1.1 The client-server story</h3>
+<p>When you type an address in your browser, this is what happens:</p>
+<p>*A web request from start to finish*</p>
+<pre>1. You type  www.example.com/page.html  in the BROWSER (the CLIENT).
+2. DNS translates &quot;www.example.com&quot; into an IP address.
+3. The browser opens a TCP connection to that IP on port 80 (or 443).
+4. It sends an HTTP request:   GET /page.html HTTP/1.1
+5. The WEB SERVER (Apache, Nginx, IIS) receives the request.
+6. If the page is STATIC, the server just returns the file.
+   If it is DYNAMIC, the server runs a program (PHP, ASP.NET, servlet),
+   which may query a DATABASE, and returns the generated HTML.
+7. The server sends an HTTP response:  200 OK  + the HTML.
+8. The browser PARSES the HTML, fetches CSS/JS/images, and RENDERS the page.</pre>
+<ul><li><strong>Web browser</strong> - The CLIENT program whose primary function is <strong>to display and navigate web pages</strong>. It also acts as the <strong>universal front end</strong> for database applications reached over the internet. Examples: Chrome, Firefox, Edge, Safari.</li><li><strong>Web server</strong> - Software that stores web content and serves it in response to HTTP requests. Apache, Nginx, IIS, Tomcat.</li><li><strong>Rendering engine</strong> - The part of the browser that turns HTML and CSS into pixels: Blink (Chrome), Gecko (Firefox), WebKit (Safari).</li><li><strong>Static web page</strong> - Same content for everyone; a plain file.</li><li><strong>Dynamic web page</strong> - Content generated at request time, often personalised.</li><li><strong>Client-side scripting</strong> - Runs in the browser: JavaScript. Fast, no server round trip, but visible to the user.</li><li><strong>Server-side scripting</strong> - Runs on the server: PHP, ASP.NET, JSP, Node.js, Python. Code is hidden, can access databases.</li></ul>
+<blockquote><strong>NOTE: Two direct PYQs</strong><br><br>&quot;What is the primary function of a web browser?&quot; Answer: <strong>To display and navigate web pages.</strong> It does not create websites (that needs an editor), does not primarily store data, and does not send email (that needs a mail client).<br><br>&quot;<em>_</em>_ are a database applications&#x27; universal front end that connects to the back end via the internet.&quot; Answer: <strong>Web browsers</strong>. The reasoning: whatever the database or platform, the *same* browser can act as the user interface - that universality is the point. A &quot;web server&quot; is the middle tier, and a &quot;web application&quot; is what runs *inside* the browser.</blockquote>
+<h3>H1.2 HTTP</h3>
+<ul><li><strong>HTTP</strong> - <strong>HyperText Transfer Protocol</strong> - the application-layer protocol defining how clients and servers exchange web resources. It is <strong>stateless</strong>: each request is independent and the server remembers nothing between requests.</li></ul>
+<table>
+<tr><th>HTTP method</th><th>Purpose</th></tr>
+<tr><td>GET</td><td>Retrieve a resource. Parameters appear in the URL, so they are visible and length-limited. Should not change server state</td></tr>
+<tr><td>POST</td><td>Submit data in the request BODY. Hidden from the URL, no length limit. Used for forms and file uploads</td></tr>
+<tr><td>PUT</td><td>Create or replace a resource</td></tr>
+<tr><td>DELETE</td><td>Remove a resource</td></tr>
+<tr><td>HEAD</td><td>Like GET but returns only the headers</td></tr>
+<tr><td>PATCH</td><td>Partially update a resource</td></tr>
+</table>
+<table>
+<tr><th>Status code</th><th>Meaning</th></tr>
+<tr><td>1xx</td><td>Informational</td></tr>
+<tr><td>2xx</td><td>Success. 200 OK, 201 Created</td></tr>
+<tr><td>3xx</td><td>Redirection. 301 Moved Permanently, 304 Not Modified</td></tr>
+<tr><td>4xx</td><td>CLIENT error. 400 Bad Request, 401 Unauthorised, 403 Forbidden, 404 NOT FOUND</td></tr>
+<tr><td>5xx</td><td>SERVER error. 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</td></tr>
+</table>
+<ul><li><strong>Cookie</strong> - A small text file the server asks the browser to store, sent back on later requests. This is how a stateless protocol can &quot;remember&quot; a logged-in user.</li><li><strong>Session</strong> - Server-side storage of user state, usually keyed by a session ID held in a cookie.</li><li><strong>CGI</strong> - <strong>Common Gateway Interface</strong> - the original standard defining how a web server passes a request to an external program and receives its output. Largely replaced by faster approaches (FastCGI, modules, servlets).</li></ul>
+<blockquote><strong>NOTE: PYQ worked out - note the answer-key discrepancy</strong><br><br>&quot;<em>_</em>___ is the standard that defines how web servers and application programs communicate.&quot; Options: JDBC, ODBC, CGI, HTTP. The official key gave <strong>HTTP</strong>.<br><br>Strictly speaking, the standard that defines how a <strong>web server</strong> hands a request to an <strong>external application program</strong> is <strong>CGI (Common Gateway Interface)</strong> - that is CGI&#x27;s textbook definition, word for word. <strong>HTTP</strong> defines how a <strong>browser and a web server</strong> communicate.<br><br>For the exam: if the question mentions &quot;web server and application program&quot;, the theoretically correct answer is <strong>CGI</strong>; if it mentions &quot;client/browser and web server&quot;, it is <strong>HTTP</strong>. This paper chose HTTP, so be alert - read whether the pairing is browser-to-server (HTTP) or server-to-program (CGI).</blockquote>
+<h3>H1.3 Database connectivity from applications</h3>
+<table>
+<tr><th>Standard</th><th>Full form</th><th>Used by</th></tr>
+<tr><td>ODBC</td><td>Open Database Connectivity</td><td>A language-independent, largely Microsoft/C-based API for connecting to any database through a driver</td></tr>
+<tr><td>JDBC</td><td>Java Database Connectivity</td><td>The Java-specific API for the same purpose</td></tr>
+<tr><td>ADO.NET</td><td>-</td><td>The .NET data access technology</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Communication between an application program and a database server occur via:&quot; Answer: <strong>ODBC OR JDBC</strong>.<br><br>Why not the others: an &quot;API&quot; is too general a term; a &quot;web server&quot; serves web pages, not database queries; and &quot;HTTP&quot; is a web transfer protocol, not a database interface. ODBC and JDBC are the actual <strong>driver-based standards</strong> that let application code issue SQL to a database engine.</blockquote>
+<h2>H2 HTML</h2>
+<h3>H2.1 Structure of an HTML document</h3>
+<ul><li><strong>HTML</strong> - <strong>HyperText Markup Language</strong> - the markup language that describes the *structure* of a web page using tags. It is not a programming language.</li></ul>
+<p>*The basic skeleton*</p>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Page title shown on the browser tab&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;A heading&lt;/h1&gt;
+    &lt;p&gt;A paragraph of text.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+<ul><li><strong>Tag</strong> - A keyword in angle brackets: <code>&lt;p&gt;</code>. Most tags come in pairs with a closing tag <code>&lt;/p&gt;</code>.</li><li><strong>Empty / void tag</strong> - Has no closing tag: <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code>.</li><li><strong>Attribute</strong> - Extra information inside the opening tag: <code>&lt;img src=&quot;a.jpg&quot; alt=&quot;text&quot;&gt;</code>.</li><li><strong>Element</strong> - The opening tag, the content and the closing tag together.</li></ul>
+<h3>H2.2 Essential tags</h3>
+<table>
+<tr><th>Tag</th><th>Purpose</th></tr>
+<tr><td>h1 to h6</td><td>Headings, h1 largest</td></tr>
+<tr><td>p</td><td>Paragraph</td></tr>
+<tr><td>br</td><td>Line break</td></tr>
+<tr><td>hr</td><td>Horizontal rule</td></tr>
+<tr><td>b / strong</td><td>Bold / semantically important</td></tr>
+<tr><td>i / em</td><td>Italic / emphasis</td></tr>
+<tr><td>u</td><td>Underline</td></tr>
+<tr><td>sub / sup</td><td>Subscript / superscript</td></tr>
+<tr><td>a</td><td>ANCHOR - creates a hyperlink</td></tr>
+<tr><td>img</td><td>Image</td></tr>
+<tr><td>ul / ol / li</td><td>Unordered list / ordered list / list item</td></tr>
+<tr><td>dl / dt / dd</td><td>Definition list, term, description</td></tr>
+<tr><td>table / tr / th / td</td><td>Table, row, header cell, data cell</td></tr>
+<tr><td>form / input / select / textarea / button</td><td>Form controls</td></tr>
+<tr><td>div</td><td>A block-level generic container</td></tr>
+<tr><td>span</td><td>An inline generic container</td></tr>
+<tr><td>iframe</td><td>Embeds another document</td></tr>
+</table>
+<h3>H2.3 Hyperlinks - the anchor tag</h3>
+<p>*Creating a link*</p>
+<pre>&lt;a href=&quot;https://example.com&quot; target=&quot;_blank&quot;&gt;Visit Example&lt;/a&gt;
+
+  href   = Hypertext REFerence - the DESTINATION URL. This is the
+           attribute that actually creates the hyperlink.
+  target = where to open it</pre>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following parameters is used to create a hyperlink in HTML?&quot; Options: Link, url, Path, <strong>Href</strong>. Answer: <strong>Href</strong>.<br><br>The <code>&lt;a&gt;</code> tag by itself does nothing without <code>href</code>. There is no <code>link</code>, <code>url</code> or <code>path</code> attribute on an anchor tag. <code>href</code> stands for <strong>Hypertext REFerence</strong>.</blockquote>
+<h4>Values of the target attribute</h4>
+<table>
+<tr><th>Value</th><th>Where the linked document opens</th></tr>
+<tr><td>_self</td><td>In the SAME frame / tab (this is the default)</td></tr>
+<tr><td>_blank</td><td>In a NEW window or tab</td></tr>
+<tr><td>_parent</td><td>In the PARENT frame</td></tr>
+<tr><td>_top</td><td>In the FULL BODY of the window - it breaks out of ALL frames and uses the entire window</td></tr>
+<tr><td>framename</td><td>In the named frame</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following opens the linked document in the windows full body among the target values?&quot; Answer: <strong>_top</strong>.<br><br>The phrase &quot;<strong>full body of the window</strong>&quot; is the definition of <code>_top</code> - it escapes every enclosing frameset and takes over the whole window. Distinguish it from <code>_parent</code>, which climbs only ONE level up, and <code>_blank</code>, which opens a brand-new window rather than reusing the current one.</blockquote>
+<h3>H2.4 Forms</h3>
+<p>*A simple form*</p>
+<pre>&lt;form action=&quot;/submit.php&quot; method=&quot;post&quot;&gt;
+  &lt;input type=&quot;text&quot;     name=&quot;username&quot; placeholder=&quot;Name&quot;&gt;
+  &lt;input type=&quot;password&quot; name=&quot;pwd&quot;&gt;
+  &lt;input type=&quot;radio&quot;    name=&quot;gender&quot; value=&quot;M&quot;&gt;     &lt;!-- pick ONE      --&gt;
+  &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot;  value=&quot;music&quot;&gt; &lt;!-- pick MANY     --&gt;
+  &lt;select name=&quot;city&quot;&gt;&lt;option value=&quot;dl&quot;&gt;Delhi&lt;/option&gt;&lt;/select&gt;
+  &lt;textarea name=&quot;msg&quot; rows=&quot;4&quot;&gt;&lt;/textarea&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Send&quot;&gt;
+&lt;/form&gt;</pre>
+<ul><li><strong>action</strong> - The URL that will process the submitted data.</li><li><strong>method</strong> - GET (data in the URL) or POST (data in the body).</li><li><strong>name</strong> - The key under which each field&#x27;s value is sent.</li><li><strong>Radio button vs checkbox</strong> - Radio buttons sharing a name allow only <strong>one</strong> selection; checkboxes allow <strong>many</strong>.</li></ul>
+<h3>H2.5 HTML5 additions</h3>
+<ul><li><strong>Semantic tags</strong> - <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>footer</code>, <code>figure</code> - they describe *meaning*, which helps search engines and screen readers.</li><li><strong>Media tags</strong> - <code>audio</code>, <code>video</code> - native playback without plugins.</li><li><strong>canvas</strong> - A drawing surface scripted with JavaScript.</li><li><strong>svg</strong> - Scalable Vector Graphics.</li><li><strong>New input types</strong> - email, url, number, range, date, color, search - with built-in validation.</li><li><strong>Storage</strong> - localStorage (persists) and sessionStorage (cleared when the tab closes).</li><li><strong>Others</strong> - Geolocation API, Web Workers, WebSockets, Drag and Drop.</li></ul>
+<h2>H3 CSS</h2>
+<h3>H3.1 What CSS does</h3>
+<ul><li><strong>CSS</strong> - <strong>Cascading Style Sheets</strong> - describes how HTML elements should be *presented*: colour, font, spacing, layout. It separates presentation from structure.</li></ul>
+<p>*Anatomy of a CSS rule*</p>
+<pre>   selector  {  property : value ;  }
+
+   h1 { color: blue; font-size: 24px; }
+   |    |      |
+   |    |      +-- declaration
+   |    +--------- property and value
+   +-------------- selector: which elements this applies to</pre>
+<h3>H3.2 The three ways to apply CSS</h3>
+<table>
+<tr><th>Method</th><th>How</th><th>Priority</th></tr>
+<tr><td>Inline</td><td>A <code>style</code> attribute on the element itself: <code>&lt;p style=&quot;color:red&quot;&gt;</code></td><td>HIGHEST</td></tr>
+<tr><td>Internal / Embedded</td><td>A <code>&lt;style&gt;</code> block inside <code>&lt;head&gt;</code></td><td>Medium</td></tr>
+<tr><td>EXTERNAL</td><td>A separate .css file linked with <code>&lt;link&gt;</code> in <code>&lt;head&gt;</code></td><td>Lowest, but BEST PRACTICE - one file styles the whole site</td></tr>
+</table>
+<p>*The correct syntax for external CSS*</p>
+<pre>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;
+
+Break it down:
+   &lt;link&gt;     the tag used inside &lt;head&gt; to attach an external resource
+   rel        the RELATIONSHIP - here &quot;stylesheet&quot;
+   type       the MIME type - &quot;text/css&quot;
+   href       the path to the file
+
+COMMON WRONG FORMS SEEN IN EXAMS:
+   &lt;style rel=&quot;stylesheet&quot; ... &gt;     WRONG - &lt;style&gt; is for INTERNAL CSS
+   &lt;style href=&quot;style.css&quot;&gt;&lt;/style&gt;  WRONG - &lt;style&gt; has no href attribute
+   &lt;a href=&quot;style.css&quot; rel=&quot;...&quot;&gt;    WRONG - &lt;a&gt; creates a hyperlink</pre>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is the syntax to write an external CSS?&quot; Answer: <strong><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;</code></strong>.<br><br>The single distinguishing point is the <strong><code>&lt;link&gt;</code></strong> tag. Anything using <code>&lt;style&gt;</code> is internal CSS; anything using <code>&lt;a&gt;</code> is a hyperlink. Memorise the full line exactly as written above.</blockquote>
+<h3>H3.3 Selectors</h3>
+<table>
+<tr><th>Selector</th><th>Syntax</th><th>Selects</th></tr>
+<tr><td>Element / Type</td><td><code>p { }</code></td><td>All p elements</td></tr>
+<tr><td>Class</td><td><code>.warning { }</code></td><td>All elements with class=&quot;warning&quot;. Reusable, many per page</td></tr>
+<tr><td>ID</td><td><code>#header { }</code></td><td>The single element with id=&quot;header&quot;. Must be UNIQUE</td></tr>
+<tr><td>Universal</td><td><code>* { }</code></td><td>Everything</td></tr>
+<tr><td>Descendant</td><td><code>div p { }</code></td><td>Any p inside a div</td></tr>
+<tr><td>Child</td><td><code>div &gt; p { }</code></td><td>Only direct children</td></tr>
+<tr><td>Grouping</td><td><code>h1, h2 { }</code></td><td>Several selectors sharing one rule</td></tr>
+<tr><td>Attribute</td><td><code>input[type=&quot;text&quot;] { }</code></td><td>By attribute value</td></tr>
+<tr><td>Pseudo-class</td><td><code>a:hover { }</code></td><td>A state: hover, active, visited, focus, first-child, nth-child</td></tr>
+<tr><td>Pseudo-element</td><td><code>p::first-line { }</code></td><td>A part of an element: first-line, first-letter, before, after</td></tr>
+</table>
+<h4>Specificity - which rule wins</h4>
+<p>From strongest to weakest: <strong>inline style &gt; ID &gt; class / attribute / pseudo-class &gt; element</strong>. The <code>!important</code> flag overrides everything. When two rules have equal specificity, the <strong>later</strong> one wins - that is the &quot;cascading&quot; in CSS.</p>
+<h3>H3.4 The box model</h3>
+<p>*Every element is a box*</p>
+<pre>   +-------------------------------------------+
+   |               MARGIN                      |  space OUTSIDE the border
+   |   +-----------------------------------+   |
+   |   |            BORDER                 |   |
+   |   |   +---------------------------+   |   |
+   |   |   |         PADDING           |   |   |  space INSIDE the border
+   |   |   |   +-------------------+   |   |   |
+   |   |   |   |     CONTENT       |   |   |   |  width x height
+   |   |   |   +-------------------+   |   |   |
+   |   |   +---------------------------+   |   |
+   |   +-----------------------------------+   |
+   +-------------------------------------------+</pre>
+<ul><li><strong>Total width</strong> - content width + left/right padding + left/right border + left/right margin (in the default <code>content-box</code> model).</li><li><strong>box-sizing: border-box</strong> - Makes the declared width include padding and border - much easier to reason about.</li></ul>
+<h3>H3.5 Display, position and filters</h3>
+<table>
+<tr><th>Property</th><th>Values and meaning</th></tr>
+<tr><td>display</td><td>block (full width, new line), inline (flows in text, ignores width/height), inline-block (flows but accepts size), none (removed entirely), flex, grid</td></tr>
+<tr><td>position</td><td>static (default), relative (offset from its normal place), absolute (positioned relative to the nearest positioned ancestor), fixed (relative to the viewport, stays on scroll), sticky</td></tr>
+<tr><td>float</td><td>left, right - takes the element out of normal flow</td></tr>
+<tr><td>z-index</td><td>Stacking order for overlapping positioned elements</td></tr>
+</table>
+<h4>CSS filters</h4>
+<p>*PYQ: making all images black and white*</p>
+<pre>img { filter: grayscale(100%); }
+
+Points to notice:
+  - the property is  filter
+  - the function is  grayscale  (American spelling, NOT &quot;graycolor&quot;)
+  - the value is NOT quoted
+
+WRONG FORMS OFFERED IN THE EXAM:
+  img { filter: graycolor(100%); }      -&gt; no such function
+  img { graycolor(100%); }              -&gt; not a property at all
+  img { filter: &quot;grayscale(100%)&quot;; }    -&gt; quotes are invalid here</pre>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;How to change all images to black and white (100% grey)?&quot; Answer: <strong><code>img { filter: grayscale(100%);}</code></strong><br><br>Other useful filter functions worth knowing: <code>blur(5px)</code>, <code>brightness(150%)</code>, <code>contrast(200%)</code>, <code>invert(100%)</code>, <code>opacity(50%)</code>, <code>sepia(100%)</code>, <code>saturate(0%)</code>.</blockquote>
+<h2>H4 JavaScript, DHTML and AJAX</h2>
+<h3>H4.1 JavaScript basics</h3>
+<ul><li><strong>JavaScript</strong> - A <strong>client-side</strong> (and now also server-side) scripting language that makes web pages interactive. It is interpreted, dynamically typed and case-sensitive. It has nothing to do with Java despite the name.</li></ul>
+<p>*Variables, types and output*</p>
+<pre>var  x = 10;      // function-scoped, old style
+let  y = 20;      // block-scoped, modern
+const z = 30;     // block-scoped constant
+
+// Data types: Number, String, Boolean, Undefined, Null, Object, Symbol, BigInt
+
+console.log(&quot;message&quot;);        // writes to the developer console
+document.write(&quot;text&quot;);        // writes directly into the document
+alert(&quot;popup&quot;);                // modal popup box</pre>
+<p>*PYQ traced: a simple if-else*</p>
+<pre>let x = 10;
+if (x &gt; 5) {
+    console.log(&quot;Greater&quot;);
+} else {
+    console.log(&quot;Smaller&quot;);
+}
+
+  x is 10, and 10 &gt; 5 is true, so the if branch runs.
+OUTPUT: &quot;Greater&quot;</pre>
+<h3>H4.2 document.write and escape sequences</h3>
+<blockquote><strong>NOTE: PYQ worked out - a genuinely tricky one</strong><br></blockquote>
+<p>*PYQ*</p>
+<pre>&lt;script&gt;
+document.write(&quot;Hello&quot;)
+document.write(&quot;\nIndia&quot;)
+&lt;/script&gt;
+
+WHAT THE ANSWER KEY SAYS: Hello India
+
+THE REASONING THE EXAMINER WANTS:
+  document.write outputs into the HTML document. In HTML, a newline
+  character (\n) is NOT rendered as a line break - HTML COLLAPSES all
+  whitespace (newlines, tabs, multiple spaces) into a SINGLE SPACE.
+
+  So the \n does not start a new line, but it does not vanish either -
+  it becomes one space. Result:  Hello India
+
+  To get a real line break in HTML you must write &lt;br&gt;:
+      document.write(&quot;Hello&lt;br&gt;India&quot;)
+
+REMEMBER THE PRINCIPLE:
+  \n works in a console, in an alert box, and in a plain text file.
+  \n does NOT create a visible line break in rendered HTML.</pre>
+<h3>H4.3 The DOM and DHTML</h3>
+<ul><li><strong>DOM</strong> - <strong>Document Object Model</strong> - a tree representation of the page that JavaScript can read and modify. Every tag becomes a node.</li><li><strong>DHTML</strong> - <strong>Dynamic HTML</strong> - not a language, but the *combination* of HTML + CSS + JavaScript + DOM used to change a page after it has loaded, without fetching a new page.</li></ul>
+<table>
+<tr><th>Task</th><th>Code</th></tr>
+<tr><td>Find an element by id</td><td><code>document.getElementById(&quot;myDiv&quot;)</code></td></tr>
+<tr><td>Find by class</td><td><code>document.getElementsByClassName(&quot;box&quot;)</code></td></tr>
+<tr><td>Find by tag</td><td><code>document.getElementsByTagName(&quot;p&quot;)</code></td></tr>
+<tr><td>Modern query</td><td><code>document.querySelector(&quot;.box&quot;)</code> , <code>querySelectorAll()</code></td></tr>
+<tr><td>Change the content</td><td><code>element.innerHTML = &quot;new text&quot;</code></td></tr>
+<tr><td>Change a style</td><td><code>element.style.backgroundColor = &quot;red&quot;</code></td></tr>
+<tr><td>Change an attribute</td><td><code>element.setAttribute(&quot;src&quot;, &quot;b.jpg&quot;)</code></td></tr>
+<tr><td>Create an element</td><td><code>document.createElement(&quot;div&quot;)</code></td></tr>
+<tr><td>Add to the page</td><td><code>parent.appendChild(child)</code></td></tr>
+<tr><td>Attach an event</td><td><code>element.addEventListener(&quot;click&quot;, myFunction)</code></td></tr>
+<tr><td>Resize the window</td><td><code>window.resizeTo(800, 600)</code></td></tr>
+<tr><td>Open a new window</td><td><code>window.open(&quot;url&quot;)</code></td></tr>
+<tr><td>Redirect</td><td><code>window.location.href = &quot;url&quot;</code></td></tr>
+</table>
+<blockquote><strong>NOTE: Two direct PYQs on DHTML methods</strong><br><br>&quot;Which of the following DHTML methods is used to change the style of an HTML element using CSS dynamically?&quot; Answer: <strong><code>element.style.backgroundColor = &quot;red&quot;</code></strong>.<br><br>Explanation: every DOM element exposes a <code>style</code> object whose properties correspond to CSS properties. Note the naming rule - CSS <code>background-color</code> (with a hyphen) becomes JavaScript <code>backgroundColor</code> (camelCase), because hyphens are not legal in JavaScript identifiers. The distractors are invented: there is no <code>setCSS()</code> method; <code>createElement(&quot;style&quot;)</code> makes a new style tag rather than changing an element; and <code>addEventListener(&quot;resize&quot;)</code> merely listens for an event.<br><br>&quot;Which of the following DHTML methods is used to control the browser window size, such as resizing it dynamically via JavaScript?&quot; Answer: <strong><code>window.resizeTo()</code></strong>. There is no <code>window.setSize()</code>, <code>window.changeSize()</code> or <code>document.resizeWindow()</code>. Related genuine methods: <code>window.resizeBy()</code> (resize by a relative amount), <code>window.moveTo()</code>, <code>window.scrollTo()</code>.</blockquote>
+<h4>Common JavaScript events</h4>
+<p>onclick, ondblclick, onmouseover, onmouseout, onkeydown, onkeyup, onchange, onsubmit, onfocus, onblur, onload, onunload, onresize.</p>
+<h3>H4.4 AJAX</h3>
+<ul><li><strong>AJAX</strong> - <strong>Asynchronous JavaScript And XML</strong>. A technique for exchanging small amounts of data with the server <strong>in the background</strong>, so a page can update part of itself <strong>without reloading the whole page</strong>.</li></ul>
+<h4>Why AJAX matters</h4>
+<ul><li><strong>Reduced bandwidth consumption</strong> - it sends and retrieves only the small piece of data that is actually needed, instead of the entire page with all its HTML, CSS and images.</li><li><strong>Faster, smoother user experience</strong> - no full-page flash.</li><li><strong>Asynchronous</strong> - the user can keep interacting while the request is in flight.</li></ul>
+<p>*How AJAX works*</p>
+<pre>1. A user action fires a JavaScript function.
+2. The script creates an XMLHttpRequest (or calls fetch()).
+3. The request goes to the server IN THE BACKGROUND.
+4. The server responds with a small payload - today usually JSON,
+   originally XML.
+5. A JavaScript callback updates just the relevant part of the DOM.
+
+The page never reloads. Examples: Google search suggestions, live
+cricket scores, infinite scrolling, form validation as you type.</pre>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which advantage of AJAX helps in reducing bandwidth consumption?&quot; Answer: <strong>AJAX sends and retrieves only small amounts of data from the server.</strong><br><br>The other options are simply false: AJAX does not &quot;use less JavaScript&quot; (it uses more), it does not &quot;only load images&quot;, and it certainly does not &quot;increase data transfer&quot; - the whole point is to *decrease* it.</blockquote>
+<ul><li><strong>Drawbacks of AJAX</strong> - The browser back button and bookmarking break unless handled; content may not be indexed by search engines; it depends on JavaScript being enabled.</li><li><strong>JSON</strong> - <strong>JavaScript Object Notation</strong> - a lightweight, human-readable data format of key-value pairs. It has largely replaced XML in AJAX because it is smaller and parses natively in JavaScript.</li></ul>
+<h3>H4.5 jQuery</h3>
+<ul><li><strong>jQuery</strong> - A JavaScript library that simplifies DOM traversal, event handling, animation and AJAX. Its slogan is &quot;write less, do more&quot;. The <code>$</code> symbol is the jQuery function.</li></ul>
+<table>
+<tr><th>jQuery method</th><th>Effect</th></tr>
+<tr><td>$(&quot;#id&quot;) , $(&quot;.class&quot;)</td><td>Select elements (CSS-style selectors)</td></tr>
+<tr><td>.hide() , .show() , .toggle()</td><td>Visibility</td></tr>
+<tr><td>.fadeIn() , .fadeOut() , .fadeToggle()</td><td>Fading effects</td></tr>
+<tr><td>.slideDown() , .slideUp() , .slideToggle()</td><td>SLIDING effects - slideDown reveals an element by sliding it down</td></tr>
+<tr><td>.html() , .text() , .val()</td><td>Get or set content</td></tr>
+<tr><td>.css()</td><td>Get or set styles</td></tr>
+<tr><td>.addClass() , .removeClass()</td><td>Class manipulation</td></tr>
+<tr><td>.append() , .prepend()</td><td>Insert content</td></tr>
+<tr><td>.click() , .on()</td><td>Event binding</td></tr>
+<tr><td>$.ajax() , $.get() , $.post()</td><td>AJAX requests</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following methods is used to slide down an element?&quot; Options: <strong>slideDown()</strong>, moveBelow(), moveDown(), slideBelow(). Answer: <strong>slideDown()</strong>.<br><br>The jQuery sliding family is exactly three methods: <code>slideDown()</code>, <code>slideUp()</code> and <code>slideToggle()</code>. There is no <code>moveBelow</code>, <code>moveDown</code> or <code>slideBelow</code> in jQuery. When in doubt, remember that jQuery effect names come in <strong>Down / Up / Toggle</strong> and <strong>In / Out / Toggle</strong> triplets.</blockquote>
+<h3>H4.6 AngularJS directives</h3>
+<ul><li><strong>Directive</strong> - A special attribute starting with <code>ng-</code> that tells AngularJS to attach behaviour to a DOM element.</li></ul>
+<table>
+<tr><th>Directive</th><th>Purpose</th></tr>
+<tr><td>ng-app</td><td>Marks the root element of the application</td></tr>
+<tr><td>ng-init</td><td>Initialises application data</td></tr>
+<tr><td>ng-MODEL</td><td>BINDS the value of an HTML control (input, select, textarea) to a property on the application data - two-way DATA BINDING between MODEL and VIEW</td></tr>
+<tr><td>ng-bind</td><td>One-way binding of data into the element&#x27;s text</td></tr>
+<tr><td>ng-repeat</td><td>Repeats an element once per item in a collection</td></tr>
+<tr><td>ng-if , ng-show , ng-hide</td><td>Conditional rendering / visibility</td></tr>
+<tr><td>ng-click</td><td>Click handler</td></tr>
+<tr><td>ng-controller</td><td>Attaches a controller to the view</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which directive is used for binding the model data to the view?&quot; Options: ng-model-view, ng-model-app, <strong>ng-model</strong>, ng-app-model. Answer: <strong>ng-model</strong>.<br><br><code>ng-model</code> provides <strong>two-way data binding</strong>: type in the input and the model updates; change the model in code and the input updates. The other three options are invented names - AngularJS has no <code>ng-model-view</code>, <code>ng-model-app</code> or <code>ng-app-model</code>.</blockquote>
+<h2>H5 XML</h2>
+<h3>H5.1 What XML is and how it differs from HTML</h3>
+<ul><li><strong>XML</strong> - <strong>eXtensible Markup Language</strong> - a language for <strong>storing and transporting data</strong> in a self-describing, platform-independent, text-based format. It does not display anything.</li></ul>
+<table>
+<tr><th>Point</th><th>HTML</th><th>XML</th></tr>
+<tr><td>Purpose</td><td>To DISPLAY data</td><td>To STORE and TRANSPORT data</td></tr>
+<tr><td>Tags</td><td>A fixed, predefined set</td><td>You DEFINE YOUR OWN tags - it is extensible</td></tr>
+<tr><td>Case sensitive</td><td>No</td><td>YES</td></tr>
+<tr><td>Closing tags</td><td>Some are optional</td><td>MANDATORY for every element</td></tr>
+<tr><td>Attribute quotes</td><td>Optional</td><td>MANDATORY</td></tr>
+<tr><td>Whitespace</td><td>Collapsed</td><td>PRESERVED</td></tr>
+<tr><td>Root element</td><td>Implicit</td><td>Exactly ONE root element is required</td></tr>
+<tr><td>Well-formedness</td><td>Browsers tolerate errors</td><td>Errors cause a parse failure</td></tr>
+</table>
+<p>*A well-formed XML document*</p>
+<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;school&gt;
+  &lt;student id=&quot;1&quot;&gt;
+    &lt;name&gt;Asha&lt;/name&gt;
+    &lt;marks&gt;88&lt;/marks&gt;
+  &lt;/student&gt;
+  &lt;student id=&quot;2&quot;&gt;
+    &lt;name&gt;Ravi&lt;/name&gt;
+    &lt;marks&gt;91&lt;/marks&gt;
+  &lt;/student&gt;
+&lt;/school&gt;</pre>
+<ul><li><strong>Well-formed XML</strong> - Obeys all syntax rules: one root, every tag closed, correct nesting, quoted attributes, case-matched tags.</li><li><strong>Valid XML</strong> - Well-formed <strong>and</strong> conforms to a DTD or XML Schema.</li><li><strong>CDATA section</strong> - <code>&lt;![CDATA[ ... ]]&gt;</code> - text the parser should not interpret as markup.</li><li><strong>Entity references</strong> - <code>&amp;lt;</code> for &lt;, <code>&amp;gt;</code> for &gt;, <code>&amp;amp;</code> for &amp;, <code>&amp;quot;</code> for &quot;, <code>&amp;apos;</code> for &#x27;.</li><li><strong>Namespace</strong> - <code>xmlns:prefix=&quot;URI&quot;</code> - prevents element-name clashes between vocabularies.</li></ul>
+<h3>H5.2 The XML processor and parsers</h3>
+<ul><li><strong>XML processor (XML parser)</strong> - The software component that <strong>READS an XML document and provides access to its content and structure</strong> to an application. It also checks well-formedness.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;<em>_</em>_ reads XML documents and provides access to their content and structure.&quot; Options: XML schema, XML pre-processor, <strong>XML processor</strong>, XML codes. Answer: <strong>XML processor</strong>.<br><br>Note the distinction: an <strong>XML schema</strong> *describes* what a valid document looks like; it does not read anything. &quot;XML pre-processor&quot; and &quot;XML codes&quot; are not real terms.</blockquote>
+<table>
+<tr><th>Parser</th><th>Type</th><th>Characteristics</th></tr>
+<tr><td>DOM</td><td>Tree-based</td><td>Loads the WHOLE document into memory as a tree. Random access, can modify and write back. Memory-hungry for large files</td></tr>
+<tr><td>SAX</td><td>Event-based</td><td>Streams through the document firing events (startElement, endElement, characters). Very memory-efficient, but READ-ONLY and forward-only</td></tr>
+<tr><td>StAX</td><td>Pull-based</td><td>The application pulls events as needed</td></tr>
+<tr><td>JDOM / dom4j</td><td>Java tree APIs</td><td>Easier Java-friendly alternatives to DOM</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is NOT an XML Parser?&quot; Options: <strong>Shell</strong>, JDOM, DOM, SAX. Answer: <strong>Shell</strong>.<br><br>A <strong>shell</strong> is a command-line interpreter in an operating system (bash, csh, ksh) - it has nothing to do with XML. DOM, SAX and JDOM are all genuine XML parsers/APIs.</blockquote>
+<h3>H5.3 DTD and XML Schema</h3>
+<ul><li><strong>DTD</strong> - <strong>Document Type Definition</strong> - the older way to declare the legal structure of an XML document: which elements exist, their order, and their attributes. Written in its own non-XML syntax and has no data types.</li><li><strong>XSD (XML Schema Definition)</strong> - The modern replacement. Written <strong>in XML itself</strong>, supports <strong>data types</strong> (integer, date, decimal), namespaces, and much richer constraints.</li></ul>
+<p>*Internal vs external DTD*</p>
+<pre>INTERNAL DTD - declared inside the document:
+   &lt;!DOCTYPE note [
+     &lt;!ELEMENT note (to, from, body)&gt;
+     &lt;!ELEMENT to   (#PCDATA)&gt;
+   ]&gt;
+
+EXTERNAL DTD - kept in a separate file:
+   &lt;!DOCTYPE root-element SYSTEM &quot;file-name&quot;&gt;
+
+   Break down the external form:
+     &lt;!DOCTYPE      the declaration keyword
+     root-element   the name of the document&#x27;s ROOT element - comes FIRST
+     SYSTEM         keyword meaning &quot;a private, local file follows&quot;
+     &quot;file-name&quot;    the path to the .dtd file, in quotes
+
+   PUBLIC is used instead of SYSTEM for a widely published, standard DTD.</pre>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;How to write the external DTD?&quot; Answer: <strong><code>&lt;!DOCTYPE root-element SYSTEM &quot;file-name&quot;&gt;</code></strong><br><br>The <strong>order</strong> is what is being tested. The root element name must come immediately after <code>&lt;!DOCTYPE</code>, then <code>SYSTEM</code>, then the quoted filename. Every wrong option scrambles that order: <code>&lt;!DOCTYPE SYSTEM &quot;file-name&quot;&gt;</code> omits the root element; <code>&lt;!DOCTYPE element ROOT &quot;file-name&quot;&gt;</code> invents a ROOT keyword; <code>&lt;!DOCTYPE SYSTEM &quot;file-name&quot; root-element&gt;</code> puts the root element last.</blockquote>
+<h4>Related XML technologies</h4>
+<ul><li><strong>XSL / XSLT</strong> - eXtensible Stylesheet Language Transformations - transforms XML into HTML, text or other XML.</li><li><strong>XPath</strong> - A syntax for navigating to nodes in an XML document.</li><li><strong>XQuery</strong> - A query language for XML data.</li><li><strong>XLink / XPointer</strong> - Linking within and between XML documents.</li><li><strong>SOAP</strong> - Simple Object Access Protocol - an XML-based messaging protocol for web services.</li><li><strong>WSDL</strong> - Web Services Description Language - describes a web service in XML.</li><li><strong>RSS</strong> - An XML format for publishing frequently updated content.</li></ul>
+<h2>H6 PHP</h2>
+<h3>H6.1 PHP basics</h3>
+<ul><li><strong>PHP</strong> - <strong>PHP: Hypertext Preprocessor</strong> (originally Personal Home Page) - an open-source <strong>server-side</strong> scripting language embedded in HTML. The code runs on the server and only the resulting HTML reaches the browser.</li></ul>
+<p>*PHP essentials*</p>
+<pre>&lt;?php
+  $name = &quot;Asha&quot;;              // variables ALWAYS start with $
+  $marks = 88;                 // loosely typed - no declaration needed
+  echo &quot;Hello $name&quot;;          // double quotes INTERPOLATE variables
+  echo &#x27;Hello $name&#x27;;          // single quotes do NOT - prints literally
+  $total = $marks + 10;
+  echo &quot;&lt;br&gt;&quot; . $total;        // dot (.) is the STRING CONCATENATION operator
+?&gt;</pre>
+<ul><li><strong>echo vs print</strong> - <code>echo</code> can take several arguments and returns nothing; <code>print</code> takes one argument and returns 1. <code>echo</code> is marginally faster.</li><li><strong>Superglobals</strong> - <code>$_GET</code>, <code>$_POST</code>, <code>$_REQUEST</code>, <code>$_SESSION</code>, <code>$_COOKIE</code>, <code>$_FILES</code>, <code>$_SERVER</code>.</li><li><strong>include vs require</strong> - Both insert another file. <code>include</code> gives a <strong>warning</strong> and continues if the file is missing; <code>require</code> gives a <strong>fatal error</strong> and stops. The <code>_once</code> variants prevent double inclusion.</li></ul>
+<h3>H6.2 PHP arrays and sorting functions</h3>
+<table>
+<tr><th>Array type</th><th>Example</th></tr>
+<tr><td>Indexed</td><td><code>$a = array(&quot;x&quot;, &quot;y&quot;);</code> keys are 0, 1</td></tr>
+<tr><td>Associative</td><td><code>$a = array(&quot;name&quot; =&gt; &quot;Asha&quot;, &quot;marks&quot; =&gt; 88);</code></td></tr>
+<tr><td>Multidimensional</td><td>Arrays inside arrays</td></tr>
+</table>
+<p>This sorting table is asked directly, so learn the two dimensions: <strong>what is sorted (values or keys)</strong> and <strong>whether the key association survives</strong>.</p>
+<table>
+<tr><th>Function</th><th>Sorts by</th><th>Order</th><th>Preserves key-value association?</th></tr>
+<tr><td>sort()</td><td>VALUE</td><td>Ascending</td><td>NO - keys are reindexed 0,1,2...</td></tr>
+<tr><td>rsort()</td><td>VALUE</td><td>Descending</td><td>NO - keys are reindexed</td></tr>
+<tr><td>ASORT()</td><td>VALUE</td><td>ASCENDING</td><td>YES - keys stay attached to their values</td></tr>
+<tr><td>arsort()</td><td>VALUE</td><td>Descending</td><td>YES</td></tr>
+<tr><td>ksort()</td><td>KEY</td><td>Ascending</td><td>YES</td></tr>
+<tr><td>krsort()</td><td>KEY</td><td>Descending</td><td>YES</td></tr>
+<tr><td>usort()</td><td>VALUE, via a user function</td><td>Custom</td><td>NO</td></tr>
+<tr><td>uasort()</td><td>VALUE, via a user function</td><td>Custom</td><td>YES</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following PHP functions is used to sort an array in ascending order without affecting the keys?&quot; Options: ksort(), array_sort(), <strong>asort()</strong>, sort(). Answer: <strong>asort()</strong>.<br><br>Decode the names and you never need to memorise the table:<br>- plain <strong>sort</strong> - sorts values, throws keys away<br>- prefix <strong>a</strong> (associative) - keeps the key-value pairing<br>- prefix <strong>k</strong> - sorts by key instead of value<br>- prefix <strong>r</strong> (reverse) - descending<br>- prefix <strong>u</strong> - user-defined comparison<br><br>So &quot;ascending, values, keys preserved&quot; = a + sort = <strong>asort()</strong>. Note that <code>array_sort()</code> does not exist in PHP at all, and <code>ksort()</code> would sort by key rather than value.</blockquote>
+<h4>Other useful PHP functions</h4>
+<p>count(), array_push(), array_pop(), array_merge(), in_array(), array_keys(), array_values(), implode(), explode(), strlen(), strtoupper(), str_replace(), trim(), substr(), date(), isset(), empty(), unset().</p>
+<h2>H7 E-Commerce</h2>
+<h3>H7.1 What e-commerce is</h3>
+<ul><li><strong>E-commerce</strong> - <strong>Electronic commerce</strong> - buying and selling goods, services and information over electronic networks, principally the internet.</li><li><strong>E-business</strong> - A broader term including all electronic business processes - supply chain, CRM, internal operations - not just buying and selling.</li><li><strong>Commerce</strong> - The activity that <strong>primarily deals with buying and selling, particularly on a large scale.</strong> (Distinguish from *trade*, which is narrower, and from *distribution* or *supply chain*, which are logistics functions.)</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;<em>_</em>_ primarily deals with buying and selling, particularly on a large scale.&quot; Options: <strong>Commerce</strong>, Finance, Supply chain, Distribution. Answer: <strong>Commerce</strong>. Finance deals with money and capital; supply chain and distribution deal with moving goods; only *commerce* is defined by the act of buying and selling at scale.</blockquote>
+<h3>H7.2 E-commerce business models</h3>
+<table>
+<tr><th>Model</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>B2B - Business to Business</td><td>One business sells to another</td><td>IndiaMART, Alibaba, a manufacturer selling to a wholesaler</td></tr>
+<tr><td>B2C - Business to Consumer</td><td>A business sells directly to the end consumer</td><td>Amazon, Flipkart, Myntra</td></tr>
+<tr><td>C2C - Consumer to Consumer</td><td>CONSUMERS SELL TO OTHER CONSUMERS through a third-party platform</td><td>OLX, Quikr, eBay, Facebook Marketplace</td></tr>
+<tr><td>C2B - Consumer to Business</td><td>Individuals offer products/services to businesses</td><td>Freelancers on Upwork, stock photo contributors, influencers</td></tr>
+<tr><td>B2G / B2A - Business to Government</td><td>Businesses sell to government bodies</td><td>GeM (Government e-Marketplace), e-tenders</td></tr>
+<tr><td>G2C - Government to Citizen</td><td>Government provides services to citizens</td><td>Income tax e-filing, Passport Seva, DigiLocker</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;The <em>_</em>_ E-commerce segment(s) is/are represented by OLX.&quot; Options: C2C, B2C and B2B / B2B / <strong>C2C</strong> / B2C. Answer: <strong>C2C</strong>.<br><br>Reasoning: on OLX an <strong>individual</strong> lists a used phone or a sofa and <strong>another individual</strong> buys it. OLX itself does not own or sell the goods - it merely provides the platform. That is the textbook definition of Consumer-to-Consumer. Compare Amazon, which is primarily B2C because Amazon (or a business seller) sells to consumers.</blockquote>
+<h3>H7.3 Revenue models</h3>
+<table>
+<tr><th>Revenue model</th><th>How money is made</th></tr>
+<tr><td>Advertising</td><td>Free content funded by ads. Google, Facebook, YouTube</td></tr>
+<tr><td>SUBSCRIPTION</td><td>A FIXED SUM PAID BY CUSTOMERS FOR A SERVICE, typically on a MONTHLY, QUARTERLY OR ANNUAL basis. Netflix, Spotify, newspapers</td></tr>
+<tr><td>Transaction fee</td><td>A commission on each transaction. eBay, Uber, payment gateways</td></tr>
+<tr><td>Sales</td><td>Direct sale of goods or services</td></tr>
+<tr><td>Affiliate</td><td>Earning a referral commission for sending buyers to another site</td></tr>
+<tr><td>Licensing</td><td>Charging for the right to use software or content</td></tr>
+<tr><td>Freemium</td><td>A free basic tier with paid premium features</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;A fixed sum that is paid by customers for a service, typically on a monthly, quarterly or annual basis, is called <em>_</em>_ in electronic commerce.&quot; Options: licensing, affiliate, marketing, <strong>subscription</strong>. Answer: <strong>subscription</strong>.<br><br>The trigger words are &quot;<strong>fixed sum</strong>&quot; and &quot;<strong>monthly/quarterly/annual</strong>&quot; - recurring payment for continued access is the definition of a subscription. *Licensing* is a one-time or per-seat right to use; *affiliate* is commission for referrals; *marketing* is not a revenue model at all.</blockquote>
+<h3>H7.4 E-commerce infrastructure and payments</h3>
+<ul><li><strong>Payment gateway</strong> - A service that authorises and processes online card/UPI payments securely. Razorpay, PayU, Stripe.</li><li><strong>Digital wallet / e-wallet</strong> - Stored value on a phone or website. Paytm, PhonePe, Google Pay.</li><li><strong>UPI</strong> - Unified Payments Interface - India&#x27;s instant real-time bank-to-bank payment system, built by NPCI.</li><li><strong>Electronic Data Interchange (EDI)</strong> - The structured, computer-to-computer exchange of standard business documents (purchase orders, invoices) between organisations - a pre-internet forerunner of B2B e-commerce.</li><li><strong>SSL / HTTPS</strong> - Encrypts the connection so card details cannot be intercepted. The padlock in the address bar.</li><li><strong>Digital signature and certificate</strong> - Authenticate the parties in an online transaction (see Part G).</li><li><strong>Cash on Delivery (COD)</strong> - Payment collected at the door - very important in the Indian market.</li><li><strong>M-commerce</strong> - Commerce conducted through mobile devices.</li><li><strong>Web surfing</strong> - <strong>The process of visiting different web sites on the internet</strong> hosted by various companies, organisations, educational institutions, magazines and individuals. (Distinguish from *searching*, which is looking for something specific, and *chatting*.)</li></ul>
+<blockquote><strong>NOTE: Two more direct PYQs</strong><br><br>&quot;<em>_</em>_ is the process of visiting different web sites on the internet hosted by various companies, organisations, educational institutions, magazines, individuals, etc.&quot; Answer: <strong>Web surfing</strong>. &quot;Webbing&quot; is not a term; &quot;searching&quot; implies a specific query; &quot;chatting&quot; is real-time messaging.<br><br>&quot;Who is the father of e-commerce in India?&quot; Answer: <strong>K Vaitheeswaran</strong> - founder of Fabmart/Indiaplaza, India&#x27;s first e-commerce venture (1999). Note for contrast: <strong>Michael Aldrich</strong> (a distractor in the same question) is credited with inventing <strong>online shopping / teleshopping worldwide</strong> in 1979 - so he is the father of e-commerce *globally*, not in India. Examiners like to swap these two.</blockquote>
+<h3>H7.5 Advantages, limitations and security concerns</h3>
+<table>
+<tr><th>Advantages</th><th>Limitations</th></tr>
+<tr><td>Open 24 x 7, no geographic limits</td><td>Cannot physically inspect the product before buying</td></tr>
+<tr><td>Lower operating cost, no showroom needed</td><td>Requires internet access and digital literacy</td></tr>
+<tr><td>Wider customer reach, global market</td><td>Security and privacy fears</td></tr>
+<tr><td>Easy price comparison for buyers</td><td>Delivery delays and shipping costs</td></tr>
+<tr><td>Personalisation and recommendations</td><td>Difficult returns and after-sales service</td></tr>
+<tr><td>Faster transactions, digital records</td><td>Lack of personal touch; trust issues with unknown sellers</td></tr>
+</table>
+<ul><li><strong>Main security requirements</strong> - Confidentiality, integrity, authentication, non-repudiation, availability - exactly the goals covered in Part G.</li><li><strong>IT Act 2000</strong> - The Indian law giving legal recognition to electronic records and digital signatures, and defining cybercrimes.</li></ul></body></html>

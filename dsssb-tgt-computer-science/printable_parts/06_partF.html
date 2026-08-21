@@ -1,0 +1,364 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART F - Database Management Systems and SQL</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART F - Database Management Systems and SQL</h1>
+<blockquote>*Definitions, keys, normalisation, SQL syntax and transactions. Five to eight marks every year, and almost all of it is memorisable.*</blockquote>
+<h2>F1 Database Fundamentals</h2>
+<h3>F1.1 Why databases replaced files</h3>
+<p>Imagine a school storing student records in separate notebooks - one with the admissions clerk, one with the fee counter, one with the class teacher. Change a student&#x27;s address and you must find and correct three notebooks. Miss one and the school now holds two different addresses for the same child.</p>
+<p>That is exactly what happened with file-based systems, and it is why databases exist.</p>
+<ul><li><strong>Data</strong> - Raw facts.</li><li><strong>Database</strong> - An <strong>organised collection of related data</strong>, stored so it can be easily accessed, managed and updated.</li><li><strong>DBMS</strong> - <strong>Database Management System</strong> - the software that lets users define, create, store, retrieve, update and control access to a database. Examples: MySQL, Oracle, PostgreSQL, SQL Server, MS Access, MongoDB.</li><li><strong>Database system</strong> - The database plus the DBMS plus the application programs.</li></ul>
+<h4>Problems with the old file system</h4>
+<table>
+<tr><th>Problem</th><th>Meaning</th></tr>
+<tr><td>Data redundancy</td><td>The same data stored in many places</td></tr>
+<tr><td>Data inconsistency</td><td>Copies disagree with each other after an update</td></tr>
+<tr><td>Difficulty of access</td><td>A new query needs a new program to be written</td></tr>
+<tr><td>Data isolation</td><td>Data scattered in different files and formats</td></tr>
+<tr><td>Integrity problems</td><td>Rules (like &quot;marks must be 0-100&quot;) get buried inside program code</td></tr>
+<tr><td>Atomicity problems</td><td>A half-finished update can leave the data corrupted</td></tr>
+<tr><td>Concurrent access anomalies</td><td>Two users updating at once corrupt each other&#x27;s work</td></tr>
+<tr><td>Security problems</td><td>Hard to give each user access to only part of the data</td></tr>
+</table>
+<h4>Advantages of a DBMS</h4>
+<p>Controls redundancy, enforces consistency and integrity constraints, allows data sharing, provides security and authorisation, supports backup and recovery, provides multiple views of the same data, enforces standards, and gives <strong>data independence</strong>.</p>
+<ul><li><strong>Data independence</strong> - The ability to change one level of the schema without disturbing the level above. <strong>Logical data independence</strong> - change the logical schema without changing applications. <strong>Physical data independence</strong> - change how data is stored without changing the logical schema. Physical independence is easier to achieve.</li></ul>
+<h3>F1.2 The three-schema architecture</h3>
+<p>*Three levels of abstraction*</p>
+<pre>   +------------------------------------------------+
+   |  EXTERNAL / VIEW LEVEL                         |  What each USER sees
+   |  Many different views for different users       |  (subschemas, views)
+   +------------------------------------------------+
+                        |  logical data independence
+   +------------------------------------------------+
+   |  CONCEPTUAL / LOGICAL LEVEL                    |  WHAT data is stored
+   |  The whole database structure, tables,          |  and what the
+   |  relationships, constraints                     |  relationships are
+   +------------------------------------------------+
+                        |  physical data independence
+   +------------------------------------------------+
+   |  INTERNAL / PHYSICAL LEVEL                     |  HOW the data is
+   |  Files, indexes, blocks, compression            |  actually stored
+   +------------------------------------------------+</pre>
+<h3>F1.3 Schema vs instance - a favourite question</h3>
+<ul><li><strong>Schema</strong> - The <strong>overall DESIGN / structure</strong> of the database - the tables, their columns and their data types. It is defined once and rarely changes. Think of it as the empty printed form.</li><li><strong>Instance</strong> - The <strong>actual data</strong> in the database at a particular moment. It changes constantly with every insert, update and delete. Think of it as one filled-in form.</li><li><strong>Metadata</strong> - Data about the data - the schema itself, stored in the <strong>data dictionary / system catalog</strong>.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;What is the overall design of a database called?&quot; Options: <strong>Database Schema</strong>, Database Instance, Database Table, Database Model. Answer: <strong>Database Schema</strong>.<br><br>Learn the analogy: <strong>schema is to instance as a class is to an object</strong>, or as a variable&#x27;s *type* is to its *value*. A &quot;Database Model&quot; is the general approach (relational, hierarchical); a &quot;Table&quot; is just one component.</blockquote>
+<h3>F1.4 Database models</h3>
+<table>
+<tr><th>Model</th><th>Structure</th><th>Notes</th></tr>
+<tr><td>Hierarchical</td><td>A tree; each child has exactly ONE parent</td><td>Oldest. IBM IMS. Cannot represent many-to-many naturally</td></tr>
+<tr><td>Network</td><td>A graph; a child may have MANY parents</td><td>More flexible than hierarchical; complex pointers</td></tr>
+<tr><td>RELATIONAL</td><td>Data stored in TABLES (relations) of rows and columns</td><td>Proposed by E. F. CODD in 1970. The dominant model. Uses SQL</td></tr>
+<tr><td>Object-oriented</td><td>Data stored as objects with methods</td><td>Good for complex data</td></tr>
+<tr><td>Object-relational</td><td>Relational plus object features</td><td>Oracle, PostgreSQL</td></tr>
+<tr><td>NoSQL: document / key-value / column / graph</td><td>Schema-flexible, horizontally scalable</td><td>MongoDB, Redis, Cassandra, Neo4j</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;What makes a database relational?&quot; Options: <strong>Tables</strong>, Field, Records, Tuple. Answer: <strong>Tables</strong>.<br><br>The defining feature of the relational model is that all data is organised into <strong>tables (relations)</strong>. Fields, records and tuples are the *parts* of a table, not the thing that makes the database relational. In fact &quot;record&quot; and &quot;tuple&quot; both mean a row - so they cannot be the distinguishing answer.</blockquote>
+<h3>F1.5 Relational model terminology</h3>
+<table>
+<tr><th>Formal term</th><th>Everyday term</th><th>Meaning</th></tr>
+<tr><td>Relation</td><td>Table</td><td>A two-dimensional structure of rows and columns</td></tr>
+<tr><td>Tuple</td><td>Row / Record</td><td>One entity occurrence</td></tr>
+<tr><td>Attribute</td><td>Column / Field</td><td>One property of the entity</td></tr>
+<tr><td>Degree</td><td>-</td><td>The NUMBER OF COLUMNS (attributes) in a relation</td></tr>
+<tr><td>Cardinality</td><td>-</td><td>The NUMBER OF ROWS (tuples) in a relation</td></tr>
+<tr><td>Domain</td><td>-</td><td>The set of permitted values for an attribute</td></tr>
+<tr><td>Relation schema</td><td>-</td><td>The table name plus its attribute list</td></tr>
+<tr><td>NULL</td><td>-</td><td>An unknown, missing or inapplicable value. NOT the same as zero or an empty string</td></tr>
+</table>
+<blockquote><strong>TIP: Degree vs Cardinality</strong><br><br><strong>Degree = columns. Cardinality = rows.</strong> A memory hook: &quot;<strong>D</strong>egree for <strong>D</strong>escriptions (columns describe), <strong>C</strong>ardinality for <strong>C</strong>ount of records.&quot;</blockquote>
+<h3>F1.6 Keys</h3>
+<table>
+<tr><th>Key</th><th>Definition</th></tr>
+<tr><td>Super key</td><td>ANY set of attributes that uniquely identifies a tuple. May contain extra useless attributes</td></tr>
+<tr><td>Candidate key</td><td>A MINIMAL super key - remove any attribute and it stops being unique. A table may have several candidate keys</td></tr>
+<tr><td>PRIMARY key</td><td>The one candidate key chosen by the designer to identify rows. It CANNOT be NULL and must be unique. Only one per table</td></tr>
+<tr><td>Alternate key</td><td>The candidate keys that were not chosen as primary</td></tr>
+<tr><td>Composite key</td><td>A key made of TWO OR MORE attributes together</td></tr>
+<tr><td>FOREIGN key</td><td>An attribute in one table that refers to the PRIMARY key of another table. It enforces referential integrity and MAY be NULL</td></tr>
+<tr><td>Surrogate key</td><td>An artificial key with no business meaning, e.g. an auto-increment ID</td></tr>
+<tr><td>Secondary key</td><td>A non-unique attribute used only for retrieval, e.g. city</td></tr>
+</table>
+<h4>Integrity constraints</h4>
+<ul><li><strong>Domain constraint</strong> - Every value must come from the attribute&#x27;s declared domain / data type.</li><li><strong>Entity integrity</strong> - The primary key can never be NULL and must be unique.</li><li><strong>Referential integrity</strong> - A foreign key value must either match an existing primary key value in the referenced table, or be NULL.</li><li><strong>Key constraint</strong> - No two tuples may have the same primary key value.</li><li><strong>NOT NULL, UNIQUE, CHECK, DEFAULT</strong> - Column-level constraints enforced by the DBMS.</li></ul>
+<ul><li><strong>ON DELETE CASCADE</strong> - If the referenced row is deleted, the referring rows are deleted too.</li><li><strong>ON DELETE SET NULL</strong> - The foreign key is set to NULL instead.</li><li><strong>ON DELETE RESTRICT / NO ACTION</strong> - The deletion is refused.</li></ul>
+<h2>F2 The ER Model</h2>
+<h3>F2.1 Building blocks</h3>
+<p>The <strong>Entity Relationship model</strong> is a diagram used to design a database before any tables are created. It was introduced by <strong>Peter Chen</strong>.</p>
+<table>
+<tr><th>Element</th><th>Symbol</th><th>Meaning</th></tr>
+<tr><td>Entity</td><td>RECTANGLE</td><td>A real-world thing about which we store data: Student, Course</td></tr>
+<tr><td>Weak entity</td><td>DOUBLE rectangle</td><td>An entity that cannot be identified without a related &quot;owner&quot; entity. It has no primary key of its own, only a partial key</td></tr>
+<tr><td>Attribute</td><td>ELLIPSE / oval</td><td>A property of an entity</td></tr>
+<tr><td>Key attribute</td><td>Ellipse with the name UNDERLINED</td><td>The primary key</td></tr>
+<tr><td>Multivalued attribute</td><td>DOUBLE ellipse</td><td>Can hold several values, e.g. phone numbers</td></tr>
+<tr><td>Derived attribute</td><td>DASHED ellipse</td><td>Computed from other attributes, e.g. Age from DOB</td></tr>
+<tr><td>Composite attribute</td><td>Ellipse connected to sub-ellipses</td><td>Made of smaller parts, e.g. Name to First + Last</td></tr>
+<tr><td>Relationship</td><td>DIAMOND</td><td>An association between entities: &quot;Student ENROLS IN Course&quot;</td></tr>
+<tr><td>Identifying relationship</td><td>DOUBLE diamond</td><td>Links a weak entity to its owner</td></tr>
+<tr><td>Total participation</td><td>DOUBLE line</td><td>Every instance MUST participate</td></tr>
+<tr><td>Partial participation</td><td>Single line</td><td>Participation is optional</td></tr>
+</table>
+<h3>F2.2 Cardinality of relationships</h3>
+<table>
+<tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>One-to-One (1:1)</td><td>One instance relates to at most one</td><td>One person has one passport</td></tr>
+<tr><td>One-to-Many (1:N)</td><td>One instance relates to many</td><td>One department has many employees</td></tr>
+<tr><td>Many-to-One (N:1)</td><td>The reverse of 1:N</td><td>-</td></tr>
+<tr><td>Many-to-Many (M:N)</td><td>Many relate to many. Needs a separate JUNCTION table when converted to relations</td><td>Students and Courses</td></tr>
+</table>
+<h3>F2.3 Descriptive attributes</h3>
+<ul><li><strong>Descriptive attribute</strong> - An attribute attached to a <strong>RELATIONSHIP</strong> rather than to an entity. It <strong>records information about the relationship itself</strong>.</li></ul>
+<p>Example: in &quot;Student ENROLS IN Course&quot;, the attributes *date of enrolment* and *grade* belong to neither the Student nor the Course - they describe the enrolment. So they are descriptive attributes on the relationship.</p>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Descriptive attributes are used to:&quot; Answer: <strong>record the information about relationships.</strong><br><br>Distinguish carefully from the distractors: recording information about *attributes* is meaningless; recording information about *participating entities* is what ordinary entity attributes do. Only descriptive attributes describe the <strong>relationship</strong>.</blockquote>
+<h3>F2.4 Generalisation, specialisation, aggregation</h3>
+<ul><li><strong>Generalisation</strong> - BOTTOM-UP. Several similar entities are combined into a higher-level general entity. Car and Truck become Vehicle.</li><li><strong>Specialisation</strong> - TOP-DOWN. A general entity is split into specialised sub-entities. Employee becomes Engineer, Manager, Clerk.</li><li><strong>Aggregation</strong> - Treating a whole relationship as a single higher-level entity so it can participate in another relationship.</li><li><strong>ISA relationship</strong> - The inheritance link between a superclass and a subclass entity, drawn as a triangle.</li></ul>
+<h2>F3 Relational Algebra and Normalisation</h2>
+<h3>F3.1 Relational algebra operators</h3>
+<table>
+<tr><th>Operator</th><th>Symbol name</th><th>What it does</th></tr>
+<tr><td>SELECT</td><td>sigma</td><td>Picks ROWS that satisfy a condition (a horizontal subset)</td></tr>
+<tr><td>PROJECT</td><td>pi</td><td>Picks COLUMNS (a vertical subset) and removes duplicates</td></tr>
+<tr><td>UNION</td><td>-</td><td>All tuples in either relation; duplicates removed. Needs UNION COMPATIBILITY</td></tr>
+<tr><td>SET DIFFERENCE</td><td>minus</td><td>Tuples in the first but not the second</td></tr>
+<tr><td>CARTESIAN PRODUCT</td><td>cross</td><td>Every row of A paired with every row of B. Result has degree(A)+degree(B) columns and cardinality(A) x cardinality(B) rows</td></tr>
+<tr><td>RENAME</td><td>rho</td><td>Renames a relation or attribute</td></tr>
+<tr><td>JOIN</td><td>bowtie</td><td>Cartesian product followed by a selection condition</td></tr>
+<tr><td>INTERSECTION</td><td>-</td><td>Tuples present in both (derivable from difference)</td></tr>
+<tr><td>DIVISION</td><td>-</td><td>Used for &quot;for all&quot; queries</td></tr>
+</table>
+<ul><li><strong>Union compatible</strong> - Two relations have the same number of attributes and matching domains. Required for UNION, INTERSECTION and DIFFERENCE.</li><li><strong>Basic (primitive) operators</strong> - SELECT, PROJECT, UNION, SET DIFFERENCE, CARTESIAN PRODUCT, RENAME. All others can be derived from these six.</li></ul>
+<h3>F3.2 Functional dependencies</h3>
+<ul><li><strong>Functional dependency (FD)</strong> - Written X to Y, it means &quot;X determines Y&quot; - if two tuples agree on X they must agree on Y. Example: RollNo to StudentName.</li><li><strong>Determinant</strong> - The left side, X.</li><li><strong>Trivial FD</strong> - X to Y where Y is a subset of X. Always true.</li><li><strong>Full functional dependency</strong> - Y depends on the whole of X, not on any part of it.</li><li><strong>Partial dependency</strong> - A non-key attribute depends on only PART of a composite primary key. Removed in 2NF.</li><li><strong>Transitive dependency</strong> - A to B and B to C, so A to C indirectly. Removed in 3NF.</li><li><strong>Closure of an attribute set</strong> - Written X+, it is the set of all attributes that can be determined from X.</li></ul>
+<h3>F3.3 Armstrong&#x27;s axioms</h3>
+<p>These are the <strong>sound and complete</strong> inference rules for functional dependencies.</p>
+<h4>The three primary (fundamental) axioms</h4>
+<table>
+<tr><th>Axiom</th><th>Rule</th></tr>
+<tr><td>Reflexivity</td><td>If Y is a subset of X, then X to Y</td></tr>
+<tr><td>Augmentation</td><td>If X to Y, then XZ to YZ (add the same attribute to both sides)</td></tr>
+<tr><td>Transitivity</td><td>If X to Y and Y to Z, then X to Z</td></tr>
+</table>
+<h4>The derived (secondary) rules</h4>
+<table>
+<tr><th>Rule</th><th>Statement</th></tr>
+<tr><td>Union / Additivity</td><td>If X to Y and X to Z, then X to YZ</td></tr>
+<tr><td>Decomposition / Projectivity</td><td>If X to YZ, then X to Y and X to Z</td></tr>
+<tr><td>PSEUDO-TRANSITIVITY</td><td>If X to Y and WY to Z, then WX to Z</td></tr>
+<tr><td>Composition</td><td>If X to Y and Z to W, then XZ to YW</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - a subtle question</strong><br><br>&quot;Which of the following DBMS scenarios will NOT really follow Armstrong&#x27;s Axiom?&quot; Options: Reflexivity rule, <strong>Pseudo transitivity rule</strong>, Transitivity rule, Armstrong&#x27;s axioms. Answer: <strong>Pseudo transitivity rule</strong>.<br><br>The reasoning: Armstrong&#x27;s axioms <strong>proper</strong> are exactly three - <strong>Reflexivity, Augmentation and Transitivity</strong>. Union, decomposition, pseudo-transitivity and composition are *derived* rules; they follow FROM the axioms but are not themselves axioms. So among the options, pseudo-transitivity is the one that is not one of Armstrong&#x27;s axioms.<br><br>Remember the three-word list: <strong>Reflexivity, Augmentation, Transitivity.</strong> Anything else named in a question is a derived rule.</blockquote>
+<h3>F3.4 Finding a closure - solved</h3>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Consider the relation R(PQRSTU) with F = {P to RT, Q to S, R to PS, QS to TU}. Find the closure of PQ.&quot;<br><br>Answer: <strong>PQRSTU</strong> (the whole relation, so PQ is a superkey).<br><br>Work it step by step, starting with what you are given and repeatedly applying any FD whose left side you already have:<br><br><strong>Start:</strong> PQ+ = {P, Q}<br><br><strong>Apply P to RT</strong> (we have P) - add R and T. Now {P, Q, R, T}<br><strong>Apply Q to S</strong> (we have Q) - add S. Now {P, Q, R, S, T}<br><strong>Apply R to PS</strong> (we have R) - P and S are already there. No change.<br><strong>Apply QS to TU</strong> (we have both Q and S) - add T (already there) and <strong>U</strong>. Now {P, Q, R, S, T, U}<br><br>No further FD adds anything new, so <strong>PQ+ = PQRSTU</strong>.<br><br>Method to remember: keep looping through the FD list until one full pass adds nothing.</blockquote>
+<h3>F3.5 Normalisation</h3>
+<p><strong>Normalisation</strong> is the process of organising tables to reduce redundancy and eliminate update, insert and delete anomalies, by decomposing large tables into smaller related ones.</p>
+<ul><li><strong>Insertion anomaly</strong> - Cannot add a fact without knowing another unrelated fact.</li><li><strong>Deletion anomaly</strong> - Deleting one row accidentally destroys other useful information.</li><li><strong>Update anomaly</strong> - The same fact stored many times must be changed in many places.</li></ul>
+<table>
+<tr><th>Normal form</th><th>Requirement</th><th>Removes</th></tr>
+<tr><td>1NF</td><td>Every attribute must be ATOMIC (single valued). No repeating groups, no arrays inside a cell</td><td>Multivalued attributes</td></tr>
+<tr><td>2NF</td><td>Must be in 1NF AND every non-key attribute must depend on the WHOLE primary key</td><td>PARTIAL dependencies</td></tr>
+<tr><td>3NF</td><td>Must be in 2NF AND no non-key attribute may depend on another non-key attribute</td><td>TRANSITIVE dependencies</td></tr>
+<tr><td>BCNF (Boyce-Codd)</td><td>For every non-trivial FD X to Y, X must be a SUPER KEY</td><td>Anomalies from candidate-key overlaps. Stricter than 3NF</td></tr>
+<tr><td>4NF</td><td>Must be in BCNF and have no MULTIVALUED dependencies</td><td>Multivalued dependencies</td></tr>
+<tr><td>5NF (PJNF)</td><td>No JOIN dependency other than through candidate keys</td><td>Join dependencies</td></tr>
+</table>
+<blockquote><strong>TIP: Remembering the first three forms</strong><br><br>1NF - <strong>atomic</strong> values.<br>2NF - remove <strong>partial</strong> dependency (only relevant when the key is composite).<br>3NF - remove <strong>transitive</strong> dependency.<br>BCNF - every determinant must be a <strong>super key</strong>.<br><br>A quick nursery-rhyme style hook: &quot;One is Atomic, Two is Partial, Three is Transitive, BC is Super.&quot;</blockquote>
+<ul><li><strong>Lossless decomposition</strong> - You can rejoin the pieces and get exactly the original table back. Essential.</li><li><strong>Dependency preserving</strong> - Every original FD can still be checked in one of the decomposed tables. 3NF decomposition can always be both lossless and dependency preserving; <strong>BCNF decomposition may lose dependency preservation.</strong></li><li><strong>Denormalisation</strong> - Deliberately reintroducing redundancy to make reads faster - common in data warehouses.</li></ul>
+<h2>F4 SQL</h2>
+<h3>F4.1 The five sub-languages of SQL</h3>
+<table>
+<tr><th>Category</th><th>Full form</th><th>Commands</th><th>Purpose</th></tr>
+<tr><td>DDL</td><td>Data Definition Language</td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td><td>Defines and changes the STRUCTURE (schema) of tables. Used to define the structure of a relation, delete relations and relate schemas. Auto-committed</td></tr>
+<tr><td>DML</td><td>Data Manipulation Language</td><td>SELECT, INSERT, UPDATE, DELETE</td><td>Works with the DATA inside tables. (Some books place SELECT in a separate DQL)</td></tr>
+<tr><td>DCL</td><td>Data Control Language</td><td>GRANT, REVOKE</td><td>Controls permissions</td></tr>
+<tr><td>TCL</td><td>Transaction Control Language</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>Manages transactions</td></tr>
+<tr><td>DQL</td><td>Data Query Language</td><td>SELECT</td><td>Retrieves data</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is used to define the structure of a relation as well as delete relations and relate schemas?&quot; Options: Integrity constraint, View, DML, <strong>DDL</strong>. Answer: <strong>DDL (Data Definition Language)</strong>.<br><br>Every verb in the question - &quot;define the structure&quot;, &quot;delete relations&quot;, &quot;relate schemas&quot; - is a <strong>structural</strong> operation, and structure is DDL&#x27;s job. DML only touches the rows inside an existing structure.</blockquote>
+<blockquote><strong>TIP: DROP vs DELETE vs TRUNCATE - a guaranteed question somewhere</strong><br></blockquote>
+<table>
+<tr><th>Point</th><th>DELETE</th><th>TRUNCATE</th><th>DROP</th></tr>
+<tr><td>Type</td><td>DML</td><td>DDL</td><td>DDL</td></tr>
+<tr><td>Removes</td><td>Selected rows (with WHERE) or all rows</td><td>ALL rows</td><td>The ENTIRE table, structure included</td></tr>
+<tr><td>WHERE clause</td><td>Allowed</td><td>Not allowed</td><td>Not applicable</td></tr>
+<tr><td>Rollback</td><td>Possible</td><td>Not normally possible</td><td>Not possible</td></tr>
+<tr><td>Speed</td><td>Slower (logs each row)</td><td>Very fast</td><td>Fast</td></tr>
+<tr><td>Structure after</td><td>Table remains</td><td>Table remains, empty</td><td>Table is gone</td></tr>
+</table>
+<h3>F4.2 Core SQL syntax</h3>
+<p>*CREATE, INSERT, SELECT, UPDATE, DELETE*</p>
+<pre>CREATE TABLE Student (
+    RollNo   INT PRIMARY KEY,
+    Name     VARCHAR(50) NOT NULL,
+    Marks    INT CHECK (Marks BETWEEN 0 AND 100),
+    City     VARCHAR(30) DEFAULT &#x27;Delhi&#x27;,
+    DeptID   INT,
+    FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+
+/* full-row insert - values must match column order exactly */
+INSERT INTO Student VALUES (1, &#x27;Asha&#x27;, 88, &#x27;Delhi&#x27;, 10);
+
+/* column-specific insert - the SAFE and recommended form */
+INSERT INTO Student (RollNo, Name, Marks) VALUES (2, &#x27;Ravi&#x27;, 91);
+
+SELECT Name, Marks FROM Student WHERE Marks &gt; 80 ORDER BY Marks DESC;
+
+UPDATE Student SET Marks = 95 WHERE RollNo = 2;
+
+DELETE FROM Student WHERE Marks &lt; 33;</pre>
+<blockquote><strong>NOTE: PYQ worked out - the correct INSERT form</strong><br><br>&quot;Select the correct SQL statement which will correctly insert a new row into the Customer table with only the CustomerID, Name, and Product columns specified, assuming the table allows NULLs for other columns.&quot;<br><br>Answer: <strong>INSERT INTO Customer (CustomerID, Name, Product) VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</strong><br><br>Why each wrong option fails:<br><code>INSERT Customer SET CustomerID=101, ...</code> - the SET form is MySQL-specific and is not standard SQL; also &quot;INSERT&quot; without &quot;INTO&quot; is non-standard.<br><code>INSERT INTO Customer VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</code> - syntactically legal, but this form supplies values for <strong>all</strong> columns in order. Since the table has more columns, it would fail or fill the wrong ones. The question explicitly says only three columns are being specified.<br><code>INSERT INTO Customer (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</code> - completely invalid: the <code>VALUES</code> keyword is missing, and a column list cannot contain literal values.<br><br><strong>Rule to memorise:</strong> when inserting into a subset of columns you MUST name the columns and use VALUES.</blockquote>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which SQL statement is used to update data in a table?&quot; Answer: <strong>UPDATE</strong>. <code>CHANGE</code> and <code>MODIFY</code> are clause keywords used *inside* <code>ALTER TABLE</code> (to rename or retype a column), not standalone statements. <code>SET</code> is a clause *within* the UPDATE statement, not the statement itself.</blockquote>
+<h3>F4.3 Clause execution order</h3>
+<p>*Written order vs actual execution order*</p>
+<pre>YOU WRITE:                    THE DATABASE EXECUTES:
+   SELECT                        1. FROM  /  JOIN
+   FROM                          2. WHERE
+   WHERE                         3. GROUP BY
+   GROUP BY                      4. HAVING
+   HAVING                        5. SELECT
+   ORDER BY                      6. ORDER BY
+   LIMIT                         7. LIMIT</pre>
+<ul><li><strong>WHERE vs HAVING</strong> - <strong>WHERE filters individual ROWS before grouping</strong>; it cannot use aggregate functions. <strong>HAVING filters GROUPS after grouping</strong>; it can use aggregate functions. This distinction is asked frequently.</li></ul>
+<h3>F4.4 Aggregate functions and NULL</h3>
+<table>
+<tr><th>Function</th><th>Purpose</th><th>NULL behaviour</th></tr>
+<tr><td>COUNT(*)</td><td>Counts all rows</td><td>INCLUDES rows with NULLs</td></tr>
+<tr><td>COUNT(column)</td><td>Counts non-NULL values in that column</td><td>IGNORES NULLs</td></tr>
+<tr><td>SUM(col)</td><td>Total</td><td>Ignores NULLs</td></tr>
+<tr><td>AVG(col)</td><td>Average</td><td>Ignores NULLs - so AVG is not SUM/COUNT(*)</td></tr>
+<tr><td>MAX / MIN</td><td>Largest / smallest</td><td>Ignores NULLs</td></tr>
+</table>
+<h4>NULL handling - the three-valued logic</h4>
+<p>SQL logic has <strong>three</strong> values: TRUE, FALSE and <strong>UNKNOWN</strong>.</p>
+<table>
+<tr><th>Expression</th><th>Result</th></tr>
+<tr><td>NULL = NULL</td><td>UNKNOWN (not TRUE!)</td></tr>
+<tr><td>NULL &lt;&gt; NULL</td><td>UNKNOWN</td></tr>
+<tr><td>NULL &gt; 5 , NULL &lt;= NULL</td><td>UNKNOWN</td></tr>
+<tr><td>NULL + 10</td><td>NULL</td></tr>
+<tr><td>NULL IS NULL</td><td>TRUE</td></tr>
+<tr><td>NULL IS NOT NULL</td><td>FALSE</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following SQL expressions evaluates to TRUE, according to SQL-99?&quot;<br><br>Answer: <strong>NULL IS NULL returns TRUE.</strong><br><br>Why the others are wrong:<br>&quot;NULL &lt;= NULL returns UNKNOWN&quot; - this statement is actually <strong>true as a fact</strong>, but read the question: it asks which *expression evaluates to TRUE*. The expression <code>NULL &lt;= NULL</code> evaluates to UNKNOWN, not TRUE.<br>&quot;NULL &gt;= NULL returns UNKNOWN&quot; - same situation.<br>&quot;NULL IS NULL returns FALSE&quot; - factually wrong; it returns TRUE.<br><br>The golden rule: <strong>you can never test a NULL with = or &lt;&gt;. You must use <code>IS NULL</code> or <code>IS NOT NULL</code>.</strong> That is precisely why the IS NULL operator exists.</blockquote>
+<ul><li><strong>COALESCE(a, b, c)</strong> - Returns the first non-NULL argument. Used to substitute a default for missing data.</li><li><strong>IFNULL / NVL</strong> - Two-argument versions of the same idea.</li></ul>
+<h3>F4.5 Joins</h3>
+<table>
+<tr><th>Join</th><th>What it returns</th></tr>
+<tr><td>INNER JOIN</td><td>Only rows where the condition matches in BOTH tables</td></tr>
+<tr><td>LEFT (OUTER) JOIN</td><td>All rows from the LEFT table plus matches from the right; unmatched right columns are NULL</td></tr>
+<tr><td>RIGHT (OUTER) JOIN</td><td>All rows from the RIGHT table plus matches from the left</td></tr>
+<tr><td>FULL (OUTER) JOIN</td><td>All rows from both tables; NULLs where there is no match</td></tr>
+<tr><td>CROSS JOIN</td><td>Cartesian product - every combination</td></tr>
+<tr><td>SELF JOIN</td><td>A table joined to itself, using aliases. Used for hierarchies like employee-manager</td></tr>
+<tr><td>NATURAL JOIN</td><td>Automatically joins on all columns with the SAME NAME and shows each such column once</td></tr>
+<tr><td>EQUI JOIN</td><td>A join whose condition uses only equality (=)</td></tr>
+<tr><td>THETA JOIN</td><td>A join using any comparison operator (&lt;, &gt;, &lt;=)</td></tr>
+</table>
+<p>*Join example*</p>
+<pre>SELECT s.Name, d.DeptName
+FROM   Student s
+INNER JOIN Department d ON s.DeptID = d.DeptID;</pre>
+<h3>F4.6 Views</h3>
+<p>A <strong>view</strong> is a <strong>virtual table</strong> - a stored SELECT query that behaves like a table. It holds no data of its own; the rows are produced when you query it.</p>
+<p>*Creating a view*</p>
+<pre>CREATE VIEW TopStudents AS
+    SELECT RollNo, Name, Marks FROM Student WHERE Marks &gt; 80;</pre>
+<h4>Why views are used</h4>
+<ul><li><strong>Security</strong>: expose only certain columns or rows to certain users, hiding salary or personal data.</li><li><strong>Simplicity</strong>: hide a complicated multi-table join behind a simple name.</li><li><strong>Logical data independence</strong>: the underlying tables can change while the view&#x27;s interface stays the same.</li></ul>
+<h4>Restrictions on views</h4>
+<ul><li><strong>Materialised view</strong> - A view whose result IS physically stored and periodically refreshed. Faster to read, but can be stale.</li><li><strong>Updatable view</strong> - A view you may INSERT/UPDATE through. Generally it must be based on a single table, include the primary key, and contain no DISTINCT, GROUP BY, aggregate functions, or set operations.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;<em>_</em><em>_</em> is NOT allowed in a SQL:1999 view definition.&quot; Options: Use of subqueries, Use of nested queries, Use of aggregate formulas, <strong>Use of ORDER BY clause</strong>. Answer: <strong>Use of ORDER BY clause</strong>.<br><br>The reasoning is conceptual and worth understanding. A view is defined to be a <strong>relation</strong>, and a relation is by definition an <strong>unordered set of tuples</strong>. Ordering is a property of a *result presented to a user*, not of a stored relation. So the standard forbids ORDER BY inside a view definition - you apply ORDER BY when you SELECT *from* the view instead.<br><br>Subqueries, nested queries and aggregate functions are all perfectly legal in a view definition (they merely make the view read-only).</blockquote>
+<h3>F4.7 Indexing</h3>
+<ul><li><strong>Index</strong> - An auxiliary data structure (usually a <strong>B+ tree</strong> or a hash table) that speeds up retrieval on a column, at the cost of extra storage and slower INSERT/UPDATE/DELETE.</li><li><strong>Primary / Clustered index</strong> - Determines the PHYSICAL ORDER of rows in the table. Only <strong>one</strong> per table. Usually built on the primary key.</li><li><strong>Secondary / Non-clustered index</strong> - A separate structure pointing to the rows. Many are allowed per table.</li><li><strong>Dense index</strong> - An index entry for EVERY search-key value.</li><li><strong>Sparse index</strong> - An index entry for only some values (only possible on a clustered/ordered file).</li><li><strong>Multilevel index</strong> - An index on the index, to keep lookups shallow.</li></ul>
+<h2>F5 Transactions and Concurrency Control</h2>
+<h3>F5.1 What a transaction is</h3>
+<p>A <strong>transaction</strong> is a single logical unit of work - a group of operations that must <strong>all</strong> succeed or <strong>all</strong> fail.</p>
+<p>The classic example is a bank transfer: debit Rs. 1000 from A, credit Rs. 1000 to B. If the power fails between the two steps, the money has vanished. A transaction guarantees that cannot happen.</p>
+<h3>F5.2 ACID properties - the most asked definition set</h3>
+<table>
+<tr><th>Property</th><th>Meaning</th><th>Ensured by</th></tr>
+<tr><td>Atomicity</td><td>ALL or NOTHING. Either every operation completes or none of them do; a partial transaction is rolled back</td><td>Transaction manager / recovery manager</td></tr>
+<tr><td>Consistency</td><td>The database moves from one valid state to another valid state; all integrity constraints hold before and after</td><td>Application programmer + DBMS constraints</td></tr>
+<tr><td>Isolation</td><td>Concurrent transactions must not interfere; each behaves as if it ran alone</td><td>Concurrency control manager</td></tr>
+<tr><td>Durability</td><td>Once a transaction COMMITS, its changes survive permanently, even after a crash or power failure</td><td>Recovery manager, write-ahead logging</td></tr>
+</table>
+<h3>F5.3 Transaction states</h3>
+<p>*Transaction state diagram*</p>
+<pre>   Active  ----&gt;  Partially Committed  ----&gt;  Committed
+     |                    |
+     v                    v
+   Failed  --------&gt;  Aborted / Terminated  (rolled back)</pre>
+<ul><li><strong>COMMIT</strong> - Makes all changes permanent.</li><li><strong>ROLLBACK</strong> - Undoes all changes since the transaction began (or since a savepoint).</li><li><strong>SAVEPOINT</strong> - A marker you can roll back to partially.</li></ul>
+<h3>F5.4 Concurrency problems</h3>
+<p>When transactions interleave badly, four classic problems appear.</p>
+<table>
+<tr><th>Problem</th><th>What happens</th></tr>
+<tr><td>Lost update (Write-Write conflict)</td><td>T1 and T2 both read a value and both write it; T2&#x27;s write overwrites T1&#x27;s, so T1&#x27;s update is lost</td></tr>
+<tr><td>Dirty read (Read-Uncommitted / WR conflict)</td><td>T2 reads a value that T1 wrote but has not committed. If T1 then rolls back, T2 has used data that never officially existed</td></tr>
+<tr><td>Unrepeatable read (RW conflict)</td><td>T1 reads the same row twice and gets different values because T2 changed it in between</td></tr>
+<tr><td>Phantom read</td><td>T1 runs the same range query twice and the second time extra rows appear, because T2 inserted them</td></tr>
+</table>
+<h3>F5.5 Schedules and serialisability</h3>
+<ul><li><strong>Serial schedule</strong> - Transactions run one completely after another. Always correct, but slow.</li><li><strong>Concurrent schedule</strong> - Operations from different transactions are interleaved. Fast, but may be incorrect.</li><li><strong>Serialisable schedule</strong> - A concurrent schedule whose final effect is <strong>equivalent to some serial schedule</strong>. This is the correctness criterion.</li><li><strong>Conflicting operations</strong> - Two operations conflict if they belong to <strong>different transactions</strong>, act on the <strong>same data item</strong>, and <strong>at least one of them is a WRITE</strong>. So read-read never conflicts.</li><li><strong>Conflict serialisable</strong> - A schedule that can be converted into a serial schedule by swapping only NON-conflicting adjacent operations.</li><li><strong>Precedence (serialisability) graph</strong> - Draw a node per transaction; draw an edge Ti to Tj for every conflicting pair where Ti&#x27;s operation comes first. The schedule is <strong>conflict serialisable if and only if this graph has NO CYCLE.</strong></li><li><strong>View serialisable</strong> - A weaker, more permissive notion. Every conflict-serialisable schedule is view serialisable, but not the reverse.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out - testing conflict serialisability</strong><br><br>&quot;Which of the following is a conflict serializable schedule?<br>S1: R1(A); R1(B); R2(A); R2(B); W2(B); W1(A)<br>S2: R1(A); R2(A); R2(B); W2(B); R1(B); W1(A)&quot;<br><br>Answer: <strong>S1 is not conflict serializable but S2 is conflict serializable.</strong><br><br>Method - build the precedence graph. Look only at pairs on the SAME data item from DIFFERENT transactions where at least one is a write.<br><br><strong>Schedule S1.</strong><br>On item A: R1(A) comes before W1(A) - same transaction, ignore. R2(A) appears before W1(A), and R2(A) vs W1(A) is a read-write conflict on A, so we get an edge <strong>T2 to T1</strong>.<br>On item B: R1(B) appears before W2(B), a read-write conflict on B, so we get an edge <strong>T1 to T2</strong>.<br>We now have T1 to T2 <strong>and</strong> T2 to T1 - a <strong>cycle</strong>. Therefore S1 is <strong>NOT</strong> conflict serialisable.<br><br><strong>Schedule S2.</strong><br>On item A: R2(A) comes before W1(A), giving edge <strong>T2 to T1</strong>.<br>On item B: W2(B) comes before R1(B), a write-read conflict, giving edge <strong>T2 to T1</strong> again.<br>Every edge points the same way, T2 to T1. <strong>No cycle</strong>, so S2 <strong>IS</strong> conflict serialisable, and it is equivalent to running T2 then T1.<br><br>Lesson: draw the graph, then simply look for a cycle. If a cycle exists in either direction, that schedule fails.</blockquote>
+<h3>F5.6 Concurrency control protocols</h3>
+<table>
+<tr><th>Lock-based</th><th>A transaction must acquire a lock before accessing data. SHARED lock (S) for reading - several allowed at once. EXCLUSIVE lock (X) for writing - only one, and no shared locks alongside</th></tr>
+<tr><td>Two-Phase Locking (2PL)</td><td>GROWING phase: only acquire locks. SHRINKING phase: only release locks. Once you release one lock you may never acquire another. Guarantees serialisability but can deadlock</td></tr>
+<tr><td>Strict 2PL</td><td>All EXCLUSIVE locks are held until commit. Prevents cascading rollbacks</td></tr>
+<tr><td>Rigorous 2PL</td><td>ALL locks held until commit</td></tr>
+<tr><td>Conservative / Static 2PL</td><td>Acquire every lock up front before starting. DEADLOCK FREE, but poor concurrency</td></tr>
+<tr><td>Timestamp ordering</td><td>Each transaction gets a timestamp; conflicts are resolved by timestamp order rather than locks. Deadlock free</td></tr>
+<tr><td>Optimistic concurrency control</td><td>Let transactions run freely, then VALIDATE before commit and abort if there was a conflict. Good when conflicts are rare</td></tr>
+<tr><td>Multiversion (MVCC)</td><td>Keeps multiple versions of each item so readers never block writers. Used by PostgreSQL and Oracle</td></tr>
+</table>
+<h3>F5.7 Recovery</h3>
+<ul><li><strong>Write-Ahead Logging (WAL)</strong> - The log record must be written to stable storage <strong>before</strong> the actual data change. This is what makes recovery possible.</li><li><strong>UNDO</strong> - Reverse the changes of uncommitted transactions.</li><li><strong>REDO</strong> - Reapply the changes of committed transactions whose data had not reached disk.</li><li><strong>Checkpoint</strong> - A periodic marker recording that everything before it is safely on disk. Recovery need only examine the log after the last checkpoint.</li><li><strong>Deferred update (NO-UNDO/REDO)</strong> - Changes are written to the database only after commit, so no UNDO is ever needed.</li><li><strong>Immediate update (UNDO/REDO)</strong> - Changes may be written before commit, so both UNDO and REDO may be needed.</li><li><strong>Shadow paging</strong> - Keeps a shadow copy of the page table so the old state can be restored instantly.</li></ul>
+<h2>F6 Data Warehousing and Big Data Basics</h2>
+<h3>F6.1 OLTP vs OLAP</h3>
+<table>
+<tr><th>Point</th><th>OLTP (Online Transaction Processing)</th><th>OLAP (Online Analytical Processing)</th></tr>
+<tr><td>Purpose</td><td>Day-to-day operations</td><td>Analysis and decision support</td></tr>
+<tr><td>Operations</td><td>Many short INSERT/UPDATE/DELETE</td><td>Few complex read-only queries</td></tr>
+<tr><td>Data</td><td>Current, detailed</td><td>Historical, summarised</td></tr>
+<tr><td>Normalisation</td><td>Highly normalised (3NF)</td><td>Denormalised (star / snowflake schema)</td></tr>
+<tr><td>Users</td><td>Clerks, customers</td><td>Analysts, managers</td></tr>
+<tr><td>Example</td><td>Booking a train ticket</td><td>&quot;Compare quarterly sales by region for five years&quot;</td></tr>
+</table>
+<h3>F6.2 Data warehouse terms</h3>
+<ul><li><strong>Data warehouse</strong> - A <strong>subject-oriented, integrated, time-variant and non-volatile</strong> collection of data used to support management decisions (Bill Inmon&#x27;s definition - learn those four adjectives).</li><li><strong>Data mart</strong> - A smaller, department-specific subset of a data warehouse.</li><li><strong>ETL</strong> - <strong>Extract, Transform, Load</strong> - the process of moving data from sources into the warehouse.</li><li><strong>Fact table</strong> - The central table holding measurable numeric values (sales amount, quantity).</li><li><strong>Dimension table</strong> - Descriptive context around the facts (time, product, region).</li><li><strong>Star schema</strong> - One fact table joined to several denormalised dimension tables. Simple and fast.</li><li><strong>Snowflake schema</strong> - Dimension tables are further normalised into sub-dimensions. Saves space, more joins.</li><li><strong>Data mining</strong> - Discovering previously unknown patterns and relationships in large data sets. Techniques: classification, clustering, regression, association rule mining (market-basket analysis).</li><li><strong>Big Data 5 Vs</strong> - <strong>Volume, Velocity, Variety, Veracity, Value.</strong></li></ul></body></html>

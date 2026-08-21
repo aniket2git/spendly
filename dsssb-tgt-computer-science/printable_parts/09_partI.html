@@ -1,0 +1,318 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART I - Software Engineering, Computer Graphics and Management Information Systems</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART I - Software Engineering, Computer Graphics and Management Information Systems</h1>
+<blockquote>*Three medium-weight topics grouped together. Together they contribute six to twelve marks.*</blockquote>
+<h2>I1 Software Engineering Fundamentals</h2>
+<h3>I1.1 Why software engineering exists</h3>
+<p>One person can build a doghouse with a hammer and no plan. A hundred people cannot build a skyscraper that way - they need drawings, schedules, inspections and standards.</p>
+<p>Software is the same. A 200-line program needs no process. A 200,000-line banking system does. <strong>Software engineering</strong> is the application of a systematic, disciplined, measurable approach to the development, operation and maintenance of software.</p>
+<ul><li><strong>Software crisis</strong> - The historical realisation that projects were routinely late, over budget, unreliable and unmaintainable - which gave birth to software engineering as a discipline.</li><li><strong>Software</strong> - Computer programs plus the associated documentation and configuration data.</li></ul>
+<h4>Software characteristics</h4>
+<p>Software is <strong>developed / engineered</strong>, not manufactured. It does not <strong>wear out</strong>, but it does <strong>deteriorate</strong> through repeated modification. It is <strong>flexible</strong> and largely <strong>custom-built</strong> rather than assembled from existing components.</p>
+<h3>I1.2 Functional vs non-functional requirements</h3>
+<ul><li><strong>Functional requirement</strong> - <strong>WHAT the system must DO</strong> - a specific behaviour or feature. &quot;The system shall allow a user to log in with an email and password.&quot; These describe the <strong>core work tasks</strong> the system must perform - they are <strong>mandatory</strong>.</li><li><strong>Non-functional requirement</strong> - <strong>HOW WELL</strong> the system must do it - a quality attribute. Performance, security, usability, reliability, portability, scalability, maintainability, availability. Often called &quot;quality requirements&quot; or &quot;constraints&quot;.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;<em>_</em>_ activities are at the very core of project completion work tasks, whereas <em>_</em>_ activities are not mandatory.&quot; Answer: <strong>Functional, non-functional</strong>.<br><br>The logic: functional requirements define the actual work the software must do - without them the project is not complete at all. Non-functional requirements describe desirable qualities; a system can technically function (though badly) without meeting them, so in this framing they are &quot;not mandatory&quot;.<br><br>Note the distractor &quot;Framework, umbrella&quot;. In Pressman&#x27;s model, <strong>umbrella activities</strong> are the ones that run *across* the whole process - project tracking, risk management, quality assurance, configuration management, measurement - while <strong>framework activities</strong> are the main phases (communication, planning, modelling, construction, deployment). Do not confuse the two pairs.</blockquote>
+<h3>I1.3 Levels of design</h3>
+<table>
+<tr><th>Design level</th><th>Abstraction</th><th>What it produces</th></tr>
+<tr><td>SYSTEM design</td><td>HIGHEST abstraction</td><td>A high-level view of the complete system as a whole - the overall concept, inputs, outputs and major components</td></tr>
+<tr><td>ARCHITECTURAL design</td><td>Middle</td><td>Breaks the concept into LESS-ABSTRACTED sub-systems and defines the relationships between them</td></tr>
+<tr><td>DETAILED design</td><td>LOWEST abstraction</td><td>Shows the IMPLEMENTATION at MODULE LEVEL - algorithms, data structures, interfaces of each module</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;The <em>_</em>_ design is high-abstraction version of a system that is followed by <em>_</em>_ design that breaks the concept into less-abstracted view of sub-systems and later the <em>_</em>_ design showcases the implementation at module-level.&quot;<br><br>Answer: <strong>system, architectural, detailed.</strong><br><br>The sequence always runs from most abstract to most concrete: <strong>System to Architectural to Detailed</strong>. A memory hook: you first picture the whole *system*, then draw its *architecture*, then fill in the *details*.</blockquote>
+<h3>I1.4 Coupling and cohesion - a guaranteed question</h3>
+<p>These two words are the heart of good software design, and examiners love them because students mix them up.</p>
+<ul><li><strong>Coupling</strong> - The degree of <strong>interdependence BETWEEN different modules</strong>. How much one module needs to know about another.</li><li><strong>Cohesion</strong> - The degree to which the elements <strong>INSIDE a single module</strong> belong together and work toward one single purpose.</li></ul>
+<p><strong>The design rule: coupling should be LOW, cohesion should be HIGH.</strong></p>
+<p>Analogy: think of school departments. <strong>Low coupling</strong> means the science department can change its lab timetable without the music department needing to be informed. <strong>High cohesion</strong> means everything inside the science department genuinely relates to science - not a random mix of science, accounts and sports.</p>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;In building software, <em>_</em>_ should preferably be lower and <em>_</em>_ is preferred to be on the higher side.&quot; Answer: <strong>coupling among components, cohesion in bonding components</strong>.<br><br>Why low coupling and high cohesion are good: low coupling means a change in one module does not ripple through the system, so maintenance is easier and modules can be tested and reused independently. High cohesion means each module has a single, clear responsibility, which makes it understandable and reliable.<br><br>Watch the distractors in that question - &quot;inheritance from parent class&quot; and &quot;aggregation with peer components&quot; are OOP relationship terms, not the design-quality pair the question is asking for.</blockquote>
+<table>
+<tr><th>Coupling type (worst to best)</th><th>Description</th></tr>
+<tr><td>Content coupling (worst)</td><td>One module directly modifies or relies on the internal contents of another</td></tr>
+<tr><td>Common coupling</td><td>Modules share global data</td></tr>
+<tr><td>External coupling</td><td>Modules share an externally imposed format or protocol</td></tr>
+<tr><td>Control coupling</td><td>One module passes a flag that controls the other&#x27;s logic</td></tr>
+<tr><td>Stamp coupling</td><td>A whole data structure is passed when only part is needed</td></tr>
+<tr><td>Data coupling (best)</td><td>Only the simple parameters actually needed are passed</td></tr>
+<tr><td>Message coupling</td><td>Communication only through public interfaces / messages - loosest of all</td></tr>
+</table>
+<table>
+<tr><th>Cohesion type (best to worst)</th><th>Description</th></tr>
+<tr><td>Functional cohesion (best)</td><td>Every element contributes to one single well-defined task</td></tr>
+<tr><td>Sequential cohesion</td><td>Output of one element is input to the next</td></tr>
+<tr><td>Communicational cohesion</td><td>Elements operate on the same data</td></tr>
+<tr><td>Procedural cohesion</td><td>Elements follow a certain sequence of execution</td></tr>
+<tr><td>Temporal cohesion</td><td>Elements are grouped because they happen at the same time (e.g. all start-up code)</td></tr>
+<tr><td>Logical cohesion</td><td>Elements do similar kinds of things, selected by a flag</td></tr>
+<tr><td>Coincidental cohesion (worst)</td><td>Elements are grouped for no meaningful reason at all</td></tr>
+</table>
+<h2>I2 Software Development Life Cycle Models</h2>
+<h3>I2.1 The phases common to all models</h3>
+<p>*The generic SDLC*</p>
+<pre>1. REQUIREMENT gathering and analysis  -&gt;  produces the SRS document
+2. SYSTEM DESIGN                       -&gt;  architecture and detailed design
+3. IMPLEMENTATION / CODING             -&gt;  source code
+4. TESTING                             -&gt;  test reports, defect logs
+5. DEPLOYMENT                          -&gt;  the software in live use
+6. MAINTENANCE                         -&gt;  fixes and enhancements</pre>
+<ul><li><strong>SRS</strong> - <strong>Software Requirement Specification</strong> - the formal document recording all functional and non-functional requirements. It is the contract between customer and developer. A good SRS is correct, complete, consistent, unambiguous, verifiable and traceable.</li><li><strong>Feasibility study</strong> - Checks technical, economic, legal, operational and schedule viability before committing.</li></ul>
+<h3>I2.2 The Waterfall model</h3>
+<p>The oldest and simplest model. Each phase must be <strong>fully completed</strong> before the next begins, and the flow is strictly downward - like water falling over steps.</p>
+<table>
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple, easy to understand and manage</td><td>VERY RIGID - you cannot go back to a previous phase</td></tr>
+<tr><td>Clear, well-documented phases with defined deliverables</td><td>Requirement changes cannot be accommodated. UNSUITABLE when requirements alter during development</td></tr>
+<tr><td>Works well when requirements are fixed and clearly understood</td><td>Working software appears only very LATE</td></tr>
+<tr><td>LOW COST for small, well-understood projects</td><td>HIGH RISK because problems surface only at the testing stage</td></tr>
+<tr><td>Easy to schedule and assign responsibilities</td><td>No customer feedback until the end; LONG DURATION for large projects</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is NOT true about the Waterfall model?&quot; Options: Long duration, <strong>High cost</strong>, High-risk involvement, Low cost. Answer: <strong>High cost</strong>.<br><br>Reasoning: the waterfall model is generally described as a <strong>low-cost</strong> model - it needs no repeated prototyping, no elaborate risk analysis and minimal customer interaction, so its process overhead is small. Its genuine drawbacks are long duration and high risk. The trap is that the option list contains <strong>both</strong> &quot;High cost&quot; and &quot;Low cost&quot;; you must pick the one that is NOT true, which is High cost.</blockquote>
+<h3>I2.3 All the SDLC models compared</h3>
+<table>
+<tr><th>Model</th><th>Core idea</th><th>Best suited when</th></tr>
+<tr><td>Waterfall (Linear sequential)</td><td>Strictly sequential phases, no going back</td><td>Requirements are FIXED and fully known upfront</td></tr>
+<tr><td>V-Model (Verification and Validation)</td><td>Each development phase has a matching testing phase, forming a V shape. Testing is planned in parallel with development</td><td>Requirements are clear and the system is safety-critical</td></tr>
+<tr><td>Incremental</td><td>The product is built and delivered in successive increments, each adding functionality</td><td>The core requirements are clear but the full feature set can evolve</td></tr>
+<tr><td>Iterative</td><td>A rough version is built, then repeatedly refined through cycles</td><td>Requirements are expected to be refined over time</td></tr>
+<tr><td>PROTOTYPE model</td><td>A working mock-up is built quickly, shown to the user, and refined based on feedback before real development</td><td>Requirements are UNCLEAR or the user cannot articulate them</td></tr>
+<tr><td>SPIRAL model</td><td>Iterative development combined with explicit RISK ANALYSIS in every loop. Four quadrants: planning, risk analysis, engineering, evaluation</td><td>LARGE, EXPENSIVE, HIGH-RISK projects</td></tr>
+<tr><td>RAD (Rapid Application Development)</td><td>Very fast development using component reuse, powerful tools and parallel teams</td><td>Small-to-medium projects with a tight deadline, modular design and available components</td></tr>
+<tr><td>AGILE</td><td>Short iterations (sprints), continuous customer collaboration, working software over documentation, welcomes changing requirements</td><td>Requirements are VOLATILE and the customer is available for continuous feedback</td></tr>
+<tr><td>Big Bang</td><td>Little planning; just start coding</td><td>Tiny projects or academic exercises</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out - which model cannot handle change</strong><br><br>&quot;Within software engineering, which prescriptive model is INCOMPATIBLE with circumstances in which the requirements alter throughout development?&quot; Options: <strong>Linear models</strong>, Evolutionary models, Agile models, Incremental models. Answer: <strong>Linear models</strong>.<br><br>Reasoning: &quot;Linear model&quot; is another name for the <strong>Waterfall</strong> approach - each phase is frozen once complete, so a requirement change discovered during coding cannot be fed back into the design. By contrast, evolutionary, agile and incremental models are all specifically designed to absorb changing requirements through repeated cycles and customer feedback.</blockquote>
+<h3>I2.4 RAD model phases</h3>
+<table>
+<tr><th>RAD phase</th><th>What happens</th></tr>
+<tr><td>Business modelling</td><td>What information flows between business functions</td></tr>
+<tr><td>Data modelling</td><td>The information flow is refined into a set of data objects and their attributes</td></tr>
+<tr><td>Process modelling</td><td>Data objects are transformed to implement the business functions - the processing descriptions</td></tr>
+<tr><td>Application generation</td><td>Automated tools and reusable components build the working software</td></tr>
+<tr><td>Testing and turnover</td><td>New components are tested; already-reused components need less testing</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is NOT a phase of the RAD model?&quot; Options: <strong>Development modelling</strong>, Business modelling, Process modelling, Data modelling. Answer: <strong>Development modelling</strong>.<br><br>The four genuine &quot;modelling&quot; phases in RAD are <strong>Business, Data, Process</strong> and then <strong>Application Generation</strong> followed by <strong>Testing and Turnover</strong>. &quot;Development modelling&quot; is not one of them - it is an invented name. Memory hook: <strong>B</strong>usiness, <strong>D</strong>ata, <strong>P</strong>rocess, <strong>A</strong>pplication, <strong>T</strong>esting.</blockquote>
+<h3>I2.5 Agile</h3>
+<ul><li><strong>Agile Manifesto values</strong> - Individuals and interactions over processes and tools; <strong>working software over comprehensive documentation</strong>; customer collaboration over contract negotiation; <strong>responding to change over following a plan</strong>.</li><li><strong>Sprint</strong> - A short fixed-length iteration, typically 2 to 4 weeks, producing a potentially shippable increment.</li><li><strong>Scrum</strong> - The most popular agile framework. Roles: <strong>Product Owner</strong> (owns the backlog and priorities), <strong>Scrum Master</strong> (facilitator, removes impediments), <strong>Development Team</strong>.</li><li><strong>Artefacts</strong> - Product backlog, sprint backlog, increment, burndown chart.</li><li><strong>Ceremonies</strong> - Sprint planning, daily stand-up (15 minutes), sprint review, sprint retrospective.</li><li><strong>Extreme Programming (XP)</strong> - Agile practices including pair programming, test-driven development, continuous integration, small releases and refactoring.</li><li><strong>User story</strong> - A requirement written from the user&#x27;s point of view: &quot;As a student, I want to see my marks so that I can track my progress.&quot;</li><li><strong>Kanban</strong> - Visualising work on a board and limiting work-in-progress.</li></ul>
+<h3>I2.6 Software testing</h3>
+<table>
+<tr><th>Type</th><th>Description</th></tr>
+<tr><td>Unit testing</td><td>Testing the smallest individual module in isolation. Usually done by the developer</td></tr>
+<tr><td>Integration testing</td><td>Testing how modules work together. Approaches: big-bang, top-down (needs STUBS), bottom-up (needs DRIVERS), sandwich</td></tr>
+<tr><td>System testing</td><td>Testing the complete integrated system against the requirements</td></tr>
+<tr><td>Acceptance testing</td><td>Testing by the customer to decide whether to accept the product. ALPHA testing is done at the developer&#x27;s site by internal staff; BETA testing is done at the customer&#x27;s site by real users</td></tr>
+<tr><td>Regression testing</td><td>Re-running old tests after a change, to make sure nothing that used to work has broken</td></tr>
+<tr><td>Smoke / Sanity testing</td><td>A quick check that the build is stable enough to test properly</td></tr>
+<tr><td>Performance / Load / Stress testing</td><td>Behaviour under expected load, heavy load and beyond breaking point</td></tr>
+<tr><td>Security testing</td><td>Looks for vulnerabilities</td></tr>
+<tr><td>Usability testing</td><td>How easy the software is to use</td></tr>
+</table>
+<table>
+<tr><th>Approach</th><th>Also called</th><th>Tester knows the internal code?</th><th>Focus</th></tr>
+<tr><td>Black box testing</td><td>Functional testing</td><td>NO</td><td>Inputs and outputs only. Techniques: equivalence partitioning, boundary value analysis, decision tables, state transition</td></tr>
+<tr><td>White box testing</td><td>Structural / glass box testing</td><td>YES</td><td>Internal logic, paths, branches. Techniques: statement coverage, branch coverage, path coverage, cyclomatic complexity</td></tr>
+<tr><td>Grey box testing</td><td>-</td><td>Partially</td><td>A mixture of both</td></tr>
+</table>
+<ul><li><strong>Verification</strong> - &quot;Are we building the product <strong>right</strong>?&quot; Checks conformance to the specification, without executing the code - reviews, walkthroughs, inspections.</li><li><strong>Validation</strong> - &quot;Are we building the <strong>right</strong> product?&quot; Checks that the software actually meets the user&#x27;s needs, usually by executing it.</li><li><strong>Error, Fault, Failure</strong> - An <strong>error</strong> is a human mistake; it introduces a <strong>fault (defect/bug)</strong> into the code; when executed, the fault causes a <strong>failure</strong> - incorrect behaviour.</li><li><strong>Test case</strong> - A set of inputs, execution conditions and expected results.</li><li><strong>Cyclomatic complexity</strong> - McCabe&#x27;s metric: V(G) = E - N + 2, where E is edges and N is nodes of the control flow graph. It equals the number of independent paths, and hence the minimum number of test cases for branch coverage. Also equal to (number of decision points + 1).</li></ul>
+<h3>I2.7 CMM - Capability Maturity Model</h3>
+<ul><li><strong>CMM</strong> - <strong>Capability Maturity Model</strong> - a framework developed by the Software Engineering Institute (SEI) at Carnegie Mellon to assess and improve the maturity of an organisation&#x27;s software process. Its successor is <strong>CMMI</strong> (Capability Maturity Model Integration).</li></ul>
+<table>
+<tr><th>Level</th><th>Name</th><th>Characteristics</th></tr>
+<tr><td>1</td><td>INITIAL</td><td>Ad hoc, chaotic. Success depends on individual heroics. No defined process</td></tr>
+<tr><td>2</td><td>REPEATABLE (Managed)</td><td>Basic project management exists. Costs and schedules are tracked. Earlier successes on similar projects can be repeated</td></tr>
+<tr><td>3</td><td>DEFINED</td><td>The process is documented and standardised organisation-wide, and tailored per project</td></tr>
+<tr><td>4</td><td>MANAGED (Quantitatively Managed)</td><td>The process and product quality are MEASURED quantitatively and controlled statistically</td></tr>
+<tr><td>5</td><td>OPTIMISING</td><td>CONTINUOUS process improvement driven by quantitative feedback and innovation. Defect prevention</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;CMM stands for:&quot; Options: Cognitive Modularity Model, Capability Modularity Model, Cognitive Measurable Model, <strong>Capability Maturity Model</strong>. Answer: <strong>Capability Maturity Model</strong>.<br><br>Both words matter: <strong>Capability</strong> (what the organisation is able to do) and <strong>Maturity</strong> (how disciplined and repeatable its process is). Memory hook for the five levels: <strong>I</strong>nitial, <strong>R</strong>epeatable, <strong>D</strong>efined, <strong>M</strong>anaged, <strong>O</strong>ptimising - &quot;<strong>I R</strong>eally <strong>D</strong>o <strong>M</strong>y <strong>O</strong>wn work.&quot;</blockquote>
+<h3>I2.8 Project management and estimation</h3>
+<ul><li><strong>COCOMO</strong> - <strong>COnstructive COst MOdel</strong> by Barry Boehm - estimates effort in person-months from the size in KLOC. Three modes: <strong>Organic</strong> (small team, familiar problem), <strong>Semi-detached</strong> (medium), <strong>Embedded</strong> (tight constraints, complex).</li><li><strong>Function Point analysis</strong> - Estimates size from functionality (inputs, outputs, enquiries, files, interfaces) rather than lines of code, so it is language-independent.</li><li><strong>LOC / KLOC</strong> - Lines of code / thousands of lines of code.</li><li><strong>Gantt chart</strong> - A bar chart showing tasks against a calendar timeline.</li><li><strong>PERT chart</strong> - <strong>Program Evaluation and Review Technique</strong> - a network diagram showing task dependencies, used to compute the <strong>critical path</strong> (the longest path, which determines the minimum project duration).</li><li><strong>Risk management</strong> - Identify risks, analyse their probability and impact, plan responses, and monitor. Response strategies: <strong>avoid, accept, transfer, mitigate</strong>.</li><li><strong>Software Configuration Management (SCM)</strong> - Controlling change: version control, baselines, change control board, build management.</li><li><strong>Software maintenance types</strong> - <strong>Corrective</strong> (fixing faults), <strong>Adaptive</strong> (adjusting to a new environment), <strong>Perfective</strong> (improving performance or maintainability), <strong>Preventive</strong> (reducing future deterioration).</li></ul>
+<h3>I2.9 Pseudo-code, algorithms and flowcharts</h3>
+<ul><li><strong>Algorithm</strong> - A finite, ordered set of unambiguous steps to solve a problem. Language-independent, written in plain English.</li><li><strong>Pseudo-code</strong> - A semi-formal notation that mixes natural language with programming-language structures (IF, WHILE, FOR). Because its structure already mirrors code, it is the <strong>easiest to transform into an actual computer program</strong>.</li><li><strong>Flowchart</strong> - A <strong>diagrammatic</strong> representation of an algorithm using standard symbols.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is the easiest to be transformed into a computer program?&quot; Options: <strong>Pseudo-code</strong>, Algorithm, Flowchart, None of the above. Answer: <strong>Pseudo-code</strong>.<br><br>Reasoning: pseudo-code already uses programming constructs - loops, conditionals, assignment - written in a code-like layout. Converting it to C or Java is nearly a line-by-line translation. A plain-English algorithm is more abstract, and a flowchart is graphical, so both need more interpretation.</blockquote>
+<h4>Flowchart symbols - asked directly</h4>
+<table>
+<tr><th>Symbol</th><th>Meaning</th></tr>
+<tr><td>Oval / Rounded rectangle (Terminal)</td><td>START or STOP</td></tr>
+<tr><td>Parallelogram</td><td>INPUT or OUTPUT (read / print)</td></tr>
+<tr><td>RECTANGLE</td><td>PROCESSING - a computation or assignment step</td></tr>
+<tr><td>DIAMOND / Rhombus</td><td>DECISION - a yes/no or true/false branch</td></tr>
+<tr><td>CIRCLE</td><td>CONNECTOR - joins parts of the program / flowchart, especially across pages</td></tr>
+<tr><td>Arrow / Flow line</td><td>Direction of flow</td></tr>
+<tr><td>Hexagon</td><td>Preparation or loop initialisation</td></tr>
+<tr><td>Cylinder</td><td>Storage / database</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Program links with other parts of the program in a flowchart are represented by <em>_</em>_.&quot; Options: rectangles, <strong>circles</strong>, trapezoids, rhombuses. Answer: <strong>circles</strong>.<br><br>Reasoning: the <strong>connector</strong> symbol is a small circle, used to link one part of a flowchart to another - typically when the diagram must break across pages or when several flow lines converge. Rectangles are processing steps, rhombuses (diamonds) are decisions, and trapezoids are sometimes used for manual operations.</blockquote>
+<h2>I3 Computer Graphics</h2>
+<h3>I3.1 Basic concepts</h3>
+<ul><li><strong>Computer graphics</strong> - The creation, storage and manipulation of pictures and drawings using a computer.</li><li><strong>Pixel</strong> - <strong>Picture element</strong> - the smallest addressable dot on a screen.</li><li><strong>Resolution</strong> - The number of pixels, e.g. 1920 x 1080.</li><li><strong>Frame buffer / Refresh buffer</strong> - The area of memory holding the intensity value of every pixel on the screen.</li><li><strong>Bit depth / Colour depth</strong> - Bits used per pixel. 1 bit = monochrome, 8 bits = 256 colours, 24 bits = true colour.</li><li><strong>Aspect ratio</strong> - Width divided by height.</li><li><strong>Raster / Bitmap graphics</strong> - The image is stored as a grid of pixels. Loses quality when enlarged. Formats: BMP, JPEG, PNG, GIF.</li><li><strong>Vector graphics</strong> - The image is stored as mathematical descriptions of lines and curves. Scales to any size with no quality loss. Formats: SVG, AI, EPS.</li><li><strong>Rasterisation</strong> - The process of converting vector shapes into pixels for display.</li><li><strong>Aliasing</strong> - The jagged &quot;staircase&quot; appearance of a diagonal line drawn on a pixel grid. <strong>Anti-aliasing</strong> smooths it by varying pixel intensity.</li></ul>
+<h3>I3.2 Line and circle drawing algorithms</h3>
+<table>
+<tr><th>Algorithm</th><th>Description</th></tr>
+<tr><td>DDA (Digital Differential Analyser)</td><td>Computes each next point by adding a constant increment. Uses FLOATING POINT arithmetic and rounding, so it is slower and accumulates round-off error</td></tr>
+<tr><td>BRESENHAM&#x27;s line algorithm</td><td>Uses only INTEGER arithmetic (addition, subtraction and bit shifting) with a decision parameter. Faster and more accurate than DDA. The standard line algorithm</td></tr>
+<tr><td>Mid-point circle algorithm</td><td>Draws a circle using a decision parameter and eight-way symmetry</td></tr>
+<tr><td>Bresenham&#x27;s circle algorithm</td><td>Integer-only circle drawing</td></tr>
+<tr><td>Scan-line polygon fill</td><td>Fills a polygon by finding the intersections of each horizontal scan line with the polygon edges</td></tr>
+<tr><td>Boundary fill / Flood fill</td><td>Recursively fills an area from a seed point outward</td></tr>
+</table>
+<h3>I3.3 Clipping</h3>
+<ul><li><strong>Clipping</strong> - Discarding the parts of a picture that lie <strong>outside</strong> a specified region (the clipping window), so only the visible portion is drawn.</li></ul>
+<table>
+<tr><th>Algorithm</th><th>Clips</th></tr>
+<tr><td>Cohen-Sutherland</td><td>LINES. Assigns a 4-bit region code (outcode) to each endpoint and uses bitwise tests to trivially accept or reject</td></tr>
+<tr><td>LIANG-BARSKY</td><td>LINES. Uses a parametric representation of the line and computes entry/exit parameters. More efficient than Cohen-Sutherland because it does fewer intersection calculations</td></tr>
+<tr><td>Cyrus-Beck</td><td>Lines, against any convex polygon window</td></tr>
+<tr><td>Nicholl-Lee-Nicholl</td><td>Lines, fewest intersections of all</td></tr>
+<tr><td>Sutherland-Hodgman</td><td>POLYGONS, against each window edge in turn</td></tr>
+<tr><td>Weiler-Atherton</td><td>Concave polygons</td></tr>
+</table>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which of the following is a clipping algorithm?&quot; Options: Simple DDA, <strong>Liang Barsky&#x27;s algorithm</strong>, Bresenham&#x27;s algorithm, Mid-point Algorithm. Answer: <strong>Liang Barsky&#x27;s algorithm</strong>.<br><br>The others are all <strong>drawing</strong> (scan-conversion) algorithms: DDA and Bresenham draw lines, and the mid-point algorithm draws circles. Only Liang-Barsky is a clipping algorithm. If Cohen-Sutherland ever appears as an option, it is also a clipping algorithm.</blockquote>
+<h3>I3.4 Two-dimensional transformations</h3>
+<p><strong>Transformations</strong> change the position, size or orientation of an object. This is exactly the machinery that produces animation.</p>
+<table>
+<tr><th>Transformation</th><th>Effect</th><th>Matrix note</th></tr>
+<tr><td>Translation</td><td>Moves an object by (tx, ty) without changing its shape</td><td>Addition, or a matrix with tx, ty in the last column using homogeneous coordinates</td></tr>
+<tr><td>Scaling</td><td>Changes the size by factors (sx, sy). Uniform if sx = sy</td><td>Multiplication by a diagonal matrix</td></tr>
+<tr><td>Rotation</td><td>Rotates by an angle about a point</td><td>Uses sin and cos</td></tr>
+<tr><td>Reflection</td><td>Produces a mirror image about an axis or line</td><td>Scaling with negative factors</td></tr>
+<tr><td>Shearing</td><td>Slants the shape; a rectangle becomes a parallelogram</td><td>Off-diagonal terms</td></tr>
+</table>
+<ul><li><strong>Homogeneous coordinates</strong> - A point (x, y) is written as (x, y, 1) so that <strong>translation also becomes a matrix multiplication</strong>. This lets several transformations be combined into ONE matrix by multiplying them - called <strong>composite transformation</strong> or <strong>concatenation</strong>.</li><li><strong>Rigid body transformation</strong> - Preserves shape and size: translation, rotation, reflection.</li><li><strong>Animation</strong> - Achieved by applying a sequence of transformations to objects over successive frames.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;In order to move objects in computer graphics that generate animation effects which of the following is necessary?&quot; Answer: <strong>Various transformation operations</strong>.<br><br>Reasoning: motion is nothing more than repeatedly changing an object&#x27;s position, orientation or size between frames - that is, applying <strong>translation, rotation and scaling</strong>. The distractors belong elsewhere: &quot;line rasterisation sequencing&quot; is about drawing a single line onto pixels, the &quot;Phong model of lighting&quot; is about shading and illumination, and &quot;eigen value computations&quot; belong to linear algebra generally (used in some simulations, but not the mechanism of animation).</blockquote>
+<h3>I3.5 Three-dimensional viewing and projections</h3>
+<p><strong>Projection</strong> maps a 3D object onto a 2D viewing plane.</p>
+<table>
+<tr><th>Projection</th><th>Description</th></tr>
+<tr><td>PARALLEL projection</td><td>Projectors are PARALLEL to each other. Preserves relative dimensions and parallel lines, but looks less realistic. Used in engineering drawings</td></tr>
+<tr><td>-- Orthographic</td><td>Projectors are PERPENDICULAR to the view plane. Gives the standard front, top and side views</td></tr>
+<tr><td>-- Oblique</td><td>Projectors meet the plane at an angle. Cavalier and Cabinet projections</td></tr>
+<tr><td>PERSPECTIVE projection</td><td>Projectors converge at a single point (the centre of projection / eye). Distant objects appear SMALLER - realistic, like the human eye or a camera. Introduces vanishing points</td></tr>
+</table>
+<ul><li><strong>Isometric projection</strong> - An orthographic projection where all three axes are equally foreshortened.</li><li><strong>Vanishing point</strong> - The point at which parallel lines appear to converge in perspective projection. One-point, two-point and three-point perspective.</li><li><strong>Standard orthographic views</strong> - Front view, top view (plan) and side view (elevation) - together they fully describe an object.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;<em>_</em>_ and <em>_</em>_ views cannot be framed together for rendering a computer visual appropriately.&quot; Answer key: <strong>Orthogonal projection, horizontal view</strong>.<br><br>The reasoning behind this style of question: certain view pairs are mutually incompatible in a single rendering because they use different projection geometry or would show the same information redundantly. An <strong>orthographic (orthogonal)</strong> projection uses parallel projectors perpendicular to the plane, so it cannot simultaneously present a <strong>horizontal</strong> viewing direction in the same frame - the two definitions conflict.<br><br>Note that the tempting option &quot;Parallel projection, perspective projection&quot; is a genuinely incompatible pair in principle (you cannot use both projection types for one image), so if you meet a similar question with slightly different options, reason from <strong>which two views define contradictory projector geometry</strong>.</blockquote>
+<h3>I3.6 Lighting, shading and hidden surface removal</h3>
+<ul><li><strong>Illumination model</strong> - Computes the colour of a point on a surface from the light sources and surface properties.</li><li><strong>Ambient light</strong> - Uniform background light with no direction.</li><li><strong>Diffuse reflection</strong> - Light scattered equally in all directions from a dull surface. Depends on the angle between the light and the surface normal (Lambert&#x27;s law).</li><li><strong>Specular reflection</strong> - The shiny highlight from a glossy surface. Depends on the viewer&#x27;s position.</li><li><strong>PHONG lighting model</strong> - Combines ambient + diffuse + specular components. The specular term uses a shininess exponent.</li></ul>
+<h4>Parameters that influence lighting</h4>
+<p>The appearance of a lit surface depends on: the <strong>light source</strong> (position, colour, intensity), the <strong>surface</strong> (material, colour, normal direction, roughness), and the <strong>position of the observer</strong> (needed for specular highlights).</p>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of these is NOT a parameter upon which the influence of lighting is based?&quot; Options: Light Source, Position of Observer, <strong>Rendering Algorithm</strong>, Surface. Answer: <strong>Rendering Algorithm</strong>.<br><br>Reasoning: the physical inputs to an illumination calculation are the light source, the surface properties and the observer&#x27;s position. The <strong>rendering algorithm</strong> is the *method used to compute* the image - it is the process, not a parameter of the lighting itself. This is the same kind of distinction as &quot;the recipe is not an ingredient&quot;.</blockquote>
+<table>
+<tr><th>Shading method</th><th>Description</th></tr>
+<tr><td>Flat / Constant shading</td><td>One colour for an entire polygon. Fastest, shows faceting</td></tr>
+<tr><td>Gouraud shading</td><td>Intensity is computed at the vertices and INTERPOLATED across the polygon. Smooth, but can miss specular highlights inside a polygon</td></tr>
+<tr><td>Phong shading</td><td>The surface NORMAL is interpolated and lighting is computed per pixel. Slower but much better highlights</td></tr>
+</table>
+<table>
+<tr><th>Hidden surface removal</th><th>Method</th></tr>
+<tr><td>Z-buffer (depth buffer)</td><td>Stores a depth value per pixel; the nearest surface wins. Simple and very widely used</td></tr>
+<tr><td>Back-face detection</td><td>Discards polygons facing away from the viewer</td></tr>
+<tr><td>Painter&#x27;s algorithm (depth sort)</td><td>Draws polygons from farthest to nearest</td></tr>
+<tr><td>Scan-line method</td><td>Resolves visibility one scan line at a time</td></tr>
+<tr><td>Ray tracing</td><td>Traces rays from the eye through each pixel into the scene. Very realistic (reflections, refractions, shadows) but computationally expensive</td></tr>
+</table>
+<h3>I3.7 Virtual reality and image editing</h3>
+<ul><li><strong>Virtual Reality (VR)</strong> - <strong>The construction of computer-generated simulations that simulate real-world activities using interactive graphics software and hardware.</strong> The user is immersed in and can interact with a synthetic 3D environment, usually via a head-mounted display, motion tracking and haptic gloves.</li><li><strong>Augmented Reality (AR)</strong> - Overlays computer-generated content onto the real world rather than replacing it.</li><li><strong>Immersion, interaction, imagination</strong> - The &quot;three I&#x27;s&quot; of virtual reality.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;The construction of computer-generated simulations that simulate real-world activities using interactive graphics software and hardware is called:&quot; Answer: <strong>virtual reality systems</strong>.<br><br>The other options belong to Artificial Intelligence: <strong>genetic algorithms</strong> are optimisation techniques modelled on natural selection; <strong>fuzzy neural networks</strong> combine fuzzy logic with neural networks; <strong>hybrid systems</strong> combine two or more AI techniques. Only virtual reality involves *simulating real-world activity with interactive graphics*.</blockquote>
+<h4>Image editing (Photoshop-style) terms asked in the papers</h4>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Adjustments panel</td><td>The Photoshop panel used to alter BRIGHTNESS, CONTRAST, levels, curves, hue and saturation - the standard place for tonal correction</td></tr>
+<tr><td>Healing brush tool</td><td>Repairs blemishes by blending in nearby pixels</td></tr>
+<tr><td>Paint bucket tool</td><td>Fills an area with a colour</td></tr>
+<tr><td>Selection tools</td><td>Marquee, lasso, magic wand - define the area to work on</td></tr>
+<tr><td>Cutting / Crop tool</td><td>REMOVES PARTS OF THE IMAGE</td></tr>
+<tr><td>Layers</td><td>Stacked transparent sheets that can be edited independently</td></tr>
+<tr><td>Resolution</td><td>Pixels per inch; changing it resizes or resamples</td></tr>
+<tr><td>Filters</td><td>Effects applied to pixels: blur, sharpen, distort</td></tr>
+</table>
+<table>
+<tr><th>Format</th><th>Best used for</th></tr>
+<tr><td>PNG</td><td>LOSSLESS compression with TRANSPARENCY support. The standard choice for EXPORTING IMAGES FOR THE WEB, especially logos and graphics with sharp edges</td></tr>
+<tr><td>JPEG / JPG</td><td>Lossy compression, small files, ideal for photographs on the web. No transparency</td></tr>
+<tr><td>GIF</td><td>256 colours, supports simple animation and transparency</td></tr>
+<tr><td>SVG</td><td>Vector, infinitely scalable, ideal for icons and logos on the web</td></tr>
+<tr><td>WebP</td><td>Modern web format, better compression than JPEG/PNG</td></tr>
+<tr><td>PSD</td><td>Adobe Photoshop&#x27;s NATIVE working file - keeps layers, but is huge and not viewable in browsers</td></tr>
+<tr><td>TIFF</td><td>High-quality lossless format for printing and archiving. Very large files, not for the web</td></tr>
+<tr><td>BMP</td><td>Uncompressed Windows bitmap. Enormous files, not for the web</td></tr>
+</table>
+<blockquote><strong>NOTE: Two direct PYQs on image editing</strong><br><br>&quot;Which tool is used to adjust the brightness and contrast of an image in Adobe Photoshop?&quot; Answer: <strong>Adjustments panel</strong>.<br><br>&quot;Which of the following formats is commonly used for exporting images for the web?&quot; Options: <strong>PNG</strong>, PSD, BMP, TIFF. Answer: <strong>PNG</strong>. PSD is Photoshop&#x27;s editable working format, while BMP and TIFF produce very large files - none of the three is suitable for web delivery, where small size matters.<br><br>&quot;What is the main function of the &#x27;cutting&#x27; tool in image editing?&quot; Answer: <strong>To remove parts of the image.</strong> It does not change resolution, apply colour effects or resize.</blockquote>
+<h2>I4 Management Information Systems and Knowledge Management</h2>
+<h3>I4.1 Data, information, knowledge</h3>
+<ul><li><strong>Data</strong> - Raw unprocessed facts. &quot;45&quot;.</li><li><strong>Information</strong> - Processed, organised data that has meaning in a context. &quot;The student scored 45 out of 100.&quot;</li><li><strong>Knowledge</strong> - Information combined with experience, judgement and understanding, enabling action. &quot;A score of 45 in this subject usually means the student needs remedial help in fractions.&quot;</li><li><strong>Wisdom</strong> - Knowing which knowledge to apply and why.</li></ul>
+<h3>I4.2 What an information system is</h3>
+<ul><li><strong>Information system</strong> - <strong>A set of interrelated components that collect (or retrieve), process, store and distribute information to support decision-making and control in an organisation.</strong></li><li><strong>Information technology</strong> - The hardware, software and networks - the *tools*. An information *system* is broader: it includes the people and the procedures too.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;<em>_</em>_ is a set of interrelated components that collect (or retrieve), process, store and distribute information to support decision-making and control in an organisation.&quot; Answer: <strong>An information system</strong>.<br><br>The distractor &quot;An information technology&quot; is deliberately close. Remember: <strong>IT is the technology; an IS is technology + people + processes working together toward an organisational purpose.</strong> The other options (&quot;mini model / max model of a processed system&quot;) are not real terms.</blockquote>
+<h4>The components of an information system</h4>
+<ul><li><strong>Hardware, Software, Data, People, Procedures, Networks</strong> - The six classic components.</li><li><strong>Organisation, Management, Technology</strong> - The three dimensions of an information system in Laudon&#x27;s framework. The <strong>ORGANISATION</strong> is the <strong>formal social unit devoted to attaining specified goals</strong>.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;In a management information system, what is/are the formal social unit that is/are devoted to attaining specified goals?&quot; Options: Organisation, management and marketing / <strong>Organisation</strong> / Management / Marketing. Answer: <strong>Organisation</strong>.<br><br>Definition to memorise: an <strong>organisation</strong> is a stable, formal social structure that takes resources from the environment and processes them to produce outputs, coordinated toward specified goals. <strong>Management</strong> is the *function* of planning and directing; <strong>marketing</strong> is a business *activity*. Only &quot;organisation&quot; is the social *unit*.</blockquote>
+<h3>I4.3 Types of information system by management level</h3>
+<table>
+<tr><th>System</th><th>Full form</th><th>Users</th><th>Purpose</th></tr>
+<tr><td>TPS</td><td>Transaction Processing System</td><td>Operational staff</td><td>Records day-to-day routine transactions - payroll, order entry, billing</td></tr>
+<tr><td>OAS</td><td>OFFICE AUTOMATION SYSTEM</td><td>All office workers</td><td>Supports clerical and communication work: WORD PROCESSING, ELECTRONIC FILING, ELECTRONIC MAIL, MESSAGE SWITCHING, DATA STORAGE, DATA AND VOICE COMMUNICATION, desktop publishing, scheduling</td></tr>
+<tr><td>KWS</td><td>Knowledge Work System</td><td>Engineers, designers, analysts</td><td>Supports the creation of new knowledge - CAD, simulation</td></tr>
+<tr><td>MIS</td><td>Management Information System</td><td>Middle management</td><td>Produces routine summary and exception REPORTS from TPS data, for monitoring and control</td></tr>
+<tr><td>DSS</td><td>DECISION SUPPORT SYSTEM</td><td>Middle and senior management</td><td>A computer program application used to IMPROVE A COMPANY&#x27;S DECISION-MAKING CAPABILITIES. Analyses semi-structured problems using models, what-if analysis and simulation</td></tr>
+<tr><td>ESS / EIS</td><td>Executive Support / Information System</td><td>Top executives</td><td>Highly summarised, graphical, strategic view with drill-down. Handles unstructured decisions</td></tr>
+<tr><td>CRM</td><td>Customer Relationship Management</td><td>Sales and marketing</td><td>Manages all customer interactions</td></tr>
+<tr><td>ERP</td><td>Enterprise Resource Planning</td><td>Whole organisation</td><td>One integrated system across finance, HR, manufacturing, supply chain</td></tr>
+<tr><td>SCM</td><td>Supply Chain Management</td><td>Logistics</td><td>Manages suppliers, inventory and distribution</td></tr>
+</table>
+<blockquote><strong>NOTE: Two direct PYQs on system types</strong><br><br>&quot;DSS is a computer program application used to improve a company&#x27;s <em>_</em>_ capabilities.&quot; Answer: <strong>decision-making capabilities</strong>. The name says it: <strong>D</strong>ecision <strong>S</strong>upport <strong>S</strong>ystem.<br><br>&quot;Which of the following systems comprises word processing, electronic filing, electronic mail, message switching, data storage and data and voice communication?&quot; Answer: <strong>Office Automation Systems</strong>.<br><br>Every item in that list is a routine *office* function - documents, filing, mail, messaging. An ESS gives executives strategic dashboards, a DSS runs analytical models, and CRM manages customers. Only OAS is about general office productivity and communication.</blockquote>
+<blockquote><strong>TIP: MIS vs DSS - the distinction examiners test</strong><br><br><strong>MIS</strong> answers &quot;<strong>what happened?</strong>&quot; with fixed, routine reports on structured data. <strong>DSS</strong> answers &quot;<strong>what if?</strong>&quot; and &quot;<strong>what is best?</strong>&quot; with flexible, interactive models on semi-structured problems. <strong>ESS</strong> answers &quot;<strong>what should we do strategically?</strong>&quot; with highly summarised external and internal data.</blockquote>
+<h3>I4.4 Knowledge management</h3>
+<ul><li><strong>Knowledge Management (KM)</strong> - <strong>The set of processes developed in an organisation to create, gather, store, transfer and apply knowledge.</strong></li></ul>
+<h4>Purposes of a KM system</h4>
+<p>Driving strategy, integration of knowledge across the organisation, sharing of knowledge, capturing and codifying expertise, improving decisions, reducing duplicated effort, and retaining knowledge when employees leave.</p>
+<p>Note that <strong>portability</strong> is *not* a purpose of a knowledge management system - it is a software quality attribute.</p>
+<blockquote><strong>NOTE: Two direct PYQs on KM</strong><br><br>&quot;The set of processes developed in an organisation to create, gather, store, transfer and apply knowledge best describes:&quot; Answer: <strong>knowledge management</strong>. (&quot;Knowledge asset&quot; is the *thing* being managed; &quot;organisational memory&quot; is the *store*; &quot;organisational learning&quot; is the *outcome*.)<br><br>&quot;Which of the following is NOT the purpose of knowledge management system?&quot; Options: Driving strategy, Integration, Sharing of knowledge, <strong>Portability</strong>. Answer: <strong>Portability</strong>. Portability means software running on different platforms - a technical quality, unrelated to the goals of KM.</blockquote>
+<h3>I4.5 Tacit and explicit knowledge</h3>
+<table>
+<tr><th>Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>TACIT knowledge</td><td>Personal, EXPERIENCE-BASED knowledge that is difficult to write down or formalise. It resides in a person&#x27;s head and is acquired through practice. It <strong>results from an individual&#x27;s shared experience</strong></td><td>Knowing how to ride a bicycle; a master craftsman&#x27;s feel for the material; an experienced teacher&#x27;s classroom instinct</td></tr>
+<tr><td>Explicit knowledge</td><td>Codified, documented knowledge that can easily be written, stored and transmitted</td><td>A manual, a textbook, a database, a written procedure</td></tr>
+</table>
+<ul><li><strong>SECI model (Nonaka and Takeuchi)</strong> - The four modes of knowledge conversion: <strong>Socialisation</strong> (tacit to tacit), <strong>Externalisation</strong> (tacit to explicit), <strong>Combination</strong> (explicit to explicit), <strong>Internalisation</strong> (explicit to tacit).</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;An individual&#x27;s shared experience results in <em>_</em>_.&quot; Options: systematic knowledge, shared knowledge, <strong>tacit knowledge</strong>, all three. Answer: <strong>tacit knowledge</strong>.<br><br>The key phrase is &quot;<strong>individual&#x27;s experience</strong>&quot;. Knowledge gained personally through doing and experiencing, which is hard to articulate, is by definition <strong>tacit</strong>. Systematic and explicit knowledge is what you get from documents and formal training.</blockquote>
+<h3>I4.6 Other KM terms</h3>
+<ul><li><strong>Best practices</strong> - <strong>A particular organisation&#x27;s or industry&#x27;s most successful solutions or problem-solving methods</strong> - the proven approaches worth reusing. (Note: one DSSSB paper asked this and the official key gave &quot;knowledge management&quot; rather than &quot;best practices&quot;. Strictly, the phrase describes <strong>best practices</strong>; be alert if both options appear.)</li><li><strong>Knowledge asset</strong> - The intellectual resources an organisation owns - patents, documented processes, employee expertise.</li><li><strong>Knowledge warehouse</strong> - A repository storing organisational knowledge.</li><li><strong>Organisational learning</strong> - The process by which an organisation as a whole adapts and improves from experience.</li><li><strong>Organisational memory</strong> - The accumulated stored knowledge of an organisation.</li><li><strong>Communities of practice</strong> - Informal groups sharing a professional interest, used to spread tacit knowledge.</li></ul>
+<h4>Building a KM system - cost</h4>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;The lowest cost solution to developing a KM system is:&quot; Options: <strong>in-house development</strong>, outsourcing, development by end users, off-the-shelf solution. Answer: <strong>in-house development</strong>.<br><br>The reasoning the examiner expects: building it internally uses existing staff and existing infrastructure, avoiding vendor fees, licence costs and consultancy charges. Outsourcing and buying a packaged product both involve paying an external party.</blockquote>
+<h3>I4.7 Qualitative and quantitative measures</h3>
+<ul><li><strong>Quantitative</strong> - Measurable in numbers: revenue, response time, number of users, infrastructure count.</li><li><strong>Qualitative</strong> - Descriptive, subjective, hard to put a number on: <strong>value</strong>, satisfaction, morale, brand reputation, culture, trust.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which qualitative statistic is difficult to quantify precisely?&quot; Options: Model, Infrastructure, <strong>Value</strong>, Decision making. Answer: <strong>Value</strong>.<br><br>Reasoning: &quot;value&quot; is inherently subjective - the value a knowledge system delivers depends on perception, context and long-term effects, so it resists precise measurement. Infrastructure can be counted, models can be specified, and decision-making can be measured through outcomes and cycle times.</blockquote></body></html>

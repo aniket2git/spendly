@@ -1,0 +1,345 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>DSSSB TGT CS - 14_partL3</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><h2>L11 Paper 3 - Discipline 1</h2>
+<h3>About this paper</h3>
+<p>This is the most recent of the three papers, and its style is noticeably different: fewer pure-recall questions and more <strong>conceptual and code-tracing</strong> questions. Treat it as the best guide to what the next paper will look like.</p>
+<p><strong>Q. How does the Best Fit algorithm impact system performance?</strong></p>
+<ul><li>(a) It improves system performance by reducing memory wastage.</li><li>(b) <strong>It may reduce system performance due to increased search time for free blocks.  &lt;-- CORRECT</strong></li><li>(c) It always improves system performance.</li><li>(d) It improves system performance by reducing external fragmentation.</li></ul>
+<blockquote><strong>Why:</strong> Best Fit must scan the entire free list on every request, and it worsens external fragmentation by leaving tiny holes. See Part C, Chapter C4.2.</blockquote>
+<p><strong>Q. What happens if a RST (reset) packet is received during the connection management process?</strong></p>
+<ul><li>(a) The receiver sends another SYN packet.</li><li>(b) <strong>The connection is immediately terminated.  &lt;-- CORRECT</strong></li><li>(c) The sender continues retransmissions.</li><li>(d) The connection remains active.</li></ul>
+<blockquote><strong>Why:</strong> RST aborts abruptly, unlike FIN which starts a graceful four-way shutdown. See Part G, Chapter G5.3.</blockquote>
+<p><strong>Q. Which of the following SQL expressions evaluates to TRUE, according to SQL-99?</strong></p>
+<ul><li>(a) NULL &lt;= NULL returns UNKNOWN</li><li>(b) NULL &gt;= NULL returns UNKNOWN</li><li>(c) NULL IS NULL returns FALSE</li><li>(d) <strong>NULL IS NULL returns TRUE  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> You can never test NULL with = or &lt;=; only IS NULL works, and it returns TRUE. See Part F, Chapter F4.4.</blockquote>
+<p><strong>Q. Which of the following statements is false about universal logic gates?</strong></p>
+<ul><li>(a) All basic logic gates can be implemented through universal logic gates.</li><li>(b) NOR gate is known as universal logic gate.</li><li>(c) NAND gate is known as universal logic gate.</li><li>(d) <strong>All basic logic gates cannot be implemented using universal logic gates.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> This directly contradicts the definition of a universal gate. See Part A, Chapter A6.3.</blockquote>
+<p><strong>Q. If a process arrives at time 5, what is the latest possible time for it to start execution if there are no other processes in the system?</strong></p>
+<ul><li>(a) Time 6</li><li>(b) Time 0</li><li>(c) <strong>Time 5  &lt;-- CORRECT</strong></li><li>(d) Time 4</li></ul>
+<blockquote><strong>Why:</strong> With no competition it is dispatched immediately, and it cannot start before it arrives. See Part C, Chapter C2.2.</blockquote>
+<p><strong>Q. Which of the following describes the use of digital certificates in authentication? (asked in Hindi)</strong></p>
+<ul><li>(a) They store users&#x27; passwords.</li><li>(b) They compress large files for secure transfer.</li><li>(c) <strong>They verify the identity of entities using Public Key Infrastructure (PKI).  &lt;-- CORRECT</strong></li><li>(d) They encrypt data transmission.</li></ul>
+<blockquote><strong>Why:</strong> Certificates bind a public key to an identity, signed by a CA. They authenticate; encryption is done separately with session keys. See Part G, Chapter G7.6.</blockquote>
+<p><strong>Q. Which of the following is NOT a benefit of distributed systems?</strong></p>
+<ul><li>(a) Scalability</li><li>(b) <strong>High communication latency  &lt;-- CORRECT</strong></li><li>(c) Resource sharing</li><li>(d) Fault tolerance</li></ul>
+<blockquote><strong>Why:</strong> Latency is a well-known drawback, because messages travel over a network. See Part C, Chapter C6.5.</blockquote>
+<p><strong>Q. What is the overall design of a database called?</strong></p>
+<ul><li>(a) <strong>Database Schema  &lt;-- CORRECT</strong></li><li>(b) Database Instance</li><li>(c) Database Table</li><li>(d) Database Model</li></ul>
+<blockquote><strong>Why:</strong> Schema is the structure; instance is the data at a moment. Schema is to instance as class is to object. See Part F, Chapter F1.3.</blockquote>
+<p><strong>Q. In an acyclic graph directory structure, what is a common method used to implement shared directories or files?</strong></p>
+<ul><li>(a) File duplication</li><li>(b) <strong>Symbolic (soft) links  &lt;-- CORRECT</strong></li><li>(c) Hard links</li><li>(d) Directory pointers</li></ul>
+<blockquote><strong>Why:</strong> Hard links to directories are forbidden because they could create cycles, breaking acyclicity. See Part C, Chapter C5.2.</blockquote>
+<p><strong>Q. What is the ARP reply&#x27;s scope in terms of message type?</strong></p>
+<ul><li>(a) Anycast</li><li>(b) <strong>Unicast  &lt;-- CORRECT</strong></li><li>(c) Multicast</li><li>(d) Broadcast</li></ul>
+<blockquote><strong>Why:</strong> ARP request = broadcast (nobody knows who has the IP); ARP reply = unicast (the replier knows exactly who asked). See Part G, Chapter G4.5.</blockquote>
+<p><strong>Q. What does the XNOR gate output when A=1 and B=0?</strong></p>
+<ul><li>(a) B</li><li>(b) <strong>0  &lt;-- CORRECT</strong></li><li>(c) A</li><li>(d) 1</li></ul>
+<blockquote><strong>Why:</strong> XNOR outputs 1 only when inputs are identical. Here they differ, so the output is 0. See Part A, Chapter A6.2.</blockquote>
+<p><strong>Q. Which technology is commonly used in Wi-Fi to enhance signal range and reliability?</strong></p>
+<ul><li>(a) <strong>MIMO (Multiple Input Multiple Output)  &lt;-- CORRECT</strong></li><li>(b) WEP (Wired Equivalent Privacy)</li><li>(c) TDMA</li><li>(d) CDMA</li></ul>
+<blockquote><strong>Why:</strong> WEP is (broken) security; TDMA and CDMA are cellular channel-access methods. See Part G, Chapter G8.4.</blockquote>
+<p><strong>Q. In which scheduling algorithm does the disk head move in one direction, satisfying all requests until it reaches the end, and then reverses direction?</strong></p>
+<ul><li>(a) <strong>SCAN  &lt;-- CORRECT</strong></li><li>(b) SSTF</li><li>(c) LOOK</li><li>(d) FCFS</li></ul>
+<blockquote><strong>Why:</strong> &quot;Until it reaches the end&quot; is decisive - LOOK reverses at the last request instead. See Part C, Chapter C5.5.</blockquote>
+<p><strong>Q. In public key cryptography, which key is used for decrypting a message encrypted with the public key?</strong></p>
+<ul><li>(a) Another public key</li><li>(b) A symmetric key</li><li>(c) The sender&#x27;s private key</li><li>(d) <strong>The recipient&#x27;s private key  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Only the matching private key of the same pair can undo what its public key locked. See Part G, Chapter G7.3.</blockquote>
+<p><strong>Q. How does the receiver handle out-of-order frames in Selective Repeat?</strong></p>
+<ul><li>(a) Requests retransmission of all frames</li><li>(b) Sends a cumulative acknowledgment</li><li>(c) <strong>Buffers them until all missing frames arrive  &lt;-- CORRECT</strong></li><li>(d) Discards them immediately</li></ul>
+<blockquote><strong>Why:</strong> Buffering is the defining difference from Go-Back-N, which discards them. See Part G, Chapter G3.2.</blockquote>
+<p><strong>Q. <em>_</em><em>_</em> is NOT allowed in a SQL:1999 view definition.</strong></p>
+<ul><li>(a) Use of subqueries</li><li>(b) Use of nested queries</li><li>(c) Use of aggregate formulas</li><li>(d) <strong>Use of ORDER BY clause  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A view is a relation, and a relation is an unordered set of tuples. Apply ORDER BY when selecting *from* the view. See Part F, Chapter F4.6.</blockquote>
+<p><strong>Q. Select the correct SQL statement which will correctly insert a new row into the Customer table with only the CustomerID, Name, and Product columns specified.</strong></p>
+<ul><li>(a) INSERT Customer SET CustomerID=101, Name=&#x27;Alice&#x27;, Product=&#x27;Pen&#x27;;</li><li>(b) INSERT INTO Customer VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</li><li>(c) INSERT INTO Customer (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);</li><li>(d) <strong>INSERT INTO Customer (CustomerID, Name, Product) VALUES (101, &#x27;Alice&#x27;, &#x27;Pen&#x27;);  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> To insert into a subset of columns you must name the columns AND use VALUES. See Part F, Chapter F4.2.</blockquote>
+<p><strong>Q. Which SQL statement is used to update data in a table?</strong></p>
+<ul><li>(a) CHANGE</li><li>(b) MODIFY</li><li>(c) <strong>UPDATE  &lt;-- CORRECT</strong></li><li>(d) SET</li></ul>
+<blockquote><strong>Why:</strong> CHANGE and MODIFY are clauses inside ALTER TABLE; SET is a clause inside UPDATE. See Part F, Chapter F4.2.</blockquote>
+<p><strong>Q. What is typically returned by the getpid system call in Unix-based operating systems?</strong></p>
+<ul><li>(a) The process ID of the kernel</li><li>(b) <strong>Process ID of the current process  &lt;-- CORRECT</strong></li><li>(c) Process ID of the first process</li><li>(d) Process ID of the parent process</li></ul>
+<blockquote><strong>Why:</strong> getppid() - with the extra p - returns the parent&#x27;s PID. See Part C, Chapter C1.4.</blockquote>
+<p><strong>Q. What does the TCP service model guarantee about the order of data delivery?</strong></p>
+<ul><li>(a) <strong>Data is delivered in the order it is transmitted.  &lt;-- CORRECT</strong></li><li>(b) Data is not guaranteed to arrive in any specific order.</li><li>(c) Data may arrive out of order and is handled by the application layer.</li><li>(d) Data is delivered as fast as possible.</li></ul>
+<blockquote><strong>Why:</strong> TCP uses sequence numbers to reorder segments. The &quot;handled by application layer&quot; option describes UDP. See Part G, Chapter G5.1.</blockquote>
+<h2>L12 Paper 3 - Discipline 2</h2>
+<p><strong>Q. A Parent class has a protected method; Child extends Parent and calls it from a public method. What happens when the code is executed?</strong></p>
+<ul><li>(a) <strong>The code will compile and print &#x27;Protected method in Parent&#x27;.  &lt;-- CORRECT</strong></li><li>(b) Compilation Error: protectedMethod is not visible in the Child class.</li><li>(c) Compilation Error: childMethod is not visible due to access restrictions.</li><li>(d) Runtime Error: Cannot access protectedMethod from the Child class.</li></ul>
+<blockquote><strong>Why:</strong> A protected member is fully accessible inside a subclass. Nothing here is illegal. Full trace in Part D, Chapter D3.3.</blockquote>
+<p><strong>Q. Given int a, b, c; a = b = c = 15; c = c + 10; what is the value of c?</strong></p>
+<ul><li>(a) Undefined</li><li>(b) 10</li><li>(c) <strong>25  &lt;-- CORRECT</strong></li><li>(d) 15</li></ul>
+<blockquote><strong>Why:</strong> Assignment is right-to-left, so all three become 15; then c becomes 25. See Part D, Chapter D1.5 (Trap 6).</blockquote>
+<p><strong>Q. What happens when this executes? char buffer[50]; int n = sprintf(buffer, &quot;Hello, World!&quot;); printf(&quot;%d %s&quot;, n, buffer);</strong></p>
+<ul><li>(a) Prints &#x27;13 Hello&#x27;</li><li>(b) Prints &#x27;12 Hello&#x27;</li><li>(c) Prints &#x27;12 Hello, World!&#x27;</li><li>(d) <strong>Prints &#x27;13 Hello, World!&#x27;  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> sprintf writes into buffer and returns the character count, excluding &#x27;\0&#x27;. &quot;Hello, World!&quot; has 13 characters. See Part D, Chapter D1.5 (Trap 10).</blockquote>
+<p><strong>Q. What is the 2&#x27;s complement of the binary number 1100?</strong></p>
+<ul><li>(a) <strong>0100  &lt;-- CORRECT</strong></li><li>(b) 1111</li><li>(c) 11</li><li>(d) 1001</li></ul>
+<blockquote><strong>Why:</strong> Invert to 0011, then add 1 to get 0100. See Part A, Chapter A5.6.</blockquote>
+<p><strong>Q. Which of the following is true about nested switch statements in C?</strong></p>
+<ul><li>(a) Both inner and outer switch statements must have a default case.</li><li>(b) A switch statement cannot contain another switch.</li><li>(c) Inner switch cases should not contain break statement</li><li>(d) <strong>A switch statement can contain another switch statement inside any of its cases.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> default is always optional, and nesting is allowed. See Part D, Chapter D1.4.</blockquote>
+<p><strong>Q. Output of: int i = 5; do { printf(&quot;%d &quot;, i); i--; } while (i &gt; 5);</strong></p>
+<ul><li>(a) No output printed</li><li>(b) Infinite loop</li><li>(c) 5 4 3 2 1</li><li>(d) <strong>5  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> do-while runs the body first, then tests: 4 &gt; 5 is false, so it stops after one pass. See Part D, Chapter D1.5 (Trap 1).</blockquote>
+<p><strong>Q. Output of: int x = -1, y = 0, z = 1; int result = (x &gt; 0) ? x : (y == 0) ? z : y;</strong></p>
+<ul><li>(a) compile time error</li><li>(b) -1</li><li>(c) <strong>1  &lt;-- CORRECT</strong></li><li>(d) 0</li></ul>
+<blockquote><strong>Why:</strong> ?: is right-associative. x &gt; 0 is false, so evaluate (y == 0) ? z : y, which gives z = 1. See Part D, Chapter D1.5 (Trap 3).</blockquote>
+<p><strong>Q. How many times will the innermost loop execute? for(i=0;i&lt;3;i++) for(j=0;j&lt;2;j++) printf(...)</strong></p>
+<ul><li>(a) <strong>6 times  &lt;-- CORRECT</strong></li><li>(b) 3 times</li><li>(c) 5 times</li><li>(d) 2 times</li></ul>
+<blockquote><strong>Why:</strong> 3 outer iterations x 2 inner iterations = 6. See Part D, Chapter D1.5 (Trap 7).</blockquote>
+<p><strong>Q. Which of the following causes an infinite loop?</strong></p>
+<ul><li>(a) for (int i = 10; i &gt; 5; i--) { }</li><li>(b) do { } while (0);</li><li>(c) <strong>while (1) { }  &lt;-- CORRECT</strong></li><li>(d) for (int i = 0; i &lt; 10; i++) { }</li></ul>
+<blockquote><strong>Why:</strong> The condition 1 is always true. The others terminate after 5, 1 and 10 iterations. See Part D, Chapter D1.4.</blockquote>
+<p><strong>Q. What does the code snippet myObject.doActivity(); represent?</strong></p>
+<ul><li>(a) <strong>Calling a method named doActivity on the object myObject  &lt;-- CORRECT</strong></li><li>(b) Sending a message to the doActivity class</li><li>(c) Creating an object myObject</li><li>(d) Sending a message to the child class of myObject</li></ul>
+<blockquote><strong>Why:</strong> doActivity is a method, not a class; object creation would need <code>new</code>. See Part D, Chapter D2.3.</blockquote>
+<p><strong>Q. Which arithmetic operator has the highest precedence in C?</strong></p>
+<ul><li>(a) -</li><li>(b) =</li><li>(c) +</li><li>(d) <strong>%  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The group <code>* / %</code> outranks <code>+ -</code>; <code>=</code> has almost the lowest precedence of all. See Part D, Chapter D1.3.</blockquote>
+<p><strong>Q. What does the super keyword in Java do?</strong></p>
+<ul><li>(a) Refers to high performing objects</li><li>(b) Refers to the current object</li><li>(c) Used to define static variables</li><li>(d) <strong>Refers to the parent class  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> <code>this</code> refers to the current object; <code>super</code> refers to the parent. See Part D, Chapter D3.4.</blockquote>
+<p><strong>Q. Output of: int a = 5, b = 3, c = 0; if (a &gt; b &gt; c) printf(&quot;True&quot;); else printf(&quot;False&quot;);</strong></p>
+<ul><li>(a) compile time error</li><li>(b) undefined behavior</li><li>(c) <strong>TRUE  &lt;-- CORRECT</strong></li><li>(d) FALSE</li></ul>
+<blockquote><strong>Why:</strong> Left-to-right: (5 &gt; 3) gives 1, then (1 &gt; 0) gives 1, so the condition is true. See Part D, Chapter D1.5 (Trap 2).</blockquote>
+<p><strong>Q. Which statement is false about simplification of Boolean functions using the Karnaugh Map technique?</strong></p>
+<ul><li>(a) K-map is used to simplify Product of Sum (POS) form.</li><li>(b) <strong>In Karnaugh Map, the rows and columns are represented in binary code sequence.  &lt;-- CORRECT</strong></li><li>(c) You group adjacent squares in powers of two, covering as many minterms or maxterms as possible.</li><li>(d) K-map is used to simplify Sum of Product (SOP) form.</li></ul>
+<blockquote><strong>Why:</strong> K-map rows and columns use GRAY code (00, 01, 11, 10), which is why adjacent cells differ by one bit. See Part A, Chapter A6.6.</blockquote>
+<p><strong>Q. An ExceptionTest program calls calculate(10, 0), whose inner catch re-throws a new Exception, with finally blocks at both levels. What is the output?</strong></p>
+<ul><li>(a) Inner finally block executed. General exception caught: / by zero In finally block.</li><li>(b) <strong>Inner finally block executed. / General exception caught: Division by zero not allowed / In finally block.  &lt;-- CORRECT</strong></li><li>(c) Inner finally block executed. Result: 0 In finally block.</li><li>(d) Inner finally block executed. ArithmeticException caught: / by zero In finally block.</li></ul>
+<blockquote><strong>Why:</strong> The inner finally runs before control leaves; the re-thrown object&#x27;s type is Exception, so the second catch matches and shows the new message. Full trace in Part D, Chapter D3.6.</blockquote>
+<p><strong>Q. What is the objective of encapsulation in object-oriented programming?</strong></p>
+<ul><li>(a) To create multiple instances of a class</li><li>(b) To enable one class to inherit from another class</li><li>(c) To allow objects to take multiple forms</li><li>(d) <strong>To combine data and methods that operate on that data within a single unit  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The distractors define instantiation, inheritance and polymorphism respectively. See Part D, Chapter D2.2.</blockquote>
+<p><strong>Q. Output of: int a = 10, b = 20; int max = (a &gt; b) ? a : b; printf(&quot;%d&quot;, max);</strong></p>
+<ul><li>(a) 30</li><li>(b) compile time error</li><li>(c) 10</li><li>(d) <strong>20  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> 10 &gt; 20 is false, so b = 20 is chosen. See Part D, Chapter D1.5 (Trap 3).</blockquote>
+<p><strong>Q. A CustomException extends Exception; validateAge(15) throws it when age &lt; 18. What is the output?</strong></p>
+<ul><li>(a) Caught Exception: null / Execution finished.</li><li>(b) Compilation error because custom exceptions cannot extend Exception.</li><li>(c) Age is valid. / Execution finished.</li><li>(d) <strong>Caught Exception: Age must be 18 or above. / Execution finished.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> 15 &lt; 18 so the exception is thrown and &quot;Age is valid.&quot; never prints; super(message) makes getMessage() return the text. See Part D, Chapter D3.6.</blockquote>
+<p><strong>Q. Which of the following techniques can be used to modify the actual variable passed to a function?</strong></p>
+<ul><li>(a) Use a local variable instead of passing any parameters.</li><li>(b) Pass a copy of the actual parameter to function.</li><li>(c) Standard C has no options for modifying actual variables passed to a function.</li><li>(d) <strong>Pass the address of the actual parameters to function.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Passing a copy cannot affect the original; pointers exist precisely for this. See Part D, Chapter D1.6.</blockquote>
+<p><strong>Q. What do the first and second dimensions represent in a two-dimensional character array?</strong></p>
+<ul><li>(a) The first dimension stores the length of each name, and the second stores the number of names.</li><li>(b) <strong>The first dimension represents the number of names in the array, and the second dimension represents the maximum length of each name.  &lt;-- CORRECT</strong></li><li>(c) The first dimension represents the maximum length of the names, and the second the number of names.</li><li>(d) The first dimension holds the total number of characters, and the second stores the number of names.</li></ul>
+<blockquote><strong>Why:</strong> Think &quot;how many, then how long&quot;. See Part D, Chapter D1.8.</blockquote>
+<h2>L13 Paper 3 - Discipline 3</h2>
+<p><strong>Q. Which asymptotic notation gives asymptotically tight upper bound as well as asymptotically tight lower bound?</strong></p>
+<ul><li>(a) Omega</li><li>(b) Big Oh</li><li>(c) <strong>Theta  &lt;-- CORRECT</strong></li><li>(d) Small Omega</li></ul>
+<blockquote><strong>Why:</strong> &quot;As well as&quot; means both bounds at once, which is Theta. See Part E, Chapter E1.3.</blockquote>
+<p><strong>Q. What is the primary function of a web browser?</strong></p>
+<ul><li>(a) To store large amounts of data</li><li>(b) To send and receive emails</li><li>(c) To create websites</li><li>(d) <strong>To display and navigate web pages  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A browser renders and navigates web content; it neither authors sites nor serves as a mail client. See Part H, Chapter H1.1.</blockquote>
+<p><strong>Q. Output of a C program where func() returns a static array and the loop prints *ptr five times without incrementing ptr.</strong></p>
+<ul><li>(a) 1 1 3 4 1</li><li>(b) 2 3 4 5 0</li><li>(c) 1 2 3 4 5</li><li>(d) <strong>1 1 1 1 1  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> ptr is never advanced, so *ptr always dereferences the first element. See Part D, Chapter D1.5 (Trap 9).</blockquote>
+<p><strong>Q. Which DHTML method is used to change the style of an HTML element using CSS dynamically?</strong></p>
+<ul><li>(a) document.createElement(&quot;style&quot;)</li><li>(b) document.getElementById(&quot;element&quot;).setCSS()</li><li>(c) <strong>element.style.backgroundColor = &quot;red&quot;  &lt;-- CORRECT</strong></li><li>(d) window.addEventListener(&quot;resize&quot;)</li></ul>
+<blockquote><strong>Why:</strong> Every element exposes a <code>style</code> object; CSS background-color becomes JavaScript backgroundColor. There is no setCSS(). See Part H, Chapter H4.3.</blockquote>
+<p><strong>Q. Which of the following statements is INCORRECT about the storage classes in C?</strong></p>
+<ul><li>(a) The scope of variable in automatic storage class is local to the block in which the variable is defined.</li><li>(b) <strong>In Register storage class, the default initial value of the variable is zero.  &lt;-- CORRECT</strong></li><li>(c) In static storage class, the default initial value of the variable is zero.</li><li>(d) In Register storage class, the storage of a variable is CPU register.</li></ul>
+<blockquote><strong>Why:</strong> register variables start with garbage, like auto. Only static and extern default to zero. See Part D, Chapter D1.7.</blockquote>
+<p><strong>Q. Output of nested blocks where inner block declares int y = 40, does x++ and y++, then the outer block prints x and y (outer x=10, y=20).</strong></p>
+<ul><li>(a) x = 11, y = 41</li><li>(b) x = 10, y = 41</li><li>(c) x = 10, y = 20</li><li>(d) <strong>x = 11, y = 20  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The inner y shadows the outer one and dies with the block; x is the outer variable and was incremented. See Part D, Chapter D1.5 (Trap 5).</blockquote>
+<p><strong>Q. Which advantage of AJAX helps in reducing bandwidth consumption?</strong></p>
+<ul><li>(a) AJAX uses less JavaScript.</li><li>(b) AJAX only loads images on the page.</li><li>(c) AJAX increases data transfer.</li><li>(d) <strong>AJAX sends and retrieves only small amounts of data from the server.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Only the needed fragment is exchanged instead of a whole page. See Part H, Chapter H4.4.</blockquote>
+<p><strong>Q. Which of the following cases DOES NOT exist when one computes the time complexity of an algorithm?</strong></p>
+<ul><li>(a) Average case</li><li>(b) Worst case</li><li>(c) <strong>Test Case  &lt;-- CORRECT</strong></li><li>(d) Best Case</li></ul>
+<blockquote><strong>Why:</strong> A &quot;test case&quot; belongs to software testing, not complexity analysis. See Part E, Chapter E1.2.</blockquote>
+<p><strong>Q. Which of the following options is correct about the functions in C language?</strong></p>
+<ul><li>(a) Actual parameters are declared in the function definition.</li><li>(b) Actual parameters are always variables.</li><li>(c) Actual parameters are used to define the function signature.</li><li>(d) <strong>Actual parameters are the values that are passed to a function when it is called.  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The distractors all describe FORMAL parameters. Actual parameters can also be literals or expressions. See Part D, Chapter D1.6.</blockquote>
+<p><strong>Q. Which DHTML method is used to control the browser window size, such as resizing it dynamically via JavaScript?</strong></p>
+<ul><li>(a) <strong>window.resizeTo()  &lt;-- CORRECT</strong></li><li>(b) window.setSize()</li><li>(c) window.changeSize()</li><li>(d) document.resizeWindow()</li></ul>
+<blockquote><strong>Why:</strong> Only resizeTo() (and resizeBy()) exist; the other three names are invented. See Part H, Chapter H4.3.</blockquote>
+<p><strong>Q. Which sorting technique is best for sorting a linked list with n elements?</strong></p>
+<ul><li>(a) Insertion sort</li><li>(b) Bubble sort</li><li>(c) <strong>Merge sort  &lt;-- CORRECT</strong></li><li>(d) Selection sort</li></ul>
+<blockquote><strong>Why:</strong> Merge sort needs only sequential traversal and pointer relinking - no random access, and O(1) extra space on a list. See Part E, Chapter E4.2.</blockquote>
+<p><strong>Q. Which PHP function is used to sort an array in ascending order without affecting the keys?</strong></p>
+<ul><li>(a) ksort()</li><li>(b) array_sort()</li><li>(c) <strong>asort()  &lt;-- CORRECT</strong></li><li>(d) sort()</li></ul>
+<blockquote><strong>Why:</strong> Prefix &#x27;a&#x27; preserves key association; &#x27;k&#x27; sorts by key; plain sort() reindexes. array_sort() does not exist. See Part H, Chapter H6.2.</blockquote>
+<p><strong>Q. Which tool is used to adjust the brightness and contrast of an image in Adobe Photoshop?</strong></p>
+<ul><li>(a) Healing brush tool</li><li>(b) Paint bucket tool</li><li>(c) <strong>Adjustments panel  &lt;-- CORRECT</strong></li><li>(d) Selection tool</li></ul>
+<blockquote><strong>Why:</strong> The Adjustments panel holds brightness/contrast, levels, curves and hue/saturation. See Part I, Chapter I3.7.</blockquote>
+<p><strong>Q. Which of the following is NOT a correct way of declaring and initializing array in C?</strong></p>
+<ul><li>(a) char arr[6] = {2};</li><li>(b) char arr[ ] = &quot;consultancy&quot;;</li><li>(c) <strong>char arr[6]; arr = &quot;consultancy&quot;;  &lt;-- CORRECT</strong></li><li>(d) char arr[6] = { };</li></ul>
+<blockquote><strong>Why:</strong> An array name is not a modifiable lvalue, so it cannot be assigned after declaration - and 6 bytes is too small anyway. See Part D, Chapter D1.8.</blockquote>
+<p><strong>Q. Which of the following formats is commonly used for exporting images for the web?</strong></p>
+<ul><li>(a) <strong>PNG  &lt;-- CORRECT</strong></li><li>(b) PSD</li><li>(c) BMP</li><li>(d) TIFF</li></ul>
+<blockquote><strong>Why:</strong> PSD is Photoshop&#x27;s working file; BMP and TIFF are far too large for the web. See Part I, Chapter I3.7.</blockquote>
+<p><strong>Q. Output of: int a = 4; int b = 3; result = a ^ b; printf(&quot;%d&quot;, result);</strong></p>
+<ul><li>(a) 0</li><li>(b) 3</li><li>(c) 4</li><li>(d) <strong>7  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> ^ is bitwise XOR, not exponentiation: 100 XOR 011 = 111 = 7. See Part D, Chapter D1.5 (Trap 4).</blockquote>
+<p><strong>Q. Output of: let x = 10; if (x &gt; 5) console.log(&quot;Greater&quot;); else console.log(&quot;Smaller&quot;);</strong></p>
+<ul><li>(a) &quot;Smaller&quot;</li><li>(b) &quot;undefined&quot;</li><li>(c) <strong>&quot;Greater&quot;  &lt;-- CORRECT</strong></li><li>(d) Error</li></ul>
+<blockquote><strong>Why:</strong> 10 &gt; 5 is true. See Part H, Chapter H4.1.</blockquote>
+<p><strong>Q. In a singly linked list, each node of the list consists of <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) <strong>data value and address of next node  &lt;-- CORRECT</strong></li><li>(b) NULL and address of the next node</li><li>(c) NULL and address of the previous node</li><li>(d) data value and address of previous node</li></ul>
+<blockquote><strong>Why:</strong> Only the LAST node contains NULL; a previous-node address means a doubly linked list. See Part E, Chapter E2.3.</blockquote>
+<p><strong>Q. What is the main function of the &#x27;cutting&#x27; tool in image editing?</strong></p>
+<ul><li>(a) <strong>To remove parts of the image  &lt;-- CORRECT</strong></li><li>(b) To change the image resolution</li><li>(c) To apply color effects</li><li>(d) To resize the image</li></ul>
+<blockquote><strong>Why:</strong> Cutting/cropping removes; it does not resample or recolour. See Part I, Chapter I3.7.</blockquote>
+<p><strong>Q. Which statement is correct about the divide and conquer approach of binary search?</strong></p>
+<ul><li>(a) The recurrence relation of binary search is T(n) = 2T(n/2) + O(1).</li><li>(b) <strong>The worst-case time complexity of binary search is O(log n).  &lt;-- CORRECT</strong></li><li>(c) The best-case time complexity of binary search is O(log n).</li><li>(d) The average-case time complexity of binary search is O(n).</li></ul>
+<blockquote><strong>Why:</strong> Binary search searches only ONE half, so the recurrence is T(n) = T(n/2) + O(1); the best case is O(1). See Part E, Chapter E1.5.</blockquote>
+<h2>L14 Paper 3 - Discipline 4</h2>
+<p><strong>Q. If A = [[1,0,0],[0,-1,0],[1,0,1]] then the matrix for A^6 is <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) [[6,0,0],[0,6,0],[6,0,6]]</li><li>(b) [[1,0,0],[0,-1,0],[6,0,1]]</li><li>(c) [[1,0,0],[0,-1,0],[1,0,1]]</li><li>(d) <strong>[[1,0,0],[0,1,0],[6,0,1]]  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The (3,1) entry becomes n and the (2,2) entry becomes (-1)^n; for n = 6 that is 6 and +1. See Part J, Chapter J4.5.</blockquote>
+<p><strong>Q. The magnetic moment of a bar magnet is <em>_</em> the magnetic moment of an equivalent solenoid if the solenoid&#x27;s magnetic field is <em>_</em>__ that of the bar magnet.</strong></p>
+<ul><li>(a) <strong>equal to ; same as  &lt;-- CORRECT</strong></li><li>(b) more than ; same as</li><li>(c) less than ; same as</li><li>(d) equal to ; different from</li></ul>
+<blockquote><strong>Why:</strong> Same field implies equal magnetic moment - that is what &quot;equivalent&quot; means. See Part J, Chapter J5.6.</blockquote>
+<p><strong>Q. Which of the following is a disadvantage of singly linked list?</strong></p>
+<ul><li>(a) <strong>Accessing an element in a singly linked list requires traversal from the head, making it slower than arrays.  &lt;-- CORRECT</strong></li><li>(b) Deletion at the beginning is performed in O(1) time.</li><li>(c) Insertion at the beginning is performed in O(1) time.</li><li>(d) Linked lists have a variable size.</li></ul>
+<blockquote><strong>Why:</strong> The other three are advantages disguised as options. See Part E, Chapter E2.3.</blockquote>
+<p><strong>Q. During 2024-25 ABC Ltd&#x27;s total purchases were Rs. 1,90,000. Gross profit was 20% on sales and closing stock was Rs. 30,000 more than opening stock. What was the gross profit?</strong></p>
+<ul><li>(a) Rs. 35,000</li><li>(b) Rs. 52,000</li><li>(c) Rs. 25,000</li><li>(d) <strong>Rs. 40,000  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> COGS = 1,90,000 - 30,000 = 1,60,000 = 80% of sales, so sales = 2,00,000 and GP = 20% = 40,000. See Part J, Chapter J6.4.</blockquote>
+<p><strong>Q. What is the main purpose of virtual memory?</strong></p>
+<ul><li>(a) <strong>To extend the physical memory using secondary storage  &lt;-- CORRECT</strong></li><li>(b) To provide cache storage</li><li>(c) To store BIOS settings</li><li>(d) To increase CPU speed</li></ul>
+<blockquote><strong>Why:</strong> Virtual memory keeps only the needed pages in RAM and the rest on disk. See Part C, Chapter C4.5.</blockquote>
+<p><strong>Q. Which of the following is true about the for loop in C?</strong></p>
+<ul><li>(a) A for loop cannot be nested inside another for loop.</li><li>(b) <strong>The condition in a for loop is optional, and it can result in an infinite loop if omitted.  &lt;-- CORRECT</strong></li><li>(c) A for loop must always have all three components.</li><li>(d) The increment/decrement part of the for loop is mandatory.</li></ul>
+<blockquote><strong>Why:</strong> All three parts are optional: <code>for(;;)</code> is legal and loops forever. See Part D, Chapter D1.4.</blockquote>
+<p><strong>Q. A fire destroyed M Ltd&#x27;s stock; salvaged stock was Rs. 3,00,000. The value of stock lost by fire was ____.</strong></p>
+<ul><li>(a) Rs. 2,55,000</li><li>(b) <strong>Rs. 6,30,000  &lt;-- CORRECT</strong></li><li>(c) Rs. 6,75,000</li><li>(d) Rs. 5,92,000</li></ul>
+<blockquote><strong>Why:</strong> Build up stock on the date of fire (opening + purchases + wages - COGS = 9,30,000), then subtract salvage: 9,30,000 - 3,00,000. See Part J, Chapter J6.4.</blockquote>
+<p><strong>Q. Two identical cells of emf 1.5 V and internal resistance 0.5 ohm are in series. If the permitted current is 1 A, the effective terminal potential difference is ____. (asked in Hindi)</strong></p>
+<ul><li>(a) 1 V</li><li>(b) 0.75 V</li><li>(c) <strong>2 V  &lt;-- CORRECT</strong></li><li>(d) 0.5 V</li></ul>
+<blockquote><strong>Why:</strong> Series gives EMF 3 V and r = 1 ohm; V = 3 - (1 x 1) = 2 V. See Part J, Chapter J5.5.</blockquote>
+<p><strong>Q. Which of the following is the differential equation corresponding to y = a e^(2x) + b e^(-x)?</strong></p>
+<ul><li>(a) y&#x27;&#x27; - 2y&#x27; + y = 0</li><li>(b) y&#x27;&#x27; + 2y&#x27; + y = 0</li><li>(c) y&#x27;&#x27; + y&#x27; - 2y = 0</li><li>(d) <strong>y&#x27;&#x27; - y&#x27; - 2y = 0  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Roots are 2 and -1, so (m-2)(m+1) = m^2 - m - 2 = 0. See Part J, Chapter J4.6.</blockquote>
+<p><strong>Q. MC Publications received rent of Rs. 2,50,000 for the year ending 31 March 2024, of which Rs. 50,000 relates to next year. The rent credited to P&amp;L is <em>__ and the advance is shown as </em>__.</strong></p>
+<ul><li>(a) Rs. 1,50,000; Liability</li><li>(b) Rs. 2,00,000; Asset</li><li>(c) Rs. 3,00,000; Asset</li><li>(d) <strong>Rs. 2,00,000; Liability  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Only earned income goes to P&amp;L; unearned income is an obligation, hence a liability. See Part J, Chapter J6.4.</blockquote>
+<p><strong>Q. The particular solution of the differential equation (D^4 - 18D^2 + 81)y = ... is</strong></p>
+<ul><li>(a) 72x^2 e^(3x)/104</li><li>(b) <strong>x^2 e^(3x)  &lt;-- CORRECT</strong></li><li>(c) 2x^2 e^(3x)</li><li>(d) 12x^2 e^(3x)</li></ul>
+<blockquote><strong>Why:</strong> The operator factorises as (D-3)^2(D+3)^2, so m = 3 is a DOUBLE root and the PI carries x^2. See Part J, Chapter J4.6.</blockquote>
+<p><strong>Q. The characteristic equation of matrix A = [[1,4],[3,5]] is <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) lambda^2 + 6 lambda - 7 = 0</li><li>(b) lambda^2 - 6 lambda + 7 = 0</li><li>(c) <strong>lambda^2 - 6 lambda - 7 = 0  &lt;-- CORRECT</strong></li><li>(d) lambda^2 + 6 lambda + 7 = 0</li></ul>
+<blockquote><strong>Why:</strong> Trace = 6, determinant = 5 - 12 = -7, giving lambda^2 - 6 lambda - 7 = 0. See Part J, Chapter J4.5.</blockquote>
+<p><strong>Q. Which of the following is NOT a tertiary business activity?</strong></p>
+<ul><li>(a) Transportation</li><li>(b) Warehousing</li><li>(c) Insurance</li><li>(d) <strong>Manufacturing  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Manufacturing is a secondary (industrial) activity; the others are auxiliaries to trade. See Part J, Chapter J6.6.</blockquote>
+<p><strong>Q. Which cycle is primarily managed by the Control Unit?</strong></p>
+<ul><li>(a) I/O cycle</li><li>(b) Memory refresh cycle</li><li>(c) <strong>Instruction cycle (Fetch-Decode-Execute cycle)  &lt;-- CORRECT</strong></li><li>(d) Arithmetic cycle</li></ul>
+<blockquote><strong>Why:</strong> The CU fetches, decodes and sequences; the ALU merely computes. See Part B, Chapter B2.3.</blockquote>
+<p><strong>Q. Which logical operation does the ALU perform that results in a 1 output only when both inputs are different?</strong></p>
+<ul><li>(a) AND</li><li>(b) <strong>XOR  &lt;-- CORRECT</strong></li><li>(c) OR</li><li>(d) NOR</li></ul>
+<blockquote><strong>Why:</strong> XOR is the difference detector. See Part B, Chapter B6.2.</blockquote>
+<p><strong>Q. Which of the following is a key design goal of an Instruction Set Architecture?</strong></p>
+<ul><li>(a) Minimizing the transistor count</li><li>(b) Ensuring only complex instructions are supported</li><li>(c) Maximizing the instruction decode time</li><li>(d) <strong>Balancing simplicity and performance for ease of programming and efficiency  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> You want to MINIMISE decode time, and transistor count is a chip-level concern. See Part B, Chapter B3.2.</blockquote>
+<p><strong>Q. Which of the following will terminate the loop immediately in C?</strong></p>
+<ul><li>(a) <strong>When a break statement is encountered  &lt;-- CORRECT</strong></li><li>(b) When the loop variable reaches a certain value</li><li>(c) When a continue statement is encountered</li><li>(d) When the loop condition is not given</li></ul>
+<blockquote><strong>Why:</strong> continue only skips one iteration. See Part D, Chapter D1.4.</blockquote>
+<p><strong>Q. Output of a program filling a[i] = i*i - 2*i + 1 for i = 0 to 4.</strong></p>
+<ul><li>(a) 1 0 2 4 9</li><li>(b) <strong>1 0 1 4 9  &lt;-- CORRECT</strong></li><li>(c) 1 1 2 4 9</li><li>(d) 1 2 3 4 9</li></ul>
+<blockquote><strong>Why:</strong> The expression is (i-1)^2, giving 1, 0, 1, 4, 9. See Part D, Chapter D1.5 (Trap 8).</blockquote>
+<p><strong>Q. Which of the following is the particular solution of y&#x27;&#x27; - 6y&#x27; + 9y = 2 e^(3t)?</strong></p>
+<ul><li>(a) e^(3t)/2</li><li>(b) <strong>t^2 e^(3t)  &lt;-- CORRECT</strong></li><li>(c) e^(3t)</li><li>(d) e^(3t)/9</li></ul>
+<blockquote><strong>Why:</strong> (m-3)^2 = 0 means 3 is a double root, so the PI must carry t^2. See Part J, Chapter J4.6.</blockquote>
+<p><strong>Q. Calculate the time complexity of deleting an element from the beginning of a dynamic array.</strong></p>
+<ul><li>(a) O(log)</li><li>(b) O(1)</li><li>(c) O(log n)</li><li>(d) <strong>O(n)  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> All remaining elements must shift left to keep memory contiguous. See Part E, Chapter E2.2.</blockquote>
+<h2>L15 Paper 3 - Discipline 5 and Teaching Methodology</h2>
+<h3>Discipline 5</h3>
+<p><strong>Q. Which of the following smileys express happiness in text communication?</strong></p>
+<ul><li>(a) <strong>:-)  &lt;-- CORRECT</strong></li><li>(b) :-(</li><li>(c) : (</li><li>(d) :</li><li>( ) </li></ul>
+<blockquote><strong>Why:</strong> Rotate the characters 90 degrees clockwise: the closing bracket forms a smile. The others form a frown or a flat mouth.</blockquote>
+<p><strong>Q. Eighty eight residents classified as male/female and drinker/non-drinker of tea. For testing association between sex and drinking of tea, the test statistic follows:</strong></p>
+<ul><li>(a) t distribution with 1 degree of freedom</li><li>(b) Chi Square distribution with 2 degrees of freedom</li><li>(c) Normal distribution</li><li>(d) <strong>Chi square distribution with 1 degree of freedom  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Association between two categorical variables means chi-square; df = (2-1)(2-1) = 1. The 88 is a red herring. See Part J, Chapter J3.6.</blockquote>
+<p><strong>Q. Which of the following statement is correct for a business organisation?</strong></p>
+<ul><li>(a) Responsibility leads to decentralisation</li><li>(b) Authority leads to decentralisation</li><li>(c) <strong>Delegation leads to decentralisation  &lt;-- CORRECT</strong></li><li>(d) Centralisation leads to autonomy</li></ul>
+<blockquote><strong>Why:</strong> Systematic delegation throughout the organisation IS decentralisation. See Part J, Chapter J6.6.</blockquote>
+<p><strong>Q. Suppose a six faced die is thrown. The probability that the number appearing on top is even is:</strong></p>
+<ul><li>(a) 1/4</li><li>(b) 1/6</li><li>(c) <strong>1/2  &lt;-- CORRECT</strong></li><li>(d) 1/9</li></ul>
+<blockquote><strong>Why:</strong> Even numbers {2,4,6} give 3 of 6 outcomes. 1/6 is the chance of one specific number. See Part J, Chapter J3.3.</blockquote>
+<p><strong>Q. How can you add an emoji to an email?</strong></p>
+<ul><li>(a) Use the delete key</li><li>(b) <strong>Click the emoji icon in the toolbar  &lt;-- CORRECT</strong></li><li>(c) Reply to the email</li><li>(d) Change the font style</li></ul>
+<blockquote><strong>Why:</strong> The emoji picker is in the compose toolbar of every modern mail client.</blockquote>
+<p><strong>Q. Select the INCORRECT option among the phases of the CPU Instruction Cycle.</strong></p>
+<ul><li>(a) Execute</li><li>(b) <strong>Encode  &lt;-- CORRECT</strong></li><li>(c) Store</li><li>(d) Fetch</li></ul>
+<blockquote><strong>Why:</strong> The phases are Fetch, Decode, Execute, Store. Instructions are decoded, never encoded, by the CPU. See Part B, Chapter B2.3.</blockquote>
+<p><strong>Q. Select an appropriate ROM type where data can be erased or destroyed using ultraviolet light.</strong></p>
+<ul><li>(a) EEPROM</li><li>(b) Flash ROM</li><li>(c) <strong>EPROM  &lt;-- CORRECT</strong></li><li>(d) PROM</li></ul>
+<blockquote><strong>Why:</strong> EPROM has a quartz window for UV erasure; EEPROM and Flash erase electrically; PROM cannot be erased. See Part A, Chapter A4.2.</blockquote>
+<p><strong>Q. WhatsApp was founded by <em>_</em><em>_</em>.</strong></p>
+<ul><li>(a) <strong>Jan Koum and Brian Acton  &lt;-- CORRECT</strong></li><li>(b) Mark Zuckerberg and Sheryl Sandberg</li><li>(c) Larry Page and Sergey Brin</li><li>(d) Allan Musk and Bill Steve</li></ul>
+<blockquote><strong>Why:</strong> Koum and Acton founded WhatsApp in 2009; Facebook (Zuckerberg) acquired it in 2014. Page and Brin founded Google.</blockquote>
+<p><strong>Q. Which of the following is an example of open-source application software?</strong></p>
+<ul><li>(a) <strong>GIMP  &lt;-- CORRECT</strong></li><li>(b) CorelDRAW</li><li>(c) Microsoft Excel</li><li>(d) Adobe Illustrator</li></ul>
+<blockquote><strong>Why:</strong> GIMP is the free open-source image editor; the other three are paid closed-source products. See Part A, Chapter A2.3.</blockquote>
+<p><strong>Q. What does the term &#x27;bootstrapping&#x27; refer to in the context of starting a business?</strong></p>
+<ul><li>(a) Raising funds through venture capitalists</li><li>(b) <strong>Self-funding the business using personal resources  &lt;-- CORRECT</strong></li><li>(c) Obtaining bank loans for initial capital</li><li>(d) Crowdfunding through online platforms</li></ul>
+<blockquote><strong>Why:</strong> All three distractors involve EXTERNAL money, which is exactly what bootstrapping avoids. See Part J, Chapter J6.9.</blockquote>
+<h3>Teaching Methodology</h3>
+<p><strong>Q. <em>_</em>___ is a methodical approach. It suggests a logical and well-organised sequence of activities. It follows more definite steps. (asked in Hindi)</strong></p>
+<ul><li>(a) teaching strategy</li><li>(b) teaching method</li><li>(c) teaching technique</li><li>(d) <strong>teaching approach  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> &quot;Methodical approach&quot; with a logical, well-organised sequence describes the broadest level - the approach. See Part K, Chapter K3.3.</blockquote>
+<p><strong>Q. Aesthetic education primarily develops <em>_</em>_.</strong></p>
+<ul><li>(a) speed in recall</li><li>(b) logical reasoning</li><li>(c) factual knowledge</li><li>(d) <strong>sensory responsiveness  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Aesthetics is about perceiving and responding to beauty, form, colour and sound. See Part K, Chapter K5.6.</blockquote>
+<p><strong>Q. Gender inequality refers to which of the following?</strong></p>
+<ul><li>(a) <strong>Social and economic disparities between genders  &lt;-- CORRECT</strong></li><li>(b) Biological differences only</li><li>(c) Differences in hairstyles</li><li>(d) Uniform distribution of resources</li></ul>
+<blockquote><strong>Why:</strong> Biological difference is SEX, not gender; and uniform distribution describes equality. See Part K, Chapter K5.4.</blockquote>
+<p><strong>Q. What is the core principle of the multilingual approach in early education?</strong></p>
+<ul><li>(a) Prioritising grammar over communication</li><li>(b) Replacing mother tongue with the target language quickly</li><li>(c) <strong>Welcoming the child&#x27;s language and using it to build understanding  &lt;-- CORRECT</strong></li><li>(d) Teaching only in the national language</li></ul>
+<blockquote><strong>Why:</strong> The home language is a resource and a bridge, not a problem to be removed. See Part K, Chapter K5.5.</blockquote>
+<p><strong>Q. In school, a &#x27;subject&#x27; differs from a &#x27;discipline&#x27; because it is <em>_</em>_. (asked in Hindi)</strong></p>
+<ul><li>(a) an external research field</li><li>(b) more deeply organised</li><li>(c) a philosophical field</li><li>(d) <strong>the branch of the discipline taught in the classroom  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> A discipline is the full scholarly domain; a subject is the curated slice taught at school. See Part K, Chapter K5.7.</blockquote>
+<p><strong>Q. Which of the following is NOT one of the five steps of Herbartian lesson planning? (asked in Hindi)</strong></p>
+<ul><li>(a) Association</li><li>(b) Presentation</li><li>(c) Application</li><li>(d) <strong>Evaluation  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> The five are Preparation, Presentation, Association, Generalisation, Application. Evaluation was added by later models. See Part K, Chapter K3.6.</blockquote>
+<p><strong>Q. Piaget&#x27;s formal operational stage begins at approximately <em>_</em>_.</strong></p>
+<ul><li>(a) <strong>11 years  &lt;-- CORRECT</strong></li><li>(b) 14 years</li><li>(c) 8 years</li><li>(d) 7 years</li></ul>
+<blockquote><strong>Why:</strong> Stage boundaries form the chain 0 - 2 - 7 - 11. See Part K, Chapter K2.1.</blockquote>
+<p><strong>Q. Which law legally mandates the inclusion of children with disabilities into mainstream schools in India?</strong></p>
+<ul><li>(a) <strong>RPwD Act, 2016  &lt;-- CORRECT</strong></li><li>(b) National Curriculum Framework, 2005</li><li>(c) RTI Act, 2009</li><li>(d) NEP, 2020</li></ul>
+<blockquote><strong>Why:</strong> Only the RPwD Act is a statute mandating inclusion. NCF is a framework, NEP a policy, and RTI is Right to Information - not RTE. See Part K, Chapter K5.2.</blockquote>
+<p><strong>Q. Diagnostic assessment mainly helps in which of the following?</strong></p>
+<ul><li>(a) Grading performance</li><li>(b) Standardising content</li><li>(c) Promoting learners</li><li>(d) <strong>Identifying misconceptions  &lt;-- CORRECT</strong></li></ul>
+<blockquote><strong>Why:</strong> Diagnosis locates exactly what is wrong so remediation can follow. Grading and promotion are summative. See Part K, Chapter K4.1.</blockquote>
+<p><strong>Q. You are designing a curriculum for vocational education. To ensure learners can transfer skills to actual work settings, which principle should you emphasise most?</strong></p>
+<ul><li>(a) <strong>Principle of activity and practicality  &lt;-- CORRECT</strong></li><li>(b) Principle of articulation</li><li>(c) Principle of recency</li><li>(d) Principle of economy</li></ul>
+<blockquote><strong>Why:</strong> Skills transfer to real workplaces only through hands-on practice in realistic conditions. See Part K, Chapter K5.6.</blockquote></body></html>

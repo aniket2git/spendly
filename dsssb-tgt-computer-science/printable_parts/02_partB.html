@@ -1,0 +1,212 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>PART B - Computer Organisation and Architecture</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: Georgia,'Times New Roman',serif; font-size: 10.5pt;
+       line-height: 1.5; color:#16181c; max-width: 980px; margin: 0 auto;
+       padding: 24px; }
+h1 { font-family: Helvetica,Arial,sans-serif; font-size: 22pt; color:#fff;
+     background:#0f3c80; padding:14px 16px; margin-top:40px;
+     page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-family: Helvetica,Arial,sans-serif; font-size:15pt; color:#0f3c80;
+     border-left:5px solid #0f3c80; padding-left:10px; margin-top:28px;
+     page-break-after: avoid; }
+h3 { font-family: Helvetica,Arial,sans-serif; font-size:12pt; color:#0a6a6d;
+     margin-top:20px; page-break-after: avoid; }
+h4 { font-family: Helvetica,Arial,sans-serif; font-size:11pt; color:#8c1a28;
+     margin-top:16px; page-break-after: avoid; }
+p { margin: 7px 0; }
+ul { margin: 7px 0 7px 18px; } li { margin: 3px 0; }
+code { font-family: 'Courier New',monospace; background:#eef0f2;
+       padding:1px 4px; border-radius:3px; font-size:9.5pt; }
+pre { font-family:'Courier New',monospace; background:#f2f4f6;
+      border-left:4px solid #7a8290; padding:10px 12px; font-size:8.8pt;
+      line-height:1.35; overflow-x:auto; page-break-inside:avoid; }
+blockquote { background:#fff8e5; border-left:4px solid #d99a1a;
+             margin:10px 0; padding:9px 13px; page-break-inside:avoid; }
+table { border-collapse:collapse; width:100%; margin:10px 0; font-size:9.3pt;
+        page-break-inside:avoid; }
+th { background:#0f3c80; color:#fff; text-align:left; padding:6px 8px; }
+td { border-bottom:1px solid #d8dce1; padding:5px 8px; vertical-align:top; }
+tr:nth-child(even) td { background:#f6f8fa; }
+hr { border:0; border-top:1px solid #c8ccd2; margin:22px 0; }
+.cover { text-align:center; padding:60px 0 40px; }
+.cover .t { font-family:Helvetica,Arial,sans-serif; font-size:30pt;
+            font-weight:bold; color:#0f3c80; }
+.cover .s { font-size:13pt; color:#444; margin-top:12px; }
+@media print { body{padding:0;} }
+</style></head><body><hr>
+<h1>PART B - Computer Organisation and Architecture</h1>
+<blockquote>*How the CPU is wired inside, how it fetches instructions, and how cache and buses move data around.*</blockquote>
+<h2>B1 Architecture vs Organisation, and the Boot Process</h2>
+<h3>B1.1 The difference between architecture and organisation</h3>
+<p>Imagine buying a car. <strong>Architecture</strong> is the driver&#x27;s view: there is a steering wheel, a brake, an accelerator, five gears. <strong>Organisation</strong> is the mechanic&#x27;s view: which pipes carry the fuel, how the gearbox teeth mesh, how thick the brake pads are.</p>
+<ul><li><strong>Computer Architecture</strong> - What the machine looks like to the <strong>programmer</strong>. The instruction set, the number of registers, the addressing modes, the data types. It answers &quot;<strong>WHAT</strong> does the machine do?&quot;</li><li><strong>Computer Organisation</strong> - How the architecture is actually <strong>built</strong> in hardware. Control signals, bus widths, circuit design. It answers &quot;<strong>HOW</strong> is it done?&quot;</li></ul>
+<p>Two computers can share the same architecture (both run the same programs) but have completely different organisations (one is cheap and slow, one is expensive and fast).</p>
+<h3>B1.2 Types of computer architecture</h3>
+<table>
+<tr><th>Architecture</th><th>Idea</th></tr>
+<tr><td>Von Neumann (Princeton)</td><td>ONE memory and ONE bus shared by both instructions and data. Simple and cheap, but instruction fetch and data fetch cannot happen at the same time - this bottleneck is called the &quot;von Neumann bottleneck&quot;</td></tr>
+<tr><td>Harvard</td><td>SEPARATE memories and separate buses for instructions and data. Both can be fetched simultaneously, so it is faster. Used in DSPs and microcontrollers</td></tr>
+<tr><td>Modified Harvard</td><td>Separate caches for instruction and data, but one unified main memory. What almost all modern CPUs actually use</td></tr>
+<tr><td>Instruction Set Architecture (ISA)</td><td>The abstract model of the machine as seen by software: instructions, registers, addressing modes, data types</td></tr>
+<tr><td>Microarchitecture</td><td>The specific hardware implementation of an ISA (pipeline depth, cache sizes, execution units)</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is NOT a type of computer architecture?&quot; Options: Micro Architecture, Harvard Architecture, <strong>Software Architecture</strong>, Instruction Set Architecture. Answer: <strong>Software Architecture</strong>.<br><br>Why: Micro-architecture, Harvard architecture and ISA are all genuine hardware-architecture terms. &quot;Software architecture&quot; belongs to <strong>Software Engineering</strong> - it describes how program modules are organised, not how a computer is built.</blockquote>
+<h3>B1.3 What happens when you press the power button</h3>
+<p>This sequence is a favourite exam target. Learn the order.</p>
+<p>*The boot sequence*</p>
+<pre>1.  You press POWER. Electricity reaches the motherboard.
+2.  The CPU automatically starts executing from a fixed address in ROM.
+3.  BIOS (stored in ROM / flash) starts running.
+4.  BIOS runs POST - Power On Self Test - checking RAM, keyboard,
+    disk, graphics. Beep codes report failures.
+5.  BIOS reads its saved settings from the CMOS chip.
+6.  BIOS finds the boot device and loads the BOOTSTRAP LOADER
+    (also called the boot loader) from the Master Boot Record.
+7.  The bootstrap loader loads the OPERATING SYSTEM KERNEL into RAM.
+8.  The kernel takes control, starts drivers and services, shows login.</pre>
+<ul><li><strong>BIOS</strong> - <strong>Basic Input Output System</strong>. Firmware stored in ROM/flash on the motherboard. It initialises hardware and hands control to the OS. Its modern replacement is <strong>UEFI</strong>.</li><li><strong>POST</strong> - <strong>Power On Self Test</strong>. Performed by the BIOS <strong>immediately after the system is switched ON</strong> - not after shutdown.</li><li><strong>CMOS chip</strong> - <strong>Complementary Metal Oxide Semiconductor</strong>. A tiny low-power memory that stores BIOS settings and the system clock. It is kept alive by a <strong>small button battery (CR2032) located on the motherboard</strong> - that is why your PC remembers the date even when unplugged.</li><li><strong>Bootstrap program</strong> - The small program that loads the operating system. It is stored in <strong>ROM</strong>, never in RAM, because RAM is empty when the machine starts.</li><li><strong>Cold boot</strong> - Starting a completely powered-off computer.</li><li><strong>Warm boot</strong> - Restarting an already running computer (Ctrl+Alt+Del) - POST is usually skipped.</li></ul>
+<blockquote><strong>NOTE: PYQ worked out - &quot;Which statement is true?&quot;</strong><br><br>(a) POST is the process performed by BIOS immediately after the system is <strong>shutdown</strong> - FALSE, it happens at <strong>start-up</strong>.<br>(b) The bootstrap program is stored in <strong>RAM</strong> - FALSE, it is in <strong>ROM</strong>.<br>(c) <strong>CMOS chip is powered by the battery located on the motherboard</strong> - TRUE. This is the answer.<br>(d) BIOS was developed by <strong>Charles Babbage</strong> - FALSE. Babbage (1791-1871) designed the Difference Engine and Analytical Engine and is called the <strong>Father of the Computer</strong>; he died a century before BIOS existed. BIOS was coined by <strong>Gary Kildall</strong> for CP/M.</blockquote>
+<blockquote><strong>TIP: Famous names you should recognise</strong><br><br>Charles Babbage - Father of the Computer (Analytical Engine). Ada Lovelace - first programmer. Alan Turing - Turing machine, father of AI/theoretical CS. John von Neumann - stored-program concept. Blaise Pascal - Pascaline calculator. Herman Hollerith - punched cards, founded the company that became IBM. Tim Berners-Lee - World Wide Web. Dennis Ritchie - C language and UNIX. Ken Thompson - UNIX. Bjarne Stroustrup - C++. James Gosling - Java. Guido van Rossum - Python. Linus Torvalds - Linux kernel. E. F. Codd - relational database model.</blockquote>
+<h2>B2 Inside the CPU - Registers, Buses and the Instruction Cycle</h2>
+<h3>B2.1 Registers - the CPU&#x27;s scratch pad</h3>
+<p>A register is a very small, very fast storage location <strong>inside</strong> the CPU. If RAM is your bookshelf, registers are the two hands you hold a book with.</p>
+<table>
+<tr><th>Register</th><th>Full form</th><th>Job</th></tr>
+<tr><td>PC</td><td>Program Counter</td><td>Holds the ADDRESS of the NEXT instruction to be executed. Also called Instruction Pointer</td></tr>
+<tr><td>IR</td><td>Instruction Register</td><td>Holds the instruction CURRENTLY being executed / decoded</td></tr>
+<tr><td>MAR</td><td>Memory Address Register</td><td>Holds the address of the memory location to be read or written</td></tr>
+<tr><td>MDR / MBR</td><td>Memory Data (Buffer) Register</td><td>Holds the data just read from, or about to be written to, memory</td></tr>
+<tr><td>AC</td><td>Accumulator</td><td>The main working register where arithmetic and logic results are collected</td></tr>
+<tr><td>General purpose</td><td>R0, R1, R2 ...</td><td>Hold operands and intermediate values</td></tr>
+<tr><td>Flag register / PSW</td><td>Program Status Word</td><td>Individual status bits: Zero, Carry, Sign, Overflow, Parity, Interrupt-enable</td></tr>
+<tr><td>SP</td><td>Stack Pointer</td><td>Points to the top of the stack</td></tr>
+<tr><td>Index register</td><td>-</td><td>Holds an offset used in indexed addressing</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;What is the size of the computer accumulator register?&quot; Answer given: <strong>4 bytes</strong>.<br><br>Reasoning: the accumulator is normally the same width as the machine&#x27;s word size. On a standard 32-bit machine, one word = 32 bits = <strong>4 bytes</strong>. That is the intended answer. (On a 64-bit machine it would be 8 bytes, and on old 8-bit machines it was 1 byte - but for DSSSB, treat &quot;accumulator size&quot; as 4 bytes / 32 bits unless the question states otherwise.)</blockquote>
+<h3>B2.2 Buses - the roads inside a computer</h3>
+<p>A <strong>bus</strong> is simply a <strong>bundle of parallel wires</strong> that carries bits from one unit to another. If it has 32 wires, 32 bits travel together in one go.</p>
+<table>
+<tr><th>Bus</th><th>Carries</th><th>Direction</th><th>Width decides</th></tr>
+<tr><td>Address bus</td><td>The memory address being accessed</td><td>One-way (CPU to memory)</td><td>How much memory can be addressed: n lines = 2^n locations</td></tr>
+<tr><td>Data bus</td><td>The actual data</td><td>Two-way (bidirectional)</td><td>How many bits move per transfer (the word size)</td></tr>
+<tr><td>Control bus</td><td>Control and timing signals: READ, WRITE, CLOCK, interrupt, reset</td><td>Mixed</td><td>-</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;A computer bus line is made up of which of the following components?&quot; Options: Registers, <strong>Set of parallel lines</strong>, Accumulators, RAM and ROM. Answer: <strong>Set of parallel lines</strong>.<br><br>This is a definition question. A bus is physically nothing more than a group of parallel conductors (wires or PCB traces). Registers and accumulators are storage devices, not buses.</blockquote>
+<blockquote><strong>TIP: Address bus arithmetic - asked often</strong><br><br>If the address bus has <strong>n</strong> lines, the CPU can address <strong>2^n</strong> distinct locations.<br>- 16 lines to 2^16 = 64 KB<br>- 20 lines to 2^20 = 1 MB<br>- 32 lines to 2^32 = 4 GB<br>- 36 lines to 2^36 = 64 GB<br>Conversely, to address 32 GB (2^35 bytes) you need <strong>35</strong> address lines.</blockquote>
+<h3>B2.3 The instruction cycle (machine cycle)</h3>
+<p>Every single thing a computer does is this loop, repeated billions of times per second. The <strong>Control Unit</strong> manages it.</p>
+<p>*The Fetch - Decode - Execute - Store cycle*</p>
+<pre>   +--&gt; FETCH   : Use the PC to read the next instruction from memory
+   |              into the IR. Then increment the PC.
+   |
+   |    DECODE  : The Control Unit works out what the instruction means
+   |              and which operands it needs.
+   |
+   |    EXECUTE : The ALU (or another unit) actually performs the
+   |              operation. Operands may be fetched from memory here.
+   |
+   +--- STORE   : The result is written back to a register or memory.
+        (also called write-back)</pre>
+<blockquote><strong>NOTE: Two PYQs on this cycle</strong><br><br>&quot;Which cycle is primarily managed by the Control Unit?&quot; Answer: <strong>Instruction cycle (Fetch-Decode-Execute cycle)</strong>.<br><br>&quot;Select the INCORRECT option among the phases of the CPU Instruction Cycle.&quot; Options: Execute, <strong>Encode</strong>, Store, Fetch. Answer: <strong>Encode</strong>. The phases are Fetch, Decode, Execute, Store. &quot;Encode&quot; is not a phase - the instruction is <strong>decoded</strong>, never encoded, by the CPU.</blockquote>
+<ul><li><strong>Fetch cycle</strong> - Also called the instruction cycle&#x27;s first phase; involves PC, MAR, MDR, IR.</li><li><strong>Machine cycle</strong> - The set of steps to complete one instruction.</li><li><strong>Clock cycle</strong> - One tick of the system clock. One machine cycle takes several clock cycles.</li><li><strong>CPI</strong> - Cycles Per Instruction. Lower is better.</li><li><strong>MIPS</strong> - Millions of Instructions Per Second. MIPS = Clock frequency / (CPI x 10^6).</li><li><strong>Interrupt</strong> - A signal that makes the CPU pause its current program, save its state, run an Interrupt Service Routine, and then resume. Checked at the <strong>end</strong> of each instruction cycle.</li></ul>
+<h3>B2.4 Pipelining</h3>
+<p>Think of a laundry: wash, dry, fold. Doing one load completely before starting the next wastes machines. Instead, while load 1 dries, load 2 washes. That is pipelining.</p>
+<p>In a CPU, the instruction cycle stages overlap so that several instructions are in progress at once. A <strong>k-stage pipeline</strong> can in the ideal case be k times faster.</p>
+<ul><li><strong>Speedup</strong> - Ideally equal to the number of stages k.</li><li><strong>Structural hazard</strong> - Two instructions need the same hardware unit at the same time.</li><li><strong>Data hazard</strong> - An instruction needs a result that the previous instruction has not produced yet. Fixed by forwarding/bypassing or by stalling (inserting bubbles).</li><li><strong>Control hazard</strong> - A branch instruction makes the pre-fetched instructions wrong. Fixed by branch prediction.</li><li><strong>Superscalar</strong> - More than one instruction issued per clock cycle using multiple pipelines.</li></ul>
+<h2>B3 RISC and CISC</h2>
+<h3>B3.1 Two philosophies</h3>
+<p>Imagine giving directions. <strong>CISC</strong> says: &quot;Take the airport shuttle&quot; - one powerful instruction that does many things. <strong>RISC</strong> says: &quot;Walk 100 m, turn left, walk 50 m, enter gate 3&quot; - many simple steps, each very quick.</p>
+<table>
+<tr><th>Point</th><th>CISC</th><th>RISC</th></tr>
+<tr><td>Full form</td><td>Complex Instruction Set Computer</td><td>Reduced Instruction Set Computer</td></tr>
+<tr><td>Number of instructions</td><td>Large (hundreds)</td><td>Small (typically under 100)</td></tr>
+<tr><td>Instruction length</td><td>Variable</td><td>Fixed (usually one word)</td></tr>
+<tr><td>Instruction complexity</td><td>One instruction may do several low-level operations</td><td>One instruction does one simple operation</td></tr>
+<tr><td>Clock cycles per instruction</td><td>Many, and variable</td><td>Mostly ONE (with pipelining)</td></tr>
+<tr><td>Addressing modes</td><td>Many (12 or more)</td><td>Few (3 to 5)</td></tr>
+<tr><td>Registers</td><td>Fewer</td><td>Many (32 or more)</td></tr>
+<tr><td>Memory access</td><td>Arithmetic instructions can access memory directly</td><td>Only LOAD and STORE touch memory</td></tr>
+<tr><td>Control unit</td><td>Microprogrammed (uses microcode)</td><td>Hardwired</td></tr>
+<tr><td>Pipelining</td><td>Difficult</td><td>Easy and efficient</td></tr>
+<tr><td>Code size</td><td>Smaller program, more complex hardware</td><td>Larger program, simpler hardware</td></tr>
+<tr><td>Compiler burden</td><td>Less</td><td>More (the compiler must optimise)</td></tr>
+<tr><td>POWER CONSUMPTION</td><td>Higher</td><td>LOWER - most energy efficient</td></tr>
+<tr><td>Examples</td><td>Intel x86, AMD, VAX, IBM 370</td><td>ARM, MIPS, SPARC, RISC-V, PowerPC, Apple M-series</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which architecture is the most energy efficient?&quot; Options: CISC, IANA, ISA, <strong>RISC</strong>. Answer: <strong>RISC</strong>.<br><br>Why: RISC uses simple fixed-length instructions and a hardwired control unit, so it needs far less decoding circuitry and switches fewer transistors per instruction. That is exactly why every mobile phone uses an ARM (RISC) processor - battery life. Note the distractors: IANA is the Internet Assigned Numbers Authority (a networking body, not an architecture) and ISA is a general term, not a specific competing design.</blockquote>
+<h3>B3.2 ISA design goals</h3>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is a key design goal of an Instruction Set Architecture?&quot; Answer: <strong>Balancing simplicity and performance for ease of programming and efficiency</strong>.<br><br>Why the others are wrong: &quot;minimising transistor count&quot; is a chip-level manufacturing concern, not an ISA goal. &quot;Ensuring only complex instructions are supported&quot; is the opposite of good design. &quot;Maximising instruction decode time&quot; is absurd - you want to <strong>minimise</strong> decode time.<br><br>A good ISA aims for: completeness, orthogonality (instructions and addressing modes combine freely), regularity, efficiency, and backward compatibility.</blockquote>
+<h2>B4 Addressing Modes</h2>
+<h3>B4.1 What an addressing mode is</h3>
+<p>An instruction must say <strong>where</strong> its operand is. The addressing mode is the rule that tells the CPU how to find it.</p>
+<p>Everyday analogy for finding a friend&#x27;s house:</p>
+<ul><li>I hand you the friend himself - <strong>immediate</strong> (the value is right here).</li><li>I say &quot;he is in room 5&quot; - <strong>direct</strong> (here is the exact address).</li><li>I say &quot;the address is written on the note in room 5&quot; - <strong>indirect</strong> (go there to get the real address).</li><li>I say &quot;he is in the register you are holding&quot; - <strong>register</strong>.</li><li>I say &quot;the address is in register R2&quot; - <strong>register indirect</strong>.</li></ul>
+<table>
+<tr><th>Mode</th><th>How the operand is found</th><th>Example</th></tr>
+<tr><td>Immediate</td><td>The operand VALUE is inside the instruction itself</td><td>MOV R1, #25</td></tr>
+<tr><td>Register</td><td>The operand is in a register</td><td>MOV R1, R2</td></tr>
+<tr><td>Direct / Absolute</td><td>The instruction contains the memory ADDRESS of the operand</td><td>MOV R1, 5000</td></tr>
+<tr><td>Indirect</td><td>The instruction contains an address; that memory location contains the real address</td><td>MOV R1, (5000)</td></tr>
+<tr><td>Register indirect</td><td>A register holds the ADDRESS of the operand. Written with brackets around the register</td><td>ADD R1, [R2]</td></tr>
+<tr><td>Indexed</td><td>Effective address = base address + contents of index register</td><td>MOV R1, 1000(R2)</td></tr>
+<tr><td>Base register</td><td>Effective address = contents of base register + displacement</td><td>Used for relocatable code</td></tr>
+<tr><td>Relative / PC-relative</td><td>Effective address = PC + offset. Used for branches</td><td>JMP +8</td></tr>
+<tr><td>Auto-increment</td><td>Register is used as a pointer, then automatically incremented</td><td>MOV R1, (R2)+</td></tr>
+<tr><td>Auto-decrement</td><td>Register is decremented first, then used</td><td>MOV R1, -(R2)</td></tr>
+<tr><td>Implied / Implicit</td><td>The operand is understood, not written</td><td>CLA (clear accumulator), NOP, INC A</td></tr>
+<tr><td>Stack</td><td>Operand is on the top of the stack</td><td>PUSH, POP</td></tr>
+</table>
+<blockquote><strong>NOTE: PYQ worked out</strong><br><br>&quot;Which of the following is an addressing mode used in an instruction of the form ADD R1, [R2]?&quot; Options: <strong>Register Indirect</strong>, Register, Indexed Register, Assembly Register. Answer: <strong>Register Indirect</strong>.<br><br>The square brackets are the give-away. <code>R2</code> alone would be *register* mode (the value is in R2). <code>[R2]</code> means &quot;the value at the memory address stored in R2&quot; - the register acts as a pointer. That is register indirect. Note &quot;Assembly Register&quot; is not a real addressing mode at all.</blockquote>
+<ul><li><strong>Effective Address (EA)</strong> - The final actual memory address the CPU computes and uses.</li><li><strong>Zero-address instruction</strong> - Uses a stack; operands are implied (PUSH/POP machines).</li><li><strong>One-address instruction</strong> - Uses an accumulator; one operand is implied.</li><li><strong>Two-address instruction</strong> - One operand doubles as source and destination.</li><li><strong>Three-address instruction</strong> - Both sources and the destination are named separately.</li></ul>
+<h2>B5 Cache Memory and Memory Mapping</h2>
+<h3>B5.1 Why cache exists</h3>
+<p>The CPU is extremely fast; RAM is comparatively slow. If the CPU had to wait for RAM every time, most of its speed would be wasted. So a small block of very fast SRAM - the <strong>cache</strong> - keeps copies of the data the CPU is most likely to need next.</p>
+<p>This works because of the <strong>principle of locality of reference</strong>:</p>
+<ul><li><strong>Temporal locality</strong> - data used now will probably be used again soon (a loop counter).</li><li><strong>Spatial locality</strong> - data near what you just used will probably be needed soon (the next element of an array).</li></ul>
+<h3>B5.2 The three mapping techniques</h3>
+<p>Main memory is divided into <strong>blocks</strong>; the cache is divided into equal-sized <strong>lines</strong> (or slots). Mapping decides which memory block may sit in which cache line.</p>
+<table>
+<tr><th>Technique</th><th>Rule</th><th>Advantage</th><th>Disadvantage</th></tr>
+<tr><td>Direct mapping</td><td>Each memory block can go in exactly ONE cache line: line = block number MOD number of lines</td><td>Simplest, cheapest, fastest lookup</td><td>Very inflicted by conflict misses; two hot blocks fighting for one line</td></tr>
+<tr><td>Fully associative</td><td>A block may go in ANY cache line</td><td>Fewest misses, most flexible</td><td>Needs to compare the tag against every line - expensive hardware</td></tr>
+<tr><td>Set associative</td><td>The cache is divided into sets of k lines. A block maps to one SET, and may go anywhere within that set (called k-way)</td><td>A practical compromise; used in all real CPUs</td><td>Moderate complexity</td></tr>
+</table>
+<h3>B5.3 Address breakdown - how to solve cache numericals</h3>
+<p>*Address field layout for each mapping type*</p>
+<pre>DIRECT MAPPED:        | TAG | LINE (or block) number | WORD offset |
+SET ASSOCIATIVE:      | TAG | SET number             | WORD offset |
+FULLY ASSOCIATIVE:    | TAG |                        | WORD offset |</pre>
+<p>The universal method:</p>
+<p>1. Compute the <strong>word offset bits</strong> = log2(block size in words).</p>
+<p>2. Compute <strong>number of cache lines</strong> = cache size / block size.</p>
+<p>3. For set associative, <strong>number of sets</strong> = number of lines / associativity; set bits = log2(number of sets).</p>
+<p>4. <strong>TAG bits = total address bits - set bits - offset bits.</strong></p>
+<blockquote><strong>NOTE: PYQ worked out - the TAG field question</strong><br><br>&quot;A four-way set-associative cache memory unit with a capacity of 32 KB is built using a block size of 1 K words. The word length is 8 bits. The size of the physical address space is 32 GB. The number of bits for the TAG field is ____.&quot; Answer: <strong>22</strong>.<br><br>Step 1 - total physical address bits.<br>Address space = 32 GB = 2^5 x 2^30 = 2^35 bytes. Word length is 8 bits = 1 byte, so 2^35 words also. Total address bits = <strong>35</strong>.<br><br>Step 2 - block (word) offset bits.<br>Block size = 1 K words = 2^10 words, so offset = <strong>10 bits</strong>.<br><br>Step 3 - number of cache lines.<br>Cache capacity = 32 KB = 2^15 bytes = 2^15 words. Lines = 2^15 / 2^10 = 2^5 = <strong>32 lines</strong>.<br><br>Step 4 - number of sets.<br>Four-way set associative means 4 lines per set. Sets = 32 / 4 = 8 = 2^3, so set bits = <strong>3</strong>.<br><br>Step 5 - TAG bits.<br>TAG = 35 - 3 - 10 = <strong>22 bits.</strong></blockquote>
+<h3>B5.4 Cache performance and write policies</h3>
+<ul><li><strong>Hit ratio (H)</strong> - hits / total accesses.</li><li><strong>Miss ratio</strong> - 1 - H.</li><li><strong>Average access time</strong> - H x (cache time) + (1 - H) x (miss penalty). Learn this formula.</li><li><strong>Compulsory miss</strong> - First-ever reference to a block (also called a cold-start miss).</li><li><strong>Conflict miss</strong> - Block evicted because another block wanted the same line. Worst in direct mapping.</li><li><strong>Capacity miss</strong> - The cache is simply too small to hold the working set.</li></ul>
+<table>
+<tr><th>Write policy</th><th>What happens on a write</th></tr>
+<tr><td>Write-through</td><td>Data is written to BOTH cache and main memory immediately. Simple and always consistent, but slower</td></tr>
+<tr><td>Write-back (copy-back)</td><td>Data is written only to the cache; a &quot;dirty bit&quot; is set, and main memory is updated only when the block is evicted. Faster, but memory is temporarily stale</td></tr>
+<tr><td>Write allocate</td><td>On a write miss, the block is first loaded into the cache</td></tr>
+<tr><td>No-write allocate</td><td>On a write miss, the data is written straight to memory</td></tr>
+</table>
+<h4>Replacement algorithms (which cache line to throw out)</h4>
+<ul><li><strong>LRU</strong> - Least Recently Used - discard the line unused for the longest time. Most common and most effective.</li><li><strong>FIFO</strong> - First In First Out - discard the oldest loaded line.</li><li><strong>LFU</strong> - Least Frequently Used - discard the line with the fewest accesses.</li><li><strong>Random</strong> - Pick any line. Surprisingly decent and very cheap.</li><li><strong>Optimal (OPT/MIN)</strong> - Discard the line that will not be needed for the longest time in future. Impossible to implement (needs the future) but used as a theoretical benchmark.</li></ul>
+<h3>B5.5 Interleaved and associative memory</h3>
+<ul><li><strong>Memory interleaving</strong> - Main memory is split into several independent modules that can be accessed simultaneously, so consecutive addresses lie in different modules. Increases effective bandwidth.</li><li><strong>Associative memory / CAM</strong> - <strong>Content Addressable Memory</strong>. You search by CONTENT rather than by address - you present the data and the memory tells you where it is. Very fast, very expensive. Used in cache tag lookup, TLBs and network routers.</li><li><strong>Virtual memory</strong> - Covered fully in Part C (Operating Systems).</li></ul>
+<h2>B6 I/O Organisation</h2>
+<h3>B6.1 Three ways to do input-output</h3>
+<table>
+<tr><th>Method</th><th>How it works</th><th>CPU involvement</th></tr>
+<tr><td>Programmed I/O</td><td>The CPU repeatedly checks (polls) the device status flag in a loop until the device is ready</td><td>Highest - CPU is fully wasted waiting</td></tr>
+<tr><td>Interrupt-driven I/O</td><td>The device raises an interrupt when it is ready; the CPU does other work in the meantime</td><td>Medium - CPU handles each byte/word but does not wait</td></tr>
+<tr><td>DMA (Direct Memory Access)</td><td>A separate DMA controller transfers a whole block directly between the device and memory, then interrupts the CPU once at the end</td><td>Lowest - CPU is only involved at start and finish</td></tr>
+</table>
+<ul><li><strong>Cycle stealing</strong> - The DMA controller takes control of the bus for one cycle at a time between CPU accesses.</li><li><strong>Burst mode / block transfer</strong> - The DMA controller keeps the bus until the whole block is moved.</li><li><strong>I/O port</strong> - An addressable interface through which the CPU talks to a device.</li><li><strong>Memory-mapped I/O</strong> - Device registers appear as ordinary memory addresses; normal LOAD/STORE instructions work on them.</li><li><strong>Isolated (I/O-mapped) I/O</strong> - Devices live in a separate address space with special IN and OUT instructions.</li><li><strong>Interrupt vector</strong> - A table holding the addresses of interrupt service routines.</li><li><strong>Maskable interrupt</strong> - Can be disabled by software. <strong>Non-maskable (NMI)</strong> cannot - used for critical failures like power loss.</li></ul>
+<h3>B6.2 The ALU and its operations</h3>
+<p>The ALU performs:</p>
+<ul><li><strong>Arithmetic</strong>: add, subtract, multiply, divide, increment, decrement, compare.</li><li><strong>Logical</strong>: AND, OR, NOT, XOR, XNOR.</li><li><strong>Shift and rotate</strong>: logical shift, arithmetic shift, rotate left/right.</li></ul>
+<blockquote><strong>NOTE: Direct PYQ</strong><br><br>&quot;Which logical operation does the ALU perform that results in a 1 output only when both inputs are different?&quot; Answer: <strong>XOR</strong>. AND needs both to be 1; OR needs at least one 1; NOR needs both to be 0. Only XOR is the &quot;difference detector&quot;.</blockquote>
+<blockquote><strong>TIP: Shift operations = fast arithmetic</strong><br><br>A <strong>left shift by 1</strong> multiplies by 2. A <strong>right shift by 1</strong> divides by 2 (integer division). Shifting by n multiplies or divides by 2^n. Compilers use this because shifting is far cheaper than multiplying. This idea already appeared in the &quot;3&#x27;s complement number divided by 2&quot; question in Part A.</blockquote></body></html>
