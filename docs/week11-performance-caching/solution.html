@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Week 11 - Graded Assignment - Performance and Caching - Illustrated Solutions</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm 15mm 13mm; }
+
+  :root{
+    --blue:#1b4f9c; --blue-l:#e8f0fb; --blue-d:#0f2f61;
+    --orange:#d9480f; --orange-l:#fff1e6;
+    --green:#1f7a3a; --green-l:#e9f7ee;
+    --red:#b52020; --red-l:#fdecec;
+    --purple:#5b3ec8; --purple-l:#f0ecfd;
+    --grey:#5a6472; --line:#d5dae2; --ink:#1d2430; --soft:#f7f9fc;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    font-family:'Noto Sans', Arial, sans-serif;
+    color:var(--ink); font-size:10.6pt; line-height:1.62;
+    margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  p{ margin:7px 0; }
+  b,strong{ color:var(--blue-d); }
+  ul,ol{ margin:7px 0 7px 0; padding-left:20px; }
+  li{ margin:4px 0; }
+  small{ font-size:9pt; color:var(--grey); }
+
+  h1.part{
+    break-before:page; page-break-before:always;
+    font-size:20pt; line-height:1.25; margin:0 0 4px 0; color:#fff;
+    background:var(--blue); padding:12px 16px; border-radius:8px;
+  }
+  h1.part .kicker{ display:block; font-size:9.5pt; letter-spacing:2px;
+    text-transform:uppercase; opacity:.85; font-weight:600; }
+  h1.nobreak{ break-before:auto; page-break-before:auto; }
+  h2{ font-size:14pt; margin:20px 0 6px; color:var(--blue-d);
+      border-bottom:2.5px solid var(--blue-l); padding-bottom:4px; break-after:avoid; }
+  h3{ font-size:11.6pt; margin:14px 0 4px; color:var(--orange); break-after:avoid; }
+  h4{ font-size:10.6pt; margin:10px 0 2px; color:var(--blue-d); break-after:avoid; }
+
+  .card, .note, .warn, .key, .ans, .qbox, .analogy, .trap, .kid{
+    break-inside:avoid; page-break-inside:avoid;
+    border-radius:8px; padding:10px 13px; margin:11px 0;
+  }
+  .card{ background:var(--soft); border:1px solid var(--line); }
+  .note{ background:var(--blue-l); border-left:5px solid var(--blue); }
+  .analogy{ background:#fffbe8; border-left:5px solid #e0a800; }
+  .warn{ background:var(--orange-l); border-left:5px solid var(--orange); }
+  .trap{ background:var(--red-l); border-left:5px solid var(--red); }
+  .key{ background:var(--purple-l); border-left:5px solid var(--purple); }
+  .kid{ background:#eefaf4; border:1.5px dashed var(--green); }
+  .ans{ background:var(--green-l); border:2.5px solid var(--green); }
+  .boxtitle{ font-weight:700; font-size:10.2pt; display:block; margin-bottom:3px;
+             letter-spacing:.3px; text-transform:uppercase; }
+  .note .boxtitle{ color:var(--blue); }
+  .analogy .boxtitle{ color:#a97800; }
+  .warn .boxtitle{ color:var(--orange); }
+  .trap .boxtitle{ color:var(--red); }
+  .key .boxtitle{ color:var(--purple); }
+  .kid .boxtitle{ color:var(--green); }
+  .ans .boxtitle{ color:var(--green); font-size:11pt; }
+  .ans .big{ font-size:15pt; font-weight:800; color:var(--green); }
+
+  .qhead{
+    background:var(--blue-d); color:#fff; border-radius:8px 8px 0 0;
+    padding:9px 14px; font-weight:700; font-size:12pt; margin-top:16px;
+    break-after:avoid; page-break-after:avoid;
+  }
+  .qhead .mark{ float:right; font-weight:600; font-size:9.5pt; opacity:.9; }
+  .qbody{
+    border:1.5px solid var(--blue-d); border-top:none; border-radius:0 0 8px 8px;
+    padding:11px 14px; margin-bottom:6px; background:#fff;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .qtext{ font-weight:600; font-size:11pt; color:var(--blue-d); margin:0 0 7px; }
+  .opts{ list-style:none; padding:0; margin:0; }
+  .opts li{
+    border:1px solid var(--line); border-radius:6px; padding:5px 9px; margin:4px 0;
+    background:#fcfdff;
+  }
+  .opts li .lab{ font-weight:700; color:var(--blue); margin-right:6px; }
+  .opts li.right{ background:var(--green-l); border-color:var(--green); }
+  .opts li.wrong{ background:#fbfbfc; }
+
+  pre{
+    background:#1e2430; color:#e6e9ef; border-radius:8px; padding:11px 13px;
+    font-family:'Noto Sans Mono','Noto Sans',monospace; font-size:8.8pt; line-height:1.5;
+    overflow:visible; white-space:pre-wrap; margin:9px 0;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  pre.light{ background:#f3f5f9; color:#22303f; border:1px solid var(--line); }
+  code{ background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:9.4pt;
+        font-family:'Noto Sans Mono','Noto Sans',monospace; color:#0f2f61; }
+  .kw{ color:#c792ea; } .st{ color:#ffcb6b; } .fn{ color:#82aaff; }
+  .nu{ color:#f78c6c; } .cm{ color:#8b98ad; font-style:italic; } .tg{ color:#7fd1b9; }
+
+  table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:9.6pt;
+         break-inside:avoid; page-break-inside:avoid; }
+  table.flow{ break-inside:auto; page-break-inside:auto; }
+  table.flow tr{ break-inside:avoid; page-break-inside:avoid; }
+  th{ background:var(--blue); color:#fff; text-align:left; padding:6px 8px; font-size:9.4pt; }
+  td{ border:1px solid var(--line); padding:5px 8px; vertical-align:top; }
+  tr:nth-child(even) td{ background:#fafbfd; }
+  td.c, th.c{ text-align:center; }
+
+  .pill{ display:inline-block; padding:1px 8px; border-radius:11px; font-size:8.6pt;
+         font-weight:700; letter-spacing:.4px; }
+  .pill.t{ background:var(--green-l); color:var(--green); border:1px solid var(--green); }
+  .pill.f{ background:var(--red-l); color:var(--red); border:1px solid var(--red); }
+
+  figure{ margin:13px 0; break-inside:avoid; page-break-inside:avoid; text-align:center; }
+  figure svg{ width:100%; height:auto; }
+  figcaption{ font-size:9pt; color:var(--grey); margin-top:5px; font-style:italic; }
+  .fignum{ font-weight:700; color:var(--blue); font-style:normal; }
+
+  .step{ border-left:3px solid var(--blue-l); padding:2px 0 2px 13px; margin:12px 0;
+         break-inside:avoid; }
+  .step .n{ display:inline-block; background:var(--blue); color:#fff; font-weight:700;
+            border-radius:50%; width:21px; height:21px; text-align:center;
+            line-height:21px; font-size:9.4pt; margin-right:7px; }
+  .step .st-t{ font-weight:700; color:var(--blue-d); font-size:10.8pt; }
+
+  .cover{ height:262mm; display:flex; flex-direction:column; justify-content:center;
+          text-align:center; break-after:page; page-break-after:always; }
+  .cover .t1{ font-size:15pt; letter-spacing:4px; color:var(--orange); font-weight:700;
+              text-transform:uppercase; }
+  .cover .t2{ font-size:31pt; font-weight:800; color:var(--blue-d); line-height:1.15;
+              margin:8px 0; }
+  .cover .t3{ font-size:12.5pt; color:var(--grey); margin-bottom:22px; }
+  .cover .band{ background:var(--blue); color:#fff; padding:14px; border-radius:10px;
+                font-size:11.5pt; margin:0 8mm; }
+  .two{ display:flex; gap:11px; } .two > *{ flex:1; margin-top:0; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<div class="cover">
+  <div class="t1">Modern Application Development II</div>
+  <div class="t2">Week 11 &ndash; Graded Assignment<br/>Complete Illustrated Solutions</div>
+  <div class="t3">Performance &bull; Caching &bull; ETag &bull; Flask-Caching &bull; Cookies
+    &bull; DOM events &bull; Images &bull; CDN</div>
+
+  <figure>
+    <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="cv1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+      </defs>
+      <text x="330" y="18" font-size="13" font-weight="800" fill="#0f2f61" text-anchor="middle">The journey of one request &ndash; and every place we can make it faster</text>
+
+      <!-- browser -->
+      <rect x="10" y="46" width="106" height="74" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+      <text x="63" y="68" font-size="10" font-weight="800" fill="#1b4f9c" text-anchor="middle">BROWSER</text>
+      <text x="63" y="84" font-size="8.2" fill="#5a6472" text-anchor="middle">its own cache</text>
+      <text x="63" y="97" font-size="8.2" fill="#5a6472" text-anchor="middle">cookies, images,</text>
+      <text x="63" y="110" font-size="8.2" fill="#5a6472" text-anchor="middle">DOM events</text>
+      <rect x="18" y="126" width="90" height="18" rx="9" fill="#1f7a3a"/>
+      <text x="63" y="139" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">fastest: 0 ms</text>
+
+      <path d="M122 83 H166" stroke="#1b4f9c" stroke-width="2.2" marker-end="url(#cv1)"/>
+
+      <!-- proxy -->
+      <rect x="172" y="46" width="100" height="74" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+      <text x="222" y="68" font-size="10" font-weight="800" fill="#5b3ec8" text-anchor="middle">PROXY</text>
+      <text x="222" y="84" font-size="8.2" fill="#5a6472" text-anchor="middle">shared cache,</text>
+      <text x="222" y="97" font-size="8.2" fill="#5a6472" text-anchor="middle">serves many</text>
+      <text x="222" y="110" font-size="8.2" fill="#5a6472" text-anchor="middle">users at once</text>
+      <rect x="180" y="126" width="84" height="18" rx="9" fill="#1f7a3a" opacity=".8"/>
+      <text x="222" y="139" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">fast</text>
+
+      <path d="M278 83 H322" stroke="#1b4f9c" stroke-width="2.2" marker-end="url(#cv1)"/>
+
+      <!-- CDN -->
+      <rect x="328" y="46" width="100" height="74" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+      <text x="378" y="68" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">CDN EDGE</text>
+      <text x="378" y="84" font-size="8.2" fill="#5a6472" text-anchor="middle">a copy near</text>
+      <text x="378" y="97" font-size="8.2" fill="#5a6472" text-anchor="middle">the user, so the</text>
+      <text x="378" y="110" font-size="8.2" fill="#5a6472" text-anchor="middle">distance shrinks</text>
+      <rect x="336" y="126" width="84" height="18" rx="9" fill="#e0a800"/>
+      <text x="378" y="139" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">near</text>
+
+      <path d="M434 83 H478" stroke="#1b4f9c" stroke-width="2.2" marker-end="url(#cv1)"/>
+
+      <!-- origin -->
+      <rect x="484" y="46" width="106" height="74" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+      <text x="537" y="68" font-size="10" font-weight="800" fill="#b52020" text-anchor="middle">YOUR SERVER</text>
+      <text x="537" y="84" font-size="8.2" fill="#5a6472" text-anchor="middle">Flask-Caching,</text>
+      <text x="537" y="97" font-size="8.2" fill="#5a6472" text-anchor="middle">then the slow</text>
+      <text x="537" y="110" font-size="8.2" fill="#5a6472" text-anchor="middle">database</text>
+      <rect x="492" y="126" width="90" height="18" rx="9" fill="#b52020"/>
+      <text x="537" y="139" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">slowest</text>
+
+      <!-- arrow of principle -->
+      <rect x="10" y="164" width="580" height="34" rx="7" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+      <text x="300" y="185" font-size="11" font-weight="800" fill="#a97800" text-anchor="middle">THE GOLDEN RULE: stop the journey as early as you can. The best request is the one never sent.</text>
+
+      <text x="300" y="218" font-size="10" fill="#22303f" text-anchor="middle">Every question in this paper is about one box above, or about the arrows between them.</text>
+      <text x="300" y="236" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">Caching decides where you stop. ETag decides if you can reuse. CDN decides how far you travel.</text>
+    </svg>
+  </figure>
+
+  <div class="band">
+    Written for a complete beginner. Start at Part 1 and read straight through.
+    Every idea gets a picture and an everyday story before any code appears.
+  </div>
+</div>
+
+<!-- ============================== HOW TO USE ============================== -->
+<h1 class="part nobreak"><span class="kicker">Read this first</span>How to use this book</h1>
+
+<p>This document does <b>two</b> jobs at once:</p>
+<ol>
+  <li><b>It teaches the subject from zero.</b> Parts 1 to 9 build the knowledge brick by
+      brick, with pictures and everyday stories.</li>
+  <li><b>It solves all 10 questions</b>, showing exactly how a marker expects you to reason.</li>
+</ol>
+
+<div class="ans">
+  <span class="boxtitle">Good news about your attempt</span>
+  Your screenshots show <b>"Flag for review"</b> and <b>"Clear Selection"</b> and no green
+  correctness banners, so these are the options you had <i>selected</i>, not confirmed results.
+  Every answer here was therefore worked out independently and checked against the official
+  documentation of Flask-Caching and the HTTP specification.
+  <br/><br/>
+  The result: <b>all ten of your selections are correct.</b> There is nothing to change.
+  This book is here to make sure you know <i>why</i> &ndash; because the same ideas come back in the
+  end-term paper with the wording shuffled.
+</div>
+
+<h2>Map of the book</h2>
+<table>
+  <tr><th style="width:88px">Part</th><th>What you learn</th><th style="width:112px">Questions</th></tr>
+  <tr><td><b>Part 1</b></td><td>What "performance" actually means: latency, throughput, scalability</td><td class="c"><b>Q4</b></td></tr>
+  <tr><td><b>Part 2</b></td><td>The tools that measure it, and one famous tool that does not</td><td class="c"><b>Q5</b></td></tr>
+  <tr><td><b>Part 3</b></td><td>Caching, and the four places a cache can live</td><td class="c"><b>Q2, Q3</b></td></tr>
+  <tr><td><b>Part 4</b></td><td>ETag, If-Match and If-None-Match: reusing without re-downloading</td><td class="c"><b>Q9</b></td></tr>
+  <tr><td><b>Part 5</b></td><td>Flask-Caching: <code>@cached</code> vs <code>@memoize</code></td><td class="c"><b>Q1</b></td></tr>
+  <tr><td><b>Part 6</b></td><td>Cookies: the hidden weight on every single request</td><td class="c"><b>Q6</b></td></tr>
+  <tr><td><b>Part 7</b></td><td><code>DOMContentLoaded</code> vs <code>load</code>: when is the page ready?</td><td class="c"><b>Q7</b></td></tr>
+  <tr><td><b>Part 8</b></td><td>Images: the biggest easy win on most web pages</td><td class="c"><b>Q8</b></td></tr>
+  <tr><td><b>Part 9</b></td><td>CDN: putting a copy of your site near every user</td><td class="c"><b>Q10</b></td></tr>
+  <tr><td><b>Part 10</b></td><td>Answer key, cheat sheet, practice questions, glossary</td><td class="c">revision</td></tr>
+</table>
+
+<h2>The boxes you will see</h2>
+<div class="analogy"><span class="boxtitle">Story box</span>
+  A real-life picture of the idea. Read this one first, always.</div>
+<div class="note"><span class="boxtitle">Definition box</span>
+  The proper technical wording, the one to write in an exam.</div>
+<div class="trap"><span class="boxtitle">Trap box</span>
+  The exact mistake that loses the mark. Learn these by heart.</div>
+<div class="ans"><span class="boxtitle">Answer box</span>
+  The final answer, with the option letters.</div>
+
+
+<!-- ============================== PART 1 ============================== -->
+<h1 class="part"><span class="kicker">Part 1 &bull; Question 4</span>What "performance" actually means</h1>
+
+<p>People say "the site is slow" as if slowness were one thing. It is not. There are
+<b>three</b> separate measurements, and mixing them up is the commonest mistake in this
+topic.</p>
+
+<h2>1.1 Latency and throughput are different things</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the water pipe</span>
+  Two questions you can ask about a pipe:
+  <br/><br/>
+  <b>"How long does one drop take to travel from one end to the other?"</b>
+  That is <b>latency</b> &ndash; a <i>time</i>, measured in milliseconds. Lower is better.
+  <br/><br/>
+  <b>"How many litres come out per minute?"</b>
+  That is <b>throughput</b> &ndash; an <i>amount per unit time</i>, measured in requests per second.
+  Higher is better.
+  <br/><br/>
+  A thin, very long pipe has bad latency. A short but narrow pipe has bad throughput.
+  They are independent, and a good application needs <b>both</b>: many requests handled per
+  second, each one answered quickly.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+      <marker id="a2" markerWidth="9" markerHeight="9" refX="9" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#d9480f"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The two numbers you must never confuse</text>
+
+    <!-- latency -->
+    <rect x="8" y="28" width="336" height="102" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="176" y="48" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">LATENCY  =  how long ONE request takes</text>
+    <rect x="34" y="62" width="52" height="30" rx="5" fill="#fff" stroke="#1b4f9c" stroke-width="1.8"/>
+    <text x="60" y="82" font-size="8.6" font-weight="700" fill="#1b4f9c" text-anchor="middle">client</text>
+    <path d="M92 77 H262" stroke="#1b4f9c" stroke-width="2.4" marker-end="url(#a1)"/>
+    <text x="177" y="72" font-size="9" font-weight="700" fill="#1b4f9c" text-anchor="middle">240 milliseconds</text>
+    <rect x="268" y="62" width="52" height="30" rx="5" fill="#fff" stroke="#1b4f9c" stroke-width="1.8"/>
+    <text x="294" y="82" font-size="8.6" font-weight="700" fill="#1b4f9c" text-anchor="middle">server</text>
+    <text x="176" y="108" font-size="9.4" fill="#22303f" text-anchor="middle">measured in TIME  &bull;  lower is better</text>
+    <text x="176" y="123" font-size="9.4" font-weight="700" fill="#1b4f9c" text-anchor="middle">"how fast does it feel to me?"</text>
+
+    <!-- throughput -->
+    <rect x="356" y="28" width="336" height="102" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="524" y="48" font-size="11.5" font-weight="800" fill="#d9480f" text-anchor="middle">THROUGHPUT  =  how MANY per second</text>
+    <g>
+      <rect x="382" y="60" width="14" height="10" rx="2" fill="#d9480f"/>
+      <rect x="382" y="74" width="14" height="10" rx="2" fill="#d9480f"/>
+      <rect x="382" y="88" width="14" height="10" rx="2" fill="#d9480f"/>
+      <path d="M402 65 H470" stroke="#d9480f" stroke-width="1.8"/>
+      <path d="M402 79 H470" stroke="#d9480f" stroke-width="1.8"/>
+      <path d="M402 93 H470" stroke="#d9480f" stroke-width="1.8"/>
+      <rect x="476" y="58" width="52" height="42" rx="5" fill="#fff" stroke="#d9480f" stroke-width="1.8"/>
+      <text x="502" y="83" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">server</text>
+      <text x="596" y="76" font-size="10.4" font-weight="800" fill="#d9480f" text-anchor="middle">1200 requests</text>
+      <text x="596" y="91" font-size="10.4" font-weight="800" fill="#d9480f" text-anchor="middle">per second</text>
+    </g>
+    <text x="524" y="115" font-size="9.4" fill="#22303f" text-anchor="middle">measured as a COUNT per time  &bull;  higher is better</text>
+    <text x="524" y="123" font-size="1" fill="#fff">.</text>
+
+    <!-- combined -->
+    <rect x="8" y="142" width="684" height="100" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+    <text x="350" y="162" font-size="11.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">Question 4 option A joins them into ONE sentence &ndash; and that is why it is correct</text>
+    <rect x="30" y="174" width="640" height="26" rx="5" fill="#fff" stroke="#5b3ec8"/>
+    <text x="350" y="191" font-size="9.6" font-style="italic" fill="#22303f" text-anchor="middle">"the number of requests an application can handle for a given time interval with as little latency as possible"</text>
+    <text x="164" y="220" font-size="9.4" font-weight="800" fill="#5b3ec8" text-anchor="middle">this half = THROUGHPUT</text>
+    <text x="164" y="234" font-size="8.6" fill="#22303f" text-anchor="middle">"number of requests ... for a given time interval"</text>
+    <text x="524" y="220" font-size="9.4" font-weight="800" fill="#5b3ec8" text-anchor="middle">this half = LATENCY</text>
+    <text x="524" y="234" font-size="8.6" fill="#22303f" text-anchor="middle">"with as little latency as possible"</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.1</span> &ndash; Latency is a duration; throughput is a rate. Option A of Q4 asks for both at once.</figcaption>
+</figure>
+
+<h2>1.2 The third measurement: scalability</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the one-window ticket counter</span>
+  A ticket counter serves one customer in 30 seconds. Lovely &ndash; when there is one customer.
+  Now 200 people arrive at once. The clerk still takes 30 seconds each, so the last person
+  waits 100 minutes.
+  <br/><br/>
+  Nothing about the clerk got slower. What failed was <b>scalability</b>: the ability to keep
+  performing as the <b>load</b> grows. Measuring performance with one user tells you almost
+  nothing about a real launch day.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">How does the application behave as load increases?</text>
+
+    <!-- axes -->
+    <line x1="80" y1="212" x2="640" y2="212" stroke="#22303f" stroke-width="2"/>
+    <line x1="80" y1="212" x2="80" y2="40" stroke="#22303f" stroke-width="2"/>
+    <text x="360" y="238" font-size="9.6" font-weight="700" fill="#5a6472" text-anchor="middle">number of users at the same time  (LOAD)</text>
+    <text x="26" y="130" font-size="9.6" font-weight="700" fill="#5a6472" text-anchor="middle" transform="rotate(-90 26 130)">response time</text>
+
+    <g font-size="8.4" fill="#5a6472">
+      <text x="80" y="226" text-anchor="middle">10</text>
+      <text x="220" y="226" text-anchor="middle">100</text>
+      <text x="360" y="226" text-anchor="middle">1000</text>
+      <text x="500" y="226" text-anchor="middle">5000</text>
+      <text x="640" y="226" text-anchor="middle">10000</text>
+    </g>
+
+    <!-- good curve -->
+    <path d="M80 190 L220 186 L360 180 L500 172 L640 164" stroke="#1f7a3a" stroke-width="3" fill="none"/>
+    <circle cx="640" cy="164" r="4.5" fill="#1f7a3a"/>
+    <rect x="466" y="126" width="196" height="30" rx="6" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="564" y="139" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">SCALES WELL</text>
+    <text x="564" y="151" font-size="8.2" fill="#22303f" text-anchor="middle">stays fast as users pile on</text>
+
+    <!-- bad curve -->
+    <path d="M80 190 L220 182 L330 164 L420 122 L480 72 L520 50" stroke="#b52020" stroke-width="3" fill="none"/>
+    <circle cx="520" cy="50" r="4.5" fill="#b52020"/>
+    <rect x="200" y="50" width="196" height="30" rx="6" fill="#fdecec" stroke="#b52020" stroke-width="1.6"/>
+    <text x="298" y="63" font-size="9" font-weight="800" fill="#b52020" text-anchor="middle">SCALES BADLY</text>
+    <text x="298" y="75" font-size="8.2" fill="#22303f" text-anchor="middle">falls apart under real traffic</text>
+
+    <!-- knee marker -->
+    <line x1="420" y1="122" x2="420" y2="212" stroke="#b52020" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="424" y="206" font-size="8.4" font-weight="700" fill="#b52020">the knee: it breaks here</text>
+
+    <text x="140" y="196" font-size="8.4" font-weight="700" fill="#5a6472">both look identical with few users</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.2</span> &ndash; Two applications that seem equally fast in testing and behave completely differently in production.</figcaption>
+</figure>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; the three measurements</span>
+  <ul style="margin-bottom:0">
+    <li><b>Latency</b>: the time taken to serve one request. A duration. Lower is better.</li>
+    <li><b>Throughput</b>: how many requests are served per unit time. A rate. Higher is better.</li>
+    <li><b>Scalability</b>: whether latency and throughput hold up as the load grows.</li>
+  </ul>
+  All three are <b>measurable numbers</b>. That word matters for the question below.
+</div>
+
+<h2>1.3 What is NOT a performance criterion</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; judging a car by its badge</span>
+  You want to know how fast a car is. So you measure its top speed, its acceleration, and
+  how it behaves fully loaded with luggage. What you do <b>not</b> do is say
+  "it is a Maruti, therefore it is fast". The <b>brand is not a measurement</b>.
+  <br/><br/>
+  In the same way, "the app should be written in Flask or Django" is a statement about the
+  <b>tool chosen</b>, not a measurement of speed. A brilliantly written Flask app and a
+  terrible one are both Flask apps.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Is it a MEASUREMENT, or just a CHOICE?</text>
+
+    <rect x="8" y="28" width="336" height="164" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="50" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">MEASURABLE  =  a real criterion</text>
+    <g font-size="9.4">
+      <rect x="26" y="62" width="300" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="176" y="76" font-weight="700" fill="#1f7a3a" text-anchor="middle">requests per second, with low latency</text>
+      <text x="176" y="89" font-size="8.4" fill="#5a6472" text-anchor="middle">you can put a number on it: 1200 req/s at 240 ms</text>
+      <rect x="26" y="102" width="300" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="176" y="116" font-weight="700" fill="#1f7a3a" text-anchor="middle">how it scales over load</text>
+      <text x="176" y="129" font-size="8.4" fill="#5a6472" text-anchor="middle">you can plot it: Figure 1.2</text>
+      <rect x="26" y="142" width="300" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="176" y="156" font-weight="700" fill="#1f7a3a" text-anchor="middle">page load time, time to first byte</text>
+      <text x="176" y="169" font-size="8.4" fill="#5a6472" text-anchor="middle">a stopwatch answers it</text>
+    </g>
+
+    <rect x="356" y="28" width="336" height="164" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="50" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">NOT MEASURABLE  =  not a criterion</text>
+    <g font-size="9.4">
+      <rect x="374" y="62" width="300" height="48" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="524" y="79" font-weight="700" fill="#b52020" text-anchor="middle">"it should be written in Flask or Django"</text>
+      <text x="524" y="93" font-size="8.4" fill="#5a6472" text-anchor="middle">This is a technology choice, not a number.</text>
+      <text x="524" y="105" font-size="8.4" fill="#5a6472" text-anchor="middle">A slow Flask app is still a Flask app.</text>
+      <rect x="374" y="116" width="300" height="60" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="524" y="133" font-weight="700" fill="#b52020" text-anchor="middle">Why the examiner put it there</text>
+      <text x="524" y="148" font-size="8.4" fill="#5a6472" text-anchor="middle">Because it SOUNDS professional, and because</text>
+      <text x="524" y="160" font-size="8.4" fill="#5a6472" text-anchor="middle">it is the framework you use in this course.</text>
+      <text x="524" y="172" font-size="8.4" font-weight="700" fill="#b52020" text-anchor="middle">Familiar is not the same as correct.</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.3</span> &ndash; The test for any option in this question: could I attach a number to it?</figcaption>
+</figure>
+
+<!-- ---------------------------- Q4 ---------------------------- -->
+<div class="qhead">Question 4 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following criterions should be directly considered while measuring the performance of an application?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> The number of requests an application can handle for a given time interval with as much as little latency.</li>
+    <li class="right"><span class="lab">B.</span> How does the application scale over load.</li>
+    <li class="wrong"><span class="lab">C.</span> The application should be written in Python based flask or Django framework.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is <b>throughput and latency in one sentence</b> &ndash; the two headline numbers of
+      performance. Figure 1.1 breaks the sentence in half to show both.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td><b>Scalability.</b> An application that is fast for one user and collapses at a
+      thousand has not performed well. Figure 1.2.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>A <b>technology choice, not a measurement.</b> Performance is measured in numbers,
+      and no number appears here. Plenty of fast applications use neither Flask nor Django,
+      and plenty of slow ones use both.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>"All of the above" would require C to be true as well. Since C is false, D collapses
+      with it.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 4</span>
+  <span class="big">A and B</span>
+  <br/><small>Throughput-with-latency, and scalability under load. Matches your selection.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the flattering option</span>
+  Option C mentions the exact framework you have been studying all term, which makes it feel
+  like the "course-approved" answer. Examiners rely on that comfort. Apply the test from
+  Figure 1.3 instead: <b>if you cannot attach a number to it, it is not a performance
+  criterion.</b>
+</div>
+
+<!-- ============================== PART 2 ============================== -->
+<h1 class="part"><span class="kicker">Part 2 &bull; Question 5</span>The tools that measure performance</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the doctor's instruments</span>
+  A thermometer measures temperature. A stethoscope listens to your heart. A weighing
+  machine gives your weight. All three are medical instruments &ndash; but if the doctor wants
+  your temperature, only one of them will do.
+  <br/><br/>
+  <b>Lighthouse</b> and <b>GTmetrix</b> are the thermometers of web performance.
+  <b>Postman</b> is also a fine instrument, but it is for a different job entirely.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 265" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Performance tools, and one tool that measures something else</text>
+
+    <!-- lighthouse -->
+    <rect x="8" y="28" width="220" height="150" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="118" y="50" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">LIGHTHOUSE</text>
+    <text x="118" y="66" font-size="8.6" fill="#5a6472" text-anchor="middle">built into Chrome DevTools</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="24" y="86">&bull; audits performance, accessibility,</text>
+      <text x="32" y="98">SEO and best practices</text>
+      <text x="24" y="114">&bull; gives a score out of 100</text>
+      <text x="24" y="130">&bull; reports First Contentful Paint,</text>
+      <text x="32" y="142">Largest Contentful Paint, blocking time</text>
+      <text x="24" y="158">&bull; suggests concrete fixes</text>
+    </g>
+    <rect x="24" y="164" width="188" height="8" rx="4" fill="#1f7a3a"/>
+
+    <!-- gtmetrix -->
+    <rect x="240" y="28" width="220" height="150" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="350" y="50" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">GTMETRIX</text>
+    <text x="350" y="66" font-size="8.6" fill="#5a6472" text-anchor="middle">an online testing service</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="256" y="86">&bull; loads your page from chosen</text>
+      <text x="264" y="98">locations around the world</text>
+      <text x="256" y="114">&bull; gives page load time and page size</text>
+      <text x="256" y="130">&bull; draws a waterfall chart of every</text>
+      <text x="264" y="142">single request the page made</text>
+      <text x="256" y="158">&bull; tracks scores over time</text>
+    </g>
+    <rect x="256" y="164" width="188" height="8" rx="4" fill="#1f7a3a"/>
+
+    <!-- postman -->
+    <rect x="472" y="28" width="220" height="150" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.4"/>
+    <text x="582" y="50" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">POSTMAN</text>
+    <text x="582" y="66" font-size="8.6" fill="#5a6472" text-anchor="middle">an API development tool</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="488" y="86">&bull; sends individual API requests</text>
+      <text x="488" y="102">&bull; checks status codes and JSON</text>
+      <text x="496" y="114">bodies are correct</text>
+      <text x="488" y="130">&bull; organises request collections</text>
+      <text x="488" y="146">&bull; used for TESTING CORRECTNESS,</text>
+      <text x="496" y="158">not analysing page performance</text>
+    </g>
+    <rect x="488" y="164" width="188" height="8" rx="4" fill="#b52020"/>
+
+    <!-- bottom -->
+    <rect x="8" y="190" width="684" height="66" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="209" font-size="10.6" font-weight="800" fill="#a97800" text-anchor="middle">The honest nuance, so nobody catches you out</text>
+    <text x="350" y="226" font-size="9.2" fill="#22303f" text-anchor="middle">Postman does display the response time of a request, and modern versions can run load tests.</text>
+    <text x="350" y="240" font-size="9.2" fill="#22303f" text-anchor="middle">But it is not a tool for measuring or analysing the performance of a WEB PAGE: it never renders the page,</text>
+    <text x="350" y="252" font-size="9.2" font-weight="700" fill="#a97800" text-anchor="middle">so it cannot see images, CSS, JavaScript, the DOM, or anything the browser actually does.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.1</span> &ndash; Two page-performance tools and one API-correctness tool.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q5 ---------------------------- -->
+<div class="qhead">Question 5 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following tools can be used to measure or analyze the performance of a web application?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> GTmetrix</li>
+    <li class="wrong"><span class="lab">B.</span> Postman</li>
+    <li class="right"><span class="lab">C.</span> Lighthouse</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td><b>GTmetrix</b> exists for exactly this: it loads your page, times it, and produces a
+      waterfall chart plus a list of recommendations.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>Postman</b> is for developing and testing APIs &ndash; is the endpoint returning the
+      right status code and the right JSON? It does not render a web page, so it cannot analyse
+      page performance.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td><b>Lighthouse</b> is Google's auditing tool, built into Chrome DevTools. Performance is
+      its headline score.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires B, which is false.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 5</span>
+  <span class="big">A and C</span>
+  <br/><small>GTmetrix and Lighthouse. Matches your selection.</small>
+</div>
+
+<div class="note">
+  <span class="boxtitle">Worth knowing for the end term</span>
+  Other genuine web-performance tools: <b>WebPageTest</b>, <b>PageSpeed Insights</b>
+  (which runs Lighthouse), the <b>Network</b> and <b>Performance</b> tabs of Chrome DevTools,
+  and for server-side load testing <b>Apache JMeter</b> or <b>Locust</b>.
+  Tools that are <i>not</i> for page performance: Postman and <code>curl</code> (API calls),
+  Git (version control), Selenium (functional testing).
+</div>
+
+
+<!-- ============================== PART 3 ============================== -->
+<h1 class="part"><span class="kicker">Part 3 &bull; Questions 2 and 3</span>Caching, and where caches live</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the water bottle on your desk</span>
+  Every time you are thirsty you could walk to the kitchen tap. Instead you fill a bottle
+  once and keep it on your desk. Now drinking takes one second instead of one minute.
+  <br/><br/>
+  That bottle is a <b>cache</b>: a nearby copy of something that lives far away, kept so you
+  do not have to make the long trip again. The trade-off is the same one every cache has:
+  the water in your bottle might be <b>stale</b> while the tap is always fresh.
+  Speed is bought with the risk of staleness.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; cache</span>
+  A <b>cache</b> stores a copy of a resource closer to the consumer so future requests are
+  served faster. A request answered from the cache is a <b>cache hit</b>; one that has to
+  travel to the original source is a <b>cache miss</b>. The original source is called the
+  <b>origin</b>.
+</div>
+
+<h2>3.1 The four places a cache can live</h2>
+
+<figure>
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5a6472"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The cache ladder: each rung you climb costs more time</text>
+
+    <!-- rung 1 -->
+    <rect x="14" y="30" width="672" height="52" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="30" y="50" font-size="11" font-weight="800" fill="#1f7a3a">1. BROWSER CACHE  (on your own machine)</text>
+    <text x="30" y="68" font-size="9.2" fill="#22303f">Stores images, CSS and JS on your disk. Private to YOU. No network travel at all.</text>
+    <rect x="540" y="40" width="132" height="32" rx="16" fill="#1f7a3a"/>
+    <text x="606" y="60" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">LOWEST LATENCY</text>
+
+    <path d="M350 84 V96" stroke="#5a6472" stroke-width="2" marker-end="url(#c1)"/>
+
+    <!-- rung 2 -->
+    <rect x="14" y="100" width="672" height="52" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+    <text x="30" y="120" font-size="11" font-weight="800" fill="#5b3ec8">2. PROXY CACHE  (on the network, between you and the server)</text>
+    <text x="30" y="138" font-size="9.2" fill="#22303f">Run by your college, office or ISP. SHARED: one stored copy serves many different users.</text>
+    <rect x="556" y="110" width="116" height="32" rx="16" fill="#5b3ec8"/>
+    <text x="614" y="130" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">SHARED CACHE</text>
+
+    <path d="M350 154 V166" stroke="#5a6472" stroke-width="2" marker-end="url(#c1)"/>
+
+    <!-- rung 3 -->
+    <rect x="14" y="170" width="672" height="52" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="30" y="190" font-size="11" font-weight="800" fill="#d9480f">3. CDN EDGE CACHE  (a copy in a city near you)</text>
+    <text x="30" y="208" font-size="9.2" fill="#22303f">Also shared. Shortens the physical distance to the content. Covered fully in Part 9.</text>
+    <rect x="556" y="180" width="116" height="32" rx="16" fill="#d9480f"/>
+    <text x="614" y="200" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">GEOGRAPHIC</text>
+
+    <path d="M350 224 V236" stroke="#5a6472" stroke-width="2" marker-end="url(#c1)"/>
+
+    <!-- rung 4 -->
+    <rect x="14" y="240" width="672" height="54" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="30" y="260" font-size="11" font-weight="800" fill="#b52020">4. SERVER-SIDE CACHE  (inside your own application)</text>
+    <text x="30" y="278" font-size="9.2" fill="#22303f">Flask-Caching with Redis. Saves the DATABASE work, but the request still crossed the whole network.</text>
+    <rect x="556" y="252" width="116" height="30" rx="15" fill="#b52020"/>
+    <text x="614" y="271" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">HIGHEST LATENCY</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.1</span> &ndash; Caching happens at <b>many</b> levels, not one. Note that browser level is nearest, so it has the least latency.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">Why browser level has the least latency</span>
+  A browser cache hit involves <b>no network at all</b> &ndash; the file is read from your own disk.
+  A proxy cache hit still requires a round trip out of your machine and onto the network,
+  even if it is a short one. Distance is time, and zero distance wins.
+</div>
+
+<h2>3.2 Private cache vs shared cache</h2>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="c3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+    <!-- browser private -->
+    <rect x="8" y="24" width="336" height="222" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="46" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">BROWSER CACHE = PRIVATE</text>
+    <text x="176" y="62" font-size="8.8" fill="#5a6472" text-anchor="middle">one copy, one person</text>
+
+    <rect x="40" y="76" width="90" height="40" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="85" y="94" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">Ravi's</text>
+    <text x="85" y="107" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">browser</text>
+    <rect x="150" y="76" width="70" height="40" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="185" y="94" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">his own</text>
+    <text x="185" y="106" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">cache</text>
+
+    <rect x="40" y="130" width="90" height="40" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="85" y="148" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">Sita's</text>
+    <text x="85" y="161" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">browser</text>
+    <rect x="150" y="130" width="70" height="40" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="185" y="148" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">her own</text>
+    <text x="185" y="160" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">cache</text>
+
+    <path d="M226 96 H300" stroke="#1f7a3a" stroke-width="2" marker-end="url(#c2)"/>
+    <path d="M226 150 H300" stroke="#1f7a3a" stroke-width="2" marker-end="url(#c2)"/>
+    <text x="176" y="196" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">Each person downloads it once,</text>
+    <text x="176" y="211" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">for themselves. Nobody shares.</text>
+    <text x="176" y="232" font-size="8.8" fill="#22303f" text-anchor="middle">Safe for personal data: your bank balance</text>
+    <text x="176" y="243" font-size="8.8" fill="#22303f" text-anchor="middle">never lands in someone else's cache.</text>
+
+    <!-- proxy shared -->
+    <rect x="356" y="24" width="336" height="222" rx="10" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="524" y="46" font-size="11.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">PROXY CACHE = SHARED</text>
+    <text x="524" y="62" font-size="8.8" fill="#5a6472" text-anchor="middle">one copy serves MULTIPLE users</text>
+
+    <rect x="374" y="72" width="74" height="30" rx="6" fill="#fff" stroke="#5b3ec8" stroke-width="1.8"/>
+    <text x="411" y="91" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">Ravi</text>
+    <rect x="374" y="108" width="74" height="30" rx="6" fill="#fff" stroke="#5b3ec8" stroke-width="1.8"/>
+    <text x="411" y="127" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">Sita</text>
+    <rect x="374" y="144" width="74" height="30" rx="6" fill="#fff" stroke="#5b3ec8" stroke-width="1.8"/>
+    <text x="411" y="163" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">Anu</text>
+
+    <path d="M454 87 L512 116" stroke="#5b3ec8" stroke-width="2" marker-end="url(#c3)"/>
+    <path d="M454 123 H512" stroke="#5b3ec8" stroke-width="2" marker-end="url(#c3)"/>
+    <path d="M454 159 L512 130" stroke="#5b3ec8" stroke-width="2" marker-end="url(#c3)"/>
+
+    <rect x="518" y="98" width="80" height="50" rx="7" fill="#5b3ec8"/>
+    <text x="558" y="118" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">PROXY</text>
+    <text x="558" y="132" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">ONE copy</text>
+    <text x="558" y="143" font-size="7.4" fill="#fff" text-anchor="middle">of logo.png</text>
+
+    <path d="M604 123 H660" stroke="#5b3ec8" stroke-width="2" marker-end="url(#c3)"/>
+    <text x="660" y="112" font-size="8" font-weight="700" fill="#5b3ec8" text-anchor="middle">to origin</text>
+    <text x="660" y="140" font-size="8" font-weight="700" fill="#5b3ec8" text-anchor="middle">ONCE only</text>
+
+    <text x="524" y="196" font-size="9.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">Downloaded once from the origin,</text>
+    <text x="524" y="211" font-size="9.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">then served to all three users.</text>
+    <text x="524" y="232" font-size="8.8" fill="#22303f" text-anchor="middle">Great for public files. Personal pages must be</text>
+    <text x="524" y="243" font-size="8.8" fill="#22303f" text-anchor="middle">marked Cache-Control: private to stay out.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.2</span> &ndash; The defining difference: a proxy cache serves its stored copy to <b>multiple users</b>.</figcaption>
+</figure>
+
+<h2>3.3 What a hard refresh really does</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; emptying your own bottle</span>
+  You suspect the water in your desk bottle has gone stale, so you pour it away and refill it
+  from the tap. Good. But your <b>neighbour's bottle</b> is still full of the old water, and
+  the office <b>water cooler</b> in the corridor may also still hold yesterday's supply.
+  <br/><br/>
+  You control your own bottle only. <b>A hard refresh empties your browser's cache for that
+  page &ndash; and has no authority over the proxy in the middle.</b>
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c4" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">You press Ctrl+Shift+R  (hard refresh). What actually happens?</text>
+
+    <!-- browser -->
+    <rect x="14" y="34" width="176" height="112" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.4"/>
+    <text x="102" y="54" font-size="10.4" font-weight="800" fill="#b52020" text-anchor="middle">YOUR BROWSER CACHE</text>
+    <rect x="34" y="66" width="136" height="34" rx="6" fill="#fff" stroke="#b52020" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <line x1="46" y1="70" x2="158" y2="96" stroke="#eeb8b8" stroke-width="2.2"/>
+    <line x1="158" y1="70" x2="46" y2="96" stroke="#eeb8b8" stroke-width="2.2"/>
+    <text x="102" y="80" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">old copy of page</text>
+    <text x="102" y="93" font-size="9" font-weight="800" fill="#b52020" text-anchor="middle">CLEARED / BYPASSED</text>
+    <text x="102" y="120" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">this you DO control</text>
+    <text x="102" y="136" font-size="8.4" fill="#5a6472" text-anchor="middle">a fresh request is forced out</text>
+
+    <path d="M196 90 H262" stroke="#1b4f9c" stroke-width="2.4" marker-end="url(#c4)"/>
+    <text x="229" y="82" font-size="8.4" font-weight="700" fill="#1b4f9c" text-anchor="middle">request</text>
+
+    <!-- proxy -->
+    <rect x="268" y="34" width="176" height="112" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="356" y="54" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">THE PROXY CACHE</text>
+    <rect x="288" y="66" width="136" height="34" rx="6" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="356" y="80" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">old copy of page</text>
+    <text x="356" y="93" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">STILL SITTING THERE</text>
+    <text x="356" y="120" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">this you do NOT control</text>
+    <text x="356" y="136" font-size="8.4" fill="#5a6472" text-anchor="middle">it may answer from its own copy</text>
+
+    <path d="M450 90 H516" stroke="#1b4f9c" stroke-width="2.4" stroke-dasharray="6 4" marker-end="url(#c4)" fill="none"/>
+    <text x="483" y="82" font-size="8.4" font-weight="700" fill="#1b4f9c" text-anchor="middle">maybe</text>
+    <text x="483" y="106" font-size="8.4" font-weight="700" fill="#1b4f9c" text-anchor="middle">never reached</text>
+
+    <!-- origin -->
+    <rect x="522" y="34" width="164" height="112" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.4"/>
+    <text x="604" y="54" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">ORIGIN SERVER</text>
+    <text x="604" y="76" font-size="9" fill="#22303f" text-anchor="middle">has the genuinely</text>
+    <text x="604" y="89" font-size="9" fill="#22303f" text-anchor="middle">newest version</text>
+    <text x="604" y="112" font-size="8.6" fill="#5a6472" text-anchor="middle">but your request might</text>
+    <text x="604" y="124" font-size="8.6" fill="#5a6472" text-anchor="middle">be answered before</text>
+    <text x="604" y="136" font-size="8.6" fill="#5a6472" text-anchor="middle">it ever gets here</text>
+
+    <rect x="14" y="160" width="672" height="80" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="180" font-size="10.8" font-weight="800" fill="#a97800" text-anchor="middle">THE TWO FACTS THIS FIGURE GIVES YOU</text>
+    <text x="32" y="200" font-size="9.4" font-weight="700" fill="#22303f">Q2 option C:</text>
+    <text x="140" y="200" font-size="9.4" fill="#22303f">hard refresh DOES clear the browser cache for that page.  TRUE</text>
+    <text x="32" y="218" font-size="9.4" font-weight="700" fill="#22303f">Q3 option B:</text>
+    <text x="140" y="218" font-size="9.4" fill="#22303f">a hard refresh CAN still be answered by a proxy's cached copy.  TRUE</text>
+    <text x="350" y="235" font-size="9" font-style="italic" fill="#a97800" text-anchor="middle">They are not contradictory: the first is about your machine, the second about the network beyond it.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.3</span> &ndash; Your refresh button reaches only as far as your own computer.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q2 ---------------------------- -->
+<div class="qhead">Question 2 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are correct regarding caching?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Caching can be done at browser level.</li>
+    <li class="wrong"><span class="lab">B.</span> Caching cannot be done at server (proxy) level.</li>
+    <li class="right"><span class="lab">C.</span> Hard refreshing a web page clears the browser cache for that specific web page.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The browser cache is rung 1 of Figure 3.1 &ndash; the most common cache of all. Your
+      browser is storing images and stylesheets from this course's website right now.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The word <b>cannot</b> again. Caching at proxy and server level is completely normal:
+      proxy caches, CDN edge caches, and application caches such as Flask-Caching with Redis.
+      Rungs 2, 3 and 4 of Figure 3.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A hard refresh (<code>Ctrl+Shift+R</code>, or <code>Cmd+Shift+R</code> on a Mac)
+      discards the browser's cached copy for that page and forces a fresh download.
+      Left panel of Figure 3.3.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires B to be true. It is not.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 2</span>
+  <span class="big">A and C</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<!-- ---------------------------- Q3 ---------------------------- -->
+<div class="qhead">Question 3 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is true?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> A cached resource stored at a proxy server serves its copy to multiple users.</li>
+    <li class="wrong"><span class="lab">B.</span> Hard refreshing a web page can still result in a cached response being served from a proxy server.</li>
+    <li class="wrong"><span class="lab">C.</span> Caching at browser level provides the least latency, if compared with proxy level.</li>
+    <li class="right"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<div class="note">
+  <span class="boxtitle">A rare case: "All of the above" is the answer</span>
+  In Q2, Q4 and Q5 the "All of the above" option was a trap. Here it is genuinely correct.
+  That is exactly why you must <b>check every option every time</b> rather than following a
+  habit. Examiners alternate deliberately.
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A proxy cache is a <b>shared</b> cache. One stored copy of <code>logo.png</code> is
+      served to Ravi, Sita and Anu alike. Right panel of Figure 3.2.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Your hard refresh instructs <b>your browser</b>. It does not command the proxy sitting
+      on the network, which may answer from its own stored copy. Figure 3.3.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A browser cache hit needs <b>no network journey at all</b>; a proxy hit still needs a
+      round trip. Less distance means less latency, so browser level wins. Figure 3.1.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>Since A, B and C are all true, "All of the above" is the correct single choice.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 3</span>
+  <span class="big">Option D &ndash; All of the above</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; do Q2 and Q3 contradict each other?</span>
+  No, and it is worth being clear because the two questions sit side by side.
+  <br/><b>Q2 C</b> says a hard refresh clears <b>your browser's</b> cache. True.
+  <br/><b>Q3 B</b> says a hard refresh may <b>still</b> get a cached response <b>from a proxy</b>. Also true.
+  <br/>Two different caches, two different owners. Clearing yours does not empty theirs.
+</div>
+
+
+<!-- ============================== PART 4 ============================== -->
+<h1 class="part"><span class="kicker">Part 4 &bull; Question 9</span>ETag, If-Match and If-None-Match</h1>
+
+<p>Caching raises an obvious worry: <b>how do I know my stored copy is still the current one?</b>
+The answer is a small piece of HTTP called the <b>ETag</b>.</p>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the version sticker on the notice</span>
+  The notice board holds a notice with a sticker on it reading <b>v7</b>. You photograph it and
+  go home, remembering "I have v7".
+  <br/><br/>
+  Next week, instead of copying the whole notice again, you phone the office and ask:
+  <b>"is it still v7?"</b>
+  <ul style="margin-bottom:0">
+    <li>"Yes, still v7" &ndash; a two-second call. You keep your photo. Nothing was re-copied.</li>
+    <li>"No, it is v8 now" &ndash; they read you the whole new notice.</li>
+  </ul>
+  That sticker is the <b>ETag</b> (short for <b>entity tag</b>). It is the server's version
+  label for one particular version of one resource.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; ETag</span>
+  An <b>ETag</b> is a <b>response header</b> the server attaches to a resource, identifying that
+  exact version of it. It is a string of ASCII characters written <b>inside double quotes</b>,
+  for example <code>ETag: "33a64df5"</code>. Usually it is a hash of the content, so any change
+  to the file produces a different ETag.
+</div>
+
+<h2>4.1 The ETag round trip, drawn out</h2>
+
+<figure>
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="e1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+      <marker id="e2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">How an ETag saves you a whole download</text>
+
+    <text x="80" y="40" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">BROWSER</text>
+    <line x1="80" y1="48" x2="80" y2="288" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="600" y="40" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+    <line x1="600" y1="48" x2="600" y2="288" stroke="#1b4f9c" stroke-width="2.5"/>
+
+    <!-- visit 1 -->
+    <rect x="14" y="54" width="672" height="94" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="1.8"/>
+    <text x="26" y="70" font-size="10" font-weight="800" fill="#1b4f9c">FIRST VISIT &ndash; the full download happens once</text>
+    <path d="M84 88 H596" stroke="#1b4f9c" stroke-width="2" marker-end="url(#e1)"/>
+    <text x="340" y="84" font-size="8.8" font-weight="700" fill="#1b4f9c" text-anchor="middle">GET /style.css</text>
+    <path d="M596 112 H84" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#e2)"/>
+    <text x="340" y="108" font-size="8.8" font-weight="700" fill="#1f7a3a" text-anchor="middle">200 OK  +  ETag: "33a64df5"  +  the whole 80 KB file</text>
+    <text x="340" y="130" font-size="8.6" fill="#22303f" text-anchor="middle">browser stores the file AND remembers the tag "33a64df5"</text>
+    <rect x="560" y="118" width="118" height="18" rx="9" fill="#b52020"/>
+    <text x="619" y="131" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">80 KB transferred</text>
+
+    <!-- visit 2 unchanged -->
+    <rect x="14" y="156" width="672" height="90" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="26" y="172" font-size="10" font-weight="800" fill="#1f7a3a">SECOND VISIT, file unchanged &ndash; the clever bit</text>
+    <path d="M84 190 H596" stroke="#1b4f9c" stroke-width="2" marker-end="url(#e1)"/>
+    <text x="340" y="186" font-size="8.8" font-weight="700" fill="#1b4f9c" text-anchor="middle">GET /style.css  +  If-None-Match: "33a64df5"   ("is it still this version?")</text>
+    <path d="M596 214 H84" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#e2)"/>
+    <text x="340" y="210" font-size="8.8" font-weight="800" fill="#1f7a3a" text-anchor="middle">304 NOT MODIFIED  &ndash;  and NO body at all</text>
+    <text x="340" y="230" font-size="8.6" fill="#22303f" text-anchor="middle">browser reuses its stored copy. The 80 KB was never sent again.</text>
+    <rect x="556" y="220" width="122" height="18" rx="9" fill="#1f7a3a"/>
+    <text x="617" y="233" font-size="8.4" font-weight="700" fill="#fff" text-anchor="middle">about 0.2 KB only</text>
+
+    <!-- visit 3 changed -->
+    <rect x="14" y="254" width="672" height="60" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="26" y="270" font-size="10" font-weight="800" fill="#d9480f">IF THE FILE HAD CHANGED</text>
+    <text x="26" y="288" font-size="9" fill="#22303f">Server sees its current tag is now "9b2c11e" which does not match "33a64df5",</text>
+    <text x="26" y="304" font-size="9" fill="#22303f">so it replies <tspan font-weight="700">200 OK</tspan> with the new file and the new ETag. The browser replaces its copy.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.1</span> &ndash; This is called a <b>conditional request</b>: the response depends on whether the condition matched.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">Why 304 matters so much</span>
+  A <b>304 Not Modified</b> response carries <b>no body</b>. You still pay for one small round
+  trip, but you avoid re-downloading the bytes. On a page with 40 images and stylesheets, that
+  is the difference between reloading 2 MB and reloading almost nothing.
+</div>
+
+<h2>4.2 If-Match and If-None-Match are opposites</h2>
+
+<p>Both headers carry an ETag. The difference is the <b>condition</b> they set, and Question 9
+turns on getting them the right way round.</p>
+
+<figure>
+  <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Two conditional headers, two opposite conditions</text>
+
+    <!-- If-Match -->
+    <rect x="8" y="28" width="336" height="222" rx="10" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="176" y="50" font-size="12" font-weight="800" fill="#1b4f9c" text-anchor="middle">If-Match</text>
+    <rect x="26" y="60" width="300" height="30" rx="6" fill="#fff" stroke="#1b4f9c" stroke-width="1.6"/>
+    <text x="176" y="79" font-size="9.6" font-weight="700" fill="#1b4f9c" text-anchor="middle">"give it to me ONLY IF it MATCHES"</text>
+    <text x="176" y="108" font-size="9.2" fill="#22303f" text-anchor="middle">For GET and HEAD, the server returns the</text>
+    <text x="176" y="122" font-size="9.2" fill="#22303f" text-anchor="middle">resource only if its ETag <tspan font-weight="800">matches</tspan> the one</text>
+    <text x="176" y="136" font-size="9.2" fill="#22303f" text-anchor="middle">you sent. If not, you get <tspan font-weight="800">412 Precondition</tspan></text>
+    <text x="176" y="150" font-size="9.2" fill="#22303f" text-anchor="middle"><tspan font-weight="800">Failed</tspan> instead.</text>
+    <rect x="26" y="162" width="300" height="76" rx="6" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="1.4"/>
+    <text x="176" y="179" font-size="9" font-weight="800" fill="#1b4f9c" text-anchor="middle">Everyday use: SAFE EDITING</text>
+    <text x="176" y="195" font-size="8.6" fill="#22303f" text-anchor="middle">Two people edit the same document. Your PUT</text>
+    <text x="176" y="207" font-size="8.6" fill="#22303f" text-anchor="middle">says "only save if it is still the version I</text>
+    <text x="176" y="219" font-size="8.6" fill="#22303f" text-anchor="middle">read". If someone else saved first, you are</text>
+    <text x="176" y="231" font-size="8.6" fill="#22303f" text-anchor="middle">refused, so you cannot wipe out their work.</text>
+
+    <!-- If-None-Match -->
+    <rect x="356" y="28" width="336" height="222" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="50" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">If-None-Match</text>
+    <rect x="374" y="60" width="300" height="30" rx="6" fill="#fff" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="524" y="79" font-size="9.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">"give it to me ONLY IF it CHANGED"</text>
+    <text x="524" y="108" font-size="9.2" fill="#22303f" text-anchor="middle">For GET and HEAD, the server returns the</text>
+    <text x="524" y="122" font-size="9.2" fill="#22303f" text-anchor="middle">resource with 200 only if its ETag does</text>
+    <text x="524" y="136" font-size="9.2" fill="#22303f" text-anchor="middle"><tspan font-weight="800">NOT</tspan> match. If it does match, you get a</text>
+    <text x="524" y="150" font-size="9.2" fill="#22303f" text-anchor="middle">body-free <tspan font-weight="800">304 Not Modified</tspan>.</text>
+    <rect x="374" y="162" width="300" height="76" rx="6" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.4"/>
+    <text x="524" y="179" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">Everyday use: CACHING</text>
+    <text x="524" y="195" font-size="8.6" fill="#22303f" text-anchor="middle">This is the header in Figure 4.1, and the one</text>
+    <text x="524" y="207" font-size="8.6" fill="#22303f" text-anchor="middle">your browser sends automatically thousands</text>
+    <text x="524" y="219" font-size="8.6" fill="#22303f" text-anchor="middle">of times a day. It is how a cached file is</text>
+    <text x="524" y="231" font-size="8.6" fill="#22303f" text-anchor="middle">revalidated without re-downloading it.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.2</span> &ndash; Read the names literally: <i>If-Match</i> = if it matches. <i>If-None-Match</i> = if none of them match.</figcaption>
+</figure>
+
+<div class="kid">
+  <span class="boxtitle">The memory trick</span>
+  The header names say exactly what they mean, so trust them.
+  <br/><b>If-Match</b> &ndash; "if it matches, proceed." Used when you are about to <b>write</b>.
+  <br/><b>If-None-Match</b> &ndash; "if none match, send it." Used when you want to <b>reuse a cache</b>.
+</div>
+
+<!-- ---------------------------- Q9 ---------------------------- -->
+<div class="qhead">Question 9 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are correct regarding the E-Tag and If-Match?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> E-Tag is a response header to validate the current version of resource.</li>
+    <li class="right"><span class="lab">B.</span> E-Tag is a string of ASCII characters placed between double quotes.</li>
+    <li class="right"><span class="lab">C.</span> For get and head request, If-Match request header is sent to get the resource only if E-Tag value matches.</li>
+    <li class="wrong"><span class="lab">D.</span> For get and head request, If-Match request header is sent to get the resource only if E-Tag value does not match.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Two facts in one sentence, both right. It is a <b>response</b> header (the server sends
+      it), and its purpose is to identify and <b>validate</b> the current version of the
+      resource.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>An ETag really is written as an ASCII string wrapped in double quotes:
+      <code>ETag: "33a64df5"</code>. The quotes are part of the required format, not
+      decoration. (A weak tag is prefixed with <code>W/</code>, as in
+      <code>W/"33a64df5"</code>.)</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Correct, and this is exactly how the HTTP specification defines it: for GET and HEAD,
+      the resource is returned <b>only if</b> the ETag matches one of the values in
+      <code>If-Match</code>. If it does not match, the server answers
+      <b>412 Precondition Failed</b>. Left panel of Figure 4.2.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>This describes <b>If-None-Match</b>, not If-Match. C and D are direct opposites, so
+      exactly one can be true &ndash; and the name <i>If-Match</i> tells you which.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 9</span>
+  <span class="big">A, B and C</span>
+  <br/><small>Matches your selection. Only D is false, because "does not match" belongs to
+  If-None-Match.</small>
+</div>
+
+<h3>The whole family of conditional headers, for the end term</h3>
+<table>
+  <tr><th style="width:150px">Header</th><th style="width:80px">Direction</th><th>Meaning</th></tr>
+  <tr><td><code>ETag</code></td><td>response</td><td>"this is version <code>"abc"</code> of the resource"</td></tr>
+  <tr><td><code>If-None-Match</code></td><td>request</td><td>"send it only if the version is <b>not</b> <code>"abc"</code>" &ndash; otherwise 304. Used for caching.</td></tr>
+  <tr><td><code>If-Match</code></td><td>request</td><td>"proceed only if the version <b>is</b> <code>"abc"</code>" &ndash; otherwise 412. Used for safe writes.</td></tr>
+  <tr><td><code>Last-Modified</code></td><td>response</td><td>A date instead of a hash: "last changed at this time".</td></tr>
+  <tr><td><code>If-Modified-Since</code></td><td>request</td><td>The date-based cousin of If-None-Match.</td></tr>
+  <tr><td><code>Cache-Control</code></td><td>both</td><td>The rules: how long to cache (<code>max-age</code>), and whether a shared cache may store it (<code>public</code> vs <code>private</code>, <code>no-store</code>).</td></tr>
+</table>
+
+
+<!-- ============================== PART 5 ============================== -->
+<h1 class="part"><span class="kicker">Part 5 &bull; Question 1</span>Flask-Caching: <code>@cached</code> vs <code>@memoize</code></h1>
+
+<p>So far the caches have been outside our control. Now we cache <b>inside</b> our own Flask
+application, and there are two decorators that look interchangeable but are not.</p>
+
+<h2>5.1 The idea of a cache key</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the labelled tiffin boxes</span>
+  Amma cooks and stores food in boxes on a shelf. To find food again she needs a <b>label</b> on
+  each box. If every box is labelled just <b>"FOOD"</b>, then the first box goes on the shelf and
+  every later dish is assumed to be that same box &ndash; ask for rajma and you are handed the
+  poha that got there first.
+  <br/><br/>
+  If instead the labels read <b>"FOOD - rajma"</b> and <b>"FOOD - poha"</b>, everything works.
+  <br/><br/>
+  That label is the <b>cache key</b>. And the entire difference between the two decorators is
+  <b>what goes on the label</b>.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; the two decorators</span>
+  <ul style="margin-bottom:0">
+    <li><b><code>@cache.cached()</code></b> builds its key from the <b>request path</b>
+        (the default key is <code>view/&lt;request.path&gt;</code>). The function's
+        <b>parameters are not part of the key</b>.</li>
+    <li><b><code>@cache.memoize()</code></b> builds its key from the <b>function plus its
+        arguments</b>. Different arguments therefore get different cache entries.</li>
+  </ul>
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 285" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">What goes on the label?</text>
+
+    <!-- cached -->
+    <rect x="8" y="28" width="336" height="248" rx="10" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="176" y="50" font-size="12" font-weight="800" fill="#d9480f" text-anchor="middle">@cache.cached()</text>
+    <text x="176" y="66" font-size="8.8" fill="#5a6472" text-anchor="middle">key comes from the URL PATH</text>
+
+    <rect x="26" y="76" width="300" height="30" rx="5" fill="#1e2430"/>
+    <text x="40" y="95" font-size="8.4" fill="#82aaff">def get_user(user_id):  # takes a parameter</text>
+
+    <text x="176" y="124" font-size="9.4" font-weight="700" fill="#d9480f" text-anchor="middle">the key it builds:</text>
+    <rect x="60" y="130" width="232" height="26" rx="5" fill="#fff" stroke="#d9480f" stroke-width="1.6"/>
+    <text x="176" y="147" font-size="9" font-weight="700" fill="#22303f" text-anchor="middle">"view//profile"</text>
+    <text x="176" y="172" font-size="9" fill="#22303f" text-anchor="middle">Notice what is missing: <tspan font-weight="800" fill="#b52020">user_id</tspan></text>
+
+    <rect x="26" y="182" width="300" height="84" rx="6" fill="#fdecec" stroke="#b52020" stroke-width="1.8"/>
+    <text x="176" y="200" font-size="9.4" font-weight="800" fill="#b52020" text-anchor="middle">So all these share ONE cache entry:</text>
+    <text x="176" y="217" font-size="9" fill="#22303f" text-anchor="middle">get_user(1)  get_user(2)  get_user(3)</text>
+    <text x="176" y="237" font-size="8.8" font-weight="700" fill="#b52020" text-anchor="middle">User 2 and user 3 are served user 1's data.</text>
+    <text x="176" y="252" font-size="8.8" fill="#22303f" text-anchor="middle">This is a real bug, and a classic one. It is why</text>
+    <text x="176" y="263" font-size="8.8" fill="#22303f" text-anchor="middle">@cached suits views that take no parameters.</text>
+
+    <!-- memoize -->
+    <rect x="356" y="28" width="336" height="248" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="50" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">@cache.memoize()</text>
+    <text x="524" y="66" font-size="8.8" fill="#5a6472" text-anchor="middle">key includes the ARGUMENTS</text>
+
+    <rect x="374" y="76" width="300" height="30" rx="5" fill="#1e2430"/>
+    <text x="388" y="95" font-size="8.4" fill="#82aaff">def get_user(user_id):  # takes a parameter</text>
+
+    <text x="524" y="124" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">the keys it builds:</text>
+    <rect x="408" y="130" width="232" height="26" rx="5" fill="#fff" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="524" y="147" font-size="9" font-weight="700" fill="#22303f" text-anchor="middle">"get_user" + hash of (1)   ... (2)   ... (3)</text>
+    <text x="524" y="172" font-size="9" fill="#22303f" text-anchor="middle">The argument <tspan font-weight="800" fill="#1f7a3a">user_id</tspan> is part of the label</text>
+
+    <rect x="374" y="182" width="300" height="84" rx="6" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="524" y="200" font-size="9.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">So each gets its OWN cache entry:</text>
+    <text x="524" y="217" font-size="9" fill="#22303f" text-anchor="middle">get_user(1)  get_user(2)  get_user(3)</text>
+    <text x="524" y="237" font-size="8.8" font-weight="700" fill="#1f7a3a" text-anchor="middle">Every user correctly gets their own data.</text>
+    <text x="524" y="252" font-size="8.8" fill="#22303f" text-anchor="middle">Use memoize for any function whose result</text>
+    <text x="524" y="263" font-size="8.8" fill="#22303f" text-anchor="middle">depends on its arguments.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.1</span> &ndash; The single difference: <code>memoize</code> puts the arguments in the key, <code>cached</code> does not.</figcaption>
+</figure>
+
+<h2>5.2 Seeing the bug happen, step by step</h2>
+
+<pre><span class="cm"># THE BUG: @cached on a function that takes a parameter</span>
+<span class="fn">@cache.cached</span>(timeout=<span class="nu">60</span>)
+<span class="kw">def</span> <span class="fn">square</span>(n):
+    <span class="kw">return</span> n * n
+
+<span class="fn">square</span>(<span class="nu">2</span>)   <span class="cm"># cache miss -> computes 4, stores it under the path-based key</span>
+<span class="fn">square</span>(<span class="nu">5</span>)   <span class="cm"># cache HIT on the SAME key -> returns 4    WRONG, should be 25</span>
+</pre>
+
+<pre><span class="cm"># THE FIX: @memoize puts the argument in the key</span>
+<span class="fn">@cache.memoize</span>(timeout=<span class="nu">60</span>)
+<span class="kw">def</span> <span class="fn">square</span>(n):
+    <span class="kw">return</span> n * n
+
+<span class="fn">square</span>(<span class="nu">2</span>)   <span class="cm"># miss -> 4  stored under  square + (2)</span>
+<span class="fn">square</span>(<span class="nu">5</span>)   <span class="cm"># miss -> 25 stored under  square + (5)     CORRECT</span>
+<span class="fn">square</span>(<span class="nu">2</span>)   <span class="cm"># hit  -> 4  from cache                    CORRECT and fast</span>
+</pre>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the direction students reverse</span>
+  It is very easy to remember "one of them includes the parameters" and then attach it to the
+  wrong decorator. Anchor it with the word itself: <b>memoize</b> comes from
+  <i>memoization</i>, which in computer science means <b>caching a function's result per set of
+  arguments</b>. Arguments are baked into the very meaning of the word. So:
+  <b>memoize = arguments matter.</b>
+</div>
+
+<h2>5.3 The special case: a function with no parameters</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; only one dish on the menu</span>
+  The whole problem with the label <b>"FOOD"</b> was that several different dishes competed for
+  it. But suppose Amma only ever cooks <b>one</b> dish. Now the label "FOOD" is perfectly
+  unambiguous &ndash; and a more detailed label would make no practical difference, because there
+  is nothing to distinguish.
+  <br/><br/>
+  Same with our decorators. Their only difference is whether arguments join the key. Take away
+  the arguments and the difference disappears.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A function with NO parameters: the two decorators behave the same way</text>
+
+    <rect x="120" y="28" width="460" height="30" rx="5" fill="#1e2430"/>
+    <text x="136" y="47" font-size="8.6" fill="#82aaff">def get_homepage_stats():        # no parameters at all</text>
+
+    <!-- left -->
+    <rect x="60" y="72" width="270" height="104" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="195" y="92" font-size="10.4" font-weight="800" fill="#d9480f" text-anchor="middle">with @cached</text>
+    <rect x="78" y="102" width="234" height="24" rx="5" fill="#fff" stroke="#d9480f"/>
+    <text x="195" y="118" font-size="8.8" font-weight="700" fill="#22303f" text-anchor="middle">one key, one stored result</text>
+    <text x="195" y="142" font-size="9" fill="#22303f" text-anchor="middle">there are no arguments to leave out,</text>
+    <text x="195" y="156" font-size="9" fill="#22303f" text-anchor="middle">so nothing can collide</text>
+    <text x="195" y="170" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">works correctly</text>
+
+    <!-- right -->
+    <rect x="370" y="72" width="270" height="104" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="505" y="92" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">with @memoize</text>
+    <rect x="388" y="102" width="234" height="24" rx="5" fill="#fff" stroke="#1f7a3a"/>
+    <text x="505" y="118" font-size="8.8" font-weight="700" fill="#22303f" text-anchor="middle">one key, one stored result</text>
+    <text x="505" y="142" font-size="9" fill="#22303f" text-anchor="middle">it would include arguments, but</text>
+    <text x="505" y="156" font-size="9" fill="#22303f" text-anchor="middle">there are none to include</text>
+    <text x="505" y="170" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">works correctly</text>
+
+    <text x="350" y="192" font-size="10.4" font-weight="800" fill="#5b3ec8" text-anchor="middle">Same number of entries, same result, same behaviour. This is Q1 option C.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.2</span> &ndash; Remove the arguments and you remove the only thing that separated the two decorators.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q1 ---------------------------- -->
+<div class="qhead">Question 1 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements(s) is/are true regarding flask_caching?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The cache decorator includes the function parameters in the cache key.</li>
+    <li class="right"><span class="lab">B.</span> The memoize decorator includes the function parameters in the cache key.</li>
+    <li class="right"><span class="lab">C.</span> Both the cache and memoize decorators work the same way for functions not having any parameters.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>The wrong way round.</b> <code>@cached</code> builds its key from the request path
+      (<code>view/&lt;request.path&gt;</code>), <b>not</b> from the function parameters. That is
+      precisely why calling it with different arguments returns the first stored answer to
+      everybody. Left panel of Figure 5.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Correct, and it is the definition of memoization: the arguments are part of the cache
+      key, so each distinct set of arguments gets its own entry.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The <b>only</b> difference between them is whether arguments enter the key. For a
+      function with no arguments there is nothing to include or exclude, so both produce a single
+      cache entry and behave identically. Figure 5.2.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Requires A to be true, and A is false. Note also that A and B are near-opposites:
+      spotting that pair immediately tells you D cannot work.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 1</span>
+  <span class="big">B and C</span>
+  <br/><small>Matches your selection. A is false because <code>@cached</code> keys on the
+  request path, not the parameters.</small>
+</div>
+
+<div class="key">
+  <span class="boxtitle">The practical rule for your own project</span>
+  <ul style="margin-bottom:0">
+    <li>Caching a <b>view function</b> whose output depends only on the URL? Use
+        <b><code>@cached</code></b>.</li>
+    <li>Caching <b>any function whose result depends on its arguments</b>? Use
+        <b><code>@memoize</code></b>.</li>
+    <li>Both take a <code>timeout</code> in seconds. Clear entries with
+        <code>cache.delete_memoized(fn, args)</code> when the underlying data changes.</li>
+  </ul>
+</div>
+
+
+<!-- ============================== PART 6 ============================== -->
+<h1 class="part"><span class="kicker">Part 6 &bull; Question 6</span>Cookies: the hidden weight on every request</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the identity card you must show every time</span>
+  Imagine a building where you must show your ID card at the door <b>every single time</b> you
+  walk in &ndash; and you enter 80 times a day. If the card is a small plastic chip, fine.
+  If it is a fat 4 KB folder of documents, you have just added that weight to
+  <b>all 80 entries</b>.
+  <br/><br/>
+  A <b>cookie</b> is that ID card. The browser attaches it automatically to <b>every</b> request
+  for that domain &ndash; every image, every stylesheet, every icon. So cookie size is multiplied
+  by the number of requests, which is why it affects performance.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; cookie</span>
+  A <b>cookie</b> is a small piece of data the server asks the browser to store and send back on
+  subsequent requests to that domain, in the <b>Cookie request header</b>. It is how a site
+  remembers you are logged in. Cookies are sent <b>automatically and on every matching
+  request</b>, whether that request needs them or not.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="k1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="k2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">One page, 50 requests. What does a 4 KB cookie cost?</text>
+
+    <!-- with cookies -->
+    <rect x="8" y="28" width="336" height="150" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.4"/>
+    <text x="176" y="48" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">everything on example.com</text>
+    <g font-size="8.4">
+      <path d="M40 68 H300" stroke="#b52020" stroke-width="1.6" marker-end="url(#k1)"/>
+      <text x="170" y="65" fill="#b52020" font-weight="700" text-anchor="middle">GET /page  + 4 KB cookie</text>
+      <path d="M40 86 H300" stroke="#b52020" stroke-width="1.6" marker-end="url(#k1)"/>
+      <text x="170" y="83" fill="#b52020" font-weight="700" text-anchor="middle">GET /logo.png  + 4 KB cookie</text>
+      <path d="M40 104 H300" stroke="#b52020" stroke-width="1.6" marker-end="url(#k1)"/>
+      <text x="170" y="101" fill="#b52020" font-weight="700" text-anchor="middle">GET /style.css  + 4 KB cookie</text>
+      <path d="M40 122 H300" stroke="#b52020" stroke-width="1.6" marker-end="url(#k1)"/>
+      <text x="170" y="119" fill="#b52020" font-weight="700" text-anchor="middle">GET /icon.svg  + 4 KB cookie</text>
+      <text x="170" y="137" fill="#5a6472" text-anchor="middle">... and 46 more, each carrying the same 4 KB</text>
+    </g>
+    <rect x="34" y="144" width="278" height="26" rx="6" fill="#b52020"/>
+    <text x="173" y="161" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">50 x 4 KB = 200 KB of pure overhead</text>
+
+    <!-- cookie-free -->
+    <rect x="356" y="28" width="336" height="150" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.4"/>
+    <text x="524" y="48" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">static files on a cookie-free domain</text>
+    <g font-size="8.4">
+      <path d="M388 68 H648" stroke="#b52020" stroke-width="1.6" marker-end="url(#k1)"/>
+      <text x="518" y="65" fill="#b52020" font-weight="700" text-anchor="middle">GET /page  + 4 KB cookie</text>
+      <path d="M388 86 H648" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#k2)"/>
+      <text x="518" y="83" fill="#1f7a3a" font-weight="700" text-anchor="middle">logo.png from cdn-static.net  &ndash; no cookie</text>
+      <path d="M388 104 H648" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#k2)"/>
+      <text x="518" y="101" fill="#1f7a3a" font-weight="700" text-anchor="middle">style.css from cdn-static.net  &ndash; no cookie</text>
+      <path d="M388 122 H648" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#k2)"/>
+      <text x="518" y="119" fill="#1f7a3a" font-weight="700" text-anchor="middle">icon.svg from cdn-static.net  &ndash; no cookie</text>
+      <text x="518" y="137" fill="#5a6472" text-anchor="middle">... 46 more, all travelling light</text>
+    </g>
+    <rect x="382" y="144" width="278" height="26" rx="6" fill="#1f7a3a"/>
+    <text x="521" y="161" font-size="9.6" font-weight="800" fill="#fff" text-anchor="middle">1 x 4 KB = 4 KB of overhead</text>
+
+    <rect x="8" y="190" width="684" height="44" rx="8" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="208" font-size="10.4" font-weight="800" fill="#a97800" text-anchor="middle">This is a real, named optimisation: serve static assets from a COOKIE-FREE DOMAIN.</text>
+    <text x="350" y="226" font-size="9.4" fill="#22303f" text-anchor="middle">Your logo does not need to know who is logged in, so sending your session cookie with it is wasted bytes.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.1</span> &ndash; Cookie size is multiplied by the number of requests, so it absolutely can impact performance.</figcaption>
+</figure>
+
+<h2>6.1 The <code>domain</code> attribute, and why subdomains matter</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the family surname</span>
+  If a rule is written for <b>"the Sharma family"</b>, it applies to <i>every</i> Sharma in the
+  house &ndash; parents, children, cousins. If it is written for <b>"Ravi Sharma only"</b>,
+  it applies to him alone.
+  <br/><br/>
+  Setting a cookie's <code>domain</code> attribute to <code>example.com</code> is the family
+  version: the cookie then travels to <b>example.com and all its subdomains</b>, including
+  <code>static.example.com</code>, <code>api.example.com</code> and
+  <code>blog.example.com</code>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="k3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="k4" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Does a request to static.example.com carry cookies set for example.com?</text>
+
+    <!-- case 1: domain specified -->
+    <rect x="8" y="28" width="336" height="180" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="176" y="48" font-size="10.6" font-weight="800" fill="#b52020" text-anchor="middle">domain attribute IS specified</text>
+    <rect x="26" y="58" width="300" height="26" rx="5" fill="#1e2430"/>
+    <text x="40" y="75" font-size="8" fill="#ffcb6b">Set-Cookie: sid=abc; domain=example.com</text>
+
+    <text x="176" y="102" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">the cookie now belongs to the whole family:</text>
+    <g font-size="8.6">
+      <rect x="40" y="110" width="272" height="20" rx="4" fill="#fff" stroke="#b52020"/>
+      <text x="52" y="124" fill="#22303f">example.com</text>
+      <text x="300" y="124" font-weight="800" fill="#b52020" text-anchor="end">cookie sent</text>
+      <rect x="40" y="134" width="272" height="20" rx="4" fill="#fff" stroke="#b52020" stroke-width="2"/>
+      <text x="52" y="148" font-weight="800" fill="#b52020">static.example.com</text>
+      <text x="300" y="148" font-weight="800" fill="#b52020" text-anchor="end">cookie SENT</text>
+      <rect x="40" y="158" width="272" height="20" rx="4" fill="#fff" stroke="#b52020"/>
+      <text x="52" y="172" fill="#22303f">api.example.com</text>
+      <text x="300" y="172" font-weight="800" fill="#b52020" text-anchor="end">cookie sent</text>
+    </g>
+    <text x="176" y="196" font-size="9.2" font-weight="800" fill="#b52020" text-anchor="middle">So Q6 option C is TRUE, option D is FALSE.</text>
+
+    <!-- case 2: no domain -->
+    <rect x="356" y="28" width="336" height="180" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="48" font-size="10.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">domain attribute is OMITTED</text>
+    <rect x="374" y="58" width="300" height="26" rx="5" fill="#1e2430"/>
+    <text x="388" y="75" font-size="8" fill="#ffcb6b">Set-Cookie: sid=abc</text>
+
+    <text x="524" y="102" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">the cookie sticks to that exact host only:</text>
+    <g font-size="8.6">
+      <rect x="388" y="110" width="272" height="20" rx="4" fill="#fff" stroke="#1f7a3a"/>
+      <text x="400" y="124" fill="#22303f">example.com</text>
+      <text x="648" y="124" font-weight="800" fill="#b52020" text-anchor="end">cookie sent</text>
+      <rect x="388" y="134" width="272" height="20" rx="4" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="400" y="148" font-weight="800" fill="#1f7a3a">static.example.com</text>
+      <text x="648" y="148" font-weight="800" fill="#1f7a3a" text-anchor="end">NOT sent</text>
+      <rect x="388" y="158" width="272" height="20" rx="4" fill="#fff" stroke="#1f7a3a"/>
+      <text x="400" y="172" fill="#22303f">api.example.com</text>
+      <text x="648" y="172" font-weight="800" fill="#1f7a3a" text-anchor="end">not sent</text>
+    </g>
+    <text x="524" y="196" font-size="9.2" font-weight="800" fill="#1f7a3a" text-anchor="middle">This is the version you want for static assets.</text>
+
+    <rect x="8" y="218" width="684" height="46" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="350" y="236" font-size="10.4" font-weight="800" fill="#5b3ec8" text-anchor="middle">Read the bracket in the question: "assuming domain attribute is specified with example.com"</text>
+    <text x="350" y="254" font-size="9.4" fill="#22303f" text-anchor="middle">That bracket is the whole question. It puts you in the LEFT panel, so the cookie IS included.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.2</span> &ndash; Specifying <code>domain</code> <b>widens</b> a cookie's reach to subdomains. Omitting it keeps the cookie to one host.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q6 ---------------------------- -->
+<div class="qhead">Question 6 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is the correct statement?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Cookie size can impact the website performance.</li>
+    <li class="wrong"><span class="lab">B.</span> Cookie size does not affect the website performance.</li>
+    <li class="right"><span class="lab">C.</span> A request to static.example.com will include cookies set for example.com (assuming domain attribute is specified with "example.com").</li>
+    <li class="wrong"><span class="lab">D.</span> A request to static.example.com will not include cookies set for example.com (assuming domain attribute is specified with "example.com").</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Cookies ride along on <b>every</b> request to the domain, so their size is multiplied by
+      the number of requests. On a 50-request page a 4 KB cookie becomes 200 KB of pure overhead
+      (Figure 6.1). Upload bandwidth is usually much slower than download, which makes this worse
+      than it looks.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Direct opposite of A, so exactly one of the pair is correct.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Because the <code>domain</code> attribute was explicitly set to
+      <code>example.com</code>, the cookie applies to that domain <b>and its subdomains</b> &ndash;
+      so <code>static.example.com</code> receives it. Left panel of Figure 6.2.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Opposite of C. It would be true only if the <code>domain</code> attribute had been
+      <b>omitted</b>, which the question explicitly rules out.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 6</span>
+  <span class="big">A and C</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the counter-intuitive bit</span>
+  Many students assume that naming a domain <b>restricts</b> the cookie. It does the opposite:
+  specifying <code>domain=example.com</code> <b>broadens</b> it to every subdomain. If you want
+  a cookie confined to one host, <b>leave the attribute out altogether</b>.
+</div>
+
+<!-- ============================== PART 7 ============================== -->
+<h1 class="part"><span class="kicker">Part 7 &bull; Question 7</span><code>DOMContentLoaded</code> vs <code>load</code></h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the wedding hall</span>
+  You have to move the chairs in a wedding hall. Two moments you could wait for:
+  <br/><br/>
+  <b>Moment 1:</b> the hall is built, the floor is laid and all the furniture is in place.
+  The chairs exist, so you can start moving them <i>now</i>.
+  <br/><br/>
+  <b>Moment 2:</b> everything above, <i>plus</i> the flowers have arrived, the lights are hung and
+  the photographs are on the walls. Much later.
+  <br/><br/>
+  Moment 1 is <b><code>DOMContentLoaded</code></b>. Moment 2 is <b><code>load</code></b>.
+  If your job is only to move a chair, waiting for the flowers is a waste of time.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; the two events</span>
+  <ul style="margin-bottom:0">
+    <li><b><code>DOMContentLoaded</code></b> fires as soon as the HTML has been parsed and the
+        <b>DOM tree is built</b>. It does <b>not</b> wait for images or other subresources.</li>
+    <li><b><code>load</code></b> fires only when the page and <b>all</b> its dependent resources &ndash;
+        images, stylesheets, fonts, iframes &ndash; have finished loading.</li>
+  </ul>
+  <b><code>DOMContentLoaded</code> always fires first</b>, often by a large margin.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 265" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">One page loading, second by second</text>
+
+    <!-- timeline axis -->
+    <line x1="70" y1="196" x2="660" y2="196" stroke="#22303f" stroke-width="2"/>
+    <g font-size="8.4" fill="#5a6472" text-anchor="middle">
+      <line x1="70" y1="196" x2="70" y2="202" stroke="#22303f"/><text x="70" y="214">0.0 s</text>
+      <line x1="218" y1="196" x2="218" y2="202" stroke="#22303f"/><text x="218" y="214">0.4 s</text>
+      <line x1="366" y1="196" x2="366" y2="202" stroke="#22303f"/><text x="366" y="214">0.8 s</text>
+      <line x1="514" y1="196" x2="514" y2="202" stroke="#22303f"/><text x="514" y="214">1.2 s</text>
+      <line x1="660" y1="196" x2="660" y2="202" stroke="#22303f"/><text x="660" y="214">2.6 s</text>
+    </g>
+
+    <!-- bars -->
+    <text x="64" y="48" font-size="9" font-weight="700" fill="#22303f" text-anchor="end">HTML parsed</text>
+    <rect x="70" y="36" width="148" height="18" rx="4" fill="#1b4f9c"/>
+    <text x="144" y="49" font-size="8" fill="#fff" text-anchor="middle">building the DOM</text>
+
+    <text x="64" y="76" font-size="9" font-weight="700" fill="#22303f" text-anchor="end">stylesheet</text>
+    <rect x="70" y="64" width="120" height="18" rx="4" fill="#5b3ec8"/>
+    <text x="130" y="77" font-size="8" fill="#fff" text-anchor="middle">style.css</text>
+
+    <text x="64" y="104" font-size="9" font-weight="700" fill="#22303f" text-anchor="end">image 1</text>
+    <rect x="70" y="92" width="360" height="18" rx="4" fill="#d9480f"/>
+    <text x="250" y="105" font-size="8" fill="#fff" text-anchor="middle">photo1.jpg  &ndash;  big file</text>
+
+    <text x="64" y="132" font-size="9" font-weight="700" fill="#22303f" text-anchor="end">image 2</text>
+    <rect x="70" y="120" width="590" height="18" rx="4" fill="#d9480f" opacity=".75"/>
+    <text x="365" y="133" font-size="8" fill="#fff" text-anchor="middle">photo2.jpg  &ndash;  enormous file, slow server</text>
+
+    <!-- DOMContentLoaded marker -->
+    <line x1="218" y1="30" x2="218" y2="196" stroke="#1f7a3a" stroke-width="2.6" stroke-dasharray="6 4"/>
+    <circle cx="218" cy="160" r="6" fill="#1f7a3a"/>
+    <rect x="232" y="146" width="180" height="30" rx="6" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.8"/>
+    <text x="322" y="158" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">DOMContentLoaded  0.4 s</text>
+    <text x="322" y="170" font-size="8" fill="#22303f" text-anchor="middle">the paragraph EXISTS now</text>
+
+    <!-- load marker -->
+    <line x1="660" y1="30" x2="660" y2="196" stroke="#b52020" stroke-width="2.6" stroke-dasharray="6 4"/>
+    <circle cx="660" cy="160" r="6" fill="#b52020"/>
+    <rect x="470" y="146" width="180" height="30" rx="6" fill="#fdecec" stroke="#b52020" stroke-width="1.8"/>
+    <text x="560" y="158" font-size="9" font-weight="800" fill="#b52020" text-anchor="middle">load  2.6 s</text>
+    <text x="560" y="170" font-size="8" fill="#22303f" text-anchor="middle">waited for the photos too</text>
+
+    <!-- gap -->
+    <path d="M218 232 H660" stroke="#e0a800" stroke-width="2"/>
+    <path d="M218 226 V238" stroke="#e0a800" stroke-width="2"/>
+    <path d="M660 226 V238" stroke="#e0a800" stroke-width="2"/>
+    <rect x="330" y="242" width="220" height="18" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="1.6"/>
+    <text x="440" y="255" font-size="9" font-weight="800" fill="#a97800" text-anchor="middle">2.2 SECONDS WASTED</text>
+    <text x="290" y="236" font-size="8.6" font-weight="700" fill="#a97800" text-anchor="middle">if you wait for load</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.1</span> &ndash; Updating a paragraph only needs the DOM. Waiting for <code>load</code> means waiting for photographs you never touch.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q7 ---------------------------- -->
+<div class="qhead">Question 7 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Suppose you have a web page which includes a paragraph with some content,
+  images and a stylesheet. You want to update the content of the paragraph with JavaScript.
+  Which of the event, among <code>load</code> and <code>DOMContentLoaded</code>, you should wait
+  to fire before updating the content for better performance?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> load</li>
+    <li class="right"><span class="lab">B.</span> DOMContentLoaded</li>
+    <li class="wrong"><span class="lab">C.</span> Both of them will result in same performance.</li>
+    <li class="wrong"><span class="lab">D.</span> DOM is not required to be loaded fully before updating the content.</li>
+  </ul>
+</div>
+
+<h3>Step-by-step reasoning</h3>
+
+<div class="step"><span class="n">1</span><span class="st-t">What does the job actually need?</span>
+  <br/>You want to change the text inside a <code>&lt;p&gt;</code> element. To do that, that
+  element must <b>exist in the DOM</b>. That is the only requirement.</div>
+
+<div class="step"><span class="n">2</span><span class="st-t">Which event guarantees that, and nothing more?</span>
+  <br/><code>DOMContentLoaded</code>. It fires the moment the HTML is parsed and the DOM is
+  built. The paragraph is present and editable from that instant.</div>
+
+<div class="step"><span class="n">3</span><span class="st-t">What would waiting for <code>load</code> add?</span>
+  <br/>It would additionally wait for every image and stylesheet to finish downloading. Your
+  paragraph text has nothing to do with the photographs, so that waiting is pure delay &ndash;
+  2.2 seconds of it in Figure 7.1.</div>
+
+<div class="step"><span class="n">4</span><span class="st-t">Conclusion.</span>
+  <br/>Wait for the earliest event that satisfies your requirement. That is
+  <code>DOMContentLoaded</code>, so the user sees the updated text sooner.</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><code>load</code> works, but it is <b>slower</b>. The question asks for better
+      performance, so "it works" is not enough.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>Fires as soon as the DOM is ready, which is all the task needs. Earliest safe moment
+      means best performance.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>They differ, often by seconds, because <code>load</code> waits for images. Figure 7.1
+      shows the gap.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>You cannot edit an element that does not exist yet. Running the script before the DOM is
+      built gives you <code>null</code> and a JavaScript error &ndash; the classic
+      "Cannot set property of null" mistake.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 7</span>
+  <span class="big">Option B &ndash; DOMContentLoaded</span>
+  <br/><small>Matches your selection.</small>
+</div>
+
+<pre><span class="cm">// the right way: act as soon as the DOM exists</span>
+document.<span class="fn">addEventListener</span>(<span class="st">'DOMContentLoaded'</span>, () =&gt; {
+  document.<span class="fn">querySelector</span>(<span class="st">'p'</span>).textContent = <span class="st">'updated text'</span>
+})
+
+<span class="cm">// slower: this waits for every image to download first</span>
+window.<span class="fn">addEventListener</span>(<span class="st">'load'</span>, () =&gt; { <span class="cm">/* ... */</span> })
+</pre>
+
+<div class="key">
+  <span class="boxtitle">When you genuinely do need <code>load</code></span>
+  Use <code>load</code> only when your code depends on a resource beyond the DOM &ndash; for
+  example measuring an image's real rendered height, or working with a fully painted canvas.
+  For everything else, <code>DOMContentLoaded</code> is the right choice.
+</div>
+
+
+<!-- ============================== PART 8 ============================== -->
+<h1 class="part"><span class="kicker">Part 8 &bull; Question 8</span>Images: the biggest easy win</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the giant poster and the small frame</span>
+  You need a photograph to fit a small 10 cm frame. Two ways:
+  <br/><br/>
+  <b>The wasteful way:</b> order a huge 20 cm poster, carry it home, then fold it down to fit
+  the frame. You paid for paper you threw away, you carried extra weight, and you did extra
+  work folding it.
+  <br/><br/>
+  <b>The sensible way:</b> order a 10 cm print. Less to carry, nothing wasted, no folding.
+  <br/><br/>
+  Setting <code>width="100"</code> on a 200 px image is the folding. The browser still
+  <b>downloads every byte</b> of the big image, then does extra work shrinking it for display.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">You need a 100 x 100 image on the page. Two ways to get it.</text>
+
+    <!-- bad -->
+    <rect x="8" y="28" width="336" height="256" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="176" y="48" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">200 x 200 file, scaled down in HTML</text>
+    <rect x="26" y="58" width="300" height="24" rx="5" fill="#1e2430"/>
+    <text x="40" y="74" font-size="7.8" fill="#7fd1b9">&lt;img src="big.jpg" width="100" height="100"&gt;</text>
+
+    <!-- big square -->
+    <rect x="60" y="94" width="88" height="88" fill="#b52020" opacity=".3" stroke="#b52020" stroke-width="2"/>
+    <text x="104" y="134" font-size="8.6" font-weight="700" fill="#b52020" text-anchor="middle">200 x 200</text>
+    <text x="104" y="147" font-size="8.6" font-weight="700" fill="#b52020" text-anchor="middle">downloaded</text>
+    <text x="104" y="194" font-size="8" fill="#5a6472" text-anchor="middle">40 000 pixels</text>
+
+    <path d="M158 138 H196" stroke="#b52020" stroke-width="2"/>
+    <text x="177" y="132" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">browser</text>
+    <text x="177" y="152" font-size="7.6" font-weight="700" fill="#b52020" text-anchor="middle">shrinks it</text>
+
+    <rect x="206" y="116" width="44" height="44" fill="#b52020" opacity=".55" stroke="#b52020" stroke-width="2"/>
+    <text x="228" y="176" font-size="8" fill="#5a6472" text-anchor="middle">shown at 100</text>
+
+    <g font-size="8.8">
+      <rect x="26" y="204" width="300" height="72" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="38" y="220" font-weight="700" fill="#b52020">Cost 1:</text>
+      <text x="88" y="220" fill="#22303f">about 4x the pixels, so a much bigger file</text>
+      <text x="38" y="236" font-weight="700" fill="#b52020">Cost 2:</text>
+      <text x="88" y="236" fill="#22303f">longer download, more bandwidth</text>
+      <text x="38" y="252" font-weight="700" fill="#b52020">Cost 3:</text>
+      <text x="88" y="252" fill="#22303f">CPU and memory spent resizing it</text>
+      <text x="38" y="268" font-weight="700" fill="#b52020">Cost 4:</text>
+      <text x="88" y="268" fill="#22303f">on mobile, wasted data and battery</text>
+    </g>
+
+    <!-- good -->
+    <rect x="356" y="28" width="336" height="256" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="48" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">100 x 100 file, used at its real size</text>
+    <rect x="374" y="58" width="300" height="24" rx="5" fill="#1e2430"/>
+    <text x="388" y="74" font-size="7.8" fill="#7fd1b9">&lt;img src="small.jpg" width="100" height="100"&gt;</text>
+
+    <rect x="430" y="116" width="44" height="44" fill="#1f7a3a" opacity=".45" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="452" y="176" font-size="8" fill="#5a6472" text-anchor="middle">100 x 100 downloaded</text>
+    <text x="452" y="188" font-size="8" fill="#5a6472" text-anchor="middle">10 000 pixels</text>
+
+    <path d="M486 138 H524" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="505" y="132" font-size="7.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">no</text>
+    <text x="505" y="152" font-size="7.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">resizing</text>
+
+    <rect x="534" y="116" width="44" height="44" fill="#1f7a3a" opacity=".45" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="556" y="176" font-size="8" fill="#5a6472" text-anchor="middle">shown at 100</text>
+
+    <g font-size="8.8">
+      <rect x="374" y="204" width="300" height="72" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="386" y="220" font-weight="700" fill="#1f7a3a">Win 1:</text>
+      <text x="436" y="220" fill="#22303f">roughly a quarter of the pixel data</text>
+      <text x="386" y="236" font-weight="700" fill="#1f7a3a">Win 2:</text>
+      <text x="436" y="236" fill="#22303f">faster download on every visit</text>
+      <text x="386" y="252" font-weight="700" fill="#1f7a3a">Win 3:</text>
+      <text x="436" y="252" fill="#22303f">no resizing work for the browser</text>
+      <text x="386" y="268" font-weight="700" fill="#1f7a3a">Win 4:</text>
+      <text x="436" y="268" fill="#22303f">often looks sharper too</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.1</span> &ndash; Doubling each side gives <b>four times</b> the pixels. Scaling in HTML hides the size on screen but not on the wire.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">The arithmetic worth remembering</span>
+  A 200 x 200 image holds <b>40 000</b> pixels. A 100 x 100 image holds <b>10 000</b>.
+  That is <b>four times</b> as much pixel data, not twice &ndash; because both dimensions doubled.
+  This is why oversized images are usually the single heaviest thing on a slow web page.
+</div>
+
+<!-- ---------------------------- Q8 ---------------------------- -->
+<div class="qhead">Question 8 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Suppose you want to embed an image of 100*100 px in your webpage. Which of the
+  following statements is correct?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> Using an image with dimension 200*200 px and scaling it using HTML will perform better than using a 100*100 px image.</li>
+    <li class="right"><span class="lab">B.</span> Using an image with dimension 200*200 px and scaling it using HTML will perform worse than using a 100*100 px image.</li>
+    <li class="wrong"><span class="lab">C.</span> Scaling using HTML does not impact the performance.</li>
+    <li class="wrong"><span class="lab">D.</span> None of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Backwards. Downloading four times the pixel data and then doing extra work to shrink it
+      cannot be <i>faster</i> than downloading the right size in the first place.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>Correct on both counts: a <b>bigger file to transfer</b>, plus <b>extra CPU and memory</b>
+      for the browser to resample it down to 100 px. Left panel of Figure 8.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>It certainly does impact performance &ndash; that is the entire point of the "serve
+      correctly sized images" recommendation that Lighthouse gives (Part 2).</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Since B is correct, "None of the above" cannot be.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 8</span>
+  <span class="big">Option B</span>
+  <br/><small>Scaling a larger image down in HTML performs worse. Matches your selection.</small>
+</div>
+
+<div class="note">
+  <span class="boxtitle">The one exception, for completeness</span>
+  On high-density screens (Retina and most modern phones) it is deliberate practice to serve an
+  image about twice the CSS size so it looks sharp. That is a <b>quality</b> decision, knowingly
+  paid for with bytes. It does not change the answer here: the question is purely about
+  performance, and on that measure the smaller correctly-sized file always wins.
+  The modern way to serve both is the <code>srcset</code> attribute.
+</div>
+
+<!-- ============================== PART 9 ============================== -->
+<h1 class="part"><span class="kicker">Part 9 &bull; Question 10</span>CDN: a copy near every user</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; one factory, or shops in every town</span>
+  A biscuit company has one factory in Chennai. If every customer in India had to travel to
+  Chennai for a packet of biscuits, buying biscuits would be slow and the factory gate would be
+  permanently jammed.
+  <br/><br/>
+  So the company opens <b>shops in every town</b>. Same biscuits, made in the same factory, but
+  now a customer in Jaipur walks 5 minutes instead of travelling 2000 km.
+  <br/><br/>
+  That network of shops is a <b>CDN</b>. The factory is your <b>origin server</b>; each shop is
+  an <b>edge server</b>. Nothing about the content changes &ndash; only the <b>distance</b> does.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; CDN</span>
+  <b>CDN</b> stands for <b>Content Delivery Network</b>. It is a geographically distributed
+  <b>network of servers</b> that keeps cached copies of your content close to users, so content
+  is delivered faster. The nearby servers are called <b>edge servers</b> or <b>points of
+  presence</b>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="n1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+      <marker id="n2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Without a CDN, and with one</text>
+
+    <!-- without -->
+    <rect x="8" y="26" width="336" height="252" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="176" y="46" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">WITHOUT a CDN</text>
+    <text x="176" y="61" font-size="8.6" fill="#5a6472" text-anchor="middle">everyone travels to the one origin</text>
+
+    <circle cx="176" cy="150" r="26" fill="#b52020"/>
+    <text x="176" y="147" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">ORIGIN</text>
+    <text x="176" y="158" font-size="7.4" fill="#fff" text-anchor="middle">Chennai</text>
+
+    <g font-size="8">
+      <circle cx="50" cy="90" r="12" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+      <text x="50" y="93" fill="#b52020" font-weight="700" text-anchor="middle">US</text>
+      <path d="M62 98 L152 138" stroke="#b52020" stroke-width="1.6" marker-end="url(#n1)"/>
+      <text x="86" y="112" fill="#b52020" font-weight="700">280 ms</text>
+
+      <circle cx="300" cy="90" r="12" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+      <text x="300" y="93" fill="#b52020" font-weight="700" text-anchor="middle">UK</text>
+      <path d="M290 100 L200 138" stroke="#b52020" stroke-width="1.6" marker-end="url(#n1)"/>
+      <text x="266" y="112" fill="#b52020" font-weight="700">190 ms</text>
+
+      <circle cx="50" cy="220" r="12" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+      <text x="50" y="223" fill="#b52020" font-weight="700" text-anchor="middle">JP</text>
+      <path d="M62 210 L152 168" stroke="#b52020" stroke-width="1.6" marker-end="url(#n1)"/>
+      <text x="86" y="200" fill="#b52020" font-weight="700">160 ms</text>
+
+      <circle cx="300" cy="220" r="12" fill="#fff" stroke="#b52020" stroke-width="1.8"/>
+      <text x="300" y="223" fill="#b52020" font-weight="700" text-anchor="middle">IN</text>
+      <path d="M290 210 L200 168" stroke="#b52020" stroke-width="1.6" marker-end="url(#n1)"/>
+      <text x="268" y="200" fill="#1f7a3a" font-weight="700">20 ms</text>
+    </g>
+    <text x="176" y="252" font-size="9" fill="#22303f" text-anchor="middle">Only nearby users get a fast site.</text>
+    <text x="176" y="267" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">One server carries the whole world's load.</text>
+
+    <!-- with -->
+    <rect x="356" y="26" width="336" height="252" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="46" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">WITH a CDN</text>
+    <text x="524" y="61" font-size="8.6" fill="#5a6472" text-anchor="middle">a cached copy waits in every region</text>
+
+    <circle cx="524" cy="150" r="22" fill="#1f7a3a" opacity=".85"/>
+    <text x="524" y="147" font-size="7.6" font-weight="700" fill="#fff" text-anchor="middle">ORIGIN</text>
+    <text x="524" y="157" font-size="7" fill="#fff" text-anchor="middle">Chennai</text>
+
+    <g font-size="8">
+      <!-- edges -->
+      <rect x="418" y="86" width="34" height="20" rx="4" fill="#1f7a3a"/>
+      <text x="435" y="100" fill="#fff" font-weight="700" text-anchor="middle">edge</text>
+      <circle cx="390" cy="96" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="390" y="99" fill="#1f7a3a" font-weight="700" text-anchor="middle">US</text>
+      <path d="M414 96 H404" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#n2)"/>
+      <text x="435" y="118" fill="#1f7a3a" font-weight="700" text-anchor="middle">15 ms</text>
+
+      <rect x="596" y="86" width="34" height="20" rx="4" fill="#1f7a3a"/>
+      <text x="613" y="100" fill="#fff" font-weight="700" text-anchor="middle">edge</text>
+      <circle cx="658" cy="96" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="658" y="99" fill="#1f7a3a" font-weight="700" text-anchor="middle">UK</text>
+      <path d="M634 96 H644" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#n2)"/>
+      <text x="613" y="118" fill="#1f7a3a" font-weight="700" text-anchor="middle">12 ms</text>
+
+      <rect x="418" y="196" width="34" height="20" rx="4" fill="#1f7a3a"/>
+      <text x="435" y="210" fill="#fff" font-weight="700" text-anchor="middle">edge</text>
+      <circle cx="390" cy="206" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="390" y="209" fill="#1f7a3a" font-weight="700" text-anchor="middle">JP</text>
+      <path d="M414 206 H404" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#n2)"/>
+      <text x="435" y="188" fill="#1f7a3a" font-weight="700" text-anchor="middle">10 ms</text>
+
+      <rect x="596" y="196" width="34" height="20" rx="4" fill="#1f7a3a"/>
+      <text x="613" y="210" fill="#fff" font-weight="700" text-anchor="middle">edge</text>
+      <circle cx="658" cy="206" r="11" fill="#fff" stroke="#1f7a3a" stroke-width="1.8"/>
+      <text x="658" y="209" fill="#1f7a3a" font-weight="700" text-anchor="middle">IN</text>
+      <path d="M634 206 H644" stroke="#1f7a3a" stroke-width="1.6" marker-end="url(#n2)"/>
+      <text x="613" y="188" fill="#1f7a3a" font-weight="700" text-anchor="middle">8 ms</text>
+
+      <!-- origin fills edges -->
+      <path d="M508 136 L452 106" stroke="#5a6472" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <path d="M540 136 L596 106" stroke="#5a6472" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <path d="M508 164 L452 196" stroke="#5a6472" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <path d="M540 164 L596 196" stroke="#5a6472" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+    <text x="524" y="240" font-size="8.4" fill="#5a6472" text-anchor="middle">dotted lines: the origin fills each edge ONCE</text>
+    <text x="524" y="256" font-size="9" fill="#22303f" text-anchor="middle">Everyone gets a fast site.</text>
+    <text x="524" y="270" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">The origin's load drops enormously too.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 9.1</span> &ndash; A CDN reduces the <b>distance</b> between the client and the resource, which is why delivery gets faster.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q10 ---------------------------- -->
+<div class="qhead">Question 10 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are true regarding CDN?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> CDN is an acronym for content delivery network.</li>
+    <li class="right"><span class="lab">B.</span> It is the network of servers to provide fast delivery of web content.</li>
+    <li class="right"><span class="lab">C.</span> It reduces the distance between client and the resource, which results in faster delivery of content.</li>
+    <li class="wrong"><span class="lab">D.</span> None of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Simply the expansion of the abbreviation: <b>C</b>ontent <b>D</b>elivery
+      <b>N</b>etwork.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The word <b>network</b> is doing real work in that sentence. A CDN is not one server
+      but many, spread across regions, all serving copies of your content.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This states the actual mechanism, and it is the reason a CDN works: shorter physical
+      distance means fewer network hops and lower latency. Figure 9.1.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>"None of the above" fails because A, B and C are all true.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 10</span>
+  <span class="big">A, B and C</span>
+  <br/><small>Matches your selection. Note there was no "All of the above" option here &ndash;
+  you had to tick the three individually.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; "None of the above" vs "All of the above"</span>
+  This paper uses both. In Q3 the right answer was <b>All of the above</b>; here the last option
+  is <b>None of the above</b> and is wrong. Never answer from the shape of the option list.
+  Read every statement, decide true or false for each, and only then look at the last option.
+</div>
+
+
+<!-- ============================== PART 10 ============================== -->
+<h1 class="part"><span class="kicker">Part 10 &bull; Revision</span>Answer key, cheat sheet and practice</h1>
+
+<h2>10.1 Master answer key</h2>
+
+<table class="flow">
+  <tr><th class="c" style="width:44px">Q</th><th style="width:160px">Topic</th>
+      <th class="c" style="width:84px">Answer</th><th>The one line that decides it</th></tr>
+  <tr><td class="c"><b>1</b></td><td>flask_caching decorators</td><td class="c"><b>B, C</b></td>
+      <td><code>memoize</code> keys on arguments; <code>cached</code> keys on the request path. With no arguments they match.</td></tr>
+  <tr><td class="c"><b>2</b></td><td>Caching levels</td><td class="c"><b>A, C</b></td>
+      <td>Browser caching exists, proxy caching exists too, and a hard refresh clears your own cache.</td></tr>
+  <tr><td class="c"><b>3</b></td><td>Proxy vs browser cache</td><td class="c"><b>D</b></td>
+      <td>All three are true: proxies are shared, hard refresh cannot reach them, browser cache is nearest.</td></tr>
+  <tr><td class="c"><b>4</b></td><td>Performance criteria</td><td class="c"><b>A, B</b></td>
+      <td>Throughput-with-latency and scalability. A framework choice is not a measurement.</td></tr>
+  <tr><td class="c"><b>5</b></td><td>Performance tools</td><td class="c"><b>A, C</b></td>
+      <td>GTmetrix and Lighthouse analyse pages. Postman tests APIs.</td></tr>
+  <tr><td class="c"><b>6</b></td><td>Cookies</td><td class="c"><b>A, C</b></td>
+      <td>Cookie size costs bytes on every request, and <code>domain=example.com</code> reaches subdomains.</td></tr>
+  <tr><td class="c"><b>7</b></td><td>DOM events</td><td class="c"><b>B</b></td>
+      <td>Editing a paragraph needs only the DOM, so use the earlier event.</td></tr>
+  <tr><td class="c"><b>8</b></td><td>Image scaling</td><td class="c"><b>B</b></td>
+      <td>200x200 is four times the pixels, plus resizing work. Worse, not better.</td></tr>
+  <tr><td class="c"><b>9</b></td><td>ETag and If-Match</td><td class="c"><b>A, B, C</b></td>
+      <td>Response header, quoted ASCII string, and If-Match means "only if it matches".</td></tr>
+  <tr><td class="c"><b>10</b></td><td>CDN</td><td class="c"><b>A, B, C</b></td>
+      <td>Content Delivery Network, a network of servers, shortening client-to-resource distance.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Your attempt: 10 out of 10</span>
+  Every option you selected matches this key. Nothing to change. The value of the rest of this
+  part is making sure you can rebuild the reasoning when the end-term paper rewords these ideas.
+</div>
+
+<h2>10.2 The whole week on one page</h2>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Every performance lever in this paper, grouped by where it acts</text>
+
+    <!-- network -->
+    <rect x="8" y="28" width="222" height="212" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="119" y="48" font-size="10.6" font-weight="800" fill="#1b4f9c" text-anchor="middle">SEND FEWER BYTES</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="22" y="70">&bull; cache in the browser, so the</text>
+      <text x="30" y="82">request is never made at all</text>
+      <text x="22" y="100">&bull; use ETag + If-None-Match to get</text>
+      <text x="30" y="112">a body-free 304 instead of a file</text>
+      <text x="22" y="130">&bull; keep cookies small; they ride on</text>
+      <text x="30" y="142">every single request</text>
+      <text x="22" y="160">&bull; serve static files from a</text>
+      <text x="30" y="172">cookie-free domain</text>
+      <text x="22" y="190">&bull; size images correctly instead of</text>
+      <text x="30" y="202">scaling them down in HTML</text>
+      <text x="22" y="222" font-weight="700" fill="#1b4f9c">Q2 Q6 Q8 Q9</text>
+    </g>
+
+    <!-- distance -->
+    <rect x="240" y="28" width="222" height="212" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="351" y="48" font-size="10.6" font-weight="800" fill="#d9480f" text-anchor="middle">TRAVEL LESS DISTANCE</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="254" y="70">&bull; browser cache: zero distance,</text>
+      <text x="262" y="82">so the least latency of all</text>
+      <text x="254" y="100">&bull; proxy cache: one shared copy</text>
+      <text x="262" y="112">serves many users nearby</text>
+      <text x="254" y="130">&bull; CDN edge servers: put a copy</text>
+      <text x="262" y="142">in the user's own region</text>
+      <text x="254" y="160">&bull; server-side cache (Flask-Caching)</text>
+      <text x="262" y="172">skips the slow database</text>
+      <text x="254" y="190">&bull; remember: a hard refresh clears</text>
+      <text x="262" y="202">only YOUR cache, not the proxy</text>
+      <text x="254" y="222" font-weight="700" fill="#d9480f">Q1 Q2 Q3 Q10</text>
+    </g>
+
+    <!-- render -->
+    <rect x="472" y="28" width="220" height="212" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="582" y="48" font-size="10.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">DO LESS WORK, SOONER</text>
+    <g font-size="8.8" fill="#22303f">
+      <text x="486" y="70">&bull; act on DOMContentLoaded, not</text>
+      <text x="494" y="82">load, when you only need the DOM</text>
+      <text x="486" y="100">&bull; avoid making the browser resize</text>
+      <text x="494" y="112">images at display time</text>
+      <text x="486" y="130">&bull; measure before optimising, with</text>
+      <text x="494" y="142">Lighthouse or GTmetrix</text>
+      <text x="486" y="160">&bull; judge by numbers: latency,</text>
+      <text x="494" y="172">throughput, behaviour under load</text>
+      <text x="486" y="190">&bull; never judge by framework name</text>
+      <text x="486" y="222" font-weight="700" fill="#1f7a3a">Q4 Q5 Q7 Q8</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 10.1</span> &ndash; Three questions to ask of any slow page: can I send fewer bytes, travel less far, or do less work?</figcaption>
+</figure>
+
+<h2>10.3 The one-page cheat sheet</h2>
+
+<div class="card">
+  <h4 style="margin-top:0">Measuring performance</h4>
+  <ul>
+    <li><b>Latency</b>: time for one request. A duration. Lower is better.</li>
+    <li><b>Throughput</b>: requests served per unit time. A rate. Higher is better.</li>
+    <li><b>Scalability</b>: whether both hold up as load grows.</li>
+    <li>A framework choice is <b>not</b> a performance criterion. If you cannot put a number on
+        it, it does not count.</li>
+    <li>Tools: <b>Lighthouse</b>, <b>GTmetrix</b>, WebPageTest, PageSpeed Insights, DevTools.
+        <b>Postman is for API testing</b>, not page performance.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Caching</h4>
+  <ul>
+    <li>Four levels: <b>browser</b> (private), <b>proxy</b> (shared), <b>CDN edge</b> (shared,
+        geographic), <b>server-side</b> (Flask-Caching + Redis).</li>
+    <li><b>Browser level has the least latency</b> &ndash; no network journey at all.</li>
+    <li>A <b>proxy cache serves its copy to multiple users</b>. That is what "shared" means.</li>
+    <li><b>Hard refresh</b> clears <b>your browser's</b> cache for that page. It has no power over
+        a proxy, which may still answer from its own copy.</li>
+    <li><b>Cache hit</b> = served from cache. <b>Cache miss</b> = had to go to the origin.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">ETag and conditional requests</h4>
+  <ul>
+    <li><b>ETag</b>: a <b>response</b> header identifying a version of a resource; an ASCII string
+        in <b>double quotes</b>, e.g. <code>"33a64df5"</code>.</li>
+    <li><b>If-None-Match</b>: "send it only if it has <b>changed</b>". Match means
+        <b>304 Not Modified</b> with no body. This is the caching workhorse.</li>
+    <li><b>If-Match</b>: "proceed only if it <b>matches</b>". No match means
+        <b>412 Precondition Failed</b>. Used for safe writes.</li>
+    <li>Date-based cousins: <code>Last-Modified</code> and <code>If-Modified-Since</code>.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Flask-Caching</h4>
+  <ul>
+    <li><b><code>@cached</code></b>: key is the <b>request path</b> (<code>view/&lt;path&gt;</code>).
+        Parameters are <b>not</b> in the key.</li>
+    <li><b><code>@memoize</code></b>: key includes the <b>function arguments</b>. Use it for any
+        function whose result depends on its inputs.</li>
+    <li>For a function with <b>no parameters</b>, the two behave <b>identically</b>.</li>
+    <li>Using <code>@cached</code> on a parameterised function is a real bug: every argument
+        collides on one entry.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Front-end details</h4>
+  <ul>
+    <li><b>Cookies</b> are attached to <b>every</b> request for the domain, so size matters.
+        Fix: a <b>cookie-free domain</b> for static assets.</li>
+    <li><code>domain=example.com</code> makes the cookie reach <b>example.com and all
+        subdomains</b>, including <code>static.example.com</code>. <b>Omitting</b> the attribute
+        keeps it to that one host.</li>
+    <li><b><code>DOMContentLoaded</code></b>: DOM is built. Fires <b>first</b>.
+        <b><code>load</code></b>: everything including images is done. Fires later.</li>
+    <li>Only need the DOM? Use <code>DOMContentLoaded</code>.</li>
+    <li><b>Never scale images down in HTML.</b> 200x200 is <b>four times</b> the pixels of
+        100x100, plus resizing work.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">CDN</h4>
+  <ul>
+    <li><b>C</b>ontent <b>D</b>elivery <b>N</b>etwork: a distributed <b>network of servers</b>
+        holding cached copies.</li>
+    <li>It works by <b>reducing the distance</b> between client and resource.</li>
+    <li>Side benefit: the origin server's load drops sharply.</li>
+    <li>The nearby servers are <b>edge servers</b> or <b>points of presence</b>.</li>
+  </ul>
+</div>
+
+<h2>10.4 Exam technique: the keyword radar</h2>
+
+<table>
+  <tr><th style="width:158px">Word you spot</th><th style="width:106px">What it usually means</th><th>Where it happened here</th></tr>
+  <tr><td><b>cannot</b>, <b>does not</b></td><td>likely FALSE</td>
+      <td>Q2 option B ("caching cannot be done at proxy level"), Q6 option B, Q8 option C.</td></tr>
+  <tr><td><b>All of the above</b></td><td>check every option</td>
+      <td>A trap in Q1, Q2, Q4 and Q5 &ndash; but the <b>correct answer</b> in Q3. Never assume.</td></tr>
+  <tr><td><b>None of the above</b></td><td>usually FALSE</td>
+      <td>Q8 option D and Q10 option D, both wrong.</td></tr>
+  <tr><td><b>opposite pairs</b></td><td>exactly one is right</td>
+      <td>Q1 A vs B, Q6 A vs B and C vs D, Q9 C vs D, Q8 A vs B.</td></tr>
+  <tr><td><b>a bracketed condition</b></td><td>that IS the question</td>
+      <td>Q6: "(assuming domain attribute is specified with example.com)" decides C and D entirely.</td></tr>
+  <tr><td><b>a familiar tool name</b></td><td>be suspicious</td>
+      <td>Q4 option C mentions Flask and Django; Q5 option B mentions Postman. Both wrong.</td></tr>
+  <tr><td><b>"better performance"</b></td><td>not just "does it work"</td>
+      <td>Q7: <code>load</code> works, but the question asks which is <i>better</i>.</td></tr>
+</table>
+
+<h2>10.5 Practice questions</h2>
+
+<p>Cover the answers. If you can do these eight, you have genuinely learned Week 11.</p>
+
+<div class="card">
+  <p><b>P1.</b> You write <code>@cache.cached(timeout=60)</code> above
+  <code>def get_marks(student_id)</code>. Ravi (id 1) loads his marks, then Sita (id 2) loads
+  hers. What does Sita see, and why? What is the fix?</p>
+
+  <p><b>P2.</b> A colleague says "I hard refreshed and I still see the old logo, so caching is
+  broken." Give two possible explanations.</p>
+
+  <p><b>P3.</b> Your page makes 60 requests to <code>myshop.com</code> and your session cookie is
+  2 KB. How many bytes of cookie overhead per page load? How would you reduce it?</p>
+
+  <p><b>P4.</b> A server responds <code>304 Not Modified</code>. What did the browser send to
+  cause this, and roughly how many bytes of body came back?</p>
+
+  <p><b>P5.</b> Which is faster to serve and why: a resource cached in your browser, or the same
+  resource cached at your ISP's proxy?</p>
+
+  <p><b>P6.</b> You need JavaScript to read the final rendered <b>height in pixels</b> of a photo
+  on the page. Should you use <code>DOMContentLoaded</code> or <code>load</code>? Why is this
+  different from Question 7?</p>
+
+  <p><b>P7.</b> You set <code>Set-Cookie: sid=xyz; domain=example.com</code>. List which of these
+  receive the cookie: <code>example.com</code>, <code>static.example.com</code>,
+  <code>example.org</code>, <code>a.b.example.com</code>.</p>
+
+  <p><b>P8.</b> An image is displayed at 300x300. You have a 900x900 file. Roughly how many times
+  more pixel data are you sending than necessary?</p>
+</div>
+
+<div class="ans">
+  <span class="boxtitle">Answers to the practice questions</span>
+  <p><b>P1.</b> Sita sees <b>Ravi's marks</b>. <code>@cached</code> keys on the request path, not
+  on <code>student_id</code>, so both calls collide on one cache entry and the first stored
+  result is returned to everyone. The fix is <b><code>@cache.memoize(timeout=60)</code></b>,
+  which puts <code>student_id</code> into the key. (This is also a security bug, not merely a
+  performance one.)</p>
+
+  <p><b>P2.</b> (1) A <b>proxy cache</b> between them and the server still holds the old file &ndash;
+  their refresh only cleared their own browser. (2) The logo is referenced by an
+  <b>unchanged URL</b> and is being served from a <b>CDN edge</b> that has not yet expired its
+  copy. A third possibility: they refreshed a different page from the one that embeds the logo.
+  The standard cure is <b>cache busting</b> &ndash; rename the file to
+  <code>logo.v2.png</code> or add <code>?v=2</code>.</p>
+
+  <p><b>P3.</b> 60 x 2 KB = <b>120 KB</b> of cookie sent per page load, all of it upload traffic.
+  Reduce it by serving static assets from a <b>cookie-free domain</b> (or a CDN hostname), and by
+  storing only a small session id in the cookie rather than user data.</p>
+
+  <p><b>P4.</b> The browser sent a <b>conditional request</b> with
+  <code>If-None-Match: "&lt;etag&gt;"</code> (or <code>If-Modified-Since</code>). The 304 carries
+  <b>no body at all</b> &ndash; only headers, a few hundred bytes. The browser then reuses its
+  stored copy.</p>
+
+  <p><b>P5.</b> The <b>browser</b> copy. It is read from local disk with <b>no network round trip
+  whatsoever</b>, whereas the proxy still needs a request to leave your machine and come back.
+  Zero distance beats short distance.</p>
+
+  <p><b>P6.</b> <b><code>load</code></b>. Reading a photo's rendered height requires the image to
+  have actually downloaded, because until then the browser does not know its dimensions.
+  Question 7 only edited <b>text</b>, which needs nothing but the DOM. The rule is: wait for the
+  earliest event that <i>genuinely</i> satisfies your dependency.</p>
+
+  <p><b>P7.</b> <b>Receive it:</b> <code>example.com</code>, <code>static.example.com</code>,
+  and <code>a.b.example.com</code> (all subdomains at any depth).
+  <b>Does not:</b> <code>example.org</code> &ndash; a completely different domain.</p>
+
+  <p><b>P8.</b> 900x900 = 810 000 pixels; 300x300 = 90 000 pixels. That is
+  <b>9 times</b> the pixel data (because 3 x 3), all downloaded and then thrown away during
+  resizing.</p>
+</div>
+
+<h2>10.6 Glossary</h2>
+
+<table class="flow">
+  <tr><th style="width:172px">Term</th><th>Meaning in one sentence</th></tr>
+  <tr><td><b>Latency</b></td><td>The time taken to serve one request; a duration.</td></tr>
+  <tr><td><b>Throughput</b></td><td>How many requests are served per unit of time; a rate.</td></tr>
+  <tr><td><b>Scalability</b></td><td>Whether performance holds up as the load grows.</td></tr>
+  <tr><td><b>Load</b></td><td>How many users or requests are hitting the system at once.</td></tr>
+  <tr><td><b>Lighthouse</b></td><td>Google's page auditing tool, built into Chrome DevTools.</td></tr>
+  <tr><td><b>GTmetrix</b></td><td>An online service that times your page and charts every request.</td></tr>
+  <tr><td><b>Waterfall chart</b></td><td>A diagram showing when each request started and finished.</td></tr>
+  <tr><td><b>Cache</b></td><td>A nearby stored copy of something that lives further away.</td></tr>
+  <tr><td><b>Cache hit / miss</b></td><td>Served from the cache / had to fetch from the origin.</td></tr>
+  <tr><td><b>Origin server</b></td><td>The authoritative source of the content.</td></tr>
+  <tr><td><b>Private cache</b></td><td>A cache serving one user, e.g. the browser cache.</td></tr>
+  <tr><td><b>Shared cache</b></td><td>A cache serving many users, e.g. a proxy or CDN edge.</td></tr>
+  <tr><td><b>Proxy server</b></td><td>A machine between client and server that can cache responses.</td></tr>
+  <tr><td><b>Hard refresh</b></td><td>Reloading while bypassing and clearing your own browser cache.</td></tr>
+  <tr><td><b>Stale</b></td><td>A cached copy that no longer matches the origin.</td></tr>
+  <tr><td><b>Cache busting</b></td><td>Changing a file's URL so caches are forced to fetch it again.</td></tr>
+  <tr><td><b>ETag</b></td><td>A response header naming the current version of a resource.</td></tr>
+  <tr><td><b>Conditional request</b></td><td>A request whose response depends on a precondition being met.</td></tr>
+  <tr><td><b>304 Not Modified</b></td><td>"Your copy is current" &ndash; a response with no body.</td></tr>
+  <tr><td><b>412 Precondition Failed</b></td><td>"Your condition did not hold" &ndash; the If-Match failure.</td></tr>
+  <tr><td><b>Cache-Control</b></td><td>The header carrying caching rules such as <code>max-age</code> and <code>private</code>.</td></tr>
+  <tr><td><b>Cache key</b></td><td>The label under which a cached value is stored and looked up.</td></tr>
+  <tr><td><b>Memoization</b></td><td>Caching a function's result per set of arguments.</td></tr>
+  <tr><td><b>Cookie</b></td><td>Small data stored by the browser and resent on every matching request.</td></tr>
+  <tr><td><b>Cookie-free domain</b></td><td>A separate hostname for static files, so no cookies are attached.</td></tr>
+  <tr><td><b>DOM</b></td><td>The browser's in-memory tree of the page's elements.</td></tr>
+  <tr><td><b>DOMContentLoaded</b></td><td>Event fired once the HTML is parsed and the DOM is built.</td></tr>
+  <tr><td><b>load</b></td><td>Event fired once the page and all subresources have finished loading.</td></tr>
+  <tr><td><b>CDN</b></td><td>Content Delivery Network: distributed servers holding cached copies.</td></tr>
+  <tr><td><b>Edge server</b></td><td>A CDN server placed geographically close to users.</td></tr>
+</table>
+
+<h2>10.7 Final word</h2>
+
+<div class="kid">
+  <span class="boxtitle">If you remember only seven sentences from this whole book</span>
+  <ol style="margin-bottom:0">
+    <li>Performance is <b>numbers</b>: latency, throughput, scalability. A framework name is not a
+        number.</li>
+    <li><b>Lighthouse and GTmetrix</b> measure pages; <b>Postman</b> tests APIs.</li>
+    <li>Caches live at <b>browser, proxy, CDN and server</b> level, and <b>browser level has the
+        least latency</b>.</li>
+    <li>A <b>hard refresh clears only your own cache</b> &ndash; a proxy can still serve you a stored copy.</li>
+    <li><b>ETag + If-None-Match</b> gets you a body-free <b>304</b>; <b>If-Match</b> means "only if
+        it matches" and fails with <b>412</b>.</li>
+    <li><b><code>memoize</code> keys on arguments, <code>cached</code> keys on the path</b>, and with
+        no arguments they are the same.</li>
+    <li>Small cookies, correctly sized images, <b><code>DOMContentLoaded</code></b> over
+        <b><code>load</code></b>, and a <b>CDN</b> to shorten the distance.</li>
+  </ol>
+</div>
+
+<p style="margin-top:22px;text-align:center;color:#5a6472;font-size:9.5pt">
+  <i>Prepared as a step-by-step teaching solution for Week 11.<br/>
+  Work through the figures with a pencil in hand; that is where the learning actually happens.</i>
+</p>
+
+<div class="card">
+  <span class="boxtitle" style="color:#5a6472">Notes on sources</span>
+  <small>
+  Technical facts were checked against the official documentation for each technology:
+  <a href="https://flask-caching.readthedocs.io/">the Flask-Caching documentation</a>
+  for the behaviour of <code>@cached</code> (default key <code>view/request.path</code>) and
+  <code>@memoize</code> (arguments included in the cache key);
+  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-Match">MDN on If-Match</a>
+  and <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/If-None-Match">MDN on If-None-Match</a>
+  for conditional requests, which confirm that for GET and HEAD the resource is returned only
+  when the If-Match ETag matches, and that a mismatch yields 412 Precondition Failed;
+  MDN on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event">DOMContentLoaded</a>
+  and <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">HTTP caching</a>;
+  and MDN on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies">cookies</a>
+  for the behaviour of the <code>domain</code> attribute with subdomains.
+  All explanations, analogies and diagrams here were written and drawn for this document.
+  Content was rephrased for compliance with licensing restrictions.
+  </small>
+</div>
+
+</body>
+</html>
