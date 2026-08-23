@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Week 9 - Graded Assignment 9 - Fully Illustrated Solutions</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm 15mm 13mm; }
+
+  :root{
+    --blue:#1b4f9c; --blue-l:#e8f0fb; --blue-d:#0f2f61;
+    --orange:#d9480f; --orange-l:#fff1e6;
+    --green:#1f7a3a; --green-l:#e9f7ee;
+    --red:#b52020; --red-l:#fdecec;
+    --purple:#5b3ec8; --purple-l:#f0ecfd;
+    --grey:#5a6472; --line:#d5dae2; --ink:#1d2430; --soft:#f7f9fc;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    font-family:'Noto Sans', Arial, sans-serif;
+    color:var(--ink); font-size:10.6pt; line-height:1.62;
+    margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  p{ margin:7px 0; }
+  b,strong{ color:var(--blue-d); }
+  ul,ol{ margin:7px 0 7px 0; padding-left:20px; }
+  li{ margin:4px 0; }
+  small{ font-size:9pt; color:var(--grey); }
+
+  /* ---------- headings ---------- */
+  h1.part{
+    break-before:page; page-break-before:always;
+    font-size:20pt; line-height:1.25; margin:0 0 4px 0; color:#fff;
+    background:var(--blue); padding:12px 16px; border-radius:8px;
+  }
+  h1.part .kicker{ display:block; font-size:9.5pt; letter-spacing:2px;
+    text-transform:uppercase; opacity:.85; font-weight:600; }
+  h1.nobreak{ break-before:auto; page-break-before:auto; }
+  h2{ font-size:14pt; margin:20px 0 6px; color:var(--blue-d);
+      border-bottom:2.5px solid var(--blue-l); padding-bottom:4px; break-after:avoid; }
+  h3{ font-size:11.6pt; margin:14px 0 4px; color:var(--orange); break-after:avoid; }
+  h4{ font-size:10.6pt; margin:10px 0 2px; color:var(--blue-d); break-after:avoid; }
+
+  /* ---------- boxes ---------- */
+  .card, .note, .warn, .key, .ans, .qbox, .analogy, .trap, .kid{
+    break-inside:avoid; page-break-inside:avoid;
+    border-radius:8px; padding:10px 13px; margin:11px 0;
+  }
+  .card{ background:var(--soft); border:1px solid var(--line); }
+  .note{ background:var(--blue-l); border-left:5px solid var(--blue); }
+  .analogy{ background:#fffbe8; border-left:5px solid #e0a800; }
+  .warn{ background:var(--orange-l); border-left:5px solid var(--orange); }
+  .trap{ background:var(--red-l); border-left:5px solid var(--red); }
+  .key{ background:var(--purple-l); border-left:5px solid var(--purple); }
+  .kid{ background:#eefaf4; border:1.5px dashed var(--green); }
+  .ans{ background:var(--green-l); border:2.5px solid var(--green); }
+  .boxtitle{ font-weight:700; font-size:10.2pt; display:block; margin-bottom:3px;
+             letter-spacing:.3px; text-transform:uppercase; }
+  .note .boxtitle{ color:var(--blue); }
+  .analogy .boxtitle{ color:#a97800; }
+  .warn .boxtitle{ color:var(--orange); }
+  .trap .boxtitle{ color:var(--red); }
+  .key .boxtitle{ color:var(--purple); }
+  .kid .boxtitle{ color:var(--green); }
+  .ans .boxtitle{ color:var(--green); font-size:11pt; }
+  .ans .big{ font-size:15pt; font-weight:800; color:var(--green); }
+
+  /* ---------- question header ---------- */
+  .qhead{
+    background:var(--blue-d); color:#fff; border-radius:8px 8px 0 0;
+    padding:9px 14px; font-weight:700; font-size:12pt; margin-top:16px;
+    break-after:avoid; page-break-after:avoid;
+  }
+  .qhead .mark{ float:right; font-weight:600; font-size:9.5pt; opacity:.9; }
+  .qbody{
+    border:1.5px solid var(--blue-d); border-top:none; border-radius:0 0 8px 8px;
+    padding:11px 14px; margin-bottom:6px; background:#fff;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .qtext{ font-weight:600; font-size:11pt; color:var(--blue-d); margin:0 0 7px; }
+  .opts{ list-style:none; padding:0; margin:0; }
+  .opts li{
+    border:1px solid var(--line); border-radius:6px; padding:5px 9px; margin:4px 0;
+    background:#fcfdff;
+  }
+  .opts li .lab{ font-weight:700; color:var(--blue); margin-right:6px; }
+  .opts li.right{ background:var(--green-l); border-color:var(--green); }
+  .opts li.wrong{ background:#fbfbfc; }
+
+  /* ---------- code ---------- */
+  pre{
+    background:#1e2430; color:#e6e9ef; border-radius:8px; padding:11px 13px;
+    font-family:'Noto Sans Mono','Noto Sans',monospace; font-size:8.8pt; line-height:1.5;
+    overflow:visible; white-space:pre-wrap; margin:9px 0;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  pre.light{ background:#f3f5f9; color:#22303f; border:1px solid var(--line); }
+  code{ background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:9.4pt;
+        font-family:'Noto Sans Mono','Noto Sans',monospace; color:#0f2f61; }
+  .kw{ color:#c792ea; } .st{ color:#ffcb6b; } .fn{ color:#82aaff; }
+  .nu{ color:#f78c6c; } .cm{ color:#8b98ad; font-style:italic; } .tg{ color:#7fd1b9; }
+  .hl{ background:rgba(255,203,107,.18); display:block; margin:0 -13px; padding:0 13px; }
+
+  /* ---------- tables ---------- */
+  table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:9.6pt;
+         break-inside:avoid; page-break-inside:avoid; }
+  table.flow{ break-inside:auto; page-break-inside:auto; }
+  table.flow tr{ break-inside:avoid; page-break-inside:avoid; }
+  table.flow thead{ display:table-header-group; }
+  th{ background:var(--blue); color:#fff; text-align:left; padding:6px 8px; font-size:9.4pt; }
+  td{ border:1px solid var(--line); padding:5px 8px; vertical-align:top; }
+  tr:nth-child(even) td{ background:#fafbfd; }
+  td.c, th.c{ text-align:center; }
+
+  /* ---------- shape icons (no icon fonts available) ---------- */
+  .tick{ display:inline-block; width:11px; height:6px; border-left:2.6px solid var(--green);
+         border-bottom:2.6px solid var(--green); transform:rotate(-45deg);
+         margin:0 6px 3px 0; }
+  .xx{ display:inline-block; position:relative; width:11px; height:11px; margin:0 5px -1px 0; }
+  .xx:before,.xx:after{ content:''; position:absolute; left:0; top:5px; width:12px;
+         height:2.6px; background:var(--red); }
+  .xx:before{ transform:rotate(45deg); } .xx:after{ transform:rotate(-45deg); }
+  .pill{ display:inline-block; padding:1px 8px; border-radius:11px; font-size:8.6pt;
+         font-weight:700; letter-spacing:.4px; }
+  .pill.t{ background:var(--green-l); color:var(--green); border:1px solid var(--green); }
+  .pill.f{ background:var(--red-l); color:var(--red); border:1px solid var(--red); }
+
+  /* ---------- figures ---------- */
+  figure{ margin:13px 0; break-inside:avoid; page-break-inside:avoid; text-align:center; }
+  figure svg{ width:100%; height:auto; }
+  figcaption{ font-size:9pt; color:var(--grey); margin-top:5px; font-style:italic; }
+  .fignum{ font-weight:700; color:var(--blue); font-style:normal; }
+
+  /* ---------- steps ---------- */
+  .step{ border-left:3px solid var(--blue-l); padding:2px 0 2px 13px; margin:12px 0;
+         break-inside:avoid; }
+  .step .n{ display:inline-block; background:var(--blue); color:#fff; font-weight:700;
+            border-radius:50%; width:21px; height:21px; text-align:center;
+            line-height:21px; font-size:9.4pt; margin-right:7px; }
+  .step .st-t{ font-weight:700; color:var(--blue-d); font-size:10.8pt; }
+
+  /* ---------- cover ---------- */
+  .cover{ height:262mm; display:flex; flex-direction:column; justify-content:center;
+          text-align:center; break-after:page; page-break-after:always; }
+  .cover .t1{ font-size:15pt; letter-spacing:4px; color:var(--orange); font-weight:700;
+              text-transform:uppercase; }
+  .cover .t2{ font-size:33pt; font-weight:800; color:var(--blue-d); line-height:1.15;
+              margin:8px 0; }
+  .cover .t3{ font-size:13pt; color:var(--grey); margin-bottom:22px; }
+  .cover .band{ background:var(--blue); color:#fff; padding:14px; border-radius:10px;
+                font-size:11.5pt; margin:0 8mm; }
+  .cover ul{ text-align:left; display:inline-block; margin-top:16px; }
+  .two{ display:flex; gap:11px; } .two > *{ flex:1; margin-top:0; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<div class="cover">
+  <div class="t1">Modern Application Development II</div>
+  <div class="t2">Week 9 &ndash; Graded Assignment 9<br/>Complete Illustrated Solutions</div>
+  <div class="t3">Flask timing &bull; Redis &bull; Celery &bull; Concurrency &bull; Message Queues &amp; Brokers</div>
+
+  <figure>
+    <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="cvA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/>
+        </marker>
+      </defs>
+      <!-- browser -->
+      <rect x="14" y="52" width="150" height="98" rx="9" fill="#fff" stroke="#1b4f9c" stroke-width="2.5"/>
+      <rect x="14" y="52" width="150" height="20" rx="9" fill="#1b4f9c"/>
+      <circle cx="28" cy="62" r="3.4" fill="#fff"/><circle cx="40" cy="62" r="3.4" fill="#fff"/>
+      <circle cx="52" cy="62" r="3.4" fill="#fff"/>
+      <text x="89" y="100" font-size="13" font-weight="700" fill="#1b4f9c" text-anchor="middle">index.html</text>
+      <text x="89" y="122" font-size="11" fill="#5a6472" text-anchor="middle">fetch( ) x 2</text>
+      <text x="89" y="168" font-size="11" font-weight="700" fill="#5a6472" text-anchor="middle">BROWSER</text>
+
+      <!-- arrows -->
+      <path d="M172 88 H262" stroke="#1b4f9c" stroke-width="2.5" marker-end="url(#cvA)"/>
+      <text x="217" y="80" font-size="10" fill="#1b4f9c" text-anchor="middle">request</text>
+      <path d="M262 118 H172" stroke="#d9480f" stroke-width="2.5" marker-end="url(#cvA)" style="marker-end:url(#cvA)"/>
+      <text x="217" y="136" font-size="10" fill="#d9480f" text-anchor="middle">response</text>
+
+      <!-- server -->
+      <rect x="270" y="52" width="120" height="98" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+      <rect x="284" y="66" width="92" height="19" rx="4" fill="#fff" stroke="#1b4f9c"/>
+      <rect x="284" y="90" width="92" height="19" rx="4" fill="#fff" stroke="#1b4f9c"/>
+      <rect x="284" y="114" width="92" height="19" rx="4" fill="#fff" stroke="#1b4f9c"/>
+      <circle cx="294" cy="75.5" r="3" fill="#1f7a3a"/><circle cx="294" cy="99.5" r="3" fill="#1f7a3a"/>
+      <circle cx="294" cy="123.5" r="3" fill="#d9480f"/>
+      <text x="330" y="168" font-size="11" font-weight="700" fill="#5a6472" text-anchor="middle">FLASK SERVER</text>
+
+      <!-- queue + workers -->
+      <path d="M398 100 H452" stroke="#5b3ec8" stroke-width="2.5" marker-end="url(#cvA)" style="marker-end:url(#cvA)"/>
+      <rect x="458" y="62" width="66" height="76" rx="7" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+      <rect x="468" y="72" width="46" height="13" rx="3" fill="#5b3ec8"/>
+      <rect x="468" y="90" width="46" height="13" rx="3" fill="#5b3ec8" opacity=".65"/>
+      <rect x="468" y="108" width="46" height="13" rx="3" fill="#5b3ec8" opacity=".35"/>
+      <text x="491" y="168" font-size="11" font-weight="700" fill="#5a6472" text-anchor="middle">QUEUE</text>
+      <path d="M530 100 H572" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#cvA)" style="marker-end:url(#cvA)"/>
+      <circle cx="592" cy="82" r="16" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+      <circle cx="592" cy="120" r="16" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+      <text x="592" y="86" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">W1</text>
+      <text x="592" y="124" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">W2</text>
+      <text x="592" y="168" font-size="11" font-weight="700" fill="#5a6472" text-anchor="middle">WORKERS</text>
+      <text x="310" y="26" font-size="13" font-weight="700" fill="#0f2f61" text-anchor="middle">Everything in this assignment, in one picture</text>
+    </svg>
+  </figure>
+
+  <div class="band">
+    Written for a complete beginner. If you have never seen a line of code before,
+    start at Part 1 and read straight through. Every idea is explained with a
+    picture and a real-life story before any code appears.
+  </div>
+</div>
+
+<!-- ============================== HOW TO USE / TOC ============================== -->
+<h1 class="part nobreak"><span class="kicker">Read this first</span>How to use this book</h1>
+
+<p>This document does <b>two</b> jobs at the same time:</p>
+<ol>
+  <li><b>It teaches you the subject from absolute zero.</b> Parts 1 to 7 build your knowledge
+      brick by brick, with pictures and everyday stories.</li>
+  <li><b>It solves all 10 questions</b> of the assignment, step by step, showing exactly
+      how a marker expects you to reason.</li>
+</ol>
+
+<div class="kid">
+  <span class="boxtitle">The promise of this book</span>
+  Imagine you are 10 years old and you have never touched a computer.
+  Every hard word (server, thread, broker, TTL) will first be explained using
+  things you already know: a restaurant, a school queue, a lunch box, a notebook,
+  a post box. Only after the story do we look at the code.
+</div>
+
+<h2>Map of the book</h2>
+<table>
+  <tr><th style="width:88px">Part</th><th>What you learn</th><th style="width:150px">Questions solved</th></tr>
+  <tr><td><b>Part 1</b></td><td>The internet in slow motion: client, server, request, response, Flask, routes</td><td class="c">background</td></tr>
+  <tr><td><b>Part 2</b></td><td>Reading the clock in code: <code>time.sleep</code> and <code>datetime.now().second</code></td><td class="c">background</td></tr>
+  <tr><td><b>Part 3</b></td><td>JavaScript <code>fetch</code> and promises: how the browser asks two questions at once</td><td class="c">background</td></tr>
+  <tr><td><b>Part 4</b></td><td>One waiter or many waiters: <code>threaded=True</code> vs <code>threaded=False</code></td><td class="c"><b>Q1 and Q2</b></td></tr>
+  <tr><td><b>Part 5</b></td><td>Redis: the super-fast notepad that lives in memory</td><td class="c"><b>Q3 and Q4</b></td></tr>
+  <tr><td><b>Part 6</b></td><td>Celery: sending slow homework to a helper</td><td class="c"><b>Q5</b></td></tr>
+  <tr><td><b>Part 7</b></td><td>Concurrency vs Parallelism: juggling vs having two hands</td><td class="c"><b>Q6 and Q7</b></td></tr>
+  <tr><td><b>Part 8</b></td><td>Message queues and message brokers: the post box and the post office</td><td class="c"><b>Q8, Q9, Q10</b></td></tr>
+  <tr><td><b>Part 9</b></td><td>One-page cheat sheet, full answer key, and practice questions</td><td class="c">revision</td></tr>
+</table>
+
+<h2>The four kinds of boxes you will see</h2>
+<div class="analogy"><span class="boxtitle">Story box</span>
+  A real-life picture of the idea. Read this one first, always.</div>
+<div class="note"><span class="boxtitle">Definition box</span>
+  The proper technical wording, the one you should write in an exam.</div>
+<div class="trap"><span class="boxtitle">Trap box</span>
+  The exact mistake that makes students lose the mark. Learn these by heart.</div>
+<div class="ans"><span class="boxtitle">Answer box</span>
+  The final answer of a question, with the option letter.</div>
+
+<div class="warn">
+  <span class="boxtitle">A note on honesty</span>
+  In the screenshots you shared, questions 3 to 10 clearly display the green
+  <i>"Answer is Correct"</i> banner, so those answers are confirmed.
+  Questions 1 and 2 only show a <i>selected</i> option (both marked <b>B</b>), with no
+  correctness banner. Question 1 really is <b>B</b>. Question 2 is <b>not B</b> - and the
+  whole point of that question is to catch exactly that mistake.
+  Part 4 shows you, second by second, why the answer changes. Please read it slowly.
+</div>
+
+
+<!-- ============================== PART 1 ============================== -->
+<h1 class="part"><span class="kicker">Part 1 &bull; Foundations</span>The internet in slow motion</h1>
+
+<p>Before we can answer a single question, we must be sure about one thing:
+what actually happens when a web page "loads"? Let us slow it down 1000 times.</p>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the restaurant</span>
+  You walk into a restaurant and sit down. You are the <b>customer</b>.
+  You call the waiter and say "one dosa please". That sentence is your <b>order</b>.
+  The waiter walks to the kitchen, the cook makes the dosa, and the waiter brings
+  the plate back to your table. That plate is the <b>reply</b>.
+  <br/><br/>
+  The whole internet works exactly like this. Nothing more.
+  <ul style="margin-bottom:0">
+    <li>You (the customer) = the <b>browser</b>, also called the <b>client</b>. Chrome, Firefox, Safari.</li>
+    <li>The kitchen = the <b>server</b>. A computer somewhere that knows how to make things.</li>
+    <li>Your order = a <b>request</b>.</li>
+    <li>The plate that comes back = a <b>response</b>.</li>
+  </ul>
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#1b4f9c"/></marker>
+      <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <!-- client -->
+    <rect x="22" y="70" width="170" height="110" rx="10" fill="#fff" stroke="#1b4f9c" stroke-width="2.5"/>
+    <rect x="22" y="70" width="170" height="22" rx="10" fill="#1b4f9c"/>
+    <circle cx="38" cy="81" r="3.6" fill="#fff"/><circle cx="51" cy="81" r="3.6" fill="#fff"/><circle cx="64" cy="81" r="3.6" fill="#fff"/>
+    <text x="107" y="125" font-size="14" font-weight="700" fill="#1b4f9c" text-anchor="middle">CLIENT</text>
+    <text x="107" y="146" font-size="11" fill="#5a6472" text-anchor="middle">your browser</text>
+    <text x="107" y="164" font-size="11" fill="#5a6472" text-anchor="middle">(the customer)</text>
+    <text x="107" y="208" font-size="10.5" fill="#5a6472" text-anchor="middle">"one dosa please"</text>
+
+    <!-- request arrow -->
+    <path d="M200 104 H468" stroke="#1b4f9c" stroke-width="3" marker-end="url(#a1)"/>
+    <rect x="252" y="76" width="168" height="22" rx="5" fill="#e8f0fb" stroke="#1b4f9c"/>
+    <text x="336" y="91" font-size="10.5" font-weight="700" fill="#1b4f9c" text-anchor="middle">1. REQUEST  (GET /)</text>
+
+    <!-- response arrow -->
+    <path d="M468 152 H200" stroke="#1f7a3a" stroke-width="3" marker-end="url(#a2)"/>
+    <rect x="252" y="158" width="168" height="22" rx="5" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="336" y="173" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">2. RESPONSE  (the data)</text>
+
+    <!-- server -->
+    <rect x="478" y="60" width="140" height="130" rx="10" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <rect x="494" y="76" width="108" height="22" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <rect x="494" y="104" width="108" height="22" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <rect x="494" y="132" width="108" height="22" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <circle cx="506" cy="87" r="3.4" fill="#1f7a3a"/><circle cx="506" cy="115" r="3.4" fill="#1f7a3a"/><circle cx="506" cy="143" r="3.4" fill="#d9480f"/>
+    <text x="558" y="176" font-size="10" fill="#5a6472" text-anchor="middle">SERVER</text>
+    <text x="548" y="212" font-size="10.5" fill="#5a6472" text-anchor="middle">the kitchen</text>
+    <text x="558" y="34" font-size="12.5" font-weight="700" fill="#0f2f61" text-anchor="middle">Flask lives here</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.1</span> &ndash; Request and response. The client always asks first; the server only answers.</figcaption>
+</figure>
+
+<div class="note">
+  <span class="boxtitle">Definition box</span>
+  A <b>client</b> sends a <b>request</b> to a <b>server</b>. The server does some work and
+  sends back a <b>response</b>. The server never speaks first. This
+  ask-then-answer pattern is called the <b>request-response cycle</b>.
+</div>
+
+<h2>1.1 What is a web address really saying?</h2>
+
+<p>In the assignment you see the address <code>http://127.0.0.1:5000/profile</code>.
+It looks scary. It is just four pieces of information, like a postal address.</p>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="34" y="24" width="632" height="42" rx="7" fill="#1e2430"/>
+    <text x="52" y="52" font-size="17" fill="#c792ea" font-weight="700">http://</text>
+    <text x="140" y="52" font-size="17" fill="#7fd1b9" font-weight="700">127.0.0.1</text>
+    <text x="253" y="52" font-size="17" fill="#ffcb6b" font-weight="700">:5000</text>
+    <text x="322" y="52" font-size="17" fill="#82aaff" font-weight="700">/profile</text>
+
+    <path d="M84 70 V96" stroke="#c792ea" stroke-width="2" fill="none"/>
+    <path d="M188 70 V118" stroke="#7fd1b9" stroke-width="2"/>
+    <path d="M280 70 V140" stroke="#ffcb6b" stroke-width="2"/>
+    <path d="M366 70 V162" stroke="#82aaff" stroke-width="2"/>
+
+    <text x="92" y="100" font-size="11.5" fill="#5b3ec8" font-weight="700">the language they speak</text>
+    <text x="196" y="122" font-size="11.5" fill="#1f7a3a" font-weight="700">which computer &ndash; 127.0.0.1 means "this same computer, my own laptop"</text>
+    <text x="288" y="144" font-size="11.5" fill="#b06000" font-weight="700">which door on that computer &ndash; Flask opens door number 5000</text>
+    <text x="374" y="166" font-size="11.5" fill="#1b4f9c" font-weight="700">which room inside &ndash; this part is the ROUTE (or path)</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.2</span> &ndash; Anatomy of a URL. <code>127.0.0.1</code> is nicknamed <i>localhost</i>: your own machine.</figcaption>
+</figure>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the building</span>
+  <b>127.0.0.1</b> is the building (your own house). <b>5000</b> is the door number of one
+  particular office in that building. <b>/profile</b> is the desk inside that office.
+  Change the desk and a different person answers you.
+</div>
+
+<h2>1.2 What is Flask?</h2>
+
+<p><b>Flask</b> is a small Python toolkit that turns your Python file into a kitchen
+that can answer orders. You write ordinary Python functions, and you stick a
+label on each function saying "call me when somebody asks for <i>this</i> address".</p>
+
+<pre><span class="cm"># the smallest possible Flask app</span>
+<span class="kw">from</span> flask <span class="kw">import</span> Flask        <span class="cm"># borrow the toolkit</span>
+
+app = <span class="fn">Flask</span>(__name__)            <span class="cm"># create the kitchen</span>
+
+<span class="fn">@app.route</span>(<span class="st">'/'</span>)                   <span class="cm"># the LABEL: "when someone asks for /  ..."</span>
+<span class="kw">def</span> <span class="fn">home</span>():                        <span class="cm"># ... run this function</span>
+    <span class="kw">return</span> <span class="st">"Hello!"</span>               <span class="cm"># and send this back as the response</span>
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    app.<span class="fn">run</span>()                      <span class="cm"># open the kitchen, start listening</span>
+</pre>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; three words to keep</span>
+  <ul style="margin-bottom:0">
+    <li><b>Route</b>: the address part after the port, for example <code>/</code> or <code>/profile</code>.</li>
+    <li><b>View function</b>: the Python function that runs for that route
+        (<code>home</code>, <code>profile</code>).</li>
+    <li><b>Decorator</b>: the line starting with <code>@</code>. It is the sticky label that
+        connects a route to a view function.</li>
+  </ul>
+</div>
+
+<h2>1.3 The two rooms in our assignment</h2>
+
+<p>Our <code>app.py</code> has exactly two rooms. One is slow. The other is <i>very</i> slow.
+Everything in Q1 and Q2 depends on this difference, so let us draw it.</p>
+
+<figure>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="a3" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#5a6472"/></marker>
+    </defs>
+    <rect x="18" y="88" width="126" height="62" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="81" y="112" font-size="12" font-weight="700" fill="#1b4f9c" text-anchor="middle">FLASK APP</text>
+    <text x="81" y="132" font-size="10.5" fill="#5a6472" text-anchor="middle">port 5000</text>
+
+    <path d="M150 104 H236" stroke="#5a6472" stroke-width="2.5" marker-end="url(#a3)"/>
+    <path d="M150 136 H236" stroke="#5a6472" stroke-width="2.5" marker-end="url(#a3)"/>
+
+    <!-- room 1 -->
+    <rect x="244" y="42" width="430" height="80" rx="9" fill="#fff" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="262" y="66" font-size="13" font-weight="700" fill="#1f7a3a">Room 1 &nbsp; route "/" &nbsp; function home()</text>
+    <text x="262" y="88" font-size="11" fill="#22303f">Step A: sleep for 10 seconds (pretend to be busy)</text>
+    <text x="262" y="108" font-size="11" fill="#22303f">Step B: look at the clock, send back the SECONDS value</text>
+    <rect x="592" y="52" width="70" height="26" rx="13" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="627" y="70" font-size="12" font-weight="700" fill="#1f7a3a" text-anchor="middle">10 sec</text>
+
+    <!-- room 2 -->
+    <rect x="244" y="140" width="430" height="80" rx="9" fill="#fff" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="262" y="164" font-size="13" font-weight="700" fill="#d9480f">Room 2 &nbsp; route "/profile" &nbsp; function profile()</text>
+    <text x="262" y="186" font-size="11" fill="#22303f">Step A: sleep for 30 seconds (pretend to be very busy)</text>
+    <text x="262" y="206" font-size="11" fill="#22303f">Step B: look at the clock, send back the SECONDS value</text>
+    <rect x="592" y="150" width="70" height="26" rx="13" fill="#fff1e6" stroke="#d9480f"/>
+    <text x="627" y="168" font-size="12" font-weight="700" fill="#d9480f" text-anchor="middle">30 sec</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.3</span> &ndash; The two routes. Notice the clock is read <b>after</b> the sleep, never before.</figcaption>
+</figure>
+
+<!-- ============================== PART 2 ============================== -->
+<h1 class="part"><span class="kicker">Part 2 &bull; Foundations</span>Telling the time inside code</h1>
+
+<p>Two lines of Python do all the interesting work in Q1 and Q2. Let us take them apart.</p>
+
+<h2>2.1 <code>time.sleep(10)</code> &ndash; the freeze button</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the statue game</span>
+  Your teacher shouts "STATUE!" and you must freeze completely for 10 seconds.
+  You are not thinking, not moving, not talking. When she shouts "MOVE!" you carry
+  on from exactly where you stopped.
+  <br/><br/>
+  <code>time.sleep(10)</code> is the word STATUE for a program. The program stops on that
+  line, does nothing at all for 10 seconds, then continues to the next line.
+</div>
+
+<p>Why would anyone deliberately waste 10 seconds? Because in a real app that line
+would be something genuinely slow: reading a huge file, training a model, generating
+a PDF report, calling another company's server. <code>sleep</code> is a stand-in that lets us
+practise with slow work without writing the slow work.</p>
+
+<h2>2.2 <code>datetime.now().second</code> &ndash; the "seconds hand only"</h2>
+
+<p>Read it from left to right, like a sentence:</p>
+
+<figure>
+  <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg">
+    <rect x="112" y="18" width="470" height="40" rx="7" fill="#1e2430"/>
+    <text x="130" y="45" font-size="17" fill="#82aaff" font-weight="700">datetime</text>
+    <text x="238" y="45" font-size="17" fill="#e6e9ef">.</text>
+    <text x="248" y="45" font-size="17" fill="#ffcb6b" font-weight="700">now()</text>
+    <text x="318" y="45" font-size="17" fill="#e6e9ef">.</text>
+    <text x="328" y="45" font-size="17" fill="#7fd1b9" font-weight="700">second</text>
+
+    <path d="M172 62 V88" stroke="#82aaff" stroke-width="2"/>
+    <path d="M280 62 V122" stroke="#ffcb6b" stroke-width="2"/>
+    <path d="M368 62 V156" stroke="#7fd1b9" stroke-width="2"/>
+
+    <text x="180" y="92" font-size="11.5" fill="#1b4f9c" font-weight="700">the date-and-time tool</text>
+    <text x="288" y="126" font-size="11.5" fill="#b06000" font-weight="700">"what is the time RIGHT NOW?"  e.g. 2026-08-23 10:10:20</text>
+    <text x="376" y="160" font-size="11.5" fill="#1f7a3a" font-weight="700">throw away everything except the SECONDS box  ->  20</text>
+
+    <rect x="112" y="176" width="470" height="26" rx="5" fill="#fdecec" stroke="#b52020"/>
+    <text x="347" y="194" font-size="11.5" fill="#b52020" font-weight="700" text-anchor="middle">It gives 0 to 59 only. The hours and minutes are thrown away.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.1</span> &ndash; Reading <code>datetime.now().second</code> as an English sentence.</figcaption>
+</figure>
+
+<h3>Worked examples</h3>
+<table>
+  <tr><th>Clock time</th><th class="c">.hour</th><th class="c">.minute</th><th class="c">.second</th><th>What the code returns</th></tr>
+  <tr><td>10:10:10</td><td class="c">10</td><td class="c">10</td><td class="c"><b>10</b></td><td><code>10</code></td></tr>
+  <tr><td>10:10:20</td><td class="c">10</td><td class="c">10</td><td class="c"><b>20</b></td><td><code>20</code></td></tr>
+  <tr><td>10:10:40</td><td class="c">10</td><td class="c">10</td><td class="c"><b>40</b></td><td><code>40</code></td></tr>
+  <tr><td>10:10:50</td><td class="c">10</td><td class="c">10</td><td class="c"><b>50</b></td><td><code>50</code></td></tr>
+  <tr><td>10:11:05</td><td class="c">10</td><td class="c">11</td><td class="c"><b>5</b></td><td><code>5</code> &nbsp;<small>(not 65! the seconds hand wrapped around)</small></td></tr>
+</table>
+
+<div class="trap">
+  <span class="boxtitle">Trap box</span>
+  Students often compute "10 + 30 = 40 seconds of waiting, so the answer is 40" without
+  checking where the clock started. Always do it in two moves:
+  <b>(1)</b> find the wall-clock time when that line runs, <b>(2)</b> read only the seconds part.
+</div>
+
+<h2>2.3 The golden order of the three lines</h2>
+
+<pre><span class="fn">@app.route</span>(<span class="st">'/'</span>)
+<span class="kw">def</span> <span class="fn">home</span>():
+    time.<span class="fn">sleep</span>(<span class="nu">10</span>)                              <span class="cm"># 1. FIRST freeze for 10 s</span>
+    <span class="kw">return</span> <span class="fn">jsonify</span>(datetime.<span class="fn">now</span>().second), <span class="nu">200</span>   <span class="cm"># 2. THEN read the clock</span>
+</pre>
+
+<div class="key">
+  <span class="boxtitle">The single most important sentence in this assignment</span>
+  The clock is read <b>after</b> the sleep finishes. So the number you get is
+  <b>(time the function started) + (sleep duration)</b>, expressed as seconds only.
+</div>
+
+<h3>And the extra bits on that return line</h3>
+<table>
+  <tr><th style="width:34%">Piece of code</th><th>What it means, in plain words</th></tr>
+  <tr><td><code>jsonify(...)</code></td>
+      <td>Wrap the value in JSON, the common text format that browsers and servers
+          both understand. <code>jsonify(20)</code> travels across the wire as the text <code>20</code>.</td></tr>
+  <tr><td><code>200</code></td>
+      <td>The HTTP status code for "everything went fine". (404 = not found, 500 = server crashed.)</td></tr>
+  <tr><td><code>{'Access-Control-Allow-Origin': '*'}</code></td>
+      <td>A permission slip called <b>CORS</b>. By default a browser refuses to let a page
+          read data from a different address. The <code>*</code> means "anyone may read me".
+          Without this line the fetch would be blocked and you would see a CORS error
+          instead of a number. It does <b>not</b> change any timing.</td></tr>
+  <tr><td><code>debug=True</code></td>
+      <td>Developer comfort: show full error pages and auto-restart when you edit the file.
+          Also does <b>not</b> change the timing logic.</td></tr>
+</table>
+
+
+<!-- ============================== PART 3 ============================== -->
+<h1 class="part"><span class="kicker">Part 3 &bull; Foundations</span>How the browser asks two questions at once</h1>
+
+<p>Now we move from the kitchen (Python) to the customer (JavaScript inside
+<code>index.html</code>). Here is the whole script again, with every line numbered so we can
+talk about it.</p>
+
+<pre><span class="cm">// 1</span>  <span class="kw">function</span> <span class="fn">test</span>() {
+<span class="cm">// 2</span>    <span class="kw">const</span> res1 = <span class="fn">fetch</span>(<span class="st">'http://127.0.0.1:5000'</span>)          <span class="cm">// order sent NOW</span>
+<span class="cm">// 3</span>    <span class="kw">const</span> res2 = <span class="fn">fetch</span>(<span class="st">'http://127.0.0.1:5000/profile'</span>)  <span class="cm">// order sent NOW too</span>
+<span class="cm">// 4</span>
+<span class="cm">// 5</span>    res1
+<span class="cm">// 6</span>      .<span class="fn">then</span>((res) =&gt; { <span class="kw">return</span> res.<span class="fn">json</span>() })   <span class="cm">// when plate 1 arrives, unwrap it</span>
+<span class="cm">// 7</span>      .<span class="fn">then</span>((data) =&gt; { console.<span class="fn">log</span>(data) })  <span class="cm">// then print it</span>
+<span class="cm">// 8</span>
+<span class="cm">// 9</span>    res2
+<span class="cm">//10</span>      .<span class="fn">then</span>((res) =&gt; { <span class="kw">return</span> res.<span class="fn">json</span>() })   <span class="cm">// when plate 2 arrives, unwrap it</span>
+<span class="cm">//11</span>      .<span class="fn">then</span>((data) =&gt; { console.<span class="fn">log</span>(data) })  <span class="cm">// then print it</span>
+<span class="cm">//12</span>  }
+<span class="cm">//13</span>  <span class="fn">test</span>()   <span class="cm">// run it immediately when the page opens</span>
+</pre>
+
+<h2>3.1 What is <code>fetch</code>?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; two orders, one trip to the waiter</span>
+  You and your friend sit at the same table. You call the waiter once and say:
+  "one dosa AND one biryani". The waiter writes both slips and walks off.
+  <br/><br/>
+  You do not wait for the dosa before ordering the biryani. Both orders are
+  <b>already in the kitchen</b> within the same second. This is exactly what lines 2
+  and 3 do: two orders are placed back to back, in the same instant.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box</span>
+  <code>fetch(url)</code> sends the HTTP request <b>immediately</b>, and instantly hands you back
+  a <b>Promise</b>: a receipt token that says "your food is coming, hold on to this".
+  JavaScript does not stop and wait. It runs the very next line straight away.
+</div>
+
+<h2>3.2 What is a Promise, really?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the food-court token</span>
+  At a food court you pay and receive a <b>plastic token with a number</b>. The token is
+  not your food. It is a promise of food. You can walk around, order at a second
+  counter, chat with friends. When your token buzzes, you collect the food.
+  <br/><br/>
+  <code>res1</code> and <code>res2</code> are two tokens. <code>.then(...)</code> means
+  "when this token buzzes, do this". Writing <code>.then</code> does not make the food arrive
+  faster; it only says what to do <i>on arrival</i>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="p1" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#1b4f9c"/></marker>
+      <marker id="p2" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#d9480f"/></marker>
+    </defs>
+    <text x="350" y="18" font-size="12.5" font-weight="700" fill="#0f2f61" text-anchor="middle">Both requests leave the browser at the SAME moment (10:10:10)</text>
+
+    <rect x="16" y="90" width="120" height="86" rx="9" fill="#fff" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="76" y="122" font-size="12" font-weight="700" fill="#1b4f9c" text-anchor="middle">BROWSER</text>
+    <text x="76" y="142" font-size="10" fill="#5a6472" text-anchor="middle">runs test()</text>
+    <text x="76" y="160" font-size="10" fill="#5a6472" text-anchor="middle">at 10:10:10</text>
+
+    <path d="M142 116 H436" stroke="#1b4f9c" stroke-width="3" marker-end="url(#p1)"/>
+    <rect x="196" y="90" width="188" height="22" rx="5" fill="#e8f0fb" stroke="#1b4f9c"/>
+    <text x="290" y="105" font-size="10.5" font-weight="700" fill="#1b4f9c" text-anchor="middle">res1: GET /   (line 2)</text>
+
+    <path d="M142 150 H436" stroke="#d9480f" stroke-width="3" marker-end="url(#p2)"/>
+    <rect x="196" y="152" width="188" height="22" rx="5" fill="#fff1e6" stroke="#d9480f"/>
+    <text x="290" y="167" font-size="10.5" font-weight="700" fill="#d9480f" text-anchor="middle">res2: GET /profile   (line 3)</text>
+
+    <rect x="446" y="82" width="120" height="100" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="506" y="120" font-size="12" font-weight="700" fill="#1b4f9c" text-anchor="middle">FLASK</text>
+    <text x="506" y="140" font-size="10" fill="#5a6472" text-anchor="middle">two orders</text>
+    <text x="506" y="156" font-size="10" fill="#5a6472" text-anchor="middle">now waiting</text>
+
+    <!-- tokens -->
+    <circle cx="622" cy="106" r="24" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="622" y="102" font-size="9.5" font-weight="700" fill="#1b4f9c" text-anchor="middle">token</text>
+    <text x="622" y="115" font-size="9.5" font-weight="700" fill="#1b4f9c" text-anchor="middle">res1</text>
+    <circle cx="622" cy="164" r="24" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="622" y="160" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">token</text>
+    <text x="622" y="173" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">res2</text>
+
+    <rect x="16" y="206" width="668" height="40" rx="7" fill="#f0ecfd" stroke="#5b3ec8"/>
+    <text x="350" y="222" font-size="11" font-weight="700" fill="#5b3ec8" text-anchor="middle">Time taken by lines 2 and 3 together: almost ZERO.</text>
+    <text x="350" y="239" font-size="11" fill="#5b3ec8" text-anchor="middle">JavaScript never sits and waits. It fires both orders and moves on.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.1</span> &ndash; Two fetches fired in the same instant, two promise tokens returned instantly.</figcaption>
+</figure>
+
+<h2>3.3 Why there are two <code>.then</code> calls per request</h2>
+
+<p>The reply does not arrive as a finished number. It arrives as a sealed parcel.
+Unwrapping takes two moves:</p>
+
+<figure>
+  <svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="p3" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#5a6472"/></marker>
+    </defs>
+    <rect x="10" y="44" width="140" height="58" rx="8" fill="#fff" stroke="#5a6472" stroke-width="2"/>
+    <text x="80" y="68" font-size="11" font-weight="700" fill="#22303f" text-anchor="middle">the parcel</text>
+    <text x="80" y="86" font-size="9.5" fill="#5a6472" text-anchor="middle">Response object</text>
+
+    <path d="M156 73 H206" stroke="#5a6472" stroke-width="2.5" marker-end="url(#p3)"/>
+    <text x="181" y="40" font-size="9.5" fill="#5a6472" text-anchor="middle">.then</text>
+    <text x="181" y="112" font-size="9" fill="#5a6472" text-anchor="middle">res.json()</text>
+
+    <rect x="212" y="44" width="150" height="58" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="287" y="68" font-size="11" font-weight="700" fill="#d9480f" text-anchor="middle">promise of the</text>
+    <text x="287" y="85" font-size="11" font-weight="700" fill="#d9480f" text-anchor="middle">unwrapped data</text>
+
+    <path d="M368 73 H418" stroke="#5a6472" stroke-width="2.5" marker-end="url(#p3)"/>
+    <text x="393" y="40" font-size="9.5" fill="#5a6472" text-anchor="middle">.then</text>
+    <text x="393" y="112" font-size="9" fill="#5a6472" text-anchor="middle">console.log(data)</text>
+
+    <rect x="424" y="44" width="120" height="58" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="484" y="70" font-size="11" font-weight="700" fill="#1f7a3a" text-anchor="middle">the number</text>
+    <text x="484" y="88" font-size="14" font-weight="800" fill="#1f7a3a" text-anchor="middle">20</text>
+
+    <path d="M550 73 H600" stroke="#5a6472" stroke-width="2.5" marker-end="url(#p3)"/>
+    <rect x="606" y="44" width="84" height="58" rx="8" fill="#1e2430"/>
+    <text x="648" y="68" font-size="10" fill="#e6e9ef" text-anchor="middle">printed in</text>
+    <text x="648" y="84" font-size="10" fill="#e6e9ef" text-anchor="middle">CONSOLE</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.2</span> &ndash; First <code>.then</code> unwraps the JSON, second <code>.then</code> prints it. This unwrapping is instant; it adds no waiting time.</figcaption>
+</figure>
+
+<h2>3.4 The rule that decides the ORDER of the console output</h2>
+
+<div class="key">
+  <span class="boxtitle">Golden rule</span>
+  The console prints in the order the <b>replies arrive</b>, not in the order the
+  code is written. Whoever finishes first, prints first.
+</div>
+
+<p>This one rule is what the whole of Q1 and Q2 tests. In both questions <code>res1</code>
+finishes before <code>res2</code>, so <code>res1</code>'s number is printed first. But <b>which numbers</b>
+appear depends on how many waiters the server has. That is Part 4.</p>
+
+<div class="warn">
+  <span class="boxtitle">Small print, so nobody can trick you</span>
+  The word "approximately" in the question is there because network travel and
+  <code>res.json()</code> take a few milliseconds. A real run might show 21 instead of 20 if the
+  machine is slow. In the exam you always ignore those milliseconds and use the clean
+  arithmetic.
+</div>
+
+
+<!-- ============================== PART 4 ============================== -->
+<h1 class="part"><span class="kicker">Part 4 &bull; Questions 1 and 2</span>One waiter, or many waiters?</h1>
+
+<p>Q1 and Q2 print the same <code>app.py</code> and the same <code>index.html</code>. Only <b>one</b> thing
+changes between them:</p>
+
+<div class="two">
+  <div class="card" style="border-color:#1f7a3a">
+    <b style="color:#1f7a3a">Question 1 has:</b>
+    <pre class="light" style="margin:6px 0 0">app.run(debug=True)</pre>
+  </div>
+  <div class="card" style="border-color:#d9480f">
+    <b style="color:#d9480f">Question 2 has:</b>
+    <pre class="light" style="margin:6px 0 0">app.run(threaded=False, debug=True)</pre>
+  </div>
+</div>
+
+<p>That one extra word, <code>threaded=False</code>, changes the answer. To see why, we need to
+understand what a <b>thread</b> is. Story first, as always.</p>
+
+<h2>4.1 What is a thread?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the waiter in the restaurant</span>
+  A <b>thread</b> is one worker who can carry out one job at a time, start to finish.
+  <br/><br/>
+  <b>Restaurant A (many waiters).</b> A new customer walks in, and the manager assigns a
+  <i>fresh waiter</i> to that table. Ten customers, ten waiters. Your slow order does not
+  block anybody else's order.
+  <br/><br/>
+  <b>Restaurant B (exactly one waiter).</b> There is one waiter for the whole restaurant,
+  and he refuses to touch a second table until the first table is fully served. Everybody
+  else stands in a line at the door, waiting their turn.
+  <br/><br/>
+  Both restaurants serve identical food. The only difference is <b>how long you wait</b>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="t1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="t2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+    </defs>
+
+    <!-- LEFT: threaded True -->
+    <rect x="8" y="8" width="336" height="284" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="32" font-size="13" font-weight="800" fill="#1f7a3a" text-anchor="middle">threaded = True   (the DEFAULT)</text>
+    <text x="176" y="50" font-size="10.5" fill="#1f7a3a" text-anchor="middle">a fresh waiter for every customer</text>
+
+    <rect x="26" y="70" width="70" height="42" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="61" y="96" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">req  /</text>
+    <rect x="26" y="132" width="70" height="42" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="61" y="152" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">req</text>
+    <text x="61" y="166" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">/profile</text>
+
+    <path d="M102 91 H150" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#t1)"/>
+    <path d="M102 153 H150" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#t1)"/>
+
+    <circle cx="188" cy="91" r="26" fill="#fff" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="188" y="88" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">Thread</text>
+    <text x="188" y="101" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">1</text>
+    <circle cx="188" cy="153" r="26" fill="#fff" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="188" y="150" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">Thread</text>
+    <text x="188" y="163" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">2</text>
+
+    <path d="M218 91 H262" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#t1)"/>
+    <path d="M218 153 H262" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#t1)"/>
+    <rect x="268" y="70" width="60" height="42" rx="7" fill="#1f7a3a"/>
+    <text x="298" y="96" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">10 s</text>
+    <rect x="268" y="132" width="60" height="42" rx="7" fill="#1f7a3a"/>
+    <text x="298" y="158" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">30 s</text>
+
+    <rect x="26" y="196" width="302" height="80" rx="8" fill="#fff" stroke="#1f7a3a"/>
+    <text x="177" y="216" font-size="11" font-weight="700" fill="#1f7a3a" text-anchor="middle">Both sleeps happen AT THE SAME TIME</text>
+    <text x="177" y="236" font-size="10.5" fill="#22303f" text-anchor="middle">Total time for both = 30 s (not 40 s)</text>
+    <text x="177" y="258" font-size="10.5" fill="#22303f" text-anchor="middle">Nobody waits for anybody else.</text>
+
+    <!-- RIGHT: threaded False -->
+    <rect x="356" y="8" width="336" height="284" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="32" font-size="13" font-weight="800" fill="#b52020" text-anchor="middle">threaded = False</text>
+    <text x="524" y="50" font-size="10.5" fill="#b52020" text-anchor="middle">exactly ONE waiter for everybody</text>
+
+    <rect x="374" y="70" width="70" height="42" rx="7" fill="#fff" stroke="#b52020" stroke-width="2"/>
+    <text x="409" y="96" font-size="10.5" font-weight="700" fill="#b52020" text-anchor="middle">req  /</text>
+    <rect x="374" y="132" width="70" height="42" rx="7" fill="#fff" stroke="#b52020" stroke-width="2"/>
+    <text x="409" y="152" font-size="10.5" font-weight="700" fill="#b52020" text-anchor="middle">req</text>
+    <text x="409" y="166" font-size="10.5" font-weight="700" fill="#b52020" text-anchor="middle">/profile</text>
+
+    <path d="M450 91 H498" stroke="#b52020" stroke-width="2.5" marker-end="url(#t2)"/>
+    <path d="M450 153 H480 V112" stroke="#b52020" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
+    <text x="452" y="186" font-size="9.5" font-weight="700" fill="#b52020">must stand in line</text>
+
+    <circle cx="524" cy="103" r="30" fill="#fff" stroke="#b52020" stroke-width="3"/>
+    <text x="524" y="100" font-size="10" font-weight="700" fill="#b52020" text-anchor="middle">the ONE</text>
+    <text x="524" y="113" font-size="10" font-weight="700" fill="#b52020" text-anchor="middle">Thread</text>
+
+    <path d="M556 103 H602" stroke="#b52020" stroke-width="2.5" marker-end="url(#t2)"/>
+    <rect x="608" y="70" width="64" height="30" rx="6" fill="#b52020"/>
+    <text x="640" y="90" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">10 s</text>
+    <text x="640" y="112" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">then</text>
+    <rect x="608" y="120" width="64" height="30" rx="6" fill="#b52020"/>
+    <text x="640" y="140" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">30 s</text>
+
+    <rect x="374" y="196" width="302" height="80" rx="8" fill="#fff" stroke="#b52020"/>
+    <text x="525" y="216" font-size="11" font-weight="700" fill="#b52020" text-anchor="middle">The sleeps happen ONE AFTER THE OTHER</text>
+    <text x="525" y="236" font-size="10.5" fill="#22303f" text-anchor="middle">Total time for both = 10 + 30 = 40 s</text>
+    <text x="525" y="258" font-size="10.5" fill="#22303f" text-anchor="middle">The second request is stuck waiting.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.1</span> &ndash; The only difference between Q1 and Q2, drawn as two restaurants.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">The fact you must memorise</span>
+  When you call <code>app.run()</code> in Flask, Flask quietly sets <b><code>threaded=True</code> for you</b>.
+  So plain <code>app.run(debug=True)</code> already handles requests <b>at the same time</b>.
+  You get the one-waiter behaviour <b>only</b> if you switch it off yourself by writing
+  <code>threaded=False</code>.
+  <br/><br/>
+  <small>This has been the behaviour since <b>Flask 1.0</b>. In much older versions you had to
+  write <code>threaded=True</code> yourself. Underneath, Flask hands your settings to the
+  Werkzeug development server, whose own default was <code>threaded=False</code> &ndash; which is
+  why the fact is worth memorising rather than guessing.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box</span>
+  Many students believe the opposite: that Flask is single-threaded until you ask for
+  threads. That belief gives the wrong answer to Q1. Remember the direction:
+  <b>Flask's default is already threaded. <code>threaded=False</code> is a downgrade you choose.</b>
+</div>
+
+<!-- ---------------------------- Q1 ---------------------------- -->
+<div class="qhead">Question 1 <span class="mark">1 mark</span></div>
+<div class="qbody">
+  <p class="qtext">With <code>app.run(debug=True)</code>, a user visits <code>index.html</code> at
+  <b>10:10:10 AM</b>. What will be logged in the console (approximately)?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> 20, 50</li>
+    <li class="right"><span class="lab">B.</span> 20, 40</li>
+    <li class="wrong"><span class="lab">C.</span> 40, 40</li>
+    <li class="wrong"><span class="lab">D.</span> 50, 50</li>
+  </ul>
+</div>
+
+<h3>Step-by-step solution</h3>
+
+<div class="step"><span class="n">1</span><span class="st-t">Check the server mode.</span>
+  <br/>The code is <code>app.run(debug=True)</code>. There is no <code>threaded</code> word, so Flask
+  uses its default, <code>threaded=True</code>. This is <b>Restaurant A: many waiters</b>.
+  Requests are served at the same time.</div>
+
+<div class="step"><span class="n">2</span><span class="st-t">Set the starting clock.</span>
+  <br/>The page opens at <b>10:10:10</b>. <code>test()</code> runs instantly, so both
+  <code>fetch</code> calls leave at 10:10:10. Call this moment <b>t = 0</b>.</div>
+
+<div class="step"><span class="n">3</span><span class="st-t">Follow request 1, the one to <code>/</code>.</span>
+  <br/>Its own waiter starts at t = 0, sleeps 10 s, so it reaches the return line at
+  t = 10, which is the wall-clock time <b>10:10:20</b>.
+  <br/><code>datetime.now().second</code> reads <b>20</b>. It sends 20 back.</div>
+
+<div class="step"><span class="n">4</span><span class="st-t">Follow request 2, the one to <code>/profile</code>.</span>
+  <br/>It has its <i>own separate</i> waiter, who also starts at t = 0 (it did not have to
+  wait for request 1). It sleeps 30 s, reaching the return line at t = 30, which is
+  <b>10:10:40</b>.
+  <br/><code>datetime.now().second</code> reads <b>40</b>. It sends 40 back.</div>
+
+<div class="step"><span class="n">5</span><span class="st-t">Decide the printing order.</span>
+  <br/>Request 1's reply lands at t = 10; request 2's reply lands at t = 30.
+  Earlier arrival prints first, so the console shows <b>20</b> and then <b>40</b>.</div>
+
+<figure>
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Q1 TIMELINE &ndash; threaded=True: the two bars OVERLAP</text>
+
+    <!-- axis -->
+    <line x1="110" y1="238" x2="676" y2="238" stroke="#22303f" stroke-width="2"/>
+    <g font-size="9" fill="#5a6472" text-anchor="middle">
+      <line x1="110" y1="238" x2="110" y2="245" stroke="#22303f"/><text x="110" y="258">10:10:10</text><text x="110" y="270" font-weight="700" fill="#1b4f9c">t=0</text>
+      <line x1="203" y1="238" x2="203" y2="245" stroke="#22303f"/><text x="203" y="258">10:10:20</text><text x="203" y="270" font-weight="700" fill="#1b4f9c">t=10</text>
+      <line x1="296" y1="238" x2="296" y2="245" stroke="#22303f"/><text x="296" y="258">10:10:30</text><text x="296" y="270" font-weight="700" fill="#1b4f9c">t=20</text>
+      <line x1="389" y1="238" x2="389" y2="245" stroke="#22303f"/><text x="389" y="258">10:10:40</text><text x="389" y="270" font-weight="700" fill="#1b4f9c">t=30</text>
+      <line x1="482" y1="238" x2="482" y2="245" stroke="#22303f"/><text x="482" y="258">10:10:50</text><text x="482" y="270" font-weight="700" fill="#1b4f9c">t=40</text>
+      <line x1="575" y1="238" x2="575" y2="245" stroke="#22303f"/><text x="575" y="258">10:11:00</text><text x="575" y="270" font-weight="700" fill="#1b4f9c">t=50</text>
+      <line x1="668" y1="238" x2="668" y2="245" stroke="#22303f"/><text x="668" y="258">10:11:10</text><text x="668" y="270" font-weight="700" fill="#1b4f9c">t=60</text>
+    </g>
+    <text x="393" y="288" font-size="9.5" fill="#5a6472" text-anchor="middle">wall clock time  (1 small box = 1 second)</text>
+
+    <!-- start line -->
+    <line x1="110" y1="34" x2="110" y2="238" stroke="#5b3ec8" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="114" y="46" font-size="9.5" font-weight="700" fill="#5b3ec8">both fetches fired here</text>
+
+    <!-- row 1 -->
+    <text x="100" y="82" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="end">Thread 1</text>
+    <text x="100" y="96" font-size="9.5" fill="#5a6472" text-anchor="end">route  /</text>
+    <rect x="110" y="66" width="93" height="34" rx="5" fill="#1f7a3a"/>
+    <text x="156" y="88" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">sleep 10 s</text>
+    <circle cx="203" cy="83" r="6" fill="#fff" stroke="#1f7a3a" stroke-width="3"/>
+    <rect x="215" y="68" width="152" height="30" rx="5" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="291" y="80" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">clock = 10:10:20  ->  second = 20</text>
+    <text x="291" y="93" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">console.log prints  20   (1st)</text>
+
+    <!-- row 2 -->
+    <text x="100" y="158" font-size="10.5" font-weight="700" fill="#d9480f" text-anchor="end">Thread 2</text>
+    <text x="100" y="172" font-size="9.5" fill="#5a6472" text-anchor="end">route  /profile</text>
+    <rect x="110" y="142" width="279" height="34" rx="5" fill="#d9480f"/>
+    <text x="249" y="164" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">sleep 30 s</text>
+    <circle cx="389" cy="159" r="6" fill="#fff" stroke="#d9480f" stroke-width="3"/>
+    <rect x="401" y="144" width="152" height="30" rx="5" fill="#fff1e6" stroke="#d9480f" stroke-width="1.6"/>
+    <text x="477" y="156" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">clock = 10:10:40  ->  second = 40</text>
+    <text x="477" y="169" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">console.log prints  40   (2nd)</text>
+
+    <!-- overlap bracket -->
+    <path d="M110 112 V124 H203 V112" stroke="#5b3ec8" stroke-width="1.6" fill="none"/>
+    <text x="240" y="128" font-size="9.5" font-weight="700" fill="#5b3ec8">these first 10 seconds are shared &ndash; both threads sleep together</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.2</span> &ndash; Q1. Both bars start at t = 0 because each request gets its own thread.</figcaption>
+</figure>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 1</span>
+  Console output: <span class="big">20, 40</span> &nbsp;&nbsp;=&gt;&nbsp;&nbsp; <b>Option B</b>
+  <br/><small>Because both requests are handled simultaneously: 10 s after 10:10:10 gives second 20,
+  and 30 s after 10:10:10 gives second 40.</small>
+</div>
+
+<h3>Why the other three options are wrong</h3>
+<table>
+  <tr><th style="width:80px">Option</th><th>The wrong belief behind it</th></tr>
+  <tr><td class="c"><b>A. 20, 50</b></td>
+      <td>This assumes <code>/profile</code> had to queue behind <code>/</code> (10 + 30 = 40 s of waiting,
+          landing at 10:10:50). That is true only when threading is switched OFF.
+          <b>This is the answer to Q2, not Q1.</b></td></tr>
+  <tr><td class="c"><b>C. 40, 40</b></td>
+      <td>This assumes both routes finish at the same moment. They cannot: one sleeps 10 s
+          and the other 30 s.</td></tr>
+  <tr><td class="c"><b>D. 50, 50</b></td>
+      <td>Mixes both mistakes at once: queueing <i>and</i> equal finish times.</td></tr>
+</table>
+
+
+<!-- ---------------------------- Q2 ---------------------------- -->
+<div class="qhead">Question 2 <span class="mark">1 mark</span></div>
+<div class="qbody">
+  <p class="qtext">Same files, but now the last line is
+  <code>app.run(threaded=False, debug=True)</code>. A user visits <code>index.html</code> at
+  <b>10:10:10 AM</b>. What will be logged in the console (approximately)?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> 20, 50</li>
+    <li class="wrong"><span class="lab">B.</span> 20, 40</li>
+    <li class="wrong"><span class="lab">C.</span> 40, 40</li>
+    <li class="wrong"><span class="lab">D.</span> 50, 50</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <span class="boxtitle">Important &ndash; please read before the solution</span>
+  In your screenshot, option <b>B (20, 40)</b> is the one that was selected for this question,
+  and there is no green "Answer is Correct" banner on it. Q1 and Q2 cannot both be
+  <b>B</b>: the examiner changed the code on purpose so the answer would change.
+  The correct answer here is <b>A (20, 50)</b>. The next page proves it second by second.
+</div>
+
+<h3>Step-by-step solution</h3>
+
+<div class="step"><span class="n">1</span><span class="st-t">Check the server mode &ndash; this is the whole question.</span>
+  <br/>We now have <code>threaded=False</code>. This is <b>Restaurant B: exactly one waiter</b>.
+  The server can hold only <b>one</b> request at a time; a second request must wait at the
+  door until the first is completely finished.</div>
+
+<div class="step"><span class="n">2</span><span class="st-t">Decide who gets served first.</span>
+  <br/>Both requests were fired at 10:10:10, but not in a random order. Line 2 of the
+  script fires <code>/</code> and line 3 fires <code>/profile</code>, so <code>/</code> reaches the server
+  a fraction of a second earlier. The single waiter therefore picks up <code>/</code> first,
+  and <code>/profile</code> stands in the queue.</div>
+
+<div class="step"><span class="n">3</span><span class="st-t">Serve request 1 (<code>/</code>).</span>
+  <br/>Starts at t = 0, sleeps 10 s, reaches the return line at t = 10, wall clock
+  <b>10:10:20</b>. Sends back <b>20</b>. Identical to Q1 so far &ndash; the first request never
+  notices the difference.</div>
+
+<div class="step"><span class="n">4</span><span class="st-t">Now serve request 2 (<code>/profile</code>) &ndash; here is the change.</span>
+  <br/>The waiter is free only at t = 10. <b>Only now</b> does <code>profile()</code> begin.
+  It then sleeps 30 s, so it reaches the return line at t = 10 + 30 = <b>t = 40</b>.
+  <br/>t = 40 after 10:10:10 is the wall clock time <b>10:10:50</b>.
+  <br/><code>datetime.now().second</code> reads <b>50</b>. It sends back <b>50</b>.</div>
+
+<div class="step"><span class="n">5</span><span class="st-t">Printing order.</span>
+  <br/>Reply 1 lands at t = 10, reply 2 lands at t = 40. So the console prints
+  <b>20</b> first, then <b>50</b>.</div>
+
+<figure>
+  <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="wait" width="9" height="9" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+        <rect width="9" height="9" fill="#fdecec"/>
+        <line x1="0" y1="0" x2="0" y2="9" stroke="#e59a9a" stroke-width="2"/>
+      </pattern>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Q2 TIMELINE &ndash; threaded=False: the bars CANNOT overlap</text>
+
+    <!-- axis -->
+    <line x1="110" y1="248" x2="676" y2="248" stroke="#22303f" stroke-width="2"/>
+    <g font-size="9" fill="#5a6472" text-anchor="middle">
+      <line x1="110" y1="248" x2="110" y2="255" stroke="#22303f"/><text x="110" y="268">10:10:10</text><text x="110" y="280" font-weight="700" fill="#1b4f9c">t=0</text>
+      <line x1="203" y1="248" x2="203" y2="255" stroke="#22303f"/><text x="203" y="268">10:10:20</text><text x="203" y="280" font-weight="700" fill="#1b4f9c">t=10</text>
+      <line x1="296" y1="248" x2="296" y2="255" stroke="#22303f"/><text x="296" y="268">10:10:30</text><text x="296" y="280" font-weight="700" fill="#1b4f9c">t=20</text>
+      <line x1="389" y1="248" x2="389" y2="255" stroke="#22303f"/><text x="389" y="268">10:10:40</text><text x="389" y="280" font-weight="700" fill="#1b4f9c">t=30</text>
+      <line x1="482" y1="248" x2="482" y2="255" stroke="#22303f"/><text x="482" y="268">10:10:50</text><text x="482" y="280" font-weight="700" fill="#1b4f9c">t=40</text>
+      <line x1="575" y1="248" x2="575" y2="255" stroke="#22303f"/><text x="575" y="268">10:11:00</text><text x="575" y="280" font-weight="700" fill="#1b4f9c">t=50</text>
+      <line x1="668" y1="248" x2="668" y2="255" stroke="#22303f"/><text x="668" y="268">10:11:10</text><text x="668" y="280" font-weight="700" fill="#1b4f9c">t=60</text>
+    </g>
+    <text x="393" y="298" font-size="9.5" fill="#5a6472" text-anchor="middle">wall clock time  (1 small box = 1 second)</text>
+
+    <line x1="110" y1="34" x2="110" y2="248" stroke="#5b3ec8" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="114" y="46" font-size="9.5" font-weight="700" fill="#5b3ec8">both fetches fired here</text>
+    <line x1="203" y1="60" x2="203" y2="248" stroke="#1f7a3a" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+    <!-- row 1: home -->
+    <text x="100" y="82" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="end">The ONE thread</text>
+    <text x="100" y="96" font-size="9.5" fill="#5a6472" text-anchor="end">serving  /</text>
+    <rect x="110" y="66" width="93" height="34" rx="5" fill="#1f7a3a"/>
+    <text x="156" y="88" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">sleep 10 s</text>
+    <circle cx="203" cy="83" r="6" fill="#fff" stroke="#1f7a3a" stroke-width="3"/>
+    <rect x="215" y="68" width="152" height="30" rx="5" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="291" y="80" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">clock = 10:10:20  ->  second = 20</text>
+    <text x="291" y="93" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">console.log prints  20   (1st)</text>
+
+    <!-- row 2: profile waiting then running -->
+    <text x="100" y="158" font-size="10.5" font-weight="700" fill="#d9480f" text-anchor="end">same thread, later</text>
+    <text x="100" y="172" font-size="9.5" fill="#5a6472" text-anchor="end">serving  /profile</text>
+    <rect x="110" y="142" width="93" height="34" rx="5" fill="url(#wait)" stroke="#b52020" stroke-width="1.6"/>
+    <text x="156" y="158" font-size="8.5" font-weight="700" fill="#b52020" text-anchor="middle">BLOCKED</text>
+    <text x="156" y="170" font-size="8.5" font-weight="700" fill="#b52020" text-anchor="middle">waiting in line</text>
+    <rect x="203" y="142" width="279" height="34" rx="5" fill="#d9480f"/>
+    <text x="342" y="164" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle">sleep 30 s   (starts only at t = 10)</text>
+    <circle cx="482" cy="159" r="6" fill="#fff" stroke="#d9480f" stroke-width="3"/>
+    <rect x="494" y="144" width="152" height="30" rx="5" fill="#fff1e6" stroke="#d9480f" stroke-width="1.6"/>
+    <text x="570" y="156" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">clock = 10:10:50  ->  second = 50</text>
+    <text x="570" y="169" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">console.log prints  50   (2nd)</text>
+
+    <!-- explanation bracket -->
+    <path d="M110 192 V204 H203 V192" stroke="#b52020" stroke-width="1.6" fill="none"/>
+    <text x="211" y="208" font-size="9.5" font-weight="700" fill="#b52020">10 s of pure waiting, and this is the whole reason 40 becomes 50</text>
+    <path d="M203 214 V226 H482 V214" stroke="#d9480f" stroke-width="1.6" fill="none"/>
+    <text x="343" y="240" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">30 s of real work, pushed 10 s to the right</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.3</span> &ndash; Q2. The orange bar is shifted 10 seconds later because the single thread was busy.</figcaption>
+</figure>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 2</span>
+  Console output: <span class="big">20, 50</span> &nbsp;&nbsp;=&gt;&nbsp;&nbsp; <b>Option A</b>
+  <br/><small>With one thread the work is serialised: 10 s for <code>/</code>, then 30 s for
+  <code>/profile</code>, so the second reply is read at 10 + 30 = 40 s after 10:10:10, i.e. 10:10:50.</small>
+</div>
+
+<h3>A neat cross-check the examiner built in</h3>
+<p>Suppose you doubted step 2 and thought <code>/profile</code> might be served first. Then
+<code>/profile</code> would finish at t = 30 (second = 40) and <code>/</code> would finish at
+t = 40 (second = 50), so the console would print <b>40, 50</b>. Look at the option list:
+<b>40, 50 is not offered</b>. The only way to land on a listed option is the order we
+used: <code>/</code> first, then <code>/profile</code>. The options themselves confirm the reasoning.</p>
+
+<h2>4.2 Q1 and Q2 side by side</h2>
+<table>
+  <tr><th style="width:30%">&nbsp;</th><th>Q1 &ndash; <code>app.run(debug=True)</code></th><th>Q2 &ndash; <code>app.run(threaded=False, ...)</code></th></tr>
+  <tr><td><b>Threads available</b></td><td>many (Flask default is <code>threaded=True</code>)</td><td>exactly one</td></tr>
+  <tr><td><b><code>/</code> starts at</b></td><td>t = 0 &nbsp;(10:10:10)</td><td>t = 0 &nbsp;(10:10:10)</td></tr>
+  <tr><td><b><code>/</code> finishes at</b></td><td>t = 10 &nbsp;(10:10:20) =&gt; logs <b>20</b></td><td>t = 10 &nbsp;(10:10:20) =&gt; logs <b>20</b></td></tr>
+  <tr><td><b><code>/profile</code> starts at</b></td><td>t = 0 &nbsp;(no waiting)</td><td>t = 10 &nbsp;(waited 10 s)</td></tr>
+  <tr><td><b><code>/profile</code> finishes at</b></td><td>t = 30 &nbsp;(10:10:40) =&gt; logs <b>40</b></td><td>t = 40 &nbsp;(10:10:50) =&gt; logs <b>50</b></td></tr>
+  <tr><td><b>Total time to finish both</b></td><td>30 s</td><td>40 s</td></tr>
+  <tr><td><b>Console</b></td><td><b>20, 40</b> &nbsp;(Option B)</td><td><b>20, 50</b> &nbsp;(Option A)</td></tr>
+</table>
+
+<div class="kid">
+  <span class="boxtitle">Say it to yourself in one breath</span>
+  "Many waiters, both start together, so 20 and 40.
+  One waiter, the second one has to queue, so 20 and 50."
+</div>
+
+<div class="key">
+  <span class="boxtitle">The reusable formula for every question of this type</span>
+  <b>Answer second = ( start second + everything you had to wait for + your own sleep ) mod 60</b>
+  <ul style="margin-bottom:0">
+    <li>Threaded server: "everything you had to wait for" = 0.</li>
+    <li>Single-threaded server: it is the total sleep time of all requests ahead of you in the queue.</li>
+    <li>The <code>mod 60</code> just means: if you go past 59, wrap around to 0 again.</li>
+  </ul>
+</div>
+
+
+<!-- ============================== PART 5 ============================== -->
+<h1 class="part"><span class="kicker">Part 5 &bull; Questions 3 and 4</span>Redis: the lightning-fast notepad</h1>
+
+<h2>5.1 First, why do we need Redis at all?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the almirah and the sticky note</span>
+  Imagine you are doing homework. Your big textbook is inside a locked steel almirah
+  across the room. Every time you need a fact you must stand up, walk over, unlock it,
+  flip pages, walk back. Very reliable, very slow.
+  <br/><br/>
+  So you copy the four facts you need again and again onto a <b>sticky note next to your
+  hand</b>. Now looking them up is instant.
+  <ul style="margin-bottom:0">
+    <li>The steel almirah = a normal <b>database</b> on the <b>disk</b> (like SQLite, MySQL, Postgres).</li>
+    <li>The sticky note = <b>Redis</b>, living in <b>RAM</b>, right next to the processor.</li>
+  </ul>
+  A sticky note has a catch, though: if somebody opens the window, it blows away.
+  RAM is the same &ndash; switch the power off and it is gone. Speed is bought with fragility.
+</div>
+
+<h2>5.2 RAM vs Disk: the size of the speed difference</h2>
+
+<p>People say "RAM is faster". You must feel <i>how much</i> faster, because that single
+fact is why Redis exists.</p>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Time to fetch one small piece of data (roughly)</text>
+
+    <line x1="150" y1="196" x2="670" y2="196" stroke="#22303f" stroke-width="2"/>
+
+    <!-- bars: log-ish visual -->
+    <text x="142" y="60" font-size="10.5" font-weight="700" fill="#1f7a3a" text-anchor="end">RAM (Redis)</text>
+    <rect x="150" y="44" width="26" height="26" rx="4" fill="#1f7a3a"/>
+    <text x="186" y="62" font-size="10" font-weight="700" fill="#1f7a3a">about 100 nanoseconds  &bull;  0.0000001 second</text>
+
+    <text x="142" y="108" font-size="10.5" font-weight="700" fill="#d9480f" text-anchor="end">SSD disk</text>
+    <rect x="150" y="92" width="200" height="26" rx="4" fill="#d9480f"/>
+    <text x="360" y="110" font-size="10" font-weight="700" fill="#d9480f">about 100 microseconds  &bull;  1000x slower than RAM</text>
+
+    <text x="142" y="156" font-size="10.5" font-weight="700" fill="#b52020" text-anchor="end">spinning hard disk</text>
+    <rect x="150" y="140" width="470" height="26" rx="4" fill="#b52020"/>
+    <text x="150" y="182" font-size="10" font-weight="700" fill="#b52020">about 10 milliseconds  &bull;  100 000x slower than RAM</text>
+
+    <rect x="150" y="208" width="520" height="34" rx="6" fill="#fffbe8" stroke="#e0a800"/>
+    <text x="410" y="222" font-size="10.5" font-weight="700" fill="#a97800" text-anchor="middle">Human scale: if RAM took 1 second, an SSD would take about 17 minutes,</text>
+    <text x="410" y="236" font-size="10.5" font-weight="700" fill="#a97800" text-anchor="middle">and a spinning hard disk would take more than a whole day.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.1</span> &ndash; Why "keep it in memory" is such a big deal. Bars are not to scale; the real gap is even bigger.</figcaption>
+</figure>
+
+<h2>5.3 What does "key value pair" mean?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the school bag tag</span>
+  In a cloakroom every hook has a <b>name tag</b>, and one bag hangs on it.
+  Say the tag out loud and you instantly get the right bag. You never search
+  through all the bags.
+  <br/><br/>
+  The tag is the <b>key</b>. The bag is the <b>value</b>. Redis stores nothing but
+  tag-and-bag pairs. This is why Redis is called a <b>key-value store</b> and not a
+  table-based (relational) database. There are no rows, no columns, and no
+  <code>JOIN</code> statements.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 285" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="r1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Inside Redis: keys on the left, values on the right</text>
+    <text x="130" y="38" font-size="10.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">KEY (the tag)</text>
+    <text x="470" y="38" font-size="10.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">VALUE (the bag) &ndash; and its data type</text>
+
+    <g font-size="10">
+      <!-- row 1 string -->
+      <rect x="24" y="50" width="212" height="32" rx="6" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="36" y="71" font-size="10.5" font-weight="700" fill="#5b3ec8">user:101:name</text>
+      <path d="M242 66 H286" stroke="#5b3ec8" stroke-width="2" marker-end="url(#r1)"/>
+      <rect x="292" y="50" width="384" height="32" rx="6" fill="#fff" stroke="#5a6472" stroke-width="1.4"/>
+      <text x="304" y="71" font-size="10.5" fill="#22303f">"Aarav"</text>
+      <rect x="586" y="56" width="82" height="20" rx="10" fill="#e8f0fb" stroke="#1b4f9c"/>
+      <text x="627" y="70" font-size="9" font-weight="700" fill="#1b4f9c" text-anchor="middle">STRING</text>
+
+      <!-- row 2 list -->
+      <rect x="24" y="96" width="212" height="32" rx="6" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="36" y="117" font-size="10.5" font-weight="700" fill="#5b3ec8">recent:searches</text>
+      <path d="M242 112 H286" stroke="#5b3ec8" stroke-width="2" marker-end="url(#r1)"/>
+      <rect x="292" y="96" width="384" height="32" rx="6" fill="#fff" stroke="#5a6472" stroke-width="1.4"/>
+      <text x="304" y="117" font-size="10.5" fill="#22303f">["shoes", "bat", "socks"]  &ndash; order is kept</text>
+      <rect x="586" y="102" width="82" height="20" rx="10" fill="#e9f7ee" stroke="#1f7a3a"/>
+      <text x="627" y="116" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">LIST</text>
+
+      <!-- row 3 hash -->
+      <rect x="24" y="142" width="212" height="32" rx="6" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="36" y="163" font-size="10.5" font-weight="700" fill="#5b3ec8">user:101</text>
+      <path d="M242 158 H286" stroke="#5b3ec8" stroke-width="2" marker-end="url(#r1)"/>
+      <rect x="292" y="142" width="384" height="32" rx="6" fill="#fff" stroke="#5a6472" stroke-width="1.4"/>
+      <text x="304" y="163" font-size="10.5" fill="#22303f">{name: "Aarav", age: 10, city: "Pune"}</text>
+      <rect x="586" y="148" width="82" height="20" rx="10" fill="#fff1e6" stroke="#d9480f"/>
+      <text x="627" y="162" font-size="9" font-weight="700" fill="#d9480f" text-anchor="middle">HASH</text>
+
+      <!-- row 4 set -->
+      <rect x="24" y="188" width="212" height="32" rx="6" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="36" y="209" font-size="10.5" font-weight="700" fill="#5b3ec8">tags:post:7</text>
+      <path d="M242 204 H286" stroke="#5b3ec8" stroke-width="2" marker-end="url(#r1)"/>
+      <rect x="292" y="188" width="384" height="32" rx="6" fill="#fff" stroke="#5a6472" stroke-width="1.4"/>
+      <text x="304" y="209" font-size="10.5" fill="#22303f">{"maths", "exam"}  &ndash; no duplicates allowed</text>
+      <rect x="586" y="194" width="82" height="20" rx="10" fill="#fdecec" stroke="#b52020"/>
+      <text x="627" y="208" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">SET</text>
+
+      <!-- row 5 zset -->
+      <rect x="24" y="234" width="212" height="32" rx="6" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="36" y="255" font-size="10.5" font-weight="700" fill="#5b3ec8">leaderboard</text>
+      <path d="M242 250 H286" stroke="#5b3ec8" stroke-width="2" marker-end="url(#r1)"/>
+      <rect x="292" y="234" width="384" height="32" rx="6" fill="#fff" stroke="#5a6472" stroke-width="1.4"/>
+      <text x="304" y="255" font-size="10.5" fill="#22303f">Ravi:90, Sita:85, Anu:70  &ndash; auto-sorted by score</text>
+      <rect x="586" y="240" width="82" height="20" rx="10" fill="#f0ecfd" stroke="#5b3ec8"/>
+      <text x="627" y="254" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">SORTED SET</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.2</span> &ndash; Redis keys are always text, but values come in several shapes. This is what "supports multiple data types" means.</figcaption>
+</figure>
+
+<h2>5.4 If RAM forgets everything, can Redis ever recover?</h2>
+
+<p>Yes &ndash; and this matters for one of the options. Redis can copy its memory onto the
+disk now and then, purely as a <b>backup</b>, so that after a restart it can refill RAM.</p>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="r2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+    </defs>
+    <rect x="30" y="46" width="200" height="104" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="130" y="72" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">RAM</text>
+    <text x="130" y="92" font-size="10" fill="#22303f" text-anchor="middle">where Redis ALWAYS</text>
+    <text x="130" y="107" font-size="10" fill="#22303f" text-anchor="middle">reads and writes your data</text>
+    <text x="130" y="130" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">super fast, forgetful</text>
+
+    <path d="M238 82 H448" stroke="#1b4f9c" stroke-width="2.5" marker-end="url(#r2)"/>
+    <text x="343" y="74" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">snapshot / backup (optional)</text>
+    <path d="M448 122 H238" stroke="#1b4f9c" stroke-width="2.5" marker-end="url(#r2)" style="marker-end:url(#r2)"/>
+    <text x="343" y="140" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">reload after a restart</text>
+
+    <rect x="456" y="46" width="200" height="104" rx="9" fill="#f3f5f9" stroke="#5a6472" stroke-width="2.5"/>
+    <text x="556" y="72" font-size="12" font-weight="800" fill="#5a6472" text-anchor="middle">DISK</text>
+    <text x="556" y="92" font-size="10" fill="#22303f" text-anchor="middle">only a safety copy</text>
+    <text x="556" y="107" font-size="10" fill="#22303f" text-anchor="middle">(RDB file or AOF log)</text>
+    <text x="556" y="130" font-size="10" font-weight="700" fill="#5a6472" text-anchor="middle">slow, remembers</text>
+
+    <rect x="30" y="164" width="626" height="28" rx="6" fill="#e8f0fb" stroke="#1b4f9c"/>
+    <text x="343" y="182" font-size="10.5" font-weight="700" fill="#1b4f9c" text-anchor="middle">Key idea: the disk is Redis's photo album, never its working desk. All actual work happens in RAM.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.3</span> &ndash; Persistence in Redis is a backup mechanism, not the place data lives.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q3 ---------------------------- -->
+<div class="qhead">Question 3 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is/are true about Redis?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Data is always manipulated in the main computer memory (RAM).</li>
+    <li class="wrong"><span class="lab">B.</span> It stores data on the disk by default.</li>
+    <li class="wrong"><span class="lab">C.</span> Data cannot be reconstructed back.</li>
+    <li class="right"><span class="lab">D.</span> Data is stored as key value pairs.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Redis is an <b>in-memory</b> data store. Every read and every write is performed on
+      the copy held in RAM. The word <i>always</i> is correct here, which is exactly what
+      makes Redis so fast.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>This is the opposite of A, so it cannot be true at the same time. The disk is used
+      only for optional persistence (a snapshot file, or an append-only log). Redis's home,
+      by design, is memory &ndash; not the disk.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Data <i>can</i> be reconstructed. If persistence is enabled, Redis reloads the
+      snapshot or replays the append-only log after a restart and rebuilds everything in
+      RAM (Figure 5.3).</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Redis is the textbook example of a key-value store: one text key points to one
+      value (Figure 5.2).</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 3</span>
+  <span class="big">A and D</span>
+  <br/><small>Confirmed by the green "Answer is Correct" banner in your screenshot.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &ndash; how to spot the fake option instantly</span>
+  Options A and B contradict each other. In a multiple-select question, when you see
+  a pair like that, only one of them can be on the answer list. Decide which side of
+  the pair matches the definition of the tool, and the other one is automatically out.
+</div>
+
+<h2>5.5 Two more Redis features you must know for Q4</h2>
+
+<h3>Feature 1: expiry, also called TTL</h3>
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the milk packet</span>
+  A milk packet has a "use before" stamp. Nobody has to throw it away by hand;
+  the date decides. In Redis you may stamp any key with a countdown:
+  "delete yourself automatically after 60 seconds". That countdown is called the
+  <b>TTL</b>, short for <b>Time To Live</b>. It is perfect for one-time passwords,
+  login sessions and cached pages.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 215" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A key with EXPIRE otp:9 60 &ndash; the countdown in action</text>
+    <g>
+      <rect x="24" y="34" width="118" height="66" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="83" y="56" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">otp:9 = 4821</text>
+      <text x="83" y="76" font-size="13" font-weight="800" fill="#1f7a3a" text-anchor="middle">TTL 60</text>
+      <text x="83" y="92" font-size="9" fill="#5a6472" text-anchor="middle">just created</text>
+
+      <rect x="166" y="34" width="118" height="66" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="225" y="56" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">otp:9 = 4821</text>
+      <text x="225" y="76" font-size="13" font-weight="800" fill="#1f7a3a" text-anchor="middle">TTL 30</text>
+      <text x="225" y="92" font-size="9" fill="#5a6472" text-anchor="middle">30 s later, still alive</text>
+
+      <rect x="308" y="34" width="118" height="66" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+      <text x="367" y="56" font-size="10" font-weight="700" fill="#d9480f" text-anchor="middle">otp:9 = 4821</text>
+      <text x="367" y="76" font-size="13" font-weight="800" fill="#d9480f" text-anchor="middle">TTL 1</text>
+      <text x="367" y="92" font-size="9" fill="#5a6472" text-anchor="middle">1 second left!</text>
+
+      <rect x="450" y="34" width="118" height="66" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="509" y="62" font-size="11" font-weight="700" fill="#b52020" text-anchor="middle">key GONE</text>
+      <text x="509" y="80" font-size="11" font-weight="800" fill="#b52020" text-anchor="middle">TTL -2</text>
+      <text x="509" y="94" font-size="9" fill="#5a6472" text-anchor="middle">deleted by itself</text>
+
+      <rect x="592" y="34" width="84" height="66" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+      <text x="634" y="56" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">a key with</text>
+      <text x="634" y="74" font-size="12" font-weight="800" fill="#5b3ec8" text-anchor="middle">TTL -1</text>
+      <text x="634" y="90" font-size="9" fill="#5b3ec8" text-anchor="middle">lives forever</text>
+    </g>
+
+    <rect x="24" y="118" width="652" height="86" rx="8" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="350" y="138" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">THE THREE TTL NUMBERS THAT EXAMS LOVE TO SWAP</text>
+    <text x="42" y="160" font-size="10.5" font-weight="700" fill="#22303f">TTL = 1</text>
+    <text x="150" y="160" font-size="10.5" fill="#22303f">a positive number = seconds remaining. TTL 1 means it dies in ONE second.</text>
+    <text x="42" y="178" font-size="10.5" font-weight="700" fill="#22303f">TTL = -1</text>
+    <text x="150" y="178" font-size="10.5" fill="#22303f">the key exists but has NO expiry set. This is the "never expires" case.</text>
+    <text x="42" y="196" font-size="10.5" font-weight="700" fill="#22303f">TTL = -2</text>
+    <text x="150" y="196" font-size="10.5" fill="#22303f">there is no such key any more (already expired or never created).</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.4</span> &ndash; TTL values. Confusing 1 with -1 is the single most common Redis mistake in exams.</figcaption>
+</figure>
+
+<h3>Feature 2: authentication</h3>
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the lock on the notepad</span>
+  A notepad lying open on a desk can be read by anyone walking past. Redis can be given
+  a <b>password</b> (the <code>requirepass</code> setting), and newer versions can even
+  create separate users with different rights (this is called ACL). So yes, Redis has
+  authentication features &ndash; they are simply switched off in a fresh install, which is
+  why you must remember to turn them on.
+</div>
+
+<!-- ---------------------------- Q4 ---------------------------- -->
+<div class="qhead">Question 4 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are true for Redis?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Redis supports multiple data types.</li>
+    <li class="right"><span class="lab">B.</span> It is possible to set expiration time of data.</li>
+    <li class="right"><span class="lab">C.</span> Authentication features are available.</li>
+    <li class="wrong"><span class="lab">D.</span> TTL value of 1 implies that data will not expire.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Strings, lists, hashes, sets, sorted sets, and more (bitmaps, streams,
+      HyperLogLog). See Figure 5.2. Redis is often called a "data structure server"
+      precisely for this reason.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>That is the TTL / <code>EXPIRE</code> feature from Figure 5.4.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Password protection via <code>requirepass</code>, plus proper user accounts (ACLs)
+      in Redis 6 and later.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>This is the trap.</b> TTL 1 means "one second left to live" &ndash; the data expires
+      almost immediately. The value that means "will not expire" is <b>-1</b>.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 4</span>
+  <span class="big">A, B and C</span>
+  <br/><small>Confirmed by the green banner in your screenshot. D is false because
+  "never expires" is TTL = -1, not TTL = 1.</small>
+</div>
+
+
+<!-- ============================== PART 6 ============================== -->
+<h1 class="part"><span class="kicker">Part 6 &bull; Question 5</span>Celery: giving slow jobs to a helper</h1>
+
+<h2>6.1 The problem Celery solves</h2>
+
+<p>Go back to Q2 for a second. One slow request made another user wait 10 seconds for
+nothing. Now imagine the slow job is not a fake <code>sleep</code> but something real:
+"generate a 200-page PDF report and email it". That could take 3 minutes.
+Should the user's browser sit there spinning for 3 minutes? Obviously not.</p>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the tailor's receipt</span>
+  You give cloth to a tailor and ask for a shirt. The tailor does not make you stand at
+  the counter for two days. He writes your job in his <b>order book</b>, hands you a
+  <b>receipt</b>, and says "come on Friday". You leave immediately and get on with your life.
+  Meanwhile his assistants pick jobs from the order book one by one and stitch them.
+  <ul style="margin-bottom:0">
+    <li>The order book = the <b>broker</b> (a queue of pending jobs).</li>
+    <li>The assistants = <b>Celery workers</b>, separate programs doing the slow work.</li>
+    <li>Your receipt = the <b>task id</b>, which you can use later to ask "is it done?".</li>
+    <li>The finished-shirt shelf = the <b>result backend</b>, where answers are kept.</li>
+  </ul>
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box</span>
+  <b>Celery</b> is a distributed task queue for Python. Your web app hands a slow job to a
+  queue and replies to the user at once. Independent <b>worker</b> processes &ndash; possibly
+  on completely different machines &ndash; pick jobs off the queue and run them. This style of
+  work is called <b>asynchronous</b> or <b>background</b> processing.
+</div>
+
+<h2>6.2 The Celery picture you should be able to draw from memory</h2>
+
+<figure>
+  <svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+      <marker id="c2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="c3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+
+    <!-- 1 client -->
+    <rect x="14" y="86" width="116" height="80" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="72" y="112" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">FLASK APP</text>
+    <text x="72" y="130" font-size="9.5" fill="#5a6472" text-anchor="middle">the "client" or</text>
+    <text x="72" y="144" font-size="9.5" fill="#5a6472" text-anchor="middle">"producer"</text>
+    <text x="72" y="158" font-size="9" fill="#5a6472" text-anchor="middle">replies in 0.01 s</text>
+
+    <path d="M136 112 H208" stroke="#1b4f9c" stroke-width="2.5" marker-end="url(#c1)"/>
+    <text x="172" y="104" font-size="9" font-weight="700" fill="#1b4f9c" text-anchor="middle">1. send task</text>
+
+    <!-- 2 broker -->
+    <rect x="214" y="60" width="128" height="132" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="278" y="82" font-size="11.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">BROKER</text>
+    <text x="278" y="97" font-size="9" fill="#5b3ec8" text-anchor="middle">the order book / queue</text>
+    <rect x="228" y="106" width="100" height="17" rx="4" fill="#5b3ec8"/>
+    <text x="278" y="118" font-size="8.6" fill="#fff" text-anchor="middle">task: send email</text>
+    <rect x="228" y="128" width="100" height="17" rx="4" fill="#5b3ec8" opacity=".72"/>
+    <text x="278" y="140" font-size="8.6" fill="#fff" text-anchor="middle">task: make PDF</text>
+    <rect x="228" y="150" width="100" height="17" rx="4" fill="#5b3ec8" opacity=".45"/>
+    <text x="278" y="162" font-size="8.6" fill="#fff" text-anchor="middle">task: resize image</text>
+    <text x="278" y="184" font-size="9" font-weight="700" fill="#5b3ec8" text-anchor="middle">Redis / RabbitMQ / SQS ...</text>
+
+    <path d="M348 112 H420" stroke="#5b3ec8" stroke-width="2.5" marker-end="url(#c3)"/>
+    <text x="384" y="104" font-size="9" font-weight="700" fill="#5b3ec8" text-anchor="middle">2. pull task</text>
+
+    <!-- 3 workers -->
+    <rect x="426" y="60" width="118" height="60" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="485" y="84" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">WORKER 1</text>
+    <text x="485" y="102" font-size="9" fill="#5a6472" text-anchor="middle">doing the slow work</text>
+    <rect x="426" y="132" width="118" height="60" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="485" y="156" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">WORKER 2</text>
+    <text x="485" y="174" font-size="9" fill="#5a6472" text-anchor="middle">can be another machine</text>
+
+    <!-- 4 result backend -->
+    <path d="M550 112 H602" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#c2)"/>
+    <text x="574" y="104" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">3. store</text>
+    <rect x="608" y="82" width="84" height="80" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="650" y="108" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">RESULT</text>
+    <text x="650" y="123" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">BACKEND</text>
+    <text x="650" y="141" font-size="8.6" fill="#5a6472" text-anchor="middle">answers kept</text>
+    <text x="650" y="153" font-size="8.6" fill="#5a6472" text-anchor="middle">here to collect</text>
+
+    <!-- beat -->
+    <rect x="14" y="216" width="200" height="76" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2.5"/>
+    <circle cx="46" cy="252" r="17" fill="#fff" stroke="#e0a800" stroke-width="2.2"/>
+    <line x1="46" y1="252" x2="46" y2="241" stroke="#a97800" stroke-width="2.2"/>
+    <line x1="46" y1="252" x2="54" y2="256" stroke="#a97800" stroke-width="2.2"/>
+    <text x="140" y="240" font-size="10.5" font-weight="800" fill="#a97800" text-anchor="middle">CELERY BEAT</text>
+    <text x="140" y="256" font-size="9" fill="#22303f" text-anchor="middle">the alarm clock: SCHEDULES</text>
+    <text x="140" y="270" font-size="9" fill="#22303f" text-anchor="middle">jobs like "every day 8 AM"</text>
+    <path d="M150 216 V204 H278 V192" stroke="#e0a800" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+    <text x="200" y="201" font-size="8.4" font-weight="700" fill="#a97800" text-anchor="middle">drops tasks in on a timer</text>
+
+    <!-- flower -->
+    <rect x="240" y="216" width="200" height="76" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <circle cx="272" cy="252" r="16" fill="none" stroke="#1b4f9c" stroke-width="2.2"/>
+    <line x1="283" y1="263" x2="294" y2="274" stroke="#1b4f9c" stroke-width="3"/>
+    <text x="366" y="240" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">FLOWER</text>
+    <text x="366" y="256" font-size="9" fill="#22303f" text-anchor="middle">the CCTV: MONITORS which</text>
+    <text x="366" y="270" font-size="9" fill="#22303f" text-anchor="middle">tasks ran, failed, how long</text>
+
+    <!-- retry -->
+    <rect x="466" y="216" width="226" height="76" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="579" y="238" font-size="10.5" font-weight="800" fill="#b52020" text-anchor="middle">AUTOMATIC RETRY</text>
+    <text x="579" y="254" font-size="9" fill="#22303f" text-anchor="middle">if the broker connection drops,</text>
+    <text x="579" y="268" font-size="9" fill="#22303f" text-anchor="middle">workers and clients keep trying</text>
+    <text x="579" y="282" font-size="9" fill="#22303f" text-anchor="middle">to reconnect on their own</text>
+
+    <text x="350" y="18" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The four parts of a Celery system, plus its two helper tools</text>
+    <text x="350" y="34" font-size="9.5" fill="#5a6472" text-anchor="middle">Producer  ->  Broker  ->  Workers  ->  Result backend</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.1</span> &ndash; Celery end to end. Learn the four boxes in the top row and the three cards below; every Celery exam question comes from this one picture.</figcaption>
+</figure>
+
+<h2>6.3 Which brokers can Celery use?</h2>
+
+<p>This is the point option C attacks. Redis and RabbitMQ are the two <b>most common</b>
+choices, and RabbitMQ is the default recommendation &ndash; but they are not the only ones.
+Celery also supports <b>Amazon SQS</b>, and has further transports such as Zookeeper and
+consul, plus a filesystem transport for local testing.</p>
+
+<div class="key">
+  <span class="boxtitle">Remember the shape of the sentence, not just the facts</span>
+  Words like <b>"only"</b>, <b>"always"</b> and <b>"never"</b> are almost always the sign of a
+  false option. Real engineering tools are built to be pluggable. Whenever you read
+  "X and Y are the only supported ...", your first instinct should be suspicion.
+</div>
+
+<!-- ---------------------------- Q5 ---------------------------- -->
+<div class="qhead">Question 5 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the below is true for Celery?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Celery systems can consist of multiple brokers.</li>
+    <li class="right"><span class="lab">B.</span> Workers and clients will automatically retry if connection is lost.</li>
+    <li class="wrong"><span class="lab">C.</span> Redis and RabbitMQ are the only supported brokers with Celery.</li>
+    <li class="right"><span class="lab">D.</span> It has features to monitor and schedule tasks.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A Celery deployment is not limited to one broker. You can point workers at more
+      than one broker, which is how large systems stay available if one broker dies and
+      how they split traffic between queues.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Celery is explicitly built to survive network trouble: clients and workers
+      retry the broker connection automatically instead of crashing. This property is
+      called <b>fault tolerance</b>.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The word <b>only</b> kills it. Amazon SQS is also supported, along with several
+      experimental transports. Redis and RabbitMQ are merely the popular pair.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Two well-known features: <b>Flower</b> (a web dashboard to monitor tasks and
+      workers) and <b>Celery Beat</b> (a scheduler for periodic tasks, like a cron job).
+      See the bottom row of Figure 6.1.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 5</span>
+  <span class="big">A, B and D</span>
+  <br/><small>Confirmed by the green banner in your screenshot. Only C is false, because of the word "only".</small>
+</div>
+
+
+<!-- ============================== PART 7 ============================== -->
+<h1 class="part"><span class="kicker">Part 7 &bull; Questions 6 and 7</span>Concurrency vs Parallelism</h1>
+
+<p>These two words sound like synonyms. They are not, and Q6 and Q7 exist purely to see
+whether you know the difference. Ten minutes here will earn you two marks forever.</p>
+
+<h2>7.1 The two stories</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; CONCURRENCY = one cook, three dishes</span>
+  Amma is cooking rice, dal and a sabzi with only two hands.
+  She puts the rice on to boil, and while it boils she chops vegetables. Then she stirs
+  the dal, then goes back to the vegetables. She is <b>never doing two things in the
+  same instant</b>, but all three dishes are <b>in progress at the same period of time</b>,
+  and all three land on the table together.
+  <br/><br/>
+  That is <b>concurrency</b>: <i>dealing with</i> many tasks over an overlapping stretch of time,
+  by switching between them.
+</div>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; PARALLELISM = three cooks, three dishes</span>
+  Now Amma calls two neighbours. Three people stand at three stoves. At any single
+  instant, three dishes are genuinely being cooked at once.
+  <br/><br/>
+  That is <b>parallelism</b>: <i>actually doing</i> many tasks in the very same instant.
+  It needs extra hands &ndash; which for a computer means extra <b>CPU cores</b>.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &ndash; the exam wording</span>
+  <ul style="margin-bottom:0">
+    <li><b>Concurrency</b>: multiple tasks make progress over <b>overlapping time periods</b>,
+        not necessarily at the same instant.</li>
+    <li><b>Parallelism</b>: multiple tasks execute <b>simultaneously</b>, literally at the
+        same instant, which requires multiple cores or processors.</li>
+    <li><b>Context switching</b>: one core rapidly pausing task A, saving its place, and
+        resuming task B. This is <i>how</i> a single core fakes doing many things at once.</li>
+  </ul>
+</div>
+
+<h2>7.2 The picture that settles both questions</h2>
+
+<figure>
+  <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+    <!-- panel 1 -->
+    <rect x="8" y="8" width="684" height="112" rx="9" fill="#fffbe8" stroke="#e0a800" stroke-width="2.2"/>
+    <text x="24" y="30" font-size="11.5" font-weight="800" fill="#a97800">CASE 1 &ndash; SINGLE CORE, concurrency by context switching (concurrent, NOT parallel)</text>
+    <text x="94" y="62" font-size="10" font-weight="700" fill="#22303f" text-anchor="end">Core 1</text>
+    <g>
+      <rect x="102" y="46" width="66" height="26" rx="4" fill="#1b4f9c"/><text x="135" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task A</text>
+      <rect x="170" y="46" width="66" height="26" rx="4" fill="#d9480f"/><text x="203" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task B</text>
+      <rect x="238" y="46" width="66" height="26" rx="4" fill="#1b4f9c"/><text x="271" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task A</text>
+      <rect x="306" y="46" width="66" height="26" rx="4" fill="#1f7a3a"/><text x="339" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task C</text>
+      <rect x="374" y="46" width="66" height="26" rx="4" fill="#d9480f"/><text x="407" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task B</text>
+      <rect x="442" y="46" width="66" height="26" rx="4" fill="#1f7a3a"/><text x="475" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task C</text>
+      <rect x="510" y="46" width="66" height="26" rx="4" fill="#1b4f9c"/><text x="543" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task A</text>
+      <rect x="578" y="46" width="66" height="26" rx="4" fill="#d9480f"/><text x="611" y="64" font-size="9.5" fill="#fff" text-anchor="middle">Task B</text>
+    </g>
+    <line x1="102" y1="80" x2="644" y2="80" stroke="#a97800" stroke-width="1.6"/>
+    <text x="373" y="94" font-size="9.5" fill="#a97800" text-anchor="middle">time  ->  each switch between blocks is a CONTEXT SWITCH</text>
+    <text x="373" y="110" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="middle">Only ONE task runs at any instant, yet A, B and C all overlap in this period.</text>
+
+    <!-- panel 2 -->
+    <rect x="8" y="130" width="684" height="128" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="24" y="152" font-size="11.5" font-weight="800" fill="#1f7a3a">CASE 2 &ndash; MULTI CORE, true parallelism (parallel AND therefore also concurrent)</text>
+    <text x="94" y="184" font-size="10" font-weight="700" fill="#22303f" text-anchor="end">Core 1</text>
+    <rect x="102" y="168" width="542" height="26" rx="4" fill="#1b4f9c"/>
+    <text x="373" y="186" font-size="9.5" fill="#fff" text-anchor="middle">Task A runs start to finish, no interruption, no context switch</text>
+    <text x="94" y="216" font-size="10" font-weight="700" fill="#22303f" text-anchor="end">Core 2</text>
+    <rect x="102" y="200" width="542" height="26" rx="4" fill="#d9480f"/>
+    <text x="373" y="218" font-size="9.5" fill="#fff" text-anchor="middle">Task B runs start to finish, no interruption, no context switch</text>
+    <line x1="102" y1="234" x2="644" y2="234" stroke="#1f7a3a" stroke-width="1.6"/>
+    <text x="373" y="250" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="middle">Draw ANY vertical line: it cuts two running tasks. That is simultaneous = parallel.</text>
+
+    <!-- panel 3 -->
+    <rect x="8" y="268" width="684" height="84" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="24" y="290" font-size="11.5" font-weight="800" fill="#b52020">CASE 3 &ndash; the one that CANNOT exist: parallel but not concurrent</text>
+    <text x="24" y="312" font-size="10.5" fill="#22303f">If two tasks run in the same instant, then their time periods obviously overlap &ndash; and overlapping</text>
+    <text x="24" y="328" font-size="10.5" fill="#22303f">time periods is the very definition of concurrency. So parallelism <tspan font-weight="800">always</tspan> brings concurrency with it.</text>
+    <text x="24" y="345" font-size="10.5" font-weight="800" fill="#b52020">You can never have parallelism without concurrency. (This is exactly what Q7 asks.)</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.1</span> &ndash; Three cases. Case 1 and Case 2 are both real; Case 3 is impossible.</figcaption>
+</figure>
+
+<h2>7.3 The relationship, as a Venn diagram</h2>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="290" cy="126" rx="228" ry="106" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="290" y="42" font-size="13" font-weight="800" fill="#1b4f9c" text-anchor="middle">CONCURRENCY</text>
+    <text x="290" y="58" font-size="9.5" fill="#1b4f9c" text-anchor="middle">tasks overlap in time</text>
+
+    <ellipse cx="360" cy="140" rx="118" ry="72" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="360" y="132" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">PARALLELISM</text>
+    <text x="360" y="150" font-size="9.5" fill="#1f7a3a" text-anchor="middle">tasks run in the same instant</text>
+    <text x="360" y="168" font-size="9" fill="#1f7a3a" text-anchor="middle">(needs multiple cores)</text>
+
+    <text x="152" y="132" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">concurrent but</text>
+    <text x="152" y="148" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">NOT parallel</text>
+    <text x="152" y="166" font-size="9" fill="#5a6472" text-anchor="middle">one core, context switching</text>
+
+    <rect x="534" y="46" width="158" height="160" rx="9" fill="#fdecec" stroke="#b52020" stroke-width="2.2"/>
+    <text x="613" y="72" font-size="10.5" font-weight="800" fill="#b52020" text-anchor="middle">OUTSIDE the big</text>
+    <text x="613" y="88" font-size="10.5" font-weight="800" fill="#b52020" text-anchor="middle">circle there is</text>
+    <text x="613" y="112" font-size="16" font-weight="800" fill="#b52020" text-anchor="middle">NOTHING</text>
+    <text x="613" y="140" font-size="9.5" fill="#22303f" text-anchor="middle">Parallelism lies entirely</text>
+    <text x="613" y="154" font-size="9.5" fill="#22303f" text-anchor="middle">inside concurrency, so</text>
+    <text x="613" y="168" font-size="9.5" fill="#22303f" text-anchor="middle">"parallel but not</text>
+    <text x="613" y="182" font-size="9.5" fill="#22303f" text-anchor="middle">concurrent" is an</text>
+    <text x="613" y="196" font-size="9.5" fill="#22303f" text-anchor="middle">empty box.</text>
+
+    <text x="290" y="238" font-size="10" font-weight="700" fill="#5a6472" text-anchor="middle">Parallelism is a SPECIAL CASE of concurrency &ndash; every parallel program is concurrent, but not the reverse.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.2</span> &ndash; The small circle sits inside the big one. Memorise this shape and both questions become easy.</figcaption>
+</figure>
+
+<h2>7.4 The four combinations, as a table</h2>
+<table>
+  <tr><th>Can this exist?</th><th class="c" style="width:80px">Possible?</th><th>Example</th></tr>
+  <tr><td>Concurrent <b>and</b> parallel</td><td class="c"><span class="pill t">YES</span></td>
+      <td>Two cores each running one task, both busy the whole time.</td></tr>
+  <tr><td>Concurrent but <b>not</b> parallel</td><td class="c"><span class="pill t">YES</span></td>
+      <td>One core context-switching between three tasks. Amma cooking alone.</td></tr>
+  <tr><td>Parallel but <b>not</b> concurrent</td><td class="c"><span class="pill f">NO</span></td>
+      <td>Impossible. Running in the same instant means the time periods overlap,
+          which is already concurrency.</td></tr>
+  <tr><td>Neither</td><td class="c"><span class="pill t">YES</span></td>
+      <td>One task, start to finish, then the next one. Plain sequential code &ndash; exactly what
+          <code>threaded=False</code> gave us in Q2.</td></tr>
+</table>
+
+<!-- ---------------------------- Q6 ---------------------------- -->
+<div class="qhead">Question 6 <span class="mark">1 mark &bull; pick the FALSE one</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is <b>false</b> regarding concurrency?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The concurrency is achieved by executing multiple tasks overlapping in time periods, but not always simultaneously.</li>
+    <li class="wrong"><span class="lab">B.</span> The concurrency can be achieved in both "single-core" and "multi-core" environments.</li>
+    <li class="right"><span class="lab">C.</span> The concurrency is <b>always</b> achieved via "context switching" in a multi-core environment.</li>
+    <li class="wrong"><span class="lab">D.</span> Concurrency and Parallelism are not mutually exclusive.</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <span class="boxtitle">Read the instruction twice</span>
+  This question asks for the <b>false</b> statement. So the option you tick is the
+  <i>wrong</i> statement. Students who solve it correctly but tick a true statement out of
+  habit still lose the mark.
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:88px" class="c">True or false</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is the standard definition, and the phrase "not always simultaneously"
+      is what makes it correct. Case 1 of Figure 7.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>On a single core you get concurrency through context switching; on multiple cores
+      you get it through parallel execution. Both roads lead to concurrency.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span><br/><small>the answer</small></td>
+      <td><b>The word "always" is the error.</b> In a multi-core environment two tasks can run
+      on two different cores at the same time, so no context switching is needed at all
+      (Case 2 of Figure 7.1). Context switching is <i>one</i> way to get concurrency &ndash; the way a
+      single core must use &ndash; not the only way.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"Mutually exclusive" would mean they can never happen together. But they can:
+      the overlap region of Figure 7.2 is real and common. So saying they are
+      <b>not</b> mutually exclusive is correct.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 6</span>
+  <span class="big">Option C</span> is the false statement.
+  <br/><small>Confirmed by the green banner in your screenshot.</small>
+</div>
+
+<!-- ---------------------------- Q7 ---------------------------- -->
+<div class="qhead">Question 7 <span class="mark">1 mark &bull; pick the FALSE one</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is <b>false</b> regarding concurrency and parallelism?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The parallelism can be achieved in a "multi-core" environment.</li>
+    <li class="right"><span class="lab">B.</span> It is possible to achieve parallelism <b>without</b> concurrency.</li>
+    <li class="wrong"><span class="lab">C.</span> The parallelism is achieved by executing multiple tasks simultaneously.</li>
+    <li class="wrong"><span class="lab">D.</span> It is possible to achieve concurrency without parallelism.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:88px" class="c">True or false</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Multiple cores are exactly what parallelism requires. Three cooks, three stoves.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span><br/><small>the answer</small></td>
+      <td>This is Case 3 in Figure 7.1 and the empty box in Figure 7.2. If two tasks execute
+      simultaneously, their time periods overlap by definition, and overlapping time periods
+      <i>is</i> concurrency. So parallelism cannot exist on its own.
+      <b>Parallelism always implies concurrency.</b></td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The word "simultaneously" is precisely the definition of parallelism.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The reverse direction <i>is</i> allowed: a single core switching between tasks is
+      concurrent with zero parallelism. Amma cooking alone.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 7</span>
+  <span class="big">Option B</span> is the false statement.
+  <br/><small>Confirmed by the green banner in your screenshot.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">One line to carry into the exam</span>
+  <b>Parallel implies concurrent. Concurrent does not imply parallel.</b>
+  Read that arrow in one direction only, and Q6 and Q7 can never trick you again.
+</div>
+
+
+<!-- ============================== PART 8 ============================== -->
+<h1 class="part"><span class="kicker">Part 8 &bull; Questions 8, 9 and 10</span>Message queues and message brokers</h1>
+
+<h2>8.1 What is a message queue?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the letter box</span>
+  You want to send your cousin a letter. You do <b>not</b> need to phone her first and check
+  whether she is at home. You drop the letter in the post box and walk away.
+  The letter waits safely in the box until the postman picks it up. Your cousin reads it
+  whenever she gets home.
+  <br/><br/>
+  A <b>message queue</b> is that post box for programs.
+  <ul style="margin-bottom:0">
+    <li>The person posting = the <b>producer</b> or <b>sender</b>.</li>
+    <li>The letter = the <b>message</b> (a small packet of data).</li>
+    <li>The post box = the <b>queue</b>, which acts as a <b>buffer</b> holding messages temporarily.</li>
+    <li>Your cousin = the <b>consumer</b> or <b>receiver</b>.</li>
+  </ul>
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="q1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A message queue is a BUFFER that decouples sender from receiver</text>
+
+    <rect x="14" y="66" width="112" height="76" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="70" y="94" font-size="11" font-weight="800" fill="#1b4f9c" text-anchor="middle">PRODUCER</text>
+    <text x="70" y="112" font-size="9" fill="#5a6472" text-anchor="middle">writes a message</text>
+    <text x="70" y="126" font-size="9" fill="#5a6472" text-anchor="middle">then carries on</text>
+
+    <path d="M132 104 H196" stroke="#5b3ec8" stroke-width="2.5" marker-end="url(#q1)"/>
+    <text x="164" y="96" font-size="9" font-weight="700" fill="#5b3ec8" text-anchor="middle">push</text>
+
+    <!-- queue -->
+    <rect x="202" y="52" width="272" height="104" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="338" y="72" font-size="11" font-weight="800" fill="#5b3ec8" text-anchor="middle">THE QUEUE  (a temporary buffer)</text>
+    <rect x="216" y="84" width="56" height="34" rx="5" fill="#5b3ec8"/><text x="244" y="105" font-size="9.5" fill="#fff" text-anchor="middle">msg 4</text>
+    <rect x="278" y="84" width="56" height="34" rx="5" fill="#5b3ec8" opacity=".8"/><text x="306" y="105" font-size="9.5" fill="#fff" text-anchor="middle">msg 3</text>
+    <rect x="340" y="84" width="56" height="34" rx="5" fill="#5b3ec8" opacity=".6"/><text x="368" y="105" font-size="9.5" fill="#fff" text-anchor="middle">msg 2</text>
+    <rect x="402" y="84" width="56" height="34" rx="5" fill="#5b3ec8" opacity=".4"/><text x="430" y="105" font-size="9.5" fill="#fff" text-anchor="middle">msg 1</text>
+    <text x="338" y="140" font-size="9" fill="#5b3ec8" text-anchor="middle">newest at the back, oldest at the front (FIFO: first in, first out)</text>
+
+    <path d="M480 104 H544" stroke="#5b3ec8" stroke-width="2.5" marker-end="url(#q1)"/>
+    <text x="512" y="96" font-size="9" font-weight="700" fill="#5b3ec8" text-anchor="middle">pull</text>
+
+    <rect x="550" y="66" width="136" height="76" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="618" y="94" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">CONSUMER</text>
+    <text x="618" y="112" font-size="9" fill="#5a6472" text-anchor="middle">reads when it is ready,</text>
+    <text x="618" y="126" font-size="9" fill="#5a6472" text-anchor="middle">even hours later</text>
+
+    <rect x="14" y="172" width="672" height="56" rx="8" fill="#fffbe8" stroke="#e0a800"/>
+    <text x="350" y="192" font-size="10.5" font-weight="800" fill="#a97800" text-anchor="middle">Why this is powerful: the producer and the consumer never have to be awake at the same moment.</text>
+    <text x="350" y="210" font-size="10" fill="#22303f" text-anchor="middle">If the consumer crashes, messages simply wait in the buffer. If a burst of 10 000 messages arrives,</text>
+    <text x="350" y="223" font-size="10" fill="#22303f" text-anchor="middle">the queue absorbs the shock instead of the consumer collapsing. This separation is called DECOUPLING.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.1</span> &ndash; Producer, queue, consumer. The queue is a buffer that stores messages temporarily.</figcaption>
+</figure>
+
+<h2>8.2 Point-to-point vs publish-subscribe</h2>
+
+<p>Q8 mentions "point-to-point messaging". There are two delivery styles, and you must
+be able to tell them apart.</p>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="q2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="q3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#d9480f"/></marker>
+      <marker id="q4" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+    </defs>
+
+    <!-- LEFT point to point -->
+    <rect x="8" y="8" width="336" height="274" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="30" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">POINT-TO-POINT  (a queue)</text>
+    <text x="176" y="47" font-size="9.5" fill="#1f7a3a" text-anchor="middle">like a courier parcel: exactly one person receives it</text>
+
+    <rect x="26" y="112" width="66" height="44" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="59" y="139" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">sender</text>
+    <path d="M98 134 H130" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#q2)"/>
+    <rect x="136" y="112" width="80" height="44" rx="7" fill="#1f7a3a"/>
+    <text x="176" y="132" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">QUEUE</text>
+    <text x="176" y="147" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">msg</text>
+    <path d="M222 134 H254" stroke="#1f7a3a" stroke-width="2.5" marker-end="url(#q2)"/>
+
+    <rect x="260" y="82" width="66" height="38" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="293" y="99" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">consumer 1</text>
+    <text x="293" y="112" font-size="8.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">GETS IT</text>
+    <rect x="260" y="128" width="66" height="38" rx="7" fill="#f6f7f9" stroke="#9aa4b2" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="293" y="145" font-size="9" font-weight="700" fill="#9aa4b2" text-anchor="middle">consumer 2</text>
+    <text x="293" y="158" font-size="8.6" fill="#9aa4b2" text-anchor="middle">gets nothing</text>
+    <rect x="260" y="174" width="66" height="38" rx="7" fill="#f6f7f9" stroke="#9aa4b2" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="293" y="191" font-size="9" font-weight="700" fill="#9aa4b2" text-anchor="middle">consumer 3</text>
+    <text x="293" y="204" font-size="8.6" fill="#9aa4b2" text-anchor="middle">gets nothing</text>
+
+    <rect x="26" y="226" width="300" height="44" rx="7" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="244" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">One message = consumed ONCE, by ONE consumer.</text>
+    <text x="176" y="260" font-size="9.5" fill="#22303f" text-anchor="middle">Then it is removed from the queue. This is the Q8 fact.</text>
+
+    <!-- RIGHT pub sub -->
+    <rect x="356" y="8" width="336" height="274" rx="10" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="524" y="30" font-size="12" font-weight="800" fill="#d9480f" text-anchor="middle">PUBLISH-SUBSCRIBE  (a topic)</text>
+    <text x="524" y="47" font-size="9.5" fill="#d9480f" text-anchor="middle">like a radio broadcast: everyone tuned in hears it</text>
+
+    <rect x="374" y="112" width="66" height="44" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="407" y="139" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">publisher</text>
+    <path d="M446 134 H478" stroke="#d9480f" stroke-width="2.5" marker-end="url(#q3)"/>
+    <rect x="484" y="112" width="80" height="44" rx="7" fill="#d9480f"/>
+    <text x="524" y="132" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">TOPIC</text>
+    <text x="524" y="147" font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">msg</text>
+    <path d="M570 128 L602 106" stroke="#d9480f" stroke-width="2.5" marker-end="url(#q3)"/>
+    <path d="M570 134 H602" stroke="#d9480f" stroke-width="2.5" marker-end="url(#q3)"/>
+    <path d="M570 140 L602 186" stroke="#d9480f" stroke-width="2.5" marker-end="url(#q3)"/>
+
+    <rect x="608" y="82" width="66" height="38" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="641" y="99" font-size="9" font-weight="700" fill="#d9480f" text-anchor="middle">subscriber 1</text>
+    <text x="641" y="112" font-size="8.6" font-weight="800" fill="#d9480f" text-anchor="middle">GETS IT</text>
+    <rect x="608" y="128" width="66" height="38" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="641" y="145" font-size="9" font-weight="700" fill="#d9480f" text-anchor="middle">subscriber 2</text>
+    <text x="641" y="158" font-size="8.6" font-weight="800" fill="#d9480f" text-anchor="middle">GETS IT</text>
+    <rect x="608" y="174" width="66" height="38" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="641" y="191" font-size="9" font-weight="700" fill="#d9480f" text-anchor="middle">subscriber 3</text>
+    <text x="641" y="204" font-size="8.6" font-weight="800" fill="#d9480f" text-anchor="middle">GETS IT</text>
+
+    <rect x="374" y="226" width="300" height="44" rx="7" fill="#fff" stroke="#d9480f"/>
+    <text x="524" y="244" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">One message = delivered to EVERY subscriber.</text>
+    <text x="524" y="260" font-size="9.5" fill="#22303f" text-anchor="middle">Here a message IS processed more than once.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.2</span> &ndash; The two messaging styles. Q8 is about the left-hand one.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q8 ---------------------------- -->
+<div class="qhead">Question 8 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are correct regarding message queue?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> Message queue provides communication between components in a distributed architecture.</li>
+    <li class="right"><span class="lab">B.</span> It provides a buffer which temporarily store messages.</li>
+    <li class="wrong"><span class="lab">C.</span> In general, a message in message queue is processed <b>more than once</b> in point-to-point messaging.</li>
+    <li class="right"><span class="lab">D.</span> In general, a message in message queue is processed <b>only once</b> in point-to-point messaging.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"Distributed architecture" just means the software is split into pieces that may sit
+      on different machines. Letting those pieces talk to each other without being directly
+      wired together is the main job of a message queue.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A queue holds messages temporarily until a consumer takes them &ndash; that is the
+      textbook definition of a buffer (Figure 8.1). Note the word <i>temporarily</i>:
+      a queue is not long-term storage like a database.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>In point-to-point, once a consumer takes a message it is removed, so it is
+      <b>not</b> processed again. "More than once" describes publish-subscribe, not
+      point-to-point.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Exactly the left panel of Figure 8.2: one message, one consumer, processed once.
+      Note that C and D are direct opposites, so precisely one of them can be right.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 8</span>
+  <span class="big">A, B and D</span>
+  <br/><small>Confirmed by the green banner in your screenshot.</small>
+</div>
+
+<h2>8.3 What is a message broker, and why does it save connections?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the post office</span>
+  A message queue is one post box. A <b>message broker</b> is the whole <b>post office</b>: it
+  owns many boxes, sorts letters, decides which van carries what, retries failed
+  deliveries, and keeps records.
+  <br/><br/>
+  Now think about what life would be like without a post office. To write to 4 friends
+  you would need your own private road to each of their houses. And if all 4 of you wanted
+  to write to each other, the town would need a spider web of private roads. With a post
+  office, everyone builds just <b>one</b> road &ndash; to the post office.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- LEFT mesh -->
+    <rect x="8" y="8" width="336" height="284" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="176" y="30" font-size="12" font-weight="800" fill="#b52020" text-anchor="middle">WITHOUT a broker: many-to-many</text>
+    <text x="176" y="47" font-size="9.5" fill="#b52020" text-anchor="middle">4 senders x 4 receivers = 16 connections</text>
+    <g stroke="#b52020" stroke-width="1" opacity=".6">
+      <line x1="76" y1="90" x2="266" y2="90"/><line x1="76" y1="90" x2="266" y2="140"/>
+      <line x1="76" y1="90" x2="266" y2="190"/><line x1="76" y1="90" x2="266" y2="240"/>
+      <line x1="76" y1="140" x2="266" y2="90"/><line x1="76" y1="140" x2="266" y2="140"/>
+      <line x1="76" y1="140" x2="266" y2="190"/><line x1="76" y1="140" x2="266" y2="240"/>
+      <line x1="76" y1="190" x2="266" y2="90"/><line x1="76" y1="190" x2="266" y2="140"/>
+      <line x1="76" y1="190" x2="266" y2="190"/><line x1="76" y1="190" x2="266" y2="240"/>
+      <line x1="76" y1="240" x2="266" y2="90"/><line x1="76" y1="240" x2="266" y2="140"/>
+      <line x1="76" y1="240" x2="266" y2="190"/><line x1="76" y1="240" x2="266" y2="240"/>
+    </g>
+    <g>
+      <circle cx="62" cy="90" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="62" y="94" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">A1</text>
+      <circle cx="62" cy="140" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="62" y="144" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">A2</text>
+      <circle cx="62" cy="190" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="62" y="194" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">A3</text>
+      <circle cx="62" cy="240" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="62" y="244" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">A4</text>
+      <circle cx="280" cy="90" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="280" y="94" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">B1</text>
+      <circle cx="280" cy="140" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="280" y="144" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">B2</text>
+      <circle cx="280" cy="190" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="280" y="194" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">B3</text>
+      <circle cx="280" cy="240" r="15" fill="#fff" stroke="#b52020" stroke-width="2.2"/><text x="280" y="244" font-size="9" font-weight="700" fill="#b52020" text-anchor="middle">B4</text>
+    </g>
+    <text x="176" y="272" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">Add ONE more server and you must wire 4 new links.</text>
+    <text x="176" y="286" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">Growth is n x m &ndash; it explodes. Hard to scale.</text>
+
+    <!-- RIGHT broker -->
+    <rect x="356" y="8" width="336" height="284" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="30" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">WITH a broker: hub and spoke</text>
+    <text x="524" y="47" font-size="9.5" fill="#1f7a3a" text-anchor="middle">4 + 4 = only 8 connections</text>
+    <g stroke="#1f7a3a" stroke-width="1.8">
+      <line x1="424" y1="90" x2="500" y2="150"/><line x1="424" y1="140" x2="500" y2="158"/>
+      <line x1="424" y1="190" x2="500" y2="172"/><line x1="424" y1="240" x2="500" y2="180"/>
+      <line x1="548" y1="150" x2="622" y2="90"/><line x1="548" y1="158" x2="622" y2="140"/>
+      <line x1="548" y1="172" x2="622" y2="190"/><line x1="548" y1="180" x2="622" y2="240"/>
+    </g>
+    <rect x="500" y="126" width="48" height="78" rx="8" fill="#1f7a3a"/>
+    <text x="524" y="158" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">MSG</text>
+    <text x="524" y="172" font-size="8.6" font-weight="700" fill="#fff" text-anchor="middle">BROKER</text>
+    <g>
+      <circle cx="410" cy="90" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="410" y="94" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">A1</text>
+      <circle cx="410" cy="140" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="410" y="144" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">A2</text>
+      <circle cx="410" cy="190" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="410" y="194" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">A3</text>
+      <circle cx="410" cy="240" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="410" y="244" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">A4</text>
+      <circle cx="636" cy="90" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="636" y="94" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">B1</text>
+      <circle cx="636" cy="140" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="636" y="144" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">B2</text>
+      <circle cx="636" cy="190" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="636" y="194" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">B3</text>
+      <circle cx="636" cy="240" r="15" fill="#fff" stroke="#1f7a3a" stroke-width="2.2"/><text x="636" y="244" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="middle">B4</text>
+    </g>
+    <text x="524" y="272" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">Add ONE more server and you wire just 1 new link.</text>
+    <text x="524" y="286" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">Growth is n + m &ndash; gentle. EASY to scale.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.3</span> &ndash; The connection-count argument. This single picture answers both parts of Q9.</figcaption>
+</figure>
+
+<div class="note">
+  <span class="boxtitle">Do the arithmetic once and you will never forget it</span>
+  With 10 senders and 10 receivers: direct wiring needs 10 x 10 = <b>100</b> connections.
+  Through a broker: 10 + 10 = <b>20</b>. With 100 and 100 it is <b>10 000</b> versus <b>200</b>.
+  Fewer connections means less code, fewer failures, and far easier scaling.
+</div>
+
+<!-- ---------------------------- Q9 ---------------------------- -->
+<div class="qhead">Question 9 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are true regarding message broker?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> A message broker helps in reducing the number of connections between servers, if compared with many-to-many connections between servers.</li>
+    <li class="wrong"><span class="lab">B.</span> It does <b>not</b> allow easier scalability, if compared with many-to-many connections between servers.</li>
+    <li class="right"><span class="lab">C.</span> It can be used for batch processing of many similar types of requests.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>16 connections become 8; 100 become 20. Exactly Figure 8.3.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Read the little word <b>not</b> carefully. A broker <i>does</i> make scaling easier,
+      because adding one more server costs one new connection instead of many.
+      The statement claims the opposite, so it is false.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Because messages pile up in a queue, a consumer can collect a whole batch and
+      process them together &ndash; for example, sending 500 collected emails in one go.
+      Batch processing is a standard broker use case.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>"All of the above" would require B to be true as well. Since B is false,
+      D collapses automatically.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 9</span>
+  <span class="big">A and C</span>
+  <br/><small>Confirmed by the green banner in your screenshot.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &ndash; the tiny word "not"</span>
+  Option B is the same fact as option A, just phrased negatively. Examiners love this.
+  When you meet a negative option, rewrite it in your head as a positive sentence
+  ("a broker <i>does</i> allow easier scalability"), decide whether <i>that</i> is true,
+  and then flip your verdict once.
+</div>
+
+<h2>8.4 Synchronous vs asynchronous, the last idea you need</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; phone call vs text message</span>
+  A <b>phone call</b> is <b>synchronous</b>: both people must be free at the same moment,
+  and you cannot do anything else while talking. If she does not pick up, your message
+  does not get through at all.
+  <br/><br/>
+  A <b>text message</b> is <b>asynchronous</b>: you send it and immediately go back to your
+  game. You do not need to know whether her phone is on, off, charging or out of signal.
+  She replies whenever she can.
+  <br/><br/>
+  Message brokers are the text-message model. That is the whole of Q10.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="blk" width="9" height="9" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+        <rect width="9" height="9" fill="#fdecec"/>
+        <line x1="0" y1="0" x2="0" y2="9" stroke="#e59a9a" stroke-width="2"/>
+      </pattern>
+      <marker id="s1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5a6472"/></marker>
+    </defs>
+
+    <text x="176" y="18" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">SYNCHRONOUS (phone call)</text>
+    <text x="130" y="52" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="end">Sender</text>
+    <rect x="136" y="36" width="40" height="22" rx="4" fill="#1b4f9c"/>
+    <text x="156" y="52" font-size="8" fill="#fff" text-anchor="middle">send</text>
+    <rect x="176" y="36" width="112" height="22" rx="4" fill="url(#blk)" stroke="#b52020" stroke-width="1.4"/>
+    <text x="232" y="51" font-size="8" font-weight="700" fill="#b52020" text-anchor="middle">BLOCKED, waiting</text>
+    <rect x="288" y="36" width="40" height="22" rx="4" fill="#1b4f9c"/>
+    <text x="308" y="52" font-size="8" fill="#fff" text-anchor="middle">go on</text>
+    <text x="130" y="96" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="end">Receiver</text>
+    <rect x="200" y="80" width="80" height="22" rx="4" fill="#1f7a3a"/>
+    <text x="240" y="95" font-size="8" fill="#fff" text-anchor="middle">handles it</text>
+    <path d="M176 64 L204 78" stroke="#5a6472" stroke-width="1.4" marker-end="url(#s1)"/>
+    <path d="M280 92 L292 62" stroke="#5a6472" stroke-width="1.4" marker-end="url(#s1)"/>
+    <rect x="20" y="118" width="312" height="60" rx="7" fill="#fdecec" stroke="#b52020"/>
+    <text x="176" y="138" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">The sender is stuck doing nothing useful.</text>
+    <text x="176" y="154" font-size="9.5" fill="#22303f" text-anchor="middle">It must know the receiver is alive and free,</text>
+    <text x="176" y="169" font-size="9.5" fill="#22303f" text-anchor="middle">otherwise the whole thing fails. Tightly coupled.</text>
+
+    <line x1="348" y1="10" x2="348" y2="240" stroke="#d5dae2" stroke-width="1.6"/>
+
+    <text x="524" y="18" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">ASYNCHRONOUS (text message, via broker)</text>
+    <text x="470" y="52" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="end">Sender</text>
+    <rect x="476" y="36" width="40" height="22" rx="4" fill="#1b4f9c"/>
+    <text x="496" y="52" font-size="8" fill="#fff" text-anchor="middle">send</text>
+    <rect x="516" y="36" width="160" height="22" rx="4" fill="#1b4f9c" opacity=".55"/>
+    <text x="596" y="51" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">carries on with other work at once</text>
+    <text x="470" y="82" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="end">Broker</text>
+    <rect x="516" y="68" width="60" height="20" rx="4" fill="#5b3ec8"/>
+    <text x="546" y="82" font-size="8" fill="#fff" text-anchor="middle">holds msg</text>
+    <text x="470" y="112" font-size="9.5" font-weight="700" fill="#22303f" text-anchor="end">Receiver</text>
+    <rect x="592" y="98" width="80" height="22" rx="4" fill="#1f7a3a"/>
+    <text x="632" y="113" font-size="8" fill="#fff" text-anchor="middle">handles it later</text>
+    <path d="M516 60 L522 66" stroke="#5a6472" stroke-width="1.4" marker-end="url(#s1)"/>
+    <path d="M576 82 L596 98" stroke="#5a6472" stroke-width="1.4" marker-end="url(#s1)"/>
+    <rect x="368" y="132" width="312" height="60" rx="7" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="524" y="152" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">The sender never waits and never checks</text>
+    <text x="524" y="168" font-size="9.5" fill="#22303f" text-anchor="middle">the state of the receiver. The broker takes</text>
+    <text x="524" y="183" font-size="9.5" fill="#22303f" text-anchor="middle">responsibility. Loosely coupled.</text>
+
+    <text x="350" y="222" font-size="10.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Inter-application communication through a broker is therefore OFTEN ASYNCHRONOUS,</text>
+    <text x="350" y="238" font-size="10.5" font-weight="800" fill="#0f2f61" text-anchor="middle">and the sender does NOT need to know the receiver's state.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.4</span> &ndash; Synchronous blocks the sender; asynchronous frees it. Brokers give you the second one.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q10 ---------------------------- -->
+<div class="qhead">Question 10 <span class="mark">1 mark &bull; multiple correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is/are true regarding message broker?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> They serve as intermediary between applications, which allow senders to issue a message <b>without</b> knowing the state of the receiver.</li>
+    <li class="wrong"><span class="lab">B.</span> They serve as intermediary between applications, which allow senders to issue a message <b>only after</b> knowing the state of the receiver.</li>
+    <li class="right"><span class="lab">C.</span> Inter application communication is often <b>asynchronous</b>.</li>
+    <li class="wrong"><span class="lab">D.</span> Inter application communication is often <b>synchronous</b>.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is the definition of a broker: an <b>intermediary</b>. You post the letter and
+      walk away; the post office worries about the recipient. The sender needs no knowledge
+      of the receiver's state.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The exact opposite of A. If the sender had to check the receiver first, the broker
+      would be pointless &ndash; you would be back to a phone call.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Communication through a broker is asynchronous: send now, get handled later
+      (Figure 8.4, right side). Note the honest word "often" rather than "always".</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The opposite of C. Synchronous messaging is the model brokers were invented to
+      escape.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 10</span>
+  <span class="big">A and C</span>
+  <br/><small>Confirmed by the green banner in your screenshot.</small>
+</div>
+
+<div class="key">
+  <span class="boxtitle">Pattern spotting: this paper is full of opposite pairs</span>
+  Q3 had A vs B. Q8 had C vs D. Q10 had A vs B <i>and</i> C vs D. In every case exactly one
+  member of the pair is correct. Spot the pairs first, settle each pair with one clear
+  fact, and a 4-option question shrinks to two easy decisions.
+</div>
+
+
+<!-- ============================== PART 9 ============================== -->
+<h1 class="part"><span class="kicker">Part 9 &bull; Revision</span>Answer key, cheat sheet and practice</h1>
+
+<h2>9.1 Master answer key</h2>
+
+<table>
+  <tr><th class="c" style="width:52px">Q</th><th style="width:210px">Topic</th>
+      <th class="c" style="width:88px">Answer</th><th>The one line that decides it</th></tr>
+  <tr><td class="c"><b>1</b></td><td>Flask, default threading</td><td class="c"><b>B</b> &nbsp;20, 40</td>
+      <td><code>app.run()</code> is threaded by default, so both requests start together.</td></tr>
+  <tr><td class="c"><b>2</b></td><td>Flask, <code>threaded=False</code></td><td class="c"><b>A</b> &nbsp;20, 50</td>
+      <td>One thread, so <code>/profile</code> waits 10 s first: 10 + 30 = 40 s after 10:10:10.</td></tr>
+  <tr><td class="c"><b>3</b></td><td>Redis basics</td><td class="c"><b>A, D</b></td>
+      <td>Always works in RAM; stores key-value pairs. Disk is only a backup.</td></tr>
+  <tr><td class="c"><b>4</b></td><td>Redis features</td><td class="c"><b>A, B, C</b></td>
+      <td>Many data types, TTL expiry, authentication. TTL 1 means 1 second, not "never".</td></tr>
+  <tr><td class="c"><b>5</b></td><td>Celery</td><td class="c"><b>A, B, D</b></td>
+      <td>Multiple brokers, auto retry, Flower + Beat. "Only Redis and RabbitMQ" is false.</td></tr>
+  <tr><td class="c"><b>6</b></td><td>Concurrency (false one)</td><td class="c"><b>C</b></td>
+      <td>Multi-core concurrency does not <i>always</i> need context switching.</td></tr>
+  <tr><td class="c"><b>7</b></td><td>Concurrency vs parallelism (false one)</td><td class="c"><b>B</b></td>
+      <td>Parallelism without concurrency is impossible.</td></tr>
+  <tr><td class="c"><b>8</b></td><td>Message queue</td><td class="c"><b>A, B, D</b></td>
+      <td>It is a temporary buffer; in point-to-point a message is consumed once.</td></tr>
+  <tr><td class="c"><b>9</b></td><td>Message broker, connections</td><td class="c"><b>A, C</b></td>
+      <td>n + m instead of n x m, and batch processing is possible. B has a stray "not".</td></tr>
+  <tr><td class="c"><b>10</b></td><td>Message broker, coupling</td><td class="c"><b>A, C</b></td>
+      <td>Sender need not know the receiver's state; communication is asynchronous.</td></tr>
+</table>
+
+<div class="warn">
+  <span class="boxtitle">Reminder about Q2</span>
+  Q2 is the only place where this key differs from the option that was selected in your
+  screenshot. Q1 and Q2 are deliberately built as a pair: the examiner changes
+  <code>threaded=True</code> (the default) to <code>threaded=False</code> so that the answer must move
+  from <b>20, 40</b> to <b>20, 50</b>. If you are ever unsure in the real exam, redraw
+  Figure 4.3 on your rough sheet; the picture cannot lie.
+</div>
+
+<h2>9.2 The one-page cheat sheet</h2>
+
+<div class="card">
+  <h4 style="margin-top:0">Flask timing questions</h4>
+  <ul>
+    <li><code>app.run()</code> and <code>app.run(debug=True)</code> &nbsp;=&nbsp; <b>threaded</b>. Requests overlap.</li>
+    <li><code>app.run(threaded=False)</code> &nbsp;=&nbsp; <b>one at a time</b>. Requests queue up.</li>
+    <li>Formula: answer second = (start second + waiting time + own sleep) mod 60.</li>
+    <li>The clock is read <b>after</b> the sleep, so waiting time counts.</li>
+    <li>Console order = order of <b>arrival</b> of replies, not the order the code was typed.</li>
+    <li><code>jsonify</code>, status <code>200</code>, the CORS header and <code>debug=True</code> never change timing.</li>
+  </ul>
+
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Redis</h4>
+  <ul>
+    <li>In-memory key-value store. All work happens in <b>RAM</b>; disk is only for backup.</li>
+    <li>Data types: string, list, hash, set, sorted set (and more).</li>
+    <li>Persistence: RDB snapshot or AOF log, so data <b>can</b> be reconstructed.</li>
+    <li>TTL: positive = seconds left, <b>-1 = no expiry</b>, <b>-2 = key does not exist</b>.</li>
+    <li>Has authentication (<code>requirepass</code>, and ACL users in Redis 6+).</li>
+    <li>Typical uses: caching, sessions, rate limiting, leaderboards, Celery broker.</li>
+  </ul>
+
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Celery</h4>
+  <ul>
+    <li>Four pieces: <b>producer</b> (your app) &bull; <b>broker</b> (queue) &bull; <b>worker</b> &bull; <b>result backend</b>.</li>
+    <li>Brokers: RabbitMQ, Redis, Amazon SQS and others &ndash; <b>not</b> just the first two.</li>
+    <li><b>Flower</b> = monitoring dashboard. <b>Celery Beat</b> = periodic scheduler.</li>
+    <li>Clients and workers retry automatically when the connection drops.</li>
+    <li>Can use more than one broker in one system.</li>
+  </ul>
+
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Concurrency and parallelism</h4>
+  <ul>
+    <li><b>Concurrency</b>: overlapping time periods, not necessarily the same instant.</li>
+    <li><b>Parallelism</b>: the same instant, needs multiple cores.</li>
+    <li><b>Parallel implies concurrent. Concurrent does not imply parallel.</b></li>
+    <li>Concurrency works on single-core (context switching) and multi-core (real parallelism).</li>
+    <li>They are <b>not</b> mutually exclusive.</li>
+  </ul>
+
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Message queue and message broker</h4>
+  <ul>
+    <li>Queue = temporary <b>buffer</b>; it decouples producer from consumer.</li>
+    <li><b>Point-to-point</b>: one message, one consumer, processed <b>once</b>.</li>
+    <li><b>Publish-subscribe</b>: one message, every subscriber, processed many times.</li>
+    <li>Broker turns <b>n x m</b> connections into <b>n + m</b>, so scaling gets easier.</li>
+    <li>Broker communication is <b>asynchronous</b>; the sender does not check the receiver's state.</li>
+    <li>Brokers enable <b>batch processing</b> of many similar requests.</li>
+  </ul>
+</div>
+
+<h2>9.3 Exam technique: the keyword radar</h2>
+
+<p>Six of the ten questions in this paper are decided by a single word. Train your eye on
+these:</p>
+
+<table>
+  <tr><th style="width:150px">Word you spot</th><th style="width:110px">What it usually means</th><th>Where it happened in this paper</th></tr>
+  <tr><td><b>always</b></td><td>likely FALSE</td>
+      <td>Q6 option C: "always achieved via context switching".</td></tr>
+  <tr><td><b>only</b></td><td>likely FALSE</td>
+      <td>Q5 option C: "Redis and RabbitMQ are the only supported brokers".</td></tr>
+  <tr><td><b>not</b> (buried mid-sentence)</td><td>flip your verdict</td>
+      <td>Q9 option B: "does not allow easier scalability".</td></tr>
+  <tr><td><b>often</b>, <b>in general</b>, <b>not always</b></td><td>likely TRUE</td>
+      <td>Q10 option C, Q8 options C and D, Q6 option A. Careful wording is usually honest wording.</td></tr>
+  <tr><td><b>All of the above</b></td><td>check every option first</td>
+      <td>Q9 option D: dies because option B is false.</td></tr>
+  <tr><td><b>false</b> in the question stem</td><td>tick the wrong statement</td>
+      <td>Q6 and Q7. Underline the word "false" before you start.</td></tr>
+</table>
+
+<div class="kid">
+  <span class="boxtitle">A 30-second routine for any multiple-select question</span>
+  <b>1.</b> Underline whether the stem wants TRUE or FALSE statements.
+  <b>2.</b> Hunt for opposite pairs and settle each pair.
+  <b>3.</b> Circle every <i>always / only / never / not</i>.
+  <b>4.</b> Then, and only then, choose.
+</div>
+
+<h2>9.4 Practice questions</h2>
+
+<p>Cover the answers with your hand. If you can do these seven, you have genuinely
+learned Week 9 and not just memorised a key.</p>
+
+<div class="card">
+  <p><b>P1.</b> Same <code>app.py</code> and <code>index.html</code> as Q1 (threaded), but the user opens the
+  page at <b>10:10:45</b>. What is logged?</p>
+
+  <p><b>P2.</b> Same as Q2 (<code>threaded=False</code>), page opened at <b>10:10:45</b>. What is logged?</p>
+
+  <p><b>P3.</b> In the Q2 code, the two <code>fetch</code> lines are swapped so <code>/profile</code> is
+  requested first. Page opened at 10:10:10. What is logged, and in what order?</p>
+
+  <p><b>P4.</b> <code>TTL mykey</code> returns <code>-1</code>. Will the key be deleted in one second?</p>
+
+  <p><b>P5.</b> A single-core machine runs three tasks that all finish within the same minute.
+  Is that concurrency? Is it parallelism?</p>
+
+  <p><b>P6.</b> You have 6 sender services and 5 receiver services. How many connections
+  with direct wiring, and how many through a broker?</p>
+
+  <p><b>P7.</b> A message is placed in a point-to-point queue with 3 consumers attached.
+  How many consumers process it?</p>
+</div>
+
+<div class="ans">
+  <span class="boxtitle">Answers to the practice questions</span>
+  <p><b>P1.</b> <b>55, 15.</b> Threaded, so both start at 10:10:45.
+  <code>/</code> finishes at 10:10:55, second = <b>55</b>. <code>/profile</code> finishes 30 s later at
+  10:11:15, and the seconds hand has wrapped past 59, so second = <b>15</b>.
+  (75 mod 60 = 15. This is the wrap-around case.)</p>
+
+  <p><b>P2.</b> <b>55, 25.</b> One thread: <code>/</code> finishes at 10:10:55 (second 55).
+  <code>/profile</code> starts only then and runs 30 s, finishing at 10:11:25, so second = <b>25</b>.
+  (45 + 10 + 30 = 85; 85 mod 60 = 25.)</p>
+
+  <p><b>P3.</b> <b>40, then 50.</b> <code>/profile</code> is served first: 0 to 30 s, finishing at
+  10:10:40, so it logs <b>40</b>. Then <code>/</code> runs from t = 30 to t = 40, finishing at
+  10:10:50, so it logs <b>50</b>. The 40 is printed first because it arrived first,
+  even though it belongs to the second <code>fetch</code> in the code.</p>
+
+  <p><b>P4.</b> <b>No.</b> TTL -1 means the key exists with <i>no</i> expiry set, so it stays until
+  something deletes it. TTL <b>1</b> would be the "gone in one second" case.</p>
+
+  <p><b>P5.</b> <b>Concurrency yes, parallelism no.</b> On one core the tasks take turns through
+  context switching, so their time periods overlap but no two ever run in the same instant.</p>
+
+  <p><b>P6.</b> Direct wiring: 6 x 5 = <b>30</b> connections. Through a broker: 6 + 5 = <b>11</b>.</p>
+
+  <p><b>P7.</b> <b>Exactly one.</b> In point-to-point the first consumer to take the message
+  removes it from the queue; the other two never see it. (In publish-subscribe, all three
+  would receive it.)</p>
+</div>
+
+<h2>9.5 Glossary of every term used in this paper</h2>
+
+<table class="flow">
+  <tr><th style="width:170px">Term</th><th>Meaning in one sentence</th></tr>
+  <tr><td><b>Client</b></td><td>The program that asks; usually your browser.</td></tr>
+  <tr><td><b>Server</b></td><td>The program that answers; here, Flask on port 5000.</td></tr>
+  <tr><td><b>Route</b></td><td>The path part of a URL, such as <code>/</code> or <code>/profile</code>.</td></tr>
+  <tr><td><b>localhost / 127.0.0.1</b></td><td>A nickname meaning "this very computer".</td></tr>
+  <tr><td><b>Port</b></td><td>A numbered door on a computer; Flask's development server uses 5000.</td></tr>
+  <tr><td><b>CORS header</b></td><td>A permission slip letting a page read data from another address.</td></tr>
+  <tr><td><b>Promise</b></td><td>A token in JavaScript standing for a result that will arrive later.</td></tr>
+  <tr><td><b>Thread</b></td><td>One worker inside a program, able to run one job at a time.</td></tr>
+  <tr><td><b>Context switching</b></td><td>One core pausing task A and resuming task B, very rapidly.</td></tr>
+  <tr><td><b>Concurrency</b></td><td>Several tasks progressing over overlapping periods of time.</td></tr>
+  <tr><td><b>Parallelism</b></td><td>Several tasks running in the very same instant, on several cores.</td></tr>
+  <tr><td><b>Blocking</b></td><td>Being forced to wait, unable to do anything else meanwhile.</td></tr>
+  <tr><td><b>Synchronous</b></td><td>Send and wait for the reply before continuing (a phone call).</td></tr>
+  <tr><td><b>Asynchronous</b></td><td>Send and carry on immediately (a text message).</td></tr>
+  <tr><td><b>In-memory store</b></td><td>A database that keeps working data in RAM, such as Redis.</td></tr>
+  <tr><td><b>Key-value pair</b></td><td>One name (the key) pointing to one piece of data (the value).</td></tr>
+  <tr><td><b>TTL</b></td><td>Time To Live: seconds until a key deletes itself.</td></tr>
+  <tr><td><b>Persistence</b></td><td>Copying in-memory data to disk so it survives a restart.</td></tr>
+  <tr><td><b>Task queue</b></td><td>A list of pending background jobs, e.g. managed by Celery.</td></tr>
+  <tr><td><b>Worker</b></td><td>A separate process that pulls jobs from a queue and runs them.</td></tr>
+  <tr><td><b>Broker</b></td><td>The middleman service holding and routing messages between apps.</td></tr>
+  <tr><td><b>Result backend</b></td><td>Storage where a finished task's answer is kept for collection.</td></tr>
+  <tr><td><b>Producer / Consumer</b></td><td>The one who puts messages in / the one who takes them out.</td></tr>
+  <tr><td><b>Buffer</b></td><td>Temporary holding space that absorbs bursts of traffic.</td></tr>
+  <tr><td><b>Decoupling</b></td><td>Arranging things so two parts need not know about each other.</td></tr>
+  <tr><td><b>Point-to-point</b></td><td>One message consumed by exactly one consumer.</td></tr>
+  <tr><td><b>Publish-subscribe</b></td><td>One message delivered to every subscriber.</td></tr>
+  <tr><td><b>Fault tolerance</b></td><td>Continuing to work correctly when parts of the system fail.</td></tr>
+  <tr><td><b>Batch processing</b></td><td>Collecting many similar jobs and doing them in one sweep.</td></tr>
+</table>
+
+<h2>9.6 Final word</h2>
+
+<div class="kid">
+  <span class="boxtitle">If you remember only five sentences from this whole book</span>
+  <ol style="margin-bottom:0">
+    <li>Flask's <code>app.run()</code> is <b>threaded by default</b>; <code>threaded=False</code> makes it queue.</li>
+    <li>The clock is read <b>after</b> the sleep, so waiting time is part of the answer.</li>
+    <li>Redis works in RAM, stores key-value pairs, and <b>TTL -1</b> means "never expires".</li>
+    <li><b>Parallel implies concurrent</b>, never the other way round.</li>
+    <li>A broker turns <b>n x m</b> connections into <b>n + m</b>, and lets senders fire and forget.</li>
+  </ol>
+</div>
+
+<p style="margin-top:22px;text-align:center;color:#5a6472;font-size:9.5pt">
+  <i>Prepared as a step-by-step teaching solution for Week 9 &ndash; Graded Assignment 9.<br/>
+  Work through the figures with a pencil in hand; that is where the learning actually happens.</i>
+</p>
+
+<div class="card">
+  <span class="boxtitle" style="color:#5a6472">Notes on sources</span>
+  <small>
+  The technical facts in this book come from the official documentation of the tools
+  discussed &ndash; Flask and Werkzeug
+  (<a href="https://flask.palletsprojects.com/">flask.palletsprojects.com</a>),
+  Redis (<a href="https://redis.io/docs/">redis.io/docs</a>) and
+  Celery (<a href="https://docs.celeryq.dev/">docs.celeryq.dev</a>) &ndash;
+  together with the Week 9 lecture material of the course.
+  The specific detail that Flask's <code>app.run()</code> sets <code>threaded=True</code> by default
+  from Flask 1.0 onwards was cross-checked against community documentation on
+  <a href="https://stackoverflow.com/questions/14814201/">Stack Overflow</a>.
+  All explanations, analogies and diagrams here were written and drawn for this document.
+  Content was rephrased for compliance with licensing restrictions.
+  </small>
+</div>
+
+</body>
+</html>
