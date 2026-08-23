@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Graded Assignment - Webhooks, Polling, SSE, WebSockets and Pub/Sub - Illustrated Solutions</title>
+<style>
+  @page { size: A4; margin: 15mm 13mm 15mm 13mm; }
+
+  :root{
+    --blue:#1b4f9c; --blue-l:#e8f0fb; --blue-d:#0f2f61;
+    --orange:#d9480f; --orange-l:#fff1e6;
+    --green:#1f7a3a; --green-l:#e9f7ee;
+    --red:#b52020; --red-l:#fdecec;
+    --purple:#5b3ec8; --purple-l:#f0ecfd;
+    --grey:#5a6472; --line:#d5dae2; --ink:#1d2430; --soft:#f7f9fc;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    font-family:'Noto Sans', Arial, sans-serif;
+    color:var(--ink); font-size:10.6pt; line-height:1.62;
+    margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  p{ margin:7px 0; }
+  b,strong{ color:var(--blue-d); }
+  ul,ol{ margin:7px 0 7px 0; padding-left:20px; }
+  li{ margin:4px 0; }
+  small{ font-size:9pt; color:var(--grey); }
+
+  h1.part{
+    break-before:page; page-break-before:always;
+    font-size:20pt; line-height:1.25; margin:0 0 4px 0; color:#fff;
+    background:var(--blue); padding:12px 16px; border-radius:8px;
+  }
+  h1.part .kicker{ display:block; font-size:9.5pt; letter-spacing:2px;
+    text-transform:uppercase; opacity:.85; font-weight:600; }
+  h1.nobreak{ break-before:auto; page-break-before:auto; }
+  h2{ font-size:14pt; margin:20px 0 6px; color:var(--blue-d);
+      border-bottom:2.5px solid var(--blue-l); padding-bottom:4px; break-after:avoid; }
+  h3{ font-size:11.6pt; margin:14px 0 4px; color:var(--orange); break-after:avoid; }
+  h4{ font-size:10.6pt; margin:10px 0 2px; color:var(--blue-d); break-after:avoid; }
+
+  .card, .note, .warn, .key, .ans, .qbox, .analogy, .trap, .kid{
+    break-inside:avoid; page-break-inside:avoid;
+    border-radius:8px; padding:10px 13px; margin:11px 0;
+  }
+  .card{ background:var(--soft); border:1px solid var(--line); }
+  .note{ background:var(--blue-l); border-left:5px solid var(--blue); }
+  .analogy{ background:#fffbe8; border-left:5px solid #e0a800; }
+  .warn{ background:var(--orange-l); border-left:5px solid var(--orange); }
+  .trap{ background:var(--red-l); border-left:5px solid var(--red); }
+  .key{ background:var(--purple-l); border-left:5px solid var(--purple); }
+  .kid{ background:#eefaf4; border:1.5px dashed var(--green); }
+  .ans{ background:var(--green-l); border:2.5px solid var(--green); }
+  .boxtitle{ font-weight:700; font-size:10.2pt; display:block; margin-bottom:3px;
+             letter-spacing:.3px; text-transform:uppercase; }
+  .note .boxtitle{ color:var(--blue); }
+  .analogy .boxtitle{ color:#a97800; }
+  .warn .boxtitle{ color:var(--orange); }
+  .trap .boxtitle{ color:var(--red); }
+  .key .boxtitle{ color:var(--purple); }
+  .kid .boxtitle{ color:var(--green); }
+  .ans .boxtitle{ color:var(--green); font-size:11pt; }
+  .ans .big{ font-size:15pt; font-weight:800; color:var(--green); }
+
+  .qhead{
+    background:var(--blue-d); color:#fff; border-radius:8px 8px 0 0;
+    padding:9px 14px; font-weight:700; font-size:12pt; margin-top:16px;
+    break-after:avoid; page-break-after:avoid;
+  }
+  .qhead .mark{ float:right; font-weight:600; font-size:9.5pt; opacity:.9; }
+  .qbody{
+    border:1.5px solid var(--blue-d); border-top:none; border-radius:0 0 8px 8px;
+    padding:11px 14px; margin-bottom:6px; background:#fff;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .qtext{ font-weight:600; font-size:11pt; color:var(--blue-d); margin:0 0 7px; }
+  .opts{ list-style:none; padding:0; margin:0; }
+  .opts li{
+    border:1px solid var(--line); border-radius:6px; padding:5px 9px; margin:4px 0;
+    background:#fcfdff;
+  }
+  .opts li .lab{ font-weight:700; color:var(--blue); margin-right:6px; }
+  .opts li.right{ background:var(--green-l); border-color:var(--green); }
+  .opts li.wrong{ background:#fbfbfc; }
+
+  pre{
+    background:#1e2430; color:#e6e9ef; border-radius:8px; padding:11px 13px;
+    font-family:'Noto Sans Mono','Noto Sans',monospace; font-size:8.8pt; line-height:1.5;
+    overflow:visible; white-space:pre-wrap; margin:9px 0;
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  pre.light{ background:#f3f5f9; color:#22303f; border:1px solid var(--line); }
+  code{ background:#eef1f6; border-radius:4px; padding:1px 5px; font-size:9.4pt;
+        font-family:'Noto Sans Mono','Noto Sans',monospace; color:#0f2f61; }
+  .kw{ color:#c792ea; } .st{ color:#ffcb6b; } .fn{ color:#82aaff; }
+  .nu{ color:#f78c6c; } .cm{ color:#8b98ad; font-style:italic; } .tg{ color:#7fd1b9; }
+
+  table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:9.6pt;
+         break-inside:avoid; page-break-inside:avoid; }
+  table.flow{ break-inside:auto; page-break-inside:auto; }
+  table.flow tr{ break-inside:avoid; page-break-inside:avoid; }
+  th{ background:var(--blue); color:#fff; text-align:left; padding:6px 8px; font-size:9.4pt; }
+  td{ border:1px solid var(--line); padding:5px 8px; vertical-align:top; }
+  tr:nth-child(even) td{ background:#fafbfd; }
+  td.c, th.c{ text-align:center; }
+
+  .pill{ display:inline-block; padding:1px 8px; border-radius:11px; font-size:8.6pt;
+         font-weight:700; letter-spacing:.4px; }
+  .pill.t{ background:var(--green-l); color:var(--green); border:1px solid var(--green); }
+  .pill.f{ background:var(--red-l); color:var(--red); border:1px solid var(--red); }
+
+  figure{ margin:13px 0; break-inside:avoid; page-break-inside:avoid; text-align:center; }
+  figure svg{ width:100%; height:auto; }
+  figcaption{ font-size:9pt; color:var(--grey); margin-top:5px; font-style:italic; }
+  .fignum{ font-weight:700; color:var(--blue); font-style:normal; }
+
+  .step{ border-left:3px solid var(--blue-l); padding:2px 0 2px 13px; margin:12px 0;
+         break-inside:avoid; }
+  .step .n{ display:inline-block; background:var(--blue); color:#fff; font-weight:700;
+            border-radius:50%; width:21px; height:21px; text-align:center;
+            line-height:21px; font-size:9.4pt; margin-right:7px; }
+  .step .st-t{ font-weight:700; color:var(--blue-d); font-size:10.8pt; }
+
+  .cover{ height:262mm; display:flex; flex-direction:column; justify-content:center;
+          text-align:center; break-after:page; page-break-after:always; }
+  .cover .t1{ font-size:15pt; letter-spacing:4px; color:var(--orange); font-weight:700;
+              text-transform:uppercase; }
+  .cover .t2{ font-size:29pt; font-weight:800; color:var(--blue-d); line-height:1.15;
+              margin:8px 0; }
+  .cover .t3{ font-size:12.5pt; color:var(--grey); margin-bottom:22px; }
+  .cover .band{ background:var(--blue); color:#fff; padding:14px; border-radius:10px;
+                font-size:11.5pt; margin:0 8mm; }
+  .two{ display:flex; gap:11px; } .two > *{ flex:1; margin-top:0; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<div class="cover">
+  <div class="t1">Modern Application Development II</div>
+  <div class="t2">Graded Assignment<br/>Complete Illustrated Solutions</div>
+  <div class="t3">Webhooks &bull; Short polling &bull; Long polling &bull; Server-Sent Events
+    &bull; WebSockets &bull; Pub/Sub &bull; Message brokers</div>
+
+  <figure>
+    <svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="cA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+        <marker id="cB" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+          <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      </defs>
+      <text x="320" y="20" font-size="13" font-weight="800" fill="#0f2f61" text-anchor="middle">Five ways to answer ONE question:</text>
+      <text x="320" y="38" font-size="12" font-weight="700" fill="#5a6472" text-anchor="middle">"how does new data reach me the moment it exists?"</text>
+
+      <!-- 1 short poll -->
+      <rect x="14" y="58" width="118" height="80" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2.2"/>
+      <text x="73" y="78" font-size="10.5" font-weight="800" fill="#d9480f" text-anchor="middle">SHORT POLL</text>
+      <path d="M30 92 H110" stroke="#d9480f" stroke-width="1.8" marker-end="url(#cA)" style="marker-end:url(#cA)"/>
+      <path d="M110 102 H30" stroke="#d9480f" stroke-width="1.8"/>
+      <path d="M30 112 H110" stroke="#d9480f" stroke-width="1.8"/>
+      <path d="M110 122 H30" stroke="#d9480f" stroke-width="1.8"/>
+      <text x="73" y="135" font-size="8.6" fill="#5a6472" text-anchor="middle">ask again and again</text>
+
+      <!-- 2 long poll -->
+      <rect x="140" y="58" width="118" height="80" rx="8" fill="#fffbe8" stroke="#e0a800" stroke-width="2.2"/>
+      <text x="199" y="78" font-size="10.5" font-weight="800" fill="#a97800" text-anchor="middle">LONG POLL</text>
+      <path d="M156 96 H236" stroke="#a97800" stroke-width="1.8"/>
+      <rect x="156" y="102" width="80" height="12" rx="3" fill="#e0a800" opacity=".45"/>
+      <text x="196" y="111" font-size="7" font-weight="700" fill="#7a5600" text-anchor="middle">server holds it</text>
+      <path d="M236 122 H156" stroke="#a97800" stroke-width="1.8"/>
+      <text x="199" y="135" font-size="8.6" fill="#5a6472" text-anchor="middle">ask, then wait</text>
+
+      <!-- 3 SSE -->
+      <rect x="266" y="58" width="118" height="80" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+      <text x="325" y="78" font-size="10.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">SSE</text>
+      <path d="M362 96 H282" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#cB)" style="marker-end:url(#cB)"/>
+      <path d="M362 108 H282" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#cB)" style="marker-end:url(#cB)"/>
+      <path d="M362 120 H282" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#cB)" style="marker-end:url(#cB)"/>
+      <text x="325" y="135" font-size="8.6" fill="#5a6472" text-anchor="middle">server streams, one way</text>
+
+      <!-- 4 websocket -->
+      <rect x="392" y="58" width="118" height="80" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+      <text x="451" y="78" font-size="10.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">WEBSOCKET</text>
+      <path d="M408 98 H488" stroke="#5b3ec8" stroke-width="1.8"/>
+      <path d="M488 110 H408" stroke="#5b3ec8" stroke-width="1.8"/>
+      <path d="M408 122 H488" stroke="#5b3ec8" stroke-width="1.8"/>
+      <text x="451" y="135" font-size="8.6" fill="#5a6472" text-anchor="middle">both talk freely</text>
+
+      <!-- 5 webhook -->
+      <rect x="518" y="58" width="108" height="80" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+      <text x="572" y="78" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">WEBHOOK</text>
+      <circle cx="540" cy="106" r="10" fill="#fff" stroke="#1b4f9c" stroke-width="2"/>
+      <text x="540" y="110" font-size="8" font-weight="700" fill="#1b4f9c" text-anchor="middle">ev</text>
+      <path d="M554 106 H610" stroke="#1b4f9c" stroke-width="2.2" marker-end="url(#cA)" style="marker-end:url(#cA)"/>
+      <text x="572" y="135" font-size="8.6" fill="#5a6472" text-anchor="middle">they call you</text>
+
+      <!-- bottom band -->
+      <rect x="14" y="158" width="612" height="78" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+      <text x="320" y="180" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">All ten questions in this paper come from that one problem.</text>
+      <text x="320" y="202" font-size="10.5" fill="#22303f" text-anchor="middle">Plain HTTP has a rule: the client must speak first. The server is never allowed to</text>
+      <text x="320" y="220" font-size="10.5" fill="#22303f" text-anchor="middle">start a conversation. These five techniques are five different ways around that rule.</text>
+    </svg>
+  </figure>
+
+  <div class="band">
+    Written for a complete beginner. Start at Part 1 and read straight through.
+    Every idea gets a picture and an everyday story before any code appears.
+  </div>
+</div>
+
+<!-- ============================== HOW TO USE ============================== -->
+<h1 class="part nobreak"><span class="kicker">Read this first</span>How to use this book</h1>
+
+<p>This document does <b>two</b> jobs at once:</p>
+<ol>
+  <li><b>It teaches the subject from zero.</b> Parts 1 to 8 build the knowledge brick by
+      brick, with pictures and everyday stories.</li>
+  <li><b>It solves all 10 questions</b>, showing exactly how a marker expects you to reason.</li>
+</ol>
+
+<div class="warn">
+  <span class="boxtitle">Important note about your screenshots</span>
+  The screenshots you shared show <b>"Flag for review"</b> and <b>"Clear Selection"</b>
+  buttons, and there are <b>no green "Answer is Correct" banners</b>. That means these are
+  the options you had <i>selected</i> during the attempt, not confirmed results.
+  <br/><br/>
+  So every answer in this book was worked out independently from first principles and
+  checked against the official documentation of each technology. The good news:
+  <b>nine of your ten selections are correct</b>. The one to change is
+  <b>Question 7, where option C should not be ticked</b>. Part 6 explains why in detail.
+</div>
+
+<h2>Map of the book</h2>
+<table>
+  <tr><th style="width:88px">Part</th><th>What you learn</th><th style="width:130px">Questions solved</th></tr>
+  <tr><td><b>Part 1</b></td><td>The one problem behind all 10 questions: HTTP makes the client speak first</td><td class="c">background</td></tr>
+  <tr><td><b>Part 2</b></td><td>Short polling: "are we there yet?" asked over and over</td><td class="c"><b>Q5</b></td></tr>
+  <tr><td><b>Part 3</b></td><td>Long polling: "hold the line, I will tell you when I know"</td><td class="c"><b>Q6, Q3</b></td></tr>
+  <tr><td><b>Part 4</b></td><td>Server-Sent Events: a one-way loudspeaker from server to browser</td><td class="c"><b>Q4</b></td></tr>
+  <tr><td><b>Part 5</b></td><td>WebSockets: a real phone call where both sides can talk</td><td class="c">background</td></tr>
+  <tr><td><b>Part 6</b></td><td>Webhooks: "do not call us, we will call you"</td><td class="c"><b>Q1, Q2, Q7, Q10</b></td></tr>
+  <tr><td><b>Part 7</b></td><td>Pub/Sub and the message broker: the topic and the sorting office</td><td class="c"><b>Q8, Q9</b></td></tr>
+  <tr><td><b>Part 8</b></td><td>All five techniques in one comparison table</td><td class="c">revision</td></tr>
+  <tr><td><b>Part 9</b></td><td>Answer key, cheat sheet, practice questions, glossary</td><td class="c">revision</td></tr>
+</table>
+
+<h2>The boxes you will see</h2>
+<div class="analogy"><span class="boxtitle">Story box</span>
+  A real-life picture of the idea. Read this one first, always.</div>
+<div class="note"><span class="boxtitle">Definition box</span>
+  The proper technical wording, the one to write in an exam.</div>
+<div class="trap"><span class="boxtitle">Trap box</span>
+  The exact mistake that loses the mark. Learn these by heart.</div>
+<div class="ans"><span class="boxtitle">Answer box</span>
+  The final answer, with the option letters.</div>
+
+
+<!-- ============================== PART 1 ============================== -->
+<h1 class="part"><span class="kicker">Part 1 &bull; Foundations</span>The one problem behind all 10 questions</h1>
+
+<p>Every question in this paper is a different answer to the same single problem.
+Understand the problem properly and the ten questions stop being ten separate facts to
+memorise.</p>
+
+<h2>1.1 The rule that causes all the trouble</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the strict teacher</span>
+  Imagine a classroom with a very strict rule: <b>the teacher is not allowed to speak
+  unless a student asks a question first.</b> She can answer beautifully, in detail, as
+  often as you like. But she can never call out "Ravi, your exam result just arrived!"
+  She must wait to be asked.
+  <br/><br/>
+  That is exactly how plain <b>HTTP</b> works. The browser (client) must send a request
+  first. Only then may the server reply. The server can <b>never</b> start the conversation.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="f1" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#1b4f9c"/></marker>
+      <marker id="f2" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#1f7a3a"/></marker>
+      <marker id="f3" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto">
+        <path d="M0,0 L8,3.5 L0,7 z" fill="#b52020"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The HTTP rule: the client must always speak first</text>
+
+    <rect x="20" y="52" width="130" height="96" rx="9" fill="#fff" stroke="#1b4f9c" stroke-width="2.5"/>
+    <rect x="20" y="52" width="130" height="20" rx="9" fill="#1b4f9c"/>
+    <circle cx="34" cy="62" r="3.2" fill="#fff"/><circle cx="45" cy="62" r="3.2" fill="#fff"/>
+    <circle cx="56" cy="62" r="3.2" fill="#fff"/>
+    <text x="85" y="98" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">CLIENT</text>
+    <text x="85" y="116" font-size="9.5" fill="#5a6472" text-anchor="middle">the browser</text>
+    <text x="85" y="132" font-size="9.5" fill="#5a6472" text-anchor="middle">(the student)</text>
+
+    <!-- allowed -->
+    <path d="M158 84 H478" stroke="#1b4f9c" stroke-width="3" marker-end="url(#f1)"/>
+    <rect x="212" y="60" width="212" height="20" rx="5" fill="#e8f0fb" stroke="#1b4f9c"/>
+    <text x="318" y="74" font-size="10" font-weight="700" fill="#1b4f9c" text-anchor="middle">ALLOWED: client asks a question</text>
+
+    <path d="M478 112 H158" stroke="#1f7a3a" stroke-width="3" marker-end="url(#f2)"/>
+    <rect x="212" y="118" width="212" height="20" rx="5" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="318" y="132" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">ALLOWED: server answers that question</text>
+
+    <rect x="486" y="52" width="130" height="96" rx="9" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.5"/>
+    <rect x="500" y="66" width="102" height="18" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <rect x="500" y="90" width="102" height="18" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <rect x="500" y="114" width="102" height="18" rx="4" fill="#fff" stroke="#1b4f9c"/>
+    <text x="551" y="164" font-size="11.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+
+    <!-- forbidden -->
+    <path d="M478 190 H180" stroke="#b52020" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#f3)" fill="none"/>
+    <rect x="196" y="208" width="290" height="38" rx="6" fill="#fdecec" stroke="#b52020" stroke-width="2"/>
+    <text x="341" y="224" font-size="10.5" font-weight="800" fill="#b52020" text-anchor="middle">FORBIDDEN: server cannot start a conversation</text>
+    <text x="341" y="239" font-size="9.5" fill="#22303f" text-anchor="middle">"Your result arrived!" - it is not allowed to say this</text>
+    <!-- big cross over forbidden arrow -->
+    <line x1="329" y1="179" x2="353" y2="201" stroke="#b52020" stroke-width="4"/>
+    <line x1="353" y1="179" x2="329" y2="201" stroke="#b52020" stroke-width="4"/>
+    <text x="551" y="196" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">wants to</text>
+    <text x="551" y="210" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">speak, but</text>
+    <text x="551" y="224" font-size="9.5" font-weight="700" fill="#b52020" text-anchor="middle">cannot</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.1</span> &ndash; HTTP is <b>client-initiated</b>. This single restriction is why all five techniques in this paper exist.</figcaption>
+</figure>
+
+<div class="note">
+  <span class="boxtitle">Definition box</span>
+  <ul style="margin-bottom:0">
+    <li><b>Pull</b> (also called client-initiated): the client asks, the server answers.
+        A normal API call is a pull.</li>
+    <li><b>Push</b> (also called server-initiated): the data arrives without the receiver
+        having just asked for it.</li>
+  </ul>
+  Plain HTTP only gives you pull. Every technique in this paper is a trick to get something
+  that <i>feels</i> like push.
+</div>
+
+<h2>1.2 The five ways around the rule</h2>
+
+<p>Here is the whole paper on one page. Do not try to memorise it yet &ndash; just notice that
+the five techniques differ in only three things: <b>who starts</b>, <b>how long the
+connection stays open</b>, and <b>which direction data flows</b>.</p>
+
+<figure>
+  <svg viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="m1" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#22303f"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The family of solutions, from clumsiest to cleverest</text>
+
+    <!-- SHORT POLL -->
+    <rect x="10" y="30" width="680" height="54" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="22" y="50" font-size="11" font-weight="800" fill="#d9480f">1. SHORT POLLING</text>
+    <text x="22" y="68" font-size="9.5" fill="#22303f">Client keeps asking at fixed intervals. Server answers at once, even with "nothing new".</text>
+    <text x="22" y="80" font-size="8.6" font-weight="700" fill="#d9480f">client starts  &bull;  connection closes each time  &bull;  huge waste when nothing changes</text>
+    <g stroke="#d9480f" stroke-width="1.6">
+      <path d="M470 46 H540" marker-end="url(#m1)" style="marker-end:none"/>
+      <path d="M540 54 H470"/><path d="M470 62 H540"/><path d="M540 70 H470"/>
+    </g>
+    <text x="600" y="60" font-size="9" font-weight="700" fill="#d9480f">ask, ask, ask...</text>
+
+    <!-- LONG POLL -->
+    <rect x="10" y="90" width="680" height="54" rx="8" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="22" y="110" font-size="11" font-weight="800" fill="#a97800">2. LONG POLLING</text>
+    <text x="22" y="128" font-size="9.5" fill="#22303f">Client asks once. Server holds the connection open and stays silent until it has news.</text>
+    <text x="22" y="140" font-size="8.6" font-weight="700" fill="#a97800">client starts  &bull;  connection held open  &bull;  far fewer wasted calls</text>
+    <g stroke="#a97800" stroke-width="1.6">
+      <path d="M470 108 H540"/>
+      <rect x="470" y="114" width="70" height="9" fill="#e0a800" opacity=".4" stroke="none"/>
+      <path d="M540 132 H470"/>
+    </g>
+    <text x="600" y="122" font-size="9" font-weight="700" fill="#a97800">ask, then wait</text>
+
+    <!-- SSE -->
+    <rect x="10" y="150" width="680" height="54" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="22" y="170" font-size="11" font-weight="800" fill="#1f7a3a">3. SERVER-SENT EVENTS (SSE)</text>
+    <text x="22" y="188" font-size="9.5" fill="#22303f">One long-lived connection. Server streams as many events as it likes. Client only listens.</text>
+    <text x="22" y="200" font-size="8.6" font-weight="700" fill="#1f7a3a">client opens it once  &bull;  stays open  &bull;  ONE WAY: server to client only</text>
+    <g stroke="#1f7a3a" stroke-width="1.6">
+      <path d="M540 166 H470"/><path d="M540 178 H470"/><path d="M540 190 H470"/>
+    </g>
+    <text x="600" y="182" font-size="9" font-weight="700" fill="#1f7a3a">server streams</text>
+
+    <!-- WEBSOCKET -->
+    <rect x="10" y="210" width="680" height="54" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="22" y="230" font-size="11" font-weight="800" fill="#5b3ec8">4. WEBSOCKETS</text>
+    <text x="22" y="248" font-size="9.5" fill="#22303f">A permanent two-way pipe. Either side may send a message whenever it wants.</text>
+    <text x="22" y="260" font-size="8.6" font-weight="700" fill="#5b3ec8">handshake once  &bull;  stays open  &bull;  TWO WAY (full duplex)  &bull;  own protocol: ws://</text>
+    <g stroke="#5b3ec8" stroke-width="1.6">
+      <path d="M470 226 H540"/><path d="M540 238 H470"/><path d="M470 250 H540"/>
+    </g>
+    <text x="600" y="242" font-size="9" font-weight="700" fill="#5b3ec8">both talk</text>
+
+    <!-- WEBHOOK -->
+    <rect x="10" y="270" width="680" height="54" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="22" y="290" font-size="11" font-weight="800" fill="#1b4f9c">5. WEBHOOKS</text>
+    <text x="22" y="308" font-size="9.5" fill="#22303f">You give them your URL. When an event happens, THEY send an HTTP POST to you.</text>
+    <text x="22" y="320" font-size="8.6" font-weight="700" fill="#1b4f9c">SERVER starts  &bull;  connection closes immediately  &bull;  ONE WAY  &bull;  server-to-server</text>
+    <g stroke="#1b4f9c" stroke-width="2">
+      <path d="M470 296 H540" marker-end="url(#m1)"/>
+    </g>
+    <text x="600" y="300" font-size="9" font-weight="700" fill="#1b4f9c">they call you</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 1.2</span> &ndash; The five techniques. Notice items 1 and 2 are client-started; items 3 and 4 are client-opened but server-driven; item 5 is fully server-started.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">The distinction that earns the most marks in this paper</span>
+  <b>Webhooks are for server-to-server. The other four are mainly for browser-to-server.</b>
+  A webhook needs the receiver to have a public URL that can accept an HTTP POST, which a
+  browser tab does not have. That is why a webhook receiver is typically a small
+  server application &ndash; for example a trivial Flask app.
+</div>
+
+<!-- ============================== PART 2 ============================== -->
+<h1 class="part"><span class="kicker">Part 2 &bull; Question 5</span>Short polling</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; "are we there yet?"</span>
+  You are on a long car journey. Every two minutes you ask your father:
+  "are we there yet?" and every time he answers immediately &ndash; usually "no, not yet".
+  Occasionally, finally, "yes, we have arrived".
+  <br/><br/>
+  You got your answer eventually, but look at the cost: dozens of questions, and almost
+  every single answer was useless. That is <b>short polling</b>, also just called
+  <b>polling</b>.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; short polling</span>
+  The client sends a request at <b>fixed, repeating intervals</b>. The server
+  <b>replies immediately every time</b> &ndash; even when it has no new data, in which case it
+  sends back an empty result. The connection is closed after each reply and opened fresh
+  for the next one.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="s2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#d9480f"/></marker>
+      <marker id="s3" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#9aa4b2"/></marker>
+      <marker id="s4" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">SHORT POLLING &ndash; ask every 5 seconds, get an instant answer every time</text>
+
+    <!-- vertical lifelines -->
+    <text x="80" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">CLIENT</text>
+    <line x1="80" y1="50" x2="80" y2="252" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="600" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+    <line x1="600" y1="50" x2="600" y2="252" stroke="#1b4f9c" stroke-width="2.5"/>
+
+    <g font-size="9">
+      <!-- t=0 -->
+      <text x="70" y="70" fill="#5a6472" text-anchor="end">0 s</text>
+      <path d="M84 66 H596" stroke="#d9480f" stroke-width="1.8" marker-end="url(#s2)"/>
+      <text x="340" y="62" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">GET /messages</text>
+      <path d="M596 80 H84" stroke="#9aa4b2" stroke-width="1.8" marker-end="url(#s3)" stroke-dasharray="4 3"/>
+      <text x="340" y="92" font-size="8.6" font-weight="700" fill="#9aa4b2" text-anchor="middle">200 OK, empty  &ndash;  WASTED</text>
+
+      <!-- t=5 -->
+      <text x="70" y="112" fill="#5a6472" text-anchor="end">5 s</text>
+      <path d="M84 108 H596" stroke="#d9480f" stroke-width="1.8" marker-end="url(#s2)"/>
+      <path d="M596 122 H84" stroke="#9aa4b2" stroke-width="1.8" marker-end="url(#s3)" stroke-dasharray="4 3"/>
+      <text x="340" y="134" font-size="8.6" font-weight="700" fill="#9aa4b2" text-anchor="middle">200 OK, empty  &ndash;  WASTED</text>
+
+      <!-- t=10 -->
+      <text x="70" y="154" fill="#5a6472" text-anchor="end">10 s</text>
+      <path d="M84 150 H596" stroke="#d9480f" stroke-width="1.8" marker-end="url(#s2)"/>
+      <path d="M596 164 H84" stroke="#9aa4b2" stroke-width="1.8" marker-end="url(#s3)" stroke-dasharray="4 3"/>
+      <text x="340" y="176" font-size="8.6" font-weight="700" fill="#9aa4b2" text-anchor="middle">200 OK, empty  &ndash;  WASTED</text>
+
+      <!-- event -->
+      <circle cx="600" cy="192" r="7" fill="#1f7a3a"/>
+      <text x="588" y="196" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="end">new message arrives (12 s)</text>
+
+      <!-- t=15 -->
+      <text x="70" y="222" fill="#5a6472" text-anchor="end">15 s</text>
+      <path d="M84 218 H596" stroke="#d9480f" stroke-width="1.8" marker-end="url(#s2)"/>
+      <path d="M596 232 H84" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#s4)"/>
+      <text x="340" y="244" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">200 OK, HERE IS YOUR DATA  &ndash;  useful at last</text>
+    </g>
+
+    <rect x="20" y="258" width="660" height="26" rx="6" fill="#fdecec" stroke="#b52020"/>
+    <text x="350" y="275" font-size="10" font-weight="700" fill="#b52020" text-anchor="middle">4 requests to get 1 piece of news, and the news was already 3 seconds old when it reached you.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.1</span> &ndash; Short polling. Note the two costs: <b>wasted requests</b> and <b>stale data</b> (up to one whole interval late).</figcaption>
+</figure>
+
+<h2>2.1 Why short polling is wasteful, in numbers</h2>
+
+<figure>
+  <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12" font-weight="800" fill="#0f2f61" text-anchor="middle">1000 users polling every 5 seconds, but news arrives only once an hour</text>
+
+    <text x="150" y="52" font-size="10" font-weight="700" fill="#22303f" text-anchor="end">requests sent per hour</text>
+    <rect x="158" y="36" width="470" height="24" rx="4" fill="#b52020"/>
+    <text x="393" y="53" font-size="10.5" font-weight="800" fill="#fff" text-anchor="middle">720 000</text>
+
+    <text x="150" y="92" font-size="10" font-weight="700" fill="#22303f" text-anchor="end">requests that carried news</text>
+    <rect x="158" y="76" width="6" height="24" rx="2" fill="#1f7a3a"/>
+    <text x="180" y="93" font-size="10.5" font-weight="800" fill="#1f7a3a">1000</text>
+
+    <rect x="158" y="116" width="470" height="60" rx="7" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="393" y="136" font-size="10.5" font-weight="800" fill="#a97800" text-anchor="middle">99.86% of the traffic was for nothing.</text>
+    <text x="393" y="154" font-size="9.5" fill="#22303f" text-anchor="middle">Each empty reply still costs a TCP connection, HTTP headers, a database</text>
+    <text x="393" y="168" font-size="9.5" fill="#22303f" text-anchor="middle">lookup and CPU on the server. This is why better methods were invented.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 2.2</span> &ndash; The scaling problem. Short polling is simple to write but expensive to run.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q5 ---------------------------- -->
+<div class="qhead">Question 5 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are true regarding short polling?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> The client sends a request to the server, and the server responds to the client immediately, even if it does not have data.</li>
+    <li class="wrong"><span class="lab">B.</span> The client sends a request to the server, and the server waits to respond to the client if it does not have data and keep the connection open.</li>
+    <li class="right"><span class="lab">C.</span> Request is sent after fixed delay periodically.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>This is the definition of <i>short</i>. The server never keeps you waiting: if it has
+      nothing, it says so straight away and closes the connection. Those are the grey dashed
+      "empty" replies in Figure 2.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Waiting with the connection held open is the definition of <b>long</b> polling,
+      not short polling. This option belongs to Question 6.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"Every 5 seconds" &ndash; a fixed, repeating interval. That is the "polling" part
+      of the name.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>"All of the above" would need B to be true as well. Since B is false, D collapses.
+      Also notice A and B are direct opposites, so they can never both be correct.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 5</span>
+  <span class="big">A and C</span>
+  <br/><small>Short polling = repeat at a fixed interval, and get an immediate reply each time,
+  even an empty one. This matches the option you had selected.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box</span>
+  Options A and B appear again, word for word, in Question 6 &ndash; but there the correct one
+  flips. The examiner is checking one thing only: do you know which of the two waits?
+  Fix it with this sentence: <b>"SHORT reply is short and instant. LONG polling makes you
+  wait long."</b>
+</div>
+
+
+<!-- ============================== PART 3 ============================== -->
+<h1 class="part"><span class="kicker">Part 3 &bull; Questions 6 and 3</span>Long polling</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; "hold the line"</span>
+  You ring the exam office and ask "are my results out?". Instead of saying "not yet, call
+  back in five minutes", the clerk says: <b>"stay on the line, do not hang up. The moment
+  they arrive I will tell you."</b>
+  <br/><br/>
+  You make <i>one</i> phone call instead of twenty. And the instant the news exists, you hear
+  it &ndash; no waiting for your next scheduled call. That is <b>long polling</b>.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; long polling</span>
+  The client sends a request. If the server has no data, it <b>does not reply</b> &ndash; it
+  <b>holds the connection open</b> and stays silent. As soon as data becomes available it
+  sends the response and closes. The client then immediately opens a new request, and the
+  cycle repeats.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="l1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#a97800"/></marker>
+      <marker id="l2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">LONG POLLING &ndash; ask once, and the server stays silent until it has news</text>
+
+    <text x="80" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">CLIENT</text>
+    <line x1="80" y1="50" x2="80" y2="250" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="600" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+    <line x1="600" y1="50" x2="600" y2="250" stroke="#1b4f9c" stroke-width="2.5"/>
+
+    <!-- request 1 -->
+    <text x="70" y="70" font-size="9" fill="#5a6472" text-anchor="end">0 s</text>
+    <path d="M84 66 H596" stroke="#a97800" stroke-width="1.8" marker-end="url(#l1)"/>
+    <text x="340" y="62" font-size="8.6" font-weight="700" fill="#a97800" text-anchor="middle">GET /messages</text>
+
+    <!-- held open band -->
+    <rect x="84" y="76" width="512" height="52" rx="6" fill="#fffbe8" stroke="#e0a800" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="340" y="96" font-size="10" font-weight="800" fill="#a97800" text-anchor="middle">CONNECTION HELD OPEN &ndash; server says nothing at all</text>
+    <text x="340" y="114" font-size="9" fill="#22303f" text-anchor="middle">no traffic, no wasted requests, client just waits patiently</text>
+
+    <!-- event -->
+    <circle cx="600" cy="140" r="7" fill="#1f7a3a"/>
+    <text x="590" y="144" font-size="9" font-weight="700" fill="#1f7a3a" text-anchor="end">new message arrives (12 s)</text>
+
+    <!-- response -->
+    <text x="70" y="164" font-size="9" fill="#5a6472" text-anchor="end">12 s</text>
+    <path d="M596 160 H84" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#l2)"/>
+    <text x="340" y="176" font-size="9" font-weight="800" fill="#1f7a3a" text-anchor="middle">200 OK with the data &ndash; delivered the INSTANT it existed</text>
+
+    <!-- reopen -->
+    <text x="70" y="204" font-size="9" fill="#5a6472" text-anchor="end">12 s</text>
+    <path d="M84 200 H596" stroke="#a97800" stroke-width="1.8" marker-end="url(#l1)"/>
+    <text x="340" y="196" font-size="8.6" font-weight="700" fill="#a97800" text-anchor="middle">client immediately asks again, and the cycle repeats</text>
+    <rect x="84" y="210" width="512" height="26" rx="6" fill="#fffbe8" stroke="#e0a800" stroke-width="1.6" stroke-dasharray="6 4"/>
+    <text x="340" y="227" font-size="9" font-weight="700" fill="#a97800" text-anchor="middle">held open again...</text>
+
+    <rect x="20" y="256" width="660" height="26" rx="6" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="350" y="273" font-size="10" font-weight="700" fill="#1f7a3a" text-anchor="middle">1 request instead of 4, and zero delay: the news arrived at 12 s and reached you at 12 s.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.1</span> &ndash; Long polling. Compare with Figure 2.1: the empty replies have vanished, and the data is fresh.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q6 ---------------------------- -->
+<div class="qhead">Question 6 <span class="mark">1 mark &bull; single correct</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is true regarding long polling?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> The client sends a request to the server, and the server responds to the client even if it does not have data.</li>
+    <li class="right"><span class="lab">B.</span> The client sends a request to the server, and the server waits to respond to the client if it does not have data and keep the connection open.</li>
+    <li class="wrong"><span class="lab">C.</span> Request is sent after fixed delay periodically.</li>
+    <li class="wrong"><span class="lab">D.</span> The client must send the next request immediately after it receives the response.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Replying even with no data is <b>short</b> polling. This is the correct answer to
+      Question 5, deliberately reused here as a distractor.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>the answer</small></td>
+      <td>Exactly the definition: no data means no reply yet, and the connection is
+      <b>held open</b> until there is something to send. The yellow dashed band in
+      Figure 3.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Fixed periodic delay is short polling again. In long polling the timing is decided
+      by <i>when the event happens</i>, not by a clock.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Careful: in practice the client usually <i>does</i> reopen straight away, but the word
+      <b>"must"</b> makes this false. It is not a requirement of long polling &ndash; the client is
+      free to wait, or to stop asking altogether. Compare with option A of Question 5, which
+      is true because it describes what the mechanism <i>does</i>, not what it forces.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 6</span>
+  <span class="big">Option B</span>
+  <br/><small>Matches the option you had selected.</small>
+</div>
+
+<h2>3.1 Short vs long polling, side by side</h2>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="c5" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#d9480f"/></marker>
+      <marker id="c6" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#a97800"/></marker>
+    </defs>
+    <!-- left -->
+    <rect x="8" y="8" width="336" height="234" rx="10" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="176" y="30" font-size="12" font-weight="800" fill="#d9480f" text-anchor="middle">SHORT POLLING</text>
+    <line x1="50" y1="44" x2="50" y2="176" stroke="#d9480f" stroke-width="2"/>
+    <line x1="300" y1="44" x2="300" y2="176" stroke="#d9480f" stroke-width="2"/>
+    <g stroke="#d9480f" stroke-width="1.6">
+      <path d="M54 56 H296" marker-end="url(#c5)"/><path d="M296 68 H54"/>
+      <path d="M54 88 H296" marker-end="url(#c5)"/><path d="M296 100 H54"/>
+      <path d="M54 120 H296" marker-end="url(#c5)"/><path d="M296 132 H54"/>
+      <path d="M54 152 H296" marker-end="url(#c5)"/><path d="M296 164 H54"/>
+    </g>
+    <text x="176" y="196" font-size="9.5" font-weight="700" fill="#d9480f" text-anchor="middle">many short conversations</text>
+    <text x="176" y="212" font-size="9" fill="#22303f" text-anchor="middle">connection opens and CLOSES each time</text>
+    <text x="176" y="230" font-size="9" fill="#22303f" text-anchor="middle">simple to build, wasteful, data can be stale</text>
+
+    <!-- right -->
+    <rect x="356" y="8" width="336" height="234" rx="10" fill="#fffbe8" stroke="#e0a800" stroke-width="2.5"/>
+    <text x="524" y="30" font-size="12" font-weight="800" fill="#a97800" text-anchor="middle">LONG POLLING</text>
+    <line x1="398" y1="44" x2="398" y2="176" stroke="#a97800" stroke-width="2"/>
+    <line x1="648" y1="44" x2="648" y2="176" stroke="#a97800" stroke-width="2"/>
+    <path d="M402 56 H644" stroke="#a97800" stroke-width="1.6" marker-end="url(#c6)"/>
+    <rect x="402" y="64" width="242" height="88" rx="6" fill="#e0a800" opacity=".22" stroke="#a97800" stroke-dasharray="5 4"/>
+    <text x="523" y="104" font-size="10" font-weight="800" fill="#a97800" text-anchor="middle">held open,</text>
+    <text x="523" y="122" font-size="10" font-weight="800" fill="#a97800" text-anchor="middle">silent</text>
+    <path d="M644 164 H402" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="524" y="196" font-size="9.5" font-weight="700" fill="#a97800" text-anchor="middle">one long conversation</text>
+    <text x="524" y="212" font-size="9" fill="#22303f" text-anchor="middle">connection HELD until there is news</text>
+    <text x="524" y="230" font-size="9" fill="#22303f" text-anchor="middle">efficient, fresh data, ties up a server slot</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 3.2</span> &ndash; The same 15 seconds, drawn both ways.</figcaption>
+</figure>
+
+<h2>3.2 The "persistent connection" trap</h2>
+
+<p>Question 3 contains a subtle option about persistent connections. You must be precise here.</p>
+
+<div class="note">
+  <span class="boxtitle">Definition box</span>
+  A <b>persistent connection</b> means one connection that is deliberately kept alive
+  <b>across many messages</b>, as its normal way of working &ndash; like a WebSocket or an SSE
+  stream.
+  <br/><br/>
+  Short polling has the <b>opposite</b> design: every poll is a brand-new, independent,
+  short-lived request that is closed as soon as it is answered. So polling does
+  <b>not require</b> a persistent connection. It works perfectly well without one &ndash;
+  that is precisely why it is the crudest technique and also the easiest to deploy anywhere.
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; do not confuse these two</span>
+  Long polling holds <b>one request</b> open while it waits for an answer. That is
+  <i>not</i> the same as a persistent connection carrying <i>many</i> messages. And the
+  statement in Q3 is about <b>polling</b> in general, which certainly does not require it.
+</div>
+
+<!-- ---------------------------- Q3 ---------------------------- -->
+<div class="qhead">Question 3 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are true regarding polling and long poll?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> In Polling, a client make repetitive calls to the server at fixed time intervals.</li>
+    <li class="wrong"><span class="lab">B.</span> Polling requires a persistent connection to the server.</li>
+    <li class="right"><span class="lab">C.</span> In long poll mechanism, the connection is kept open till the response is sent.</li>
+    <li class="wrong"><span class="lab">D.</span> All of the above</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"Repetitive calls at fixed time intervals" is the literal definition of polling.
+      Figure 2.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Polling closes the connection after every reply and opens a fresh one next time.
+      A persistent connection is what SSE and WebSockets use, and it is the thing polling
+      exists to avoid needing.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"Kept open till the response is sent" is exactly the yellow band in Figure 3.1 &ndash;
+      the defining feature of long polling.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Needs B to be true. It is not, so D falls with it.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 3</span>
+  <span class="big">A and C</span>
+  <br/><small>Matches the options you had selected.</small>
+</div>
+
+
+<!-- ============================== PART 4 ============================== -->
+<h1 class="part"><span class="kicker">Part 4 &bull; Question 4</span>Server-Sent Events (SSE)</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the railway station loudspeaker</span>
+  You reach the railway platform and switch on your ears. You do not ask the
+  announcer anything. He simply keeps announcing, whenever there is something to announce:
+  "train 5 minutes late" ... "platform changed to 3" ... "train arriving now".
+  <br/><br/>
+  You <b>listen</b>. You cannot talk back through the loudspeaker &ndash; it only works in one
+  direction. That is <b>Server-Sent Events</b>: you open the channel once, then the server
+  keeps pushing announcements down it for as long as you stay connected.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; SSE</span>
+  The client opens <b>one long-lived HTTP connection</b>. The server keeps it open and streams
+  a sequence of events down it, in a special text format
+  (content type <code>text/event-stream</code>). Communication is <b>one way only</b>:
+  server to client. In the browser you consume it with the built-in
+  <code>EventSource</code> object.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="e1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="e2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">SERVER-SENT EVENTS &ndash; open once, then listen</text>
+
+    <text x="80" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">BROWSER</text>
+    <line x1="80" y1="50" x2="80" y2="232" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="600" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+    <line x1="600" y1="50" x2="600" y2="232" stroke="#1b4f9c" stroke-width="2.5"/>
+
+    <!-- open -->
+    <path d="M84 66 H596" stroke="#1b4f9c" stroke-width="2" marker-end="url(#e2)"/>
+    <text x="340" y="62" font-size="8.6" font-weight="700" fill="#1b4f9c" text-anchor="middle">new EventSource('/stream')  &ndash;  opened ONCE</text>
+
+    <!-- open band -->
+    <rect x="84" y="74" width="512" height="130" rx="7" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="340" y="92" font-size="9.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">ONE CONNECTION, STAYS OPEN</text>
+
+    <path d="M580 112 H100" stroke="#1f7a3a" stroke-width="2" marker-end="url(#e1)"/>
+    <text x="340" y="108" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">event: price = 210</text>
+    <path d="M580 140 H100" stroke="#1f7a3a" stroke-width="2" marker-end="url(#e1)"/>
+    <text x="340" y="136" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">event: price = 214</text>
+    <path d="M580 168 H100" stroke="#1f7a3a" stroke-width="2" marker-end="url(#e1)"/>
+    <text x="340" y="164" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">event: price = 209</text>
+    <text x="340" y="192" font-size="9" fill="#22303f" text-anchor="middle">...as many events as the server likes, whenever it likes</text>
+
+    <!-- blocked reverse -->
+    <path d="M100 222 H580" stroke="#b52020" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+    <line x1="128" y1="211" x2="152" y2="233" stroke="#b52020" stroke-width="3.5"/>
+    <line x1="152" y1="211" x2="128" y2="233" stroke="#b52020" stroke-width="3.5"/>
+    <text x="176" y="217" font-size="9" font-weight="700" fill="#b52020">client cannot send messages back up this channel &ndash; ONE WAY</text>
+
+    <rect x="20" y="242" width="660" height="24" rx="6" fill="#f0ecfd" stroke="#5b3ec8"/>
+    <text x="350" y="258" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">Still ordinary HTTP underneath. No new protocol, no new port. That is SSE's big advantage over WebSockets.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.1</span> &ndash; SSE. One connection, many events, one direction.</figcaption>
+</figure>
+
+<h2>4.1 What SSE actually looks like in code</h2>
+
+<pre><span class="cm"># SERVER: an ordinary Flask route that never stops yielding</span>
+<span class="kw">from</span> flask <span class="kw">import</span> Flask, Response
+<span class="kw">import</span> time
+
+app = <span class="fn">Flask</span>(__name__)
+
+<span class="kw">def</span> <span class="fn">event_stream</span>():
+    <span class="kw">while</span> <span class="kw">True</span>:
+        price = <span class="fn">get_latest_price</span>()
+        <span class="kw">yield</span> <span class="st">f"data: {price}\n\n"</span>      <span class="cm"># the SSE text format</span>
+        time.<span class="fn">sleep</span>(<span class="nu">1</span>)
+
+<span class="fn">@app.route</span>(<span class="st">'/stream'</span>)
+<span class="kw">def</span> <span class="fn">stream</span>():
+    <span class="kw">return</span> <span class="fn">Response</span>(<span class="fn">event_stream</span>(), mimetype=<span class="st">'text/event-stream'</span>)
+</pre>
+
+<pre><span class="cm">// CLIENT: three lines, using the browser's built-in EventSource</span>
+<span class="kw">const</span> source = <span class="kw">new</span> <span class="fn">EventSource</span>(<span class="st">'/stream'</span>)
+
+source.onmessage = (event) =&gt; {
+  console.<span class="fn">log</span>(<span class="st">'server says:'</span>, event.data)   <span class="cm">// fires again and again</span>
+}
+</pre>
+
+<div class="key">
+  <span class="boxtitle">Notice what is NOT in that code</span>
+  There is no message broker. No Celery. No Redis. No task queue. No
+  <code>navigator.serviceWorker.register(...)</code>. SSE is just a Flask route that keeps
+  yielding, and a browser object that keeps listening. Keep that in mind for the question
+  below.
+</div>
+
+<h2>4.2 The three things people wrongly think SSE needs</h2>
+
+<figure>
+  <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+    <!-- needs -->
+    <rect x="8" y="26" width="336" height="204" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="48" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">SSE DOES need</text>
+    <g font-size="9.8">
+      <rect x="24" y="62" width="304" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="36" y="83" fill="#22303f">a long-lived HTTP connection kept open</text>
+      <rect x="24" y="102" width="304" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="36" y="123" fill="#22303f">the mime type text/event-stream</text>
+      <rect x="24" y="142" width="304" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="36" y="163" fill="#22303f">a client-side listener, i.e. EventSource</text>
+      <rect x="24" y="182" width="304" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+      <text x="36" y="203" fill="#22303f">a server that can hold many open connections</text>
+    </g>
+
+    <!-- doesn't need -->
+    <rect x="356" y="26" width="336" height="204" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="48" font-size="12" font-weight="800" fill="#b52020" text-anchor="middle">SSE does NOT need</text>
+    <g font-size="9.8">
+      <rect x="372" y="62" width="304" height="34" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="384" y="77" font-weight="700" fill="#b52020">a task queue / message broker</text>
+      <text x="384" y="90" font-size="8.4" fill="#5a6472">that is Celery + Redis territory, nothing to do with SSE</text>
+      <rect x="372" y="102" width="304" height="34" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="384" y="117" font-weight="700" fill="#b52020">a second protocol like ws://</text>
+      <text x="384" y="130" font-size="8.4" fill="#5a6472">plain HTTP is enough</text>
+      <rect x="372" y="142" width="304" height="34" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="384" y="157" font-weight="700" fill="#b52020">the client to keep re-requesting</text>
+      <text x="384" y="170" font-size="8.4" fill="#5a6472">unlike polling, it asks exactly once</text>
+      <rect x="372" y="182" width="304" height="34" rx="6" fill="#fff" stroke="#b52020"/>
+      <text x="384" y="197" font-weight="700" fill="#b52020">any request from client to server</text>
+      <text x="384" y="210" font-size="8.4" fill="#5a6472">the channel is strictly one way</text>
+    </g>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Myth-buster: the ingredient list for SSE</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 4.2</span> &ndash; A task queue is the classic wrong answer, because students mix SSE up with background jobs.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q4 ---------------------------- -->
+<div class="qhead">Question 4 <span class="mark">1 mark &bull; pick the FALSE one</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statements is <b>false</b> regarding server sent events?</p>
+  <ul class="opts">
+    <li class="wrong"><span class="lab">A.</span> It is a mechanism at the server to push events to the client.</li>
+    <li class="right"><span class="lab">B.</span> It requires a task queue to be maintained.</li>
+    <li class="wrong"><span class="lab">C.</span> It requires the service workers on the client.</li>
+    <li class="wrong"><span class="lab">D.</span> The service workers should run in the background.</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <span class="boxtitle">Read the instruction twice</span>
+  This question wants the <b>false</b> statement. The option you tick is the
+  <i>wrong</i> one. Underline the word "false" before you start.
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:88px" class="c">True or false</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>That is the definition of SSE, word for word: a server-side mechanism for pushing
+      events to the client. Figure 4.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span><br/><small>the answer</small></td>
+      <td><b>A task queue plays no part in SSE.</b> Look again at the code in section 4.1:
+      a Flask route that yields, and a browser object that listens. Task queues
+      (Celery, RabbitMQ, Redis as a broker) belong to <i>background job processing</i>, a
+      completely separate topic. You can run SSE with no queue anywhere in your system.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span><br/><small>as intended</small></td>
+      <td>The intended reading is "SSE needs something running on the client side to receive
+      the events", which is correct &ndash; you must attach a listener, otherwise the stream
+      arrives and nobody handles it. See the honesty note below about the exact wording.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A client-side listener does have to keep running in the background while the page
+      is alive, waiting for the next event. That is the whole point of a listener.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 4</span>
+  <span class="big">Option B</span> is the false statement.
+  <br/><small>SSE needs an open HTTP connection and a client-side listener. It does not need a
+  task queue. This matches the option you had selected.</small>
+</div>
+
+<div class="note">
+  <span class="boxtitle">An honesty note on option C, so you are not caught out later</span>
+  Strictly speaking, a <b>Service Worker</b> is a specific browser technology used for
+  offline caching and push notifications, and SSE does <b>not</b> use it &ndash; SSE uses the
+  <code>EventSource</code> API running in the normal page. So the wording of option C is
+  loose.
+  <br/><br/>
+  It does not change your answer, and here is the reasoning to use in an exam:
+  the question asks for <b>one</b> false statement, and <b>B is unarguably false</b> &ndash;
+  a task queue has nothing whatsoever to do with SSE. Options C and D are both about
+  "something listening on the client", which SSE genuinely does require. So B remains the
+  single best choice. When two options look shaky, always pick the one that is false
+  <i>beyond any doubt</i>.
+</div>
+
+
+<!-- ============================== PART 5 ============================== -->
+<h1 class="part"><span class="kicker">Part 5 &bull; Foundations</span>WebSockets</h1>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the walkie-talkie that never switches off</span>
+  SSE was a loudspeaker: the announcer talks, you only listen. A <b>WebSocket</b> is a
+  proper <b>phone call</b>. Once the call connects, either person can speak at any moment,
+  as often as they like, without hanging up and dialling again.
+  <br/><br/>
+  This is why chat apps, multiplayer games and live collaborative editors use WebSockets:
+  both sides genuinely need to send.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; WebSocket</span>
+  A WebSocket starts as an ordinary HTTP request that asks to <b>"upgrade"</b> the
+  connection. Once the server agrees, the connection switches to the <b>WebSocket
+  protocol</b> (<code>ws://</code> or the secure <code>wss://</code>) and stays open. From then on it is
+  <b>full duplex</b>: both client and server can send messages independently, at any time.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="w1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+      <marker id="w2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">WEBSOCKET &ndash; one handshake, then both sides talk freely</text>
+
+    <text x="80" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">CLIENT</text>
+    <line x1="80" y1="50" x2="80" y2="252" stroke="#1b4f9c" stroke-width="2.5"/>
+    <text x="600" y="42" font-size="10.5" font-weight="800" fill="#1b4f9c" text-anchor="middle">SERVER</text>
+    <line x1="600" y1="50" x2="600" y2="252" stroke="#1b4f9c" stroke-width="2.5"/>
+
+    <!-- handshake -->
+    <rect x="84" y="56" width="512" height="46" rx="6" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="1.8"/>
+    <text x="340" y="72" font-size="9" font-weight="800" fill="#1b4f9c" text-anchor="middle">STEP 1: THE HANDSHAKE (this part is ordinary HTTP)</text>
+    <path d="M100 88 H560" stroke="#1b4f9c" stroke-width="1.6" marker-end="url(#w2)"/>
+    <text x="330" y="85" font-size="8.2" fill="#1b4f9c" text-anchor="middle">GET /chat  with header:  Upgrade: websocket</text>
+    <text x="340" y="98" font-size="8.2" font-weight="700" fill="#1f7a3a" text-anchor="middle">server replies 101 Switching Protocols  &ndash;  agreed</text>
+
+    <!-- open pipe -->
+    <rect x="84" y="112" width="512" height="112" rx="7" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="340" y="130" font-size="9.5" font-weight="800" fill="#5b3ec8" text-anchor="middle">STEP 2: THE PIPE IS OPEN AND STAYS OPEN (now it is ws:// , not http://)</text>
+    <path d="M100 148 H560" stroke="#5b3ec8" stroke-width="2" marker-end="url(#w1)"/>
+    <text x="330" y="144" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">client: "hello"</text>
+    <path d="M580 170 H120" stroke="#5b3ec8" stroke-width="2" marker-end="url(#w1)"/>
+    <text x="350" y="166" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">server: "Ravi joined the chat"</text>
+    <path d="M100 192 H560" stroke="#5b3ec8" stroke-width="2" marker-end="url(#w1)"/>
+    <text x="330" y="188" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">client: "how are you?"</text>
+    <path d="M580 214 H120" stroke="#5b3ec8" stroke-width="2" marker-end="url(#w1)"/>
+    <text x="350" y="210" font-size="8.4" font-weight="700" fill="#5b3ec8" text-anchor="middle">server: "Sita is typing..."</text>
+
+    <text x="340" y="244" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">Either side may send whenever it wants. This is called FULL DUPLEX.</text>
+
+    <rect x="20" y="258" width="660" height="20" rx="5" fill="#fffbe8" stroke="#e0a800"/>
+    <text x="350" y="272" font-size="9.5" font-weight="700" fill="#a97800" text-anchor="middle">Cost: a WebSocket needs server support for the protocol, and holds a connection per user.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.1</span> &ndash; A WebSocket: HTTP only to shake hands, then a permanent two-way channel.</figcaption>
+</figure>
+
+<h2>5.1 SSE vs WebSocket &ndash; the one difference that matters</h2>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="d1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="d2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+    </defs>
+    <rect x="8" y="20" width="336" height="170" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="42" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">SSE &ndash; ONE WAY</text>
+    <rect x="34" y="66" width="80" height="40" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="74" y="91" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">browser</text>
+    <rect x="238" y="66" width="80" height="40" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="278" y="91" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">server</text>
+    <path d="M232 86 H122" stroke="#1f7a3a" stroke-width="2.6" marker-end="url(#d1)"/>
+    <text x="176" y="130" font-size="9.5" font-weight="700" fill="#1f7a3a" text-anchor="middle">plain HTTP  &bull;  simple  &bull;  auto-reconnects</text>
+    <text x="176" y="150" font-size="9.5" fill="#22303f" text-anchor="middle">Use for: live scores, notifications,</text>
+    <text x="176" y="166" font-size="9.5" fill="#22303f" text-anchor="middle">stock tickers, progress bars</text>
+    <text x="176" y="182" font-size="9" font-weight="700" fill="#5a6472" text-anchor="middle">anything where only the server has news</text>
+
+    <rect x="356" y="20" width="336" height="170" rx="10" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="524" y="42" font-size="12" font-weight="800" fill="#5b3ec8" text-anchor="middle">WEBSOCKET &ndash; TWO WAY</text>
+    <rect x="382" y="66" width="80" height="40" rx="7" fill="#fff" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="422" y="91" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">browser</text>
+    <rect x="586" y="66" width="80" height="40" rx="7" fill="#fff" stroke="#5b3ec8" stroke-width="2"/>
+    <text x="626" y="91" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">server</text>
+    <path d="M580 78 H470" stroke="#5b3ec8" stroke-width="2.6" marker-end="url(#d2)"/>
+    <path d="M470 96 H580" stroke="#5b3ec8" stroke-width="2.6" marker-end="url(#d2)"/>
+    <text x="524" y="130" font-size="9.5" font-weight="700" fill="#5b3ec8" text-anchor="middle">ws:// protocol  &bull;  more setup  &bull;  full duplex</text>
+    <text x="524" y="150" font-size="9.5" fill="#22303f" text-anchor="middle">Use for: chat, multiplayer games,</text>
+    <text x="524" y="166" font-size="9.5" fill="#22303f" text-anchor="middle">collaborative editing, live cursors</text>
+    <text x="524" y="182" font-size="9" font-weight="700" fill="#5a6472" text-anchor="middle">anything where BOTH sides have news</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 5.2</span> &ndash; Choose SSE unless the client genuinely needs to send messages too.</figcaption>
+</figure>
+
+<div class="kid">
+  <span class="boxtitle">Say it out loud once</span>
+  "SSE is a loudspeaker: one way. A WebSocket is a phone call: two ways."
+</div>
+
+<!-- ============================== PART 6 ============================== -->
+<h1 class="part"><span class="kicker">Part 6 &bull; Questions 1, 2, 7 and 10</span>Webhooks</h1>
+
+<p>Four of the ten questions are about webhooks, so this is the part worth reading twice.</p>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; "do not call us, we will call you"</span>
+  You order a cake from a bakery. Two ways to find out when it is ready:
+  <br/><br/>
+  <b>The polling way:</b> you phone the bakery every ten minutes. "Ready?" "No." "Ready?"
+  "No." Annoying for both of you.
+  <br/><br/>
+  <b>The webhook way:</b> you leave your <b>phone number</b> with them and go home. When the
+  cake is ready, <b>they</b> ring <b>you</b>. One call, perfectly timed, zero waste.
+  <br/><br/>
+  A <b>webhook</b> is that phone number. You register a URL with someone else's system, and
+  when an event happens, their server sends an HTTP POST to your URL. It is often
+  described as a <b>reverse API</b>: instead of you calling them, they call you.
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; webhook</span>
+  A webhook is a <b>user-defined HTTP callback</b>. You give a provider a public URL. When a
+  chosen event occurs, the provider sends an <b>HTTP POST request</b> to that URL, carrying
+  the event details in the <b>request body</b>. It is <b>event-driven</b>,
+  <b>server-initiated</b>, and <b>one way</b>: they send, you acknowledge, the connection closes.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="h1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1b4f9c"/></marker>
+      <marker id="h2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A WEBHOOK, END TO END</text>
+
+    <!-- step 1 register -->
+    <rect x="14" y="34" width="672" height="46" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="28" y="53" font-size="10" font-weight="800" fill="#1b4f9c">STEP 1 &ndash; ONCE, IN ADVANCE:</text>
+    <text x="204" y="53" font-size="9.8" fill="#22303f">you tell the provider "when a payment succeeds, POST to this URL"</text>
+    <text x="28" y="70" font-size="9" font-weight="700" fill="#5a6472">you register:</text>
+    <text x="112" y="70" font-size="9" font-weight="700" fill="#1b4f9c">https://myshop.com/hooks/payment</text>
+
+    <!-- provider -->
+    <rect x="14" y="98" width="150" height="96" rx="9" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="89" y="120" font-size="11" font-weight="800" fill="#d9480f" text-anchor="middle">PROVIDER</text>
+    <text x="89" y="137" font-size="9" fill="#5a6472" text-anchor="middle">e.g. payment gateway</text>
+    <circle cx="89" cy="164" r="16" fill="#fff" stroke="#d9480f" stroke-width="2.2"/>
+    <text x="89" y="161" font-size="7.6" font-weight="700" fill="#d9480f" text-anchor="middle">EVENT</text>
+    <text x="89" y="171" font-size="7.6" font-weight="700" fill="#d9480f" text-anchor="middle">happens</text>
+    <text x="89" y="190" font-size="8.4" fill="#5a6472" text-anchor="middle">"payment succeeded"</text>
+
+    <!-- step 2 post -->
+    <path d="M172 132 H452" stroke="#1b4f9c" stroke-width="3" marker-end="url(#h1)"/>
+    <rect x="196" y="104" width="234" height="24" rx="5" fill="#e8f0fb" stroke="#1b4f9c"/>
+    <text x="313" y="120" font-size="9.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">STEP 2: HTTP POST  (they call you)</text>
+    <text x="313" y="146" font-size="8.6" fill="#22303f" text-anchor="middle">body: { "event": "payment.success", "amount": 499 }</text>
+    <text x="313" y="158" font-size="8.6" font-weight="700" fill="#5a6472" text-anchor="middle">the message content travels in the REQUEST BODY</text>
+
+    <!-- step 3 respond -->
+    <path d="M452 178 H172" stroke="#1f7a3a" stroke-width="3" marker-end="url(#h2)"/>
+    <rect x="196" y="184" width="234" height="24" rx="5" fill="#e9f7ee" stroke="#1f7a3a"/>
+    <text x="313" y="200" font-size="9.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">STEP 3: 200 OK, immediately</text>
+
+    <!-- receiver -->
+    <rect x="460" y="98" width="226" height="96" rx="9" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="573" y="120" font-size="11" font-weight="800" fill="#1f7a3a" text-anchor="middle">YOUR RECEIVER</text>
+    <text x="573" y="136" font-size="9" fill="#5a6472" text-anchor="middle">a small server app with a public URL</text>
+    <rect x="474" y="146" width="198" height="38" rx="5" fill="#1e2430"/>
+    <text x="484" y="161" font-size="7.6" fill="#c792ea">@app.route('/hooks/payment',</text>
+    <text x="484" y="171" font-size="7.6" fill="#c792ea">           methods=['POST'])</text>
+    <text x="484" y="181" font-size="7.6" fill="#82aaff">def hook(): ...</text>
+
+    <rect x="14" y="212" width="672" height="42" rx="8" fill="#fffbe8" stroke="#e0a800" stroke-width="2"/>
+    <text x="350" y="230" font-size="10" font-weight="800" fill="#a97800" text-anchor="middle">Note the shape of it: ONE POST, answered at once, then the connection CLOSES.</text>
+    <text x="350" y="246" font-size="9.5" fill="#22303f" text-anchor="middle">Nothing is kept open. Nothing flows back except a short acknowledgement.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.1</span> &ndash; A webhook is one HTTP POST triggered by an event, plus an immediate acknowledgement.</figcaption>
+</figure>
+
+<h2>6.1 Why the receiver must answer immediately</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the courier at your door</span>
+  A courier rings your bell. All he needs is your <b>signature</b> &ndash; five seconds. He does
+  not want to stand there while you unpack the parcel, read the manual and assemble the
+  furniture. If you make him wait, he marks the delivery as failed and comes back tomorrow.
+  <br/><br/>
+  A webhook sender is that courier. It wants a quick <b>200 OK</b> signature. If your
+  receiver is slow, the sender <b>times out</b> and assumes delivery failed &ndash; and most
+  providers then <b>retry</b>, so you can end up processing the same event several times.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="g1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+      <marker id="g2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#b52020"/></marker>
+    </defs>
+    <!-- good -->
+    <rect x="8" y="20" width="336" height="180" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="176" y="42" font-size="11.5" font-weight="800" fill="#1f7a3a" text-anchor="middle">RIGHT WAY</text>
+    <rect x="26" y="56" width="300" height="26" rx="5" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="73" font-size="9.2" fill="#22303f" text-anchor="middle">1. webhook POST arrives</text>
+    <rect x="26" y="88" width="300" height="26" rx="5" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="105" font-size="9.2" font-weight="700" fill="#1f7a3a" text-anchor="middle">2. reply 200 OK at once  (a few ms)</text>
+    <rect x="26" y="120" width="300" height="26" rx="5" fill="#fff" stroke="#1f7a3a"/>
+    <text x="176" y="137" font-size="9.2" fill="#22303f" text-anchor="middle">3. THEN do the slow work in the background</text>
+    <text x="176" y="166" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">Sender is happy. No timeout, no retry,</text>
+    <text x="176" y="182" font-size="9.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">no duplicate processing.</text>
+
+    <!-- bad -->
+    <rect x="356" y="20" width="336" height="180" rx="10" fill="#fdecec" stroke="#b52020" stroke-width="2.5"/>
+    <text x="524" y="42" font-size="11.5" font-weight="800" fill="#b52020" text-anchor="middle">WRONG WAY</text>
+    <rect x="374" y="56" width="300" height="26" rx="5" fill="#fff" stroke="#b52020"/>
+    <text x="524" y="73" font-size="9.2" fill="#22303f" text-anchor="middle">1. webhook POST arrives</text>
+    <rect x="374" y="88" width="300" height="26" rx="5" fill="#fff" stroke="#b52020"/>
+    <text x="524" y="105" font-size="9.2" font-weight="700" fill="#b52020" text-anchor="middle">2. generate PDF, send email  (40 seconds)</text>
+    <rect x="374" y="120" width="300" height="26" rx="5" fill="#fff" stroke="#b52020"/>
+    <text x="524" y="137" font-size="9.2" fill="#22303f" text-anchor="middle">3. reply 200 OK ... far too late</text>
+    <text x="524" y="166" font-size="9.4" font-weight="700" fill="#b52020" text-anchor="middle">Sender already timed out and RETRIED.</text>
+    <text x="524" y="182" font-size="9.4" font-weight="700" fill="#b52020" text-anchor="middle">You now process the payment twice.</text>
+    <text x="350" y="16" font-size="12" font-weight="800" fill="#0f2f61" text-anchor="middle">Acknowledge first, work afterwards</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.2</span> &ndash; This is why "a webhook should give an immediate response" is a true statement, and it is standard advice from every webhook provider.</figcaption>
+</figure>
+
+<h2>6.2 Can a webhook be secured? Yes.</h2>
+
+<p>One option in Question 1 claims a webhook cannot be secured if its URL is public.
+That is wrong, and here is the standard toolkit that proves it.</p>
+
+<figure>
+  <svg viewBox="0 0 700 175" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12" font-weight="800" fill="#0f2f61" text-anchor="middle">Four normal ways to secure a publicly reachable webhook URL</text>
+    <g font-size="9.4">
+      <rect x="14" y="30" width="164" height="132" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2"/>
+      <text x="96" y="52" font-size="10" font-weight="800" fill="#5b3ec8" text-anchor="middle">SIGNATURE</text>
+      <text x="96" y="70" fill="#22303f" text-anchor="middle">sender adds an HMAC</text>
+      <text x="96" y="84" fill="#22303f" text-anchor="middle">hash of the body,</text>
+      <text x="96" y="98" fill="#22303f" text-anchor="middle">made with a shared</text>
+      <text x="96" y="112" fill="#22303f" text-anchor="middle">secret. You recompute</text>
+      <text x="96" y="126" fill="#22303f" text-anchor="middle">it and compare.</text>
+      <text x="96" y="148" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">the most common method</text>
+
+      <rect x="186" y="30" width="164" height="132" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+      <text x="268" y="52" font-size="10" font-weight="800" fill="#1b4f9c" text-anchor="middle">SECRET TOKEN</text>
+      <text x="268" y="70" fill="#22303f" text-anchor="middle">a shared secret sent</text>
+      <text x="268" y="84" fill="#22303f" text-anchor="middle">in a header, or an</text>
+      <text x="268" y="98" fill="#22303f" text-anchor="middle">unguessable random</text>
+      <text x="268" y="112" fill="#22303f" text-anchor="middle">string inside the URL</text>
+      <text x="268" y="126" fill="#22303f" text-anchor="middle">itself.</text>
+
+      <rect x="358" y="30" width="164" height="132" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="440" y="52" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">HTTPS</text>
+      <text x="440" y="70" fill="#22303f" text-anchor="middle">encrypts the body in</text>
+      <text x="440" y="84" fill="#22303f" text-anchor="middle">transit so nobody can</text>
+      <text x="440" y="98" fill="#22303f" text-anchor="middle">read or tamper with</text>
+      <text x="440" y="112" fill="#22303f" text-anchor="middle">the event on the way.</text>
+
+      <rect x="530" y="30" width="156" height="132" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+      <text x="608" y="52" font-size="10" font-weight="800" fill="#d9480f" text-anchor="middle">IP ALLOWLIST</text>
+      <text x="608" y="70" fill="#22303f" text-anchor="middle">accept the POST only</text>
+      <text x="608" y="84" fill="#22303f" text-anchor="middle">if it came from the</text>
+      <text x="608" y="98" fill="#22303f" text-anchor="middle">provider's published</text>
+      <text x="608" y="112" fill="#22303f" text-anchor="middle">IP addresses.</text>
+      <text x="608" y="134" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">plus: timestamp checks</text>
+      <text x="608" y="147" font-size="8.6" font-weight="700" fill="#d9480f" text-anchor="middle">to stop replay attacks</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.3</span> &ndash; "Publicly reachable" and "unsecured" are two completely different things.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">The idea to carry away</span>
+  A URL being <b>reachable</b> by anyone does not mean it is <b>trusted</b> by anyone.
+  Your front door is publicly reachable too &ndash; that is why it has a lock. The webhook's
+  lock is the signature.
+</div>
+
+
+<!-- ---------------------------- Q1 ---------------------------- -->
+<div class="qhead">Question 1 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are true regarding Webhooks?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> A Webhook should give an immediate response.</li>
+    <li class="wrong"><span class="lab">B.</span> A Webhook cannot post form encoded data.</li>
+    <li class="wrong"><span class="lab">C.</span> A Webhook cannot be secured, if the receiver URL to be accessed is publicly available.</li>
+    <li class="right"><span class="lab">D.</span> A Webhook receiver can be a trivial flask application.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The courier at your door (Figure 6.2). The receiver should acknowledge quickly with
+      a 200 and do slow work afterwards, otherwise the sender times out and retries. This is
+      the standard rule published by every webhook provider.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The word <b>cannot</b> gives it away. A webhook is an ordinary HTTP POST, so its body
+      can be <b>any</b> content type the two sides agree on. JSON
+      (<code>application/json</code>) is the most common, but form-encoded
+      (<code>application/x-www-form-urlencoded</code>) is perfectly normal and is what several
+      well-known providers use. XML is also used.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Publicly reachable is not the same as insecure. Signatures (HMAC), secret tokens,
+      HTTPS and IP allowlists all secure a public webhook URL &ndash; see Figure 6.3.
+      Every real payment gateway does exactly this.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A receiver only has to accept a POST and return 200. That really is a handful of
+      lines of Flask:
+      <br/><code>@app.route('/hook', methods=['POST'])</code>. Nothing more is required.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 1</span>
+  <span class="big">A and D</span>
+  <br/><small>Matches the options you had selected.</small>
+</div>
+
+<div class="trap">
+  <span class="boxtitle">Trap box &bull; the keyword radar</span>
+  Both wrong options contain the word <b>cannot</b>. Absolute words &ndash; <i>cannot, only,
+  always, never</i> &ndash; are nearly always the sign of a false statement, because real
+  engineering tools are built to be flexible. Circle every absolute word before you choose.
+</div>
+
+<!-- ---------------------------- Q2 ---------------------------- -->
+<div class="qhead">Question 2 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are correct, regarding Webhooks and Web sockets?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> A Webhook uses HTTP protocol in general.</li>
+    <li class="right"><span class="lab">B.</span> A web socket is used to achieve 2-way communication.</li>
+    <li class="right"><span class="lab">C.</span> A Webhook is primarily used for server-to-server communication.</li>
+    <li class="wrong"><span class="lab">D.</span> A Webhook generally keeps the connection open.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A webhook is literally an HTTP POST to a URL. No special protocol is involved &ndash;
+      that is what makes webhooks so easy to adopt.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Two-way (full duplex) communication is the defining purpose of a WebSocket.
+      Figure 5.1.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>To receive a webhook you need a <b>public URL that can accept an incoming POST</b>.
+      A browser tab has no such thing. So webhooks run between servers: the provider's
+      server calls your server.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td><b>This is the option that separates webhooks from WebSockets.</b> A webhook is a
+      single POST followed by an immediate response, and then the connection <b>closes</b>.
+      Keeping the connection open is what WebSockets and SSE do, not webhooks.</td></tr>
+  </table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 2</span>
+  <span class="big">A, B and C</span>
+  <br/><small>Matches the options you had selected. Only D is false, because a webhook closes
+  its connection straight away.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">Three words that separate the two</span>
+  <b>Webhook:</b> one-shot, closes, server-to-server.<br/>
+  <b>WebSocket:</b> long-lived, stays open, browser-to-server.
+</div>
+
+<h2>6.3 API vs webhook: pull vs push</h2>
+
+<p>Questions 7 and 10 both test this direction. Get the arrows right and both are free marks.</p>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="k1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#d9480f"/></marker>
+      <marker id="k2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">Who starts the conversation?</text>
+
+    <!-- API -->
+    <rect x="8" y="28" width="336" height="212" rx="10" fill="#fff1e6" stroke="#d9480f" stroke-width="2.5"/>
+    <text x="176" y="50" font-size="12" font-weight="800" fill="#d9480f" text-anchor="middle">API  =  YOU PULL</text>
+    <rect x="30" y="70" width="88" height="44" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="74" y="97" font-size="9.6" font-weight="700" fill="#d9480f" text-anchor="middle">your app</text>
+    <rect x="234" y="70" width="88" height="44" rx="7" fill="#fff" stroke="#d9480f" stroke-width="2"/>
+    <text x="278" y="97" font-size="9.6" font-weight="700" fill="#d9480f" text-anchor="middle">their app</text>
+    <path d="M124 84 H228" stroke="#d9480f" stroke-width="2.6" marker-end="url(#k1)"/>
+    <text x="176" y="79" font-size="8.4" font-weight="700" fill="#d9480f" text-anchor="middle">1. you ask</text>
+    <path d="M228 104 H124" stroke="#d9480f" stroke-width="2.6" marker-end="url(#k1)"/>
+    <text x="176" y="118" font-size="8.4" font-weight="700" fill="#d9480f" text-anchor="middle">2. they answer</text>
+    <text x="176" y="146" font-size="9.6" font-weight="700" fill="#d9480f" text-anchor="middle">YOU start it. Request-response.</text>
+    <text x="176" y="166" font-size="9.4" fill="#22303f" text-anchor="middle">You wait for the reply, so from your</text>
+    <text x="176" y="181" font-size="9.4" fill="#22303f" text-anchor="middle">point of view it is SYNCHRONOUS.</text>
+    <rect x="30" y="194" width="292" height="34" rx="6" fill="#fff" stroke="#d9480f"/>
+    <text x="176" y="208" font-size="9.2" font-weight="700" fill="#d9480f" text-anchor="middle">An API can PULL and PUSH:</text>
+    <text x="176" y="222" font-size="8.8" fill="#22303f" text-anchor="middle">GET pulls data out, POST pushes data in</text>
+
+    <!-- WEBHOOK -->
+    <rect x="356" y="28" width="336" height="212" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="50" font-size="12" font-weight="800" fill="#1f7a3a" text-anchor="middle">WEBHOOK  =  THEY PUSH</text>
+    <rect x="378" y="70" width="88" height="44" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="422" y="97" font-size="9.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">your app</text>
+    <rect x="582" y="70" width="88" height="44" rx="7" fill="#fff" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="626" y="97" font-size="9.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">their app</text>
+    <path d="M576 86 H472" stroke="#1f7a3a" stroke-width="2.6" marker-end="url(#k2)"/>
+    <text x="524" y="77" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">1. they POST to you</text>
+    <path d="M472 104 H576" stroke="#1f7a3a" stroke-width="1.8" marker-end="url(#k2)" stroke-dasharray="4 3"/>
+    <text x="524" y="118" font-size="8.4" font-weight="700" fill="#1f7a3a" text-anchor="middle">2. you just say 200 OK</text>
+    <text x="524" y="146" font-size="9.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">THEY start it. Event-driven.</text>
+    <text x="524" y="166" font-size="9.4" fill="#22303f" text-anchor="middle">You never asked and never waited, so</text>
+    <text x="524" y="181" font-size="9.4" fill="#22303f" text-anchor="middle">it is ASYNCHRONOUS.</text>
+    <rect x="378" y="194" width="292" height="34" rx="6" fill="#fff" stroke="#1f7a3a"/>
+    <text x="524" y="208" font-size="9.2" font-weight="700" fill="#1f7a3a" text-anchor="middle">A webhook only PUSHES:</text>
+    <text x="524" y="222" font-size="8.8" fill="#22303f" text-anchor="middle">one direction, one message, no pulling</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.4</span> &ndash; The complete push/pull picture. An API is a shop you visit; a webhook is a home delivery.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q7 ---------------------------- -->
+<div class="qhead">Question 7 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following statement(s) is/are correct?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> A Webhook pushes the messages to an application.</li>
+    <li class="wrong"><span class="lab">B.</span> In general, webhook pulls the messages from an application, but an API pushes the messages to an application.</li>
+    <li class="wrong"><span class="lab">C.</span> Webhooks are generally synchronous in nature.</li>
+    <li class="right"><span class="lab">D.</span> An API can pull and push the messages from/to an application.</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <span class="boxtitle">This is the one answer to change</span>
+  Your screenshot has <b>A, C and D</b> ticked. Options A and D are right, but
+  <b>option C should not be ticked</b>. The correct answer is <b>A and D</b>.
+  The reasoning is below, and it is worth reading carefully because this exact
+  distinction comes up again and again.
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A webhook pushes: the provider sends an HTTP POST into your application without
+      being asked. Right-hand side of Figure 6.4.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The two words are <b>swapped round</b>. Webhooks push, APIs pull. This option says
+      the exact opposite of the truth, which is the most common trick in the whole topic.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span><br/><small>change this</small></td>
+      <td>Webhooks are <b>asynchronous</b> in nature, not synchronous. They are the standard
+      example of <b>event-driven</b> communication: the receiver never asks and never waits,
+      it simply reacts whenever an event happens to arrive. Synchronous is the word for the
+      <i>API</i> model, where the caller sends a request and blocks until the answer comes back.
+      See the detailed explanation below.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>An API is two-directional in this sense: <code>GET</code> pulls data out of an
+      application and <code>POST</code> or <code>PUT</code> pushes data into it. A webhook, by
+      contrast, only ever pushes.</td></tr>
+</table>
+
+<h3>Why "webhooks are synchronous" is the wrong description</h3>
+
+<p>It is worth being precise, because there is a grain of truth that traps people.</p>
+
+<figure>
+  <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="24" width="336" height="170" rx="10" fill="#f7f9fc" stroke="#9aa4b2" stroke-width="2"/>
+    <text x="176" y="46" font-size="10.6" font-weight="800" fill="#5a6472" text-anchor="middle">The grain of truth</text>
+    <text x="176" y="68" font-size="9.4" fill="#22303f" text-anchor="middle">One single webhook delivery is an HTTP</text>
+    <text x="176" y="83" font-size="9.4" fill="#22303f" text-anchor="middle">request that waits for a 200 response.</text>
+    <text x="176" y="98" font-size="9.4" fill="#22303f" text-anchor="middle">At that tiny transport level, yes, there is</text>
+    <text x="176" y="113" font-size="9.4" fill="#22303f" text-anchor="middle">a request and a matching reply.</text>
+    <rect x="26" y="126" width="300" height="52" rx="6" fill="#fff" stroke="#9aa4b2"/>
+    <text x="176" y="145" font-size="9" fill="#5a6472" text-anchor="middle">But that is true of literally every HTTP</text>
+    <text x="176" y="159" font-size="9" fill="#5a6472" text-anchor="middle">call ever made. It does not describe the</text>
+    <text x="176" y="172" font-size="9" fill="#5a6472" text-anchor="middle">NATURE of the webhook pattern.</text>
+
+    <rect x="356" y="24" width="336" height="170" rx="10" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.5"/>
+    <text x="524" y="46" font-size="10.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">What the exam means by "nature"</text>
+    <text x="524" y="68" font-size="9.4" fill="#22303f" text-anchor="middle">Does the receiver have to be waiting for</text>
+    <text x="524" y="83" font-size="9.4" fill="#22303f" text-anchor="middle">this data at the moment it arrives?</text>
+    <text x="524" y="102" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">No. It arrives whenever the event</text>
+    <text x="524" y="117" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">happens. That is ASYNCHRONOUS.</text>
+    <rect x="374" y="126" width="300" height="52" rx="6" fill="#fff" stroke="#1f7a3a"/>
+    <text x="524" y="145" font-size="9" fill="#22303f" text-anchor="middle">Same logic as Question 8: pub/sub is called</text>
+    <text x="524" y="159" font-size="9" fill="#22303f" text-anchor="middle">asynchronous for exactly this reason, even</text>
+    <text x="524" y="172" font-size="9" fill="#22303f" text-anchor="middle">though each delivery is a normal call.</text>
+    <text x="350" y="16" font-size="12" font-weight="800" fill="#0f2f61" text-anchor="middle">Synchronous or asynchronous? Ask the right question</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 6.5</span> &ndash; Judge the pattern, not the single HTTP call. Every reference describes webhooks as event-driven and asynchronous, in contrast to the request-response API model.</figcaption>
+</figure>
+
+<div class="key">
+  <span class="boxtitle">A consistency check you can do inside the exam hall</span>
+  Question 8 of this very paper asks about pub/sub and marks
+  <i>"the communication is asynchronous in nature"</i> as <b>correct</b> while
+  <i>"synchronous"</i> is <b>wrong</b>. A webhook is the same shape of thing: an event happens,
+  a message is pushed, the receiver reacts later. It would be inconsistent for the paper to
+  call one asynchronous and the other synchronous. Use the paper against itself.
+</div>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 7</span>
+  <span class="big">A and D</span>
+  <br/><small>Webhooks push and are asynchronous; APIs can both pull and push.
+  <b>Do not tick C.</b></small>
+</div>
+
+<!-- ---------------------------- Q10 ---------------------------- -->
+<div class="qhead">Question 10 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the statement(s) is/are true for webhook?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> The message content is sent as part of the request body.</li>
+    <li class="wrong"><span class="lab">B.</span> The message content in the response body should be detailed.</li>
+    <li class="wrong"><span class="lab">C.</span> Webhooks are usually invoked by the human clients.</li>
+    <li class="right"><span class="lab">D.</span> Webhooks are one way messages.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The event details travel in the <b>request body</b> of the POST, typically as JSON.
+      Figure 6.1, step 2.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Backwards. The <b>response</b> should be as <b>small and fast as possible</b> &ndash; ideally
+      just a bare 200 OK. The sender is not waiting to read a detailed report; it only wants
+      the signature. A big, slow response risks the timeout in Figure 6.2.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>No human is involved. A webhook is triggered by an <b>event inside a system</b> &ndash;
+      a payment settling, code being pushed, a file finishing upload. That is the meaning of
+      "event-driven", and it also connects back to Q2: webhooks are server-to-server.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>One direction only: provider to receiver. There is no channel for the receiver to
+      send messages back &ndash; the 200 OK is an acknowledgement, not a reply with content.
+      Contrast with a WebSocket, which is two way.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 10</span>
+  <span class="big">A and D</span>
+  <br/><small>Matches the options you had selected.</small>
+</div>
+
+<div class="kid">
+  <span class="boxtitle">The webhook sentence to memorise</span>
+  "An event happens on their server, so their server POSTs the details in the
+  <b>request body</b> to my public URL, and my app replies <b>200 immediately</b> and does the
+  real work afterwards. One direction, then the connection closes."
+</div>
+
+
+<!-- ============================== PART 7 ============================== -->
+<h1 class="part"><span class="kicker">Part 7 &bull; Questions 8 and 9</span>Pub/Sub and the message broker</h1>
+
+<h2>7.1 What is publish-subscribe?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the school notice board</span>
+  The head teacher has news: "sports day is on Friday". She does not walk to each of
+  600 students and tell them one by one. She does not even know who is interested.
+  She pins <b>one notice</b> on the board under the heading <b>"SPORTS"</b>.
+  <br/><br/>
+  Everyone who cares about sports has already decided to watch that heading. All of them
+  read the same notice. The head teacher never learns their names.
+  <ul style="margin-bottom:0">
+    <li>The head teacher = the <b>publisher</b>.</li>
+    <li>The heading "SPORTS" = the <b>topic</b>.</li>
+    <li>The students watching that heading = the <b>subscribers</b>.</li>
+    <li>The notice board itself = the <b>message broker</b>.</li>
+  </ul>
+</div>
+
+<div class="note">
+  <span class="boxtitle">Definition box &bull; pub/sub</span>
+  A <b>publisher</b> sends a message to a named <b>topic</b>, not to a particular receiver.
+  The broker then delivers a <b>copy to every subscriber</b> of that topic. The publisher
+  does not know who the subscribers are, how many there are, or whether there are any at all.
+  This is called <b>fan-out</b>, and the not-knowing is called <b>decoupling</b>.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="p1" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#5b3ec8"/></marker>
+      <marker id="p2" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+        <path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f7a3a"/></marker>
+    </defs>
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">PUB/SUB &ndash; one message published, every subscriber gets a copy</text>
+
+    <rect x="14" y="98" width="118" height="66" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="73" y="124" font-size="11" font-weight="800" fill="#5b3ec8" text-anchor="middle">PUBLISHER</text>
+    <text x="73" y="142" font-size="8.8" fill="#5a6472" text-anchor="middle">order service</text>
+    <text x="73" y="155" font-size="8.8" fill="#5a6472" text-anchor="middle">"order placed!"</text>
+
+    <path d="M140 131 H210" stroke="#5b3ec8" stroke-width="2.6" marker-end="url(#p1)"/>
+    <text x="175" y="123" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">publish</text>
+
+    <!-- broker / topic -->
+    <rect x="216" y="72" width="150" height="118" rx="9" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.5"/>
+    <text x="291" y="94" font-size="10.6" font-weight="800" fill="#5b3ec8" text-anchor="middle">BROKER</text>
+    <rect x="232" y="106" width="118" height="34" rx="6" fill="#5b3ec8"/>
+    <text x="291" y="122" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">TOPIC:</text>
+    <text x="291" y="134" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">orders</text>
+    <text x="291" y="158" font-size="8.6" fill="#5b3ec8" text-anchor="middle">makes a copy for</text>
+    <text x="291" y="170" font-size="8.6" fill="#5b3ec8" text-anchor="middle">every subscriber</text>
+    <text x="291" y="184" font-size="8.6" font-weight="700" fill="#5b3ec8" text-anchor="middle">(fan-out)</text>
+
+    <!-- three subscribers -->
+    <path d="M372 110 L446 72" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#p2)"/>
+    <path d="M372 131 H446" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#p2)"/>
+    <path d="M372 152 L446 190" stroke="#1f7a3a" stroke-width="2.4" marker-end="url(#p2)"/>
+
+    <rect x="452" y="52" width="234" height="42" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="466" y="70" font-size="9.6" font-weight="800" fill="#1f7a3a">SUBSCRIBER 1: send email</text>
+    <text x="466" y="85" font-size="8.6" fill="#5a6472">gets its own copy of the message</text>
+
+    <rect x="452" y="110" width="234" height="42" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="466" y="128" font-size="9.6" font-weight="800" fill="#1f7a3a">SUBSCRIBER 2: update stock</text>
+    <text x="466" y="143" font-size="8.6" fill="#5a6472">gets its own copy too</text>
+
+    <rect x="452" y="168" width="234" height="42" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+    <text x="466" y="186" font-size="9.6" font-weight="800" fill="#1f7a3a">SUBSCRIBER 3: analytics</text>
+    <text x="466" y="201" font-size="8.6" fill="#5a6472">and so does this one</text>
+
+    <rect x="14" y="222" width="672" height="60" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="350" y="240" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">Why this is the foundation of EVENT DRIVEN ARCHITECTURE</text>
+    <text x="350" y="258" font-size="9.4" fill="#22303f" text-anchor="middle">To add a "send SMS" feature tomorrow, you write a new subscriber and change NOTHING else.</text>
+    <text x="350" y="273" font-size="9.4" fill="#22303f" text-anchor="middle">The publisher is never edited, never redeployed, and never even told. Services stay independent.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.1</span> &ndash; Pub/Sub. One publish, three independent reactions.</figcaption>
+</figure>
+
+<h2>7.2 Pub/Sub vs a plain message queue</h2>
+
+<table>
+  <tr><th style="width:34%">&nbsp;</th><th>Message queue (point-to-point)</th><th>Pub/Sub (topic)</th></tr>
+  <tr><td><b>Who receives a message</b></td><td>exactly <b>one</b> consumer</td><td><b>every</b> subscriber gets a copy</td></tr>
+  <tr><td><b>The question it answers</b></td><td>"who should <i>do</i> this job?"</td><td>"who should <i>know</i> this happened?"</td></tr>
+  <tr><td><b>Typical use</b></td><td>background work: resize this image</td><td>notifying many services of one event</td></tr>
+  <tr><td><b>Delivery style</b></td><td>consumer pulls when ready; message waits in the queue</td><td>broker pushes to subscribers as soon as it is published</td></tr>
+  <tr><td><b>Timing</b></td><td>asynchronous</td><td>asynchronous</td></tr>
+</table>
+
+<div class="key">
+  <span class="boxtitle">The point that Question 8 tests</span>
+  In pub/sub the broker's job is to hand the message to the topic's subscribers
+  <b>straight away</b> &ndash; that is the whole idea of a topic. This "deliver it now to
+  everyone listening" behaviour is what makes pub/sub suitable for live event notification,
+  and it is entirely compatible with the communication being <b>asynchronous</b>:
+  <i>asynchronous</i> means the <b>publisher does not stop and wait</b>, not that delivery is slow.
+</div>
+
+<!-- ---------------------------- Q8 ---------------------------- -->
+<div class="qhead">Question 8 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">Which of the following is correct regarding pub/sub messaging?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> It can be used to enable event driven architecture.</li>
+    <li class="right"><span class="lab">B.</span> Any message published to a topic should be immediately received by the subscriber(s) of the topic.</li>
+    <li class="wrong"><span class="lab">C.</span> The communication is synchronous in nature.</li>
+    <li class="right"><span class="lab">D.</span> The communication is asynchronous in nature.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Pub/Sub is the standard building block of event-driven architecture: publish an
+      event, and any number of services react independently. Bottom band of Figure 7.1.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>A topic is not a storage locker. When a message is published, the broker delivers it
+      to the subscribers of that topic right away. In classic pub/sub the message is
+      broadcast to whoever is currently subscribed and then discarded &ndash; there is no waiting
+      around for someone to come and collect it later.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Direct opposite of D, so exactly one of the pair can be right. Synchronous would mean
+      the publisher blocks until every subscriber has finished processing &ndash; which would
+      destroy the whole point of decoupling.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>The publisher fires the message and carries on immediately. It does not wait for
+      subscribers, does not know if they succeeded, and does not care. That is
+      asynchronous.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 8</span>
+  <span class="big">A, B and D</span>
+  <br/><small>Matches the options you had selected.</small>
+</div>
+
+<div class="note">
+  <span class="boxtitle">Do B and D contradict each other? No &ndash; and this is worth understanding</span>
+  They describe two different sides of the exchange, so both can be true at once:
+  <ul style="margin-bottom:0">
+    <li><b>B is about the receiving side:</b> once published, subscribers are handed the
+        message immediately rather than having to poll for it.</li>
+    <li><b>D is about the sending side:</b> the publisher does not block waiting for anyone.</li>
+  </ul>
+  "Immediate delivery" and "the sender does not wait" are perfectly compatible.
+  Think of dropping a letter in the chute of a building: it lands in the letterbox instantly,
+  and you walked away instantly.
+</div>
+
+<h2>7.3 What exactly does a message broker do?</h2>
+
+<div class="analogy">
+  <span class="boxtitle">Story box &bull; the sorting office</span>
+  A broker is a postal sorting office. Its jobs:
+  <b>read the address and route the letter correctly</b>;
+  <b>try again tomorrow if nobody was home</b>;
+  <b>deliver in the order things were posted</b>;
+  and <b>photocopy a circular for every household on the list</b> when needed.
+</div>
+
+<figure>
+  <svg viewBox="0 0 700 235" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">The four jobs of a message broker (all four appear in Question 9)</text>
+    <g font-size="9.2">
+      <!-- 1 routing -->
+      <rect x="14" y="30" width="164" height="90" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="96" y="50" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">1. CORRECT ROUTING</text>
+      <text x="96" y="70" fill="#22303f" text-anchor="middle">makes sure the message</text>
+      <text x="96" y="84" fill="#22303f" text-anchor="middle">reaches the recipient it</text>
+      <text x="96" y="98" fill="#22303f" text-anchor="middle">was meant for</text>
+      <text x="96" y="114" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">Q9 option A: TRUE</text>
+
+      <!-- 2 retry -->
+      <rect x="186" y="30" width="164" height="90" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="268" y="50" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">2. RETRIES</text>
+      <text x="268" y="70" fill="#22303f" text-anchor="middle">if delivery fails it tries</text>
+      <text x="268" y="84" fill="#22303f" text-anchor="middle">again, and parks hopeless</text>
+      <text x="268" y="98" fill="#22303f" text-anchor="middle">ones in a dead letter queue</text>
+      <text x="268" y="114" font-size="8.6" font-weight="700" fill="#b52020" text-anchor="middle">Q9 option B says it does NOT: FALSE</text>
+
+      <!-- 3 order -->
+      <rect x="358" y="30" width="164" height="90" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="440" y="50" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">3. ORDER: FIFO</text>
+      <text x="440" y="70" fill="#22303f" text-anchor="middle">first in, first out &ndash;</text>
+      <text x="440" y="84" fill="#22303f" text-anchor="middle">like a queue at a shop,</text>
+      <text x="440" y="98" fill="#22303f" text-anchor="middle">NOT last in first out</text>
+      <text x="440" y="114" font-size="8.6" font-weight="700" fill="#b52020" text-anchor="middle">Q9 option C says LIFO: FALSE</text>
+
+      <!-- 4 multiple -->
+      <rect x="530" y="30" width="156" height="90" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2"/>
+      <text x="608" y="50" font-size="10" font-weight="800" fill="#1f7a3a" text-anchor="middle">4. FAN-OUT</text>
+      <text x="608" y="70" fill="#22303f" text-anchor="middle">can copy one message</text>
+      <text x="608" y="84" fill="#22303f" text-anchor="middle">to many recipients</text>
+      <text x="608" y="98" fill="#22303f" text-anchor="middle">when required</text>
+      <text x="608" y="114" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">Q9 option D: TRUE</text>
+    </g>
+
+    <!-- FIFO illustration -->
+    <rect x="14" y="132" width="672" height="94" rx="9" fill="#f7f9fc" stroke="#9aa4b2" stroke-width="1.8"/>
+    <text x="350" y="152" font-size="10.4" font-weight="800" fill="#5a6472" text-anchor="middle">FIFO vs LIFO, so you never mix them up</text>
+    <text x="112" y="176" font-size="9.6" font-weight="800" fill="#1f7a3a" text-anchor="middle">FIFO (what brokers do)</text>
+    <text x="112" y="192" font-size="8.8" fill="#22303f" text-anchor="middle">a queue at the ticket counter:</text>
+    <text x="112" y="206" font-size="8.8" fill="#22303f" text-anchor="middle">whoever came first is served first</text>
+    <g>
+      <rect x="238" y="166" width="34" height="24" rx="4" fill="#1f7a3a"/><text x="255" y="182" font-size="8.6" fill="#fff" text-anchor="middle">1st</text>
+      <rect x="276" y="166" width="34" height="24" rx="4" fill="#1f7a3a" opacity=".75"/><text x="293" y="182" font-size="8.6" fill="#fff" text-anchor="middle">2nd</text>
+      <rect x="314" y="166" width="34" height="24" rx="4" fill="#1f7a3a" opacity=".5"/><text x="331" y="182" font-size="8.6" fill="#fff" text-anchor="middle">3rd</text>
+      <text x="293" y="206" font-size="8.6" font-weight="700" fill="#1f7a3a" text-anchor="middle">served in this order</text>
+    </g>
+    <line x1="368" y1="150" x2="368" y2="216" stroke="#9aa4b2" stroke-width="1.6"/>
+    <text x="452" y="176" font-size="9.6" font-weight="800" fill="#b52020" text-anchor="middle">LIFO (a stack, not a broker)</text>
+    <text x="452" y="192" font-size="8.8" fill="#22303f" text-anchor="middle">a pile of plates: the last one you</text>
+    <text x="452" y="206" font-size="8.8" fill="#22303f" text-anchor="middle">put on top is the first one taken</text>
+    <g>
+      <rect x="580" y="196" width="60" height="16" rx="3" fill="#b52020" opacity=".45"/><text x="610" y="208" font-size="7.6" fill="#fff" text-anchor="middle">1st in</text>
+      <rect x="580" y="178" width="60" height="16" rx="3" fill="#b52020" opacity=".7"/><text x="610" y="190" font-size="7.6" fill="#fff" text-anchor="middle">2nd in</text>
+      <rect x="580" y="160" width="60" height="16" rx="3" fill="#b52020"/><text x="610" y="172" font-size="7.6" fill="#fff" text-anchor="middle">3rd in</text>
+      <text x="684" y="170" font-size="8" font-weight="700" fill="#b52020" text-anchor="end">taken first</text>
+    </g>
+  </svg>
+  <figcaption><span class="fignum">Figure 7.2</span> &ndash; Every option of Question 9 mapped onto a broker's real responsibilities.</figcaption>
+</figure>
+
+<!-- ---------------------------- Q9 ---------------------------- -->
+<div class="qhead">Question 9 <span class="mark">1 mark &bull; select all that apply</span></div>
+<div class="qbody">
+  <p class="qtext">What is the role of the message broker?</p>
+  <ul class="opts">
+    <li class="right"><span class="lab">A.</span> It ensures that the message gets delivered to the correct recipient.</li>
+    <li class="wrong"><span class="lab">B.</span> If the message is undelivered in the first try, it fails and doesn't retry.</li>
+    <li class="wrong"><span class="lab">C.</span> It ensures that the messages are processed in LIFO manner.</li>
+    <li class="right"><span class="lab">D.</span> It can send messages to multiple recipients, if required.</li>
+  </ul>
+</div>
+
+<h3>Option-by-option reasoning</h3>
+<table>
+  <tr><th style="width:60px" class="c">Option</th><th style="width:64px" class="c">Verdict</th><th>Why</th></tr>
+  <tr><td class="c"><b>A</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>Routing to the right recipient is the broker's core job. It is the sorting office
+      reading the address.</td></tr>
+  <tr><td class="c"><b>B</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>The opposite is true: brokers are built for <b>reliability</b>. They retry failed
+      deliveries, often with increasing gaps between attempts, and move permanently
+      undeliverable messages to a <b>dead letter queue</b> rather than silently losing them.
+      Giving up after one try would make a broker useless.</td></tr>
+  <tr><td class="c"><b>C</b></td><td class="c"><span class="pill f">FALSE</span></td>
+      <td>Brokers deliver in <b>FIFO</b> order &ndash; first in, first out. LIFO is a
+      <b>stack</b>, a completely different data structure. Under LIFO the oldest message
+      could sit unprocessed forever, which is exactly what a queue is designed to prevent.</td></tr>
+  <tr><td class="c"><b>D</b></td><td class="c"><span class="pill t">TRUE</span></td>
+      <td>"If required" makes it precise and correct. In point-to-point mode one recipient
+      gets the message; in pub/sub mode the broker fans it out to many. Figure 7.1.</td></tr>
+</table>
+
+<div class="ans">
+  <span class="boxtitle">Answer to Question 9</span>
+  <span class="big">A and D</span>
+  <br/><small>Matches the options you had selected.</small>
+</div>
+
+
+<!-- ============================== PART 8 ============================== -->
+<h1 class="part"><span class="kicker">Part 8 &bull; Revision</span>All five techniques in one place</h1>
+
+<p>If you learn one page from this book, learn this one. Every question in the paper is a
+row or a column of this table.</p>
+
+<table class="flow">
+  <tr>
+    <th style="width:118px">&nbsp;</th>
+    <th>Short polling</th><th>Long polling</th><th>SSE</th><th>WebSocket</th><th>Webhook</th>
+  </tr>
+  <tr><td><b>Who starts</b></td>
+      <td>client</td><td>client</td><td>client opens it</td><td>client shakes hands</td>
+      <td><b>server</b> (the provider)</td></tr>
+  <tr><td><b>Direction</b></td>
+      <td>both, one at a time</td><td>both, one at a time</td><td><b>one way</b>: server to client</td>
+      <td><b>two way</b> (full duplex)</td><td><b>one way</b>: sender to receiver</td></tr>
+  <tr><td><b>Connection</b></td>
+      <td>opens and <b>closes</b> every time</td><td><b>held open</b> until there is data</td>
+      <td><b>stays open</b> for many events</td><td><b>stays open</b> permanently</td>
+      <td><b>closes</b> right after the POST</td></tr>
+  <tr><td><b>Protocol</b></td>
+      <td>HTTP</td><td>HTTP</td><td>HTTP</td><td><code>ws://</code> after an HTTP upgrade</td><td>HTTP</td></tr>
+  <tr><td><b>Wasted traffic</b></td>
+      <td><b>very high</b></td><td>low</td><td>very low</td><td>very low</td><td><b>none</b></td></tr>
+  <tr><td><b>How fresh is the data</b></td>
+      <td>up to one interval late</td><td>instant</td><td>instant</td><td>instant</td><td>instant</td></tr>
+  <tr><td><b>Mainly used between</b></td>
+      <td>browser and server</td><td>browser and server</td><td>browser and server</td>
+      <td>browser and server</td><td><b>server and server</b></td></tr>
+  <tr><td><b>Sync or async</b></td>
+      <td>synchronous request-response</td><td>synchronous request, delayed reply</td>
+      <td>asynchronous stream</td><td>asynchronous both ways</td><td><b>asynchronous</b>, event-driven</td></tr>
+  <tr><td><b>Good for</b></td>
+      <td>simple, rare updates; works anywhere</td><td>chat before WebSockets existed</td>
+      <td>live scores, notifications, progress</td><td>chat, games, collaborative editing</td>
+      <td>payment confirmations, CI triggers</td></tr>
+  <tr><td><b>Question in the paper</b></td>
+      <td>Q5, Q3</td><td>Q6, Q3</td><td>Q4</td><td>Q2</td><td>Q1, Q2, Q7, Q10</td></tr>
+</table>
+
+<figure>
+  <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <text x="350" y="16" font-size="12.5" font-weight="800" fill="#0f2f61" text-anchor="middle">A decision tree: which one should I use?</text>
+    <defs>
+      <marker id="t9" markerWidth="8" markerHeight="8" refX="6.5" refY="2.8" orient="auto">
+        <path d="M0,0 L6.5,2.8 L0,5.6 z" fill="#5a6472"/></marker>
+    </defs>
+
+    <rect x="252" y="28" width="196" height="34" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="350" y="49" font-size="9.6" font-weight="800" fill="#1b4f9c" text-anchor="middle">Who needs to be told something?</text>
+
+    <path d="M300 64 V84 H130 V100" stroke="#5a6472" stroke-width="1.8" fill="none" marker-end="url(#t9)"/>
+    <path d="M400 64 V84 H540 V100" stroke="#5a6472" stroke-width="1.8" fill="none" marker-end="url(#t9)"/>
+    <text x="196" y="80" font-size="8.6" font-weight="700" fill="#5a6472" text-anchor="middle">another SERVER</text>
+    <text x="502" y="80" font-size="8.6" font-weight="700" fill="#5a6472" text-anchor="middle">a BROWSER</text>
+
+    <rect x="34" y="102" width="192" height="46" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2.2"/>
+    <text x="130" y="121" font-size="10.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">USE A WEBHOOK</text>
+    <text x="130" y="138" font-size="8.6" fill="#22303f" text-anchor="middle">or pub/sub through a broker</text>
+
+    <rect x="444" y="102" width="192" height="34" rx="8" fill="#e8f0fb" stroke="#1b4f9c" stroke-width="2"/>
+    <text x="540" y="123" font-size="9.4" font-weight="800" fill="#1b4f9c" text-anchor="middle">Does the browser also send?</text>
+
+    <path d="M490 138 V158 H400 V172" stroke="#5a6472" stroke-width="1.8" fill="none" marker-end="url(#t9)"/>
+    <path d="M590 138 V158 H610 V172" stroke="#5a6472" stroke-width="1.8" fill="none" marker-end="url(#t9)"/>
+    <text x="424" y="154" font-size="8.6" font-weight="700" fill="#5a6472" text-anchor="middle">no, only listens</text>
+    <text x="626" y="154" font-size="8.6" font-weight="700" fill="#5a6472" text-anchor="middle">yes</text>
+
+    <rect x="304" y="174" width="192" height="46" rx="8" fill="#e9f7ee" stroke="#1f7a3a" stroke-width="2.2"/>
+    <text x="400" y="193" font-size="10.4" font-weight="800" fill="#1f7a3a" text-anchor="middle">USE SSE</text>
+    <text x="400" y="210" font-size="8.6" fill="#22303f" text-anchor="middle">simplest, plain HTTP</text>
+
+    <rect x="514" y="174" width="176" height="46" rx="8" fill="#f0ecfd" stroke="#5b3ec8" stroke-width="2.2"/>
+    <text x="602" y="193" font-size="10.4" font-weight="800" fill="#5b3ec8" text-anchor="middle">USE A WEBSOCKET</text>
+    <text x="602" y="210" font-size="8.6" fill="#22303f" text-anchor="middle">two way, ws:// protocol</text>
+
+    <rect x="34" y="174" width="192" height="46" rx="8" fill="#fff1e6" stroke="#d9480f" stroke-width="2"/>
+    <text x="130" y="192" font-size="9.4" font-weight="800" fill="#d9480f" text-anchor="middle">Polling is the fallback</text>
+    <text x="130" y="209" font-size="8.4" fill="#22303f" text-anchor="middle">when you control neither side</text>
+
+    <text x="350" y="242" font-size="9.4" font-weight="700" fill="#5a6472" text-anchor="middle">Rule of thumb: use the simplest technique that solves the problem. Do not reach for WebSockets by habit.</text>
+  </svg>
+  <figcaption><span class="fignum">Figure 8.1</span> &ndash; Choosing between the techniques in real projects.</figcaption>
+</figure>
+
+<!-- ============================== PART 9 ============================== -->
+<h1 class="part"><span class="kicker">Part 9 &bull; Revision</span>Answer key, cheat sheet and practice</h1>
+
+<h2>9.1 Master answer key</h2>
+
+<table class="flow">
+  <tr><th class="c" style="width:44px">Q</th><th style="width:170px">Topic</th>
+      <th class="c" style="width:80px">Answer</th><th>The one line that decides it</th></tr>
+  <tr><td class="c"><b>1</b></td><td>Webhooks, general</td><td class="c"><b>A, D</b></td>
+      <td>Respond immediately; a trivial Flask app is enough. Both wrong options say "cannot".</td></tr>
+  <tr><td class="c"><b>2</b></td><td>Webhooks vs WebSockets</td><td class="c"><b>A, B, C</b></td>
+      <td>Webhook = HTTP, server-to-server. WebSocket = 2-way. Only WebSockets stay open.</td></tr>
+  <tr><td class="c"><b>3</b></td><td>Polling and long poll</td><td class="c"><b>A, C</b></td>
+      <td>Polling repeats at fixed intervals and needs no persistent connection.</td></tr>
+  <tr><td class="c"><b>4</b></td><td>SSE (pick the false one)</td><td class="c"><b>B</b></td>
+      <td>SSE needs an open HTTP stream and a listener &ndash; never a task queue.</td></tr>
+  <tr><td class="c"><b>5</b></td><td>Short polling</td><td class="c"><b>A, C</b></td>
+      <td>Immediate reply every time, even an empty one, at a fixed interval.</td></tr>
+  <tr><td class="c"><b>6</b></td><td>Long polling</td><td class="c"><b>B</b></td>
+      <td>No data means no reply yet; the connection is held open.</td></tr>
+  <tr><td class="c"><b>7</b></td><td>Webhook vs API</td><td class="c"><b>A, D</b></td>
+      <td>Webhooks push and are <b>asynchronous</b>; an API can pull and push. <b>Not C.</b></td></tr>
+  <tr><td class="c"><b>8</b></td><td>Pub/Sub</td><td class="c"><b>A, B, D</b></td>
+      <td>Enables event-driven architecture, delivers to subscribers at once, asynchronous.</td></tr>
+  <tr><td class="c"><b>9</b></td><td>Message broker</td><td class="c"><b>A, D</b></td>
+      <td>Correct routing and fan-out. Brokers do retry, and they are FIFO not LIFO.</td></tr>
+  <tr><td class="c"><b>10</b></td><td>Webhooks, details</td><td class="c"><b>A, D</b></td>
+      <td>Content in the request body; one-way. Response stays small; no humans involved.</td></tr>
+</table>
+
+<div class="warn">
+  <span class="boxtitle">The single change to make</span>
+  <b>Question 7: untick option C.</b> Everything else in your attempt already matches this key.
+  If a webhook were synchronous, the receiver would have to be sitting there waiting for it &ndash;
+  and the entire reason webhooks exist is so that nobody has to wait.
+</div>
+
+<h2>9.2 The one-page cheat sheet</h2>
+
+<div class="card">
+  <h4 style="margin-top:0">The core idea</h4>
+  <ul>
+    <li>Plain HTTP is <b>client-initiated</b>: the server can never speak first.</li>
+    <li><b>Pull</b> = the client asks. <b>Push</b> = data arrives unasked.</li>
+    <li>All five techniques are workarounds for that one restriction.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Polling</h4>
+  <ul>
+    <li><b>Short polling</b>: fixed repeating interval; server replies <b>immediately</b>, even
+        with nothing. Connection closes each time.</li>
+    <li><b>Long polling</b>: server <b>holds the connection open</b> and stays silent until it
+        has data, then replies.</li>
+    <li>Polling does <b>not</b> require a persistent connection &ndash; each poll is independent.</li>
+    <li>Memory hook: <i>"short reply is instant; long polling makes you wait long."</i></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Server-Sent Events</h4>
+  <ul>
+    <li>One long-lived HTTP connection; the server streams many events.</li>
+    <li><b>One way only</b>: server to client. Mime type <code>text/event-stream</code>.</li>
+    <li>Client side is the built-in <code>EventSource</code> object.</li>
+    <li>Needs <b>no</b> task queue, <b>no</b> broker, <b>no</b> new protocol.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">WebSockets</h4>
+  <ul>
+    <li>HTTP handshake with <code>Upgrade: websocket</code>, then switches to <code>ws://</code>.</li>
+    <li><b>Two way / full duplex</b>, connection stays open.</li>
+    <li>Use when <b>both</b> sides need to send: chat, games, collaborative editing.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Webhooks</h4>
+  <ul>
+    <li>A user-defined <b>HTTP callback</b>: you register a URL, they POST to it on an event.</li>
+    <li><b>Push</b>, <b>server-initiated</b>, <b>one way</b>, <b>asynchronous</b>, <b>server-to-server</b>.</li>
+    <li>Content travels in the <b>request body</b>; the <b>response</b> should be a small,
+        immediate 200.</li>
+    <li>Slow response means timeout and <b>retry</b>, which can cause duplicate processing.</li>
+    <li>Can carry JSON, form-encoded or XML data. Can be secured with HMAC signatures,
+        secret tokens, HTTPS and IP allowlists.</li>
+    <li>A receiver can be a trivial Flask route. The connection <b>closes</b> immediately.</li>
+    <li>Often called a <b>reverse API</b>. API = pull (and can push); webhook = push only.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4 style="margin-top:0">Pub/Sub and brokers</h4>
+  <ul>
+    <li>Publisher sends to a <b>topic</b>; every <b>subscriber</b> of that topic gets a copy
+        (<b>fan-out</b>).</li>
+    <li>Publisher does not know who or how many subscribers exist &ndash; that is <b>decoupling</b>.</li>
+    <li>Communication is <b>asynchronous</b>; delivery to current subscribers is immediate.</li>
+    <li>It is the foundation of <b>event-driven architecture</b>.</li>
+    <li>Broker jobs: correct <b>routing</b>, <b>retries</b> plus a dead letter queue,
+        <b>FIFO</b> order, and fan-out to <b>many recipients</b> when required.</li>
+    <li>Queue = one consumer, "who does this job". Pub/Sub = all subscribers,
+        "who needs to know".</li>
+  </ul>
+</div>
+
+<h2>9.3 Exam technique: the keyword radar</h2>
+
+<p>Seven of the ten questions in this paper are decided by a single word.</p>
+
+<table>
+  <tr><th style="width:160px">Word you spot</th><th style="width:110px">What it usually means</th><th>Where it happened here</th></tr>
+  <tr><td><b>cannot</b></td><td>likely FALSE</td>
+      <td>Q1 options B and C: "cannot post form encoded data", "cannot be secured".</td></tr>
+  <tr><td><b>must</b></td><td>likely FALSE</td>
+      <td>Q6 option D: "the client <i>must</i> send the next request immediately".</td></tr>
+  <tr><td><b>All of the above</b></td><td>check every option first</td>
+      <td>Q3 and Q5 option D: both die because option B is false.</td></tr>
+  <tr><td><b>opposite pairs</b></td><td>exactly one is right</td>
+      <td>Q5 A vs B, Q8 C vs D, Q3 has the pair split across Q6.</td></tr>
+  <tr><td><b>reversed sentences</b></td><td>read the direction twice</td>
+      <td>Q7 option B swaps push and pull; Q10 option B swaps request and response.</td></tr>
+  <tr><td><b>false</b> in the stem</td><td>tick the wrong statement</td>
+      <td>Q4. Underline the word "false" before you start.</td></tr>
+  <tr><td><b>if required</b>, <b>in general</b></td><td>likely TRUE</td>
+      <td>Q9 option D, Q2 option A. Careful hedged wording is usually honest wording.</td></tr>
+</table>
+
+<h2>9.4 Practice questions</h2>
+
+<p>Cover the answers. If you can do these eight, you have genuinely learned the topic.</p>
+
+<div class="card">
+  <p><b>P1.</b> A dashboard must show a live share price that changes every second. The browser
+  never sends anything back. Which technique, and why not WebSockets?</p>
+
+  <p><b>P2.</b> Your payment provider POSTs to your webhook URL. Your handler takes 45 seconds
+  because it generates an invoice PDF. Name two things that will go wrong, and the fix.</p>
+
+  <p><b>P3.</b> A client polls every 10 seconds. An event happens 1 second after a poll.
+  What is the worst-case delay before the client learns about it? What would it be with
+  long polling?</p>
+
+  <p><b>P4.</b> Why can a browser tab not be a webhook receiver?</p>
+
+  <p><b>P5.</b> Which of these keeps a connection open: short polling, long polling, SSE,
+  WebSocket, webhook?</p>
+
+  <p><b>P6.</b> One message is published to a topic with 4 subscribers. How many times is it
+  processed? And if it were sent to a point-to-point queue with 4 consumers?</p>
+
+  <p><b>P7.</b> Your webhook URL is public. Anyone can POST fake payment events to it.
+  How do you stop them?</p>
+
+  <p><b>P8.</b> Give one reason to choose SSE over WebSockets, and one reason to choose
+  WebSockets over SSE.</p>
+</div>
+
+<div class="ans">
+  <span class="boxtitle">Answers to the practice questions</span>
+  <p><b>P1.</b> <b>SSE.</b> The data flows one way only, so a two-way channel would be wasted
+  complexity: WebSockets need protocol support on the server, extra infrastructure
+  configuration, and they lose the free automatic reconnection that
+  <code>EventSource</code> gives you. Use the simplest tool that fits.</p>
+
+  <p><b>P2.</b> (1) The provider <b>times out</b> and marks the delivery as failed.
+  (2) It then <b>retries</b>, so you may process the same payment two or three times and
+  send duplicate invoices. The fix: reply <b>200 OK immediately</b>, push the PDF job onto a
+  background queue, and make your handler <b>idempotent</b> so a repeated event is harmless.</p>
+
+  <p><b>P3.</b> Polling: worst case about <b>9 seconds</b> (it must wait for the next scheduled
+  poll). Long polling: <b>essentially zero</b> &ndash; the connection is already open and silent,
+  so the server responds the instant the event happens.</p>
+
+  <p><b>P4.</b> A webhook is an <b>incoming</b> HTTP POST, so the receiver needs a
+  <b>publicly reachable URL and a server listening on it</b>. A browser tab has no public
+  address and cannot accept incoming connections. That is why webhooks are
+  server-to-server.</p>
+
+  <p><b>P5.</b> <b>Long polling</b> (holds one request open), <b>SSE</b> and <b>WebSocket</b>
+  (both truly persistent). <b>Short polling</b> and <b>webhooks</b> close the connection
+  immediately.</p>
+
+  <p><b>P6.</b> Topic with 4 subscribers: <b>4 times</b>, once per subscriber (fan-out).
+  Point-to-point queue with 4 consumers: <b>once</b> &ndash; the first consumer to take it removes
+  it, and the other three never see it.</p>
+
+  <p><b>P7.</b> Verify an <b>HMAC signature</b> computed from the body with a shared secret, so
+  a forged POST fails the check. Add HTTPS, a secret token, a timestamp check to block
+  replays, and optionally an <b>IP allowlist</b>. Reject anything that fails.</p>
+
+  <p><b>P8.</b> <b>SSE over WebSocket:</b> it is plain HTTP, so it works through ordinary
+  proxies and firewalls with no special server support, and it reconnects automatically.
+  <b>WebSocket over SSE:</b> the client can send messages too, which SSE simply cannot do.</p>
+</div>
+
+<h2>9.5 Glossary</h2>
+
+<table class="flow">
+  <tr><th style="width:172px">Term</th><th>Meaning in one sentence</th></tr>
+  <tr><td><b>Client-initiated</b></td><td>Nothing happens until the client sends a request; the normal HTTP rule.</td></tr>
+  <tr><td><b>Pull</b></td><td>The receiver asks for data when it wants it.</td></tr>
+  <tr><td><b>Push</b></td><td>Data arrives without the receiver having just asked.</td></tr>
+  <tr><td><b>Short polling</b></td><td>Repeating requests at a fixed interval, each answered immediately.</td></tr>
+  <tr><td><b>Long polling</b></td><td>A request the server holds open, unanswered, until it has data.</td></tr>
+  <tr><td><b>Persistent connection</b></td><td>One connection deliberately kept alive across many messages.</td></tr>
+  <tr><td><b>SSE</b></td><td>Server-Sent Events: a one-way HTTP stream of events from server to client.</td></tr>
+  <tr><td><b>text/event-stream</b></td><td>The content type that marks an HTTP response as an SSE stream.</td></tr>
+  <tr><td><b>EventSource</b></td><td>The browser object that opens and listens to an SSE stream.</td></tr>
+  <tr><td><b>WebSocket</b></td><td>A persistent two-way connection using the <code>ws://</code> protocol.</td></tr>
+  <tr><td><b>Full duplex</b></td><td>Both sides can send at the same time, independently.</td></tr>
+  <tr><td><b>Handshake</b></td><td>The opening exchange where client and server agree to upgrade the connection.</td></tr>
+  <tr><td><b>Webhook</b></td><td>A user-defined HTTP callback: they POST to your URL when an event happens.</td></tr>
+  <tr><td><b>Reverse API</b></td><td>Nickname for a webhook, because they call you instead of you calling them.</td></tr>
+  <tr><td><b>Request body</b></td><td>The data carried inside an HTTP request; where webhook content lives.</td></tr>
+  <tr><td><b>HMAC signature</b></td><td>A hash of the body made with a shared secret, proving the sender is genuine.</td></tr>
+  <tr><td><b>Idempotent</b></td><td>Safe to run more than once with the same result; vital for webhook retries.</td></tr>
+  <tr><td><b>Event-driven</b></td><td>Work is triggered by events happening, not by anyone asking.</td></tr>
+  <tr><td><b>Synchronous</b></td><td>Send and wait for the reply before continuing.</td></tr>
+  <tr><td><b>Asynchronous</b></td><td>Send and carry on immediately; the reaction happens later.</td></tr>
+  <tr><td><b>Publisher</b></td><td>The sender in pub/sub, who writes to a topic.</td></tr>
+  <tr><td><b>Subscriber</b></td><td>A receiver that has registered interest in a topic.</td></tr>
+  <tr><td><b>Topic</b></td><td>A named channel; messages sent to it go to all its subscribers.</td></tr>
+  <tr><td><b>Fan-out</b></td><td>Copying one message to many recipients.</td></tr>
+  <tr><td><b>Message broker</b></td><td>The middleman service that stores, routes and retries messages.</td></tr>
+  <tr><td><b>Point-to-point</b></td><td>One message consumed by exactly one consumer.</td></tr>
+  <tr><td><b>FIFO</b></td><td>First in, first out: a queue, like a line at a counter.</td></tr>
+  <tr><td><b>LIFO</b></td><td>Last in, first out: a stack, like a pile of plates. Not how brokers work.</td></tr>
+  <tr><td><b>Dead letter queue</b></td><td>Where a broker parks messages it could never deliver.</td></tr>
+  <tr><td><b>Decoupling</b></td><td>Arranging things so two parts need not know about each other.</td></tr>
+</table>
+
+<h2>9.6 Final word</h2>
+
+<div class="kid">
+  <span class="boxtitle">If you remember only six sentences from this whole book</span>
+  <ol style="margin-bottom:0">
+    <li>HTTP makes the <b>client speak first</b>; every technique here works around that.</li>
+    <li><b>Short</b> polling answers instantly even with nothing; <b>long</b> polling holds the
+        connection open and stays silent.</li>
+    <li><b>SSE is one way</b> (a loudspeaker); a <b>WebSocket is two way</b> (a phone call).</li>
+    <li>A <b>webhook</b> is push, server-initiated, one way, <b>asynchronous</b>, and
+        server-to-server; it closes immediately and needs a fast 200.</li>
+    <li>An <b>API can pull and push</b>; a <b>webhook only pushes</b>.</li>
+    <li><b>Pub/Sub</b> fans one message out to every subscriber of a topic, and a
+        <b>broker</b> routes, retries and works <b>FIFO</b>.</li>
+  </ol>
+</div>
+
+<p style="margin-top:22px;text-align:center;color:#5a6472;font-size:9.5pt">
+  <i>Prepared as a step-by-step teaching solution.<br/>
+  Work through the figures with a pencil in hand; that is where the learning actually happens.</i>
+</p>
+
+<div class="card">
+  <span class="boxtitle" style="color:#5a6472">Notes on sources</span>
+  <small>
+  Technical facts were checked against the official documentation for each technology:
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">MDN on Server-Sent Events and EventSource</a>,
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">MDN on the WebSockets API</a>,
+  and <a href="https://flask.palletsprojects.com/">the Flask documentation</a>.
+  The characterisation of webhooks as <b>push-based and event-driven</b>, in contrast to the
+  request-response pull model of an API, was cross-checked across multiple independent
+  technical references, which describe the distinction consistently.
+  The pub/sub delivery semantics (immediate fan-out to current subscribers, versus a queue
+  that stores a message for a single consumer) were checked against broker documentation
+  and messaging-pattern references.
+  All explanations, analogies and diagrams here were written and drawn for this document.
+  Content was rephrased for compliance with licensing restrictions.
+  </small>
+</div>
+
+</body>
+</html>
